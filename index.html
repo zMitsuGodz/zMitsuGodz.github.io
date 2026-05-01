@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MitsuGod | Personal</title>
+    <title>zMitsuGodz | Top Amigos</title>
+    <!-- Cargamos la herramienta para arrastrar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
         :root {
             --primary: #38bdf8;
@@ -11,96 +13,105 @@
             --card-bg: #1e293b;
         }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg);
             color: white;
-            margin: 0;
-            line-height: 1.6;
-        }
-        header {
-            height: 60vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            border-bottom: 2px solid var(--primary);
+            padding: 20px;
         }
-        h1 { font-size: 3.5rem; margin: 0; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
-        .subtitle { font-size: 1.2rem; opacity: 0.8; }
-        
-        .container {
-            max-width: 1000px;
-            margin: -50px auto 50px;
-            padding: 0 20px;
+        h1 { color: var(--primary); text-align: center; }
+        p { opacity: 0.8; text-align: center; margin-bottom: 30px; }
+
+        /* Contenedor de la lista */
+        #lista-amigos {
+            width: 100%;
+            max-width: 500px;
+            list-style: none;
+            padding: 0;
         }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .card {
+
+        /* Estilo de cada tarjeta */
+        .friend-card {
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            cursor: grab; /* Mano para agarrar */
             border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-            text-align: center;
+            transition: background 0.2s;
         }
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
-        }
-        .card h2 { color: var(--primary); margin-top: 0; }
-        .btn {
-            display: inline-block;
+
+        .friend-card:active { cursor: grabbing; }
+
+        /* Color cuando se está moviendo */
+        .sortable-ghost {
+            opacity: 0.4;
             background: var(--primary);
-            color: var(--bg);
-            padding: 12px 25px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
         }
-        footer { text-align: center; padding: 40px; opacity: 0.5; font-size: 0.9rem; }
+
+        .rank-icon {
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .info h2 { margin: 0; font-size: 1rem; text-transform: uppercase; }
+        .info span { font-size: 0.8rem; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>MitsuGod</h1>
-    <p class="subtitle">Tecnología • Educación • Soporte Técnico</p>
-</header>
+    <h1>🏆 Top de la Promo - Inglés I</h1>
+    <p>Mantén presionado y arrastra para ordenar a tus amigos.</p>
 
-<div class="container">
-    <div class="grid">
-        <!-- Mitsugod Academy -->
-        <div class="card">
-            <h2>Mitsugod Academy</h2>
-            <p>Aprende reparación de celulares, computadoras y gestión de redes desde cero.</p>
-            <a href="#" class="btn">Próximamente</a>
+    <div id="lista-amigos">
+        <!-- Amigo 1: Diego (El de la recomendación) -->
+        <div class="friend-card">
+            <div class="rank-icon">☰</div>
+            <div class="info">
+                <h2>MENDIETA HUAROTO, DIEGO ALBERTO</h2>
+                <span>Puesto de honor por el consejo de Google Sites</span>
+            </div>
         </div>
 
-        <!-- Mitsugod Store -->
-        <div class="card">
-            <h2>Mitsugod Store</h2>
-            <p>Venta de servicios de streaming, hardware y periféricos gaming de alta calidad.</p>
-            <a href="#" class="btn">Ir a la tienda</a>
+        <!-- Amigo 2: Tu partner de la lista -->
+        <div class="friend-card">
+            <div class="rank-icon">☰</div>
+            <div class="info">
+                <h2>BARZOLA MENDEZ, DAN DEL ROY</h2>
+                <span>Firme de la facultad</span>
+            </div>
         </div>
 
-        <!-- Luchito Import -->
-        <div class="card">
-            <h2>Luchito Import</h2>
-            <p>Importaciones directas y productos exclusivos al mejor precio del mercado.</p>
-            <a href="#" class="btn">Ver catálogo</a>
+        <!-- Amigo 3 -->
+        <div class="friend-card">
+            <div class="rank-icon">☰</div>
+            <div class="info">
+                <h2>ACARO BERRU, ANTAJHONY LEVIT</h2>
+                <span>Compañero de clase</span>
+            </div>
         </div>
+
+        <!-- Puedes seguir agregando más bloques como el de arriba -->
     </div>
-</div>
 
-<footer>
-    &copy; 2026 Jean Pool Rodriguez Mendez. Todos los derechos reservados.
-</footer>
+    <p style="margin-top: 40px; font-size: 0.8rem;">
+        Logueado como: <strong>zMitsuGodz</strong>
+    </p>
+
+    <script>
+        // Esta es la "magia" que permite moverlos
+        const lista = document.getElementById('lista-amigos');
+        Sortable.create(lista, {
+            animation: 150,
+            ghostClass: 'sortable-ghost'
+        });
+    </script>
 
 </body>
 </html>
