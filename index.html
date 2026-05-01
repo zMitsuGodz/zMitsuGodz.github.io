@@ -3,124 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zMitsuGodz | Partido de la Promo</title>
+    <title>zMitsuGodz | My Top 25</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
-        :root {
-            --primary: #38bdf8;
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #f43f5e;
-        }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg);
-            color: white;
+            margin: 0;
+            padding: 0;
+            /* Degradado animado de fondo */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-        }
-        .header-electoral {
-            text-align: center;
-            border: 2px solid var(--primary);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            background: rgba(56, 189, 248, 0.1);
-        }
-        h1 { color: var(--primary); margin: 0; font-size: 1.5rem; text-transform: uppercase; }
-        
-        #lista-electoral {
-            width: 100%;
-            max-width: 600px;
-            padding: 0;
+            min-height: 100vh;
         }
 
-        .candidato-card {
-            background: var(--card-bg);
-            margin: 10px 0;
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            margin-top: 30px;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 5px; }
+        p { font-size: 1rem; margin-bottom: 25px; font-weight: 300; }
+
+        #top-lista {
+            width: 90%;
+            max-width: 450px;
+            padding-bottom: 50px;
+        }
+
+        /* Tarjetas estilo Cristal */
+        .amigo-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
             padding: 15px;
-            border-radius: 8px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
             cursor: grab;
-            border: 1px solid #334155;
-            position: relative;
+            transition: transform 0.2s ease;
         }
 
-        .simbolo-partido {
-            width: 50px;
-            height: 50px;
+        .amigo-card:active { cursor: grabbing; transform: scale(0.98); }
+
+        .numero {
             background: white;
-            color: #0f172a;
-            border-radius: 5px;
+            color: #e73c7e;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8rem;
             font-weight: bold;
             margin-right: 15px;
-            border: 2px solid var(--primary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
-        .info-politica h2 { margin: 0; font-size: 0.9rem; color: #f8fafc; }
-        .info-politica p { margin: 0; font-size: 0.75rem; color: var(--primary); font-weight: bold; }
+        .nombre {
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            flex-grow: 1;
+        }
 
-        .voto-nro {
-            position: absolute;
-            right: 20px;
+        .emoji-partido {
             font-size: 1.5rem;
-            font-weight: 900;
-            opacity: 0.2;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
         }
 
-        .sortable-ghost { opacity: 0.1; background: var(--accent); }
+        /* Estilo para el elemento que se está moviendo */
+        .sortable-ghost {
+            opacity: 0;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="header-electoral">
-        <h1>ELECCIONES PROMO CANTUTA 2026</h1>
-        <small>ORDENA TU LISTA PREFERENCIAL - STAE ACTIVO</small>
-    </div>
+    <header>
+        <h1>🏆 My Top Friends</h1>
+        <p>Ranking Oficial de Jean Pool</p>
+    </header>
 
-    <div id="lista-electoral">
-        <!-- Candidatos Varones -->
-        <div class="candidato-card"><div class="simbolo-partido">⚡</div><div class="info-politica"><h2>ACARO BERRU, ANTAJHONY LEVIT</h2><p>PARTIDO DEL RAYO TECNOLÓGICO</p></div><div class="voto-nro">1</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">☀️</div><div class="info-politica"><h2>APOLINARIO GARCÍA, JHON BRAYAN</h2><p>FUERZA SOLAR CANTUTA</p></div><div class="voto-nro">2</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🛡️</div><div class="info-politica"><h2>BARZOLA MENDEZ, DAN DEL ROY</h2><p>UNIÓN DE SEGURIDAD INFORMÁTICA</p></div><div class="voto-nro">3</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🔥</div><div class="info-politica"><h2>BUITRON CHOQUE, MARIO ANGEL</h2><p>MOVIMIENTO FUEGO T</p></div><div class="voto-nro">4</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🚀</div><div class="info-politica"><h2>CARRILLO CACERES, CRISTHIAN GONZALO</h2><p>IMPULSO ESPACIAL</p></div><div class="voto-nro">5</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">💎</div><div class="info-politica"><h2>CCANSAYA CURASMA, LUIS ANGEL</h2><p>VALOR DIAMANTE</p></div><div class="voto-nro">6</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">⚓</div><div class="info-politica"><h2>CHAGUA CONTRERAS, JHON ALEJO</h2><span><p>ANCLA DE LA PROMOCIÓN</p></div><div class="voto-nro">7</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🛰️</div><div class="info-politica"><h2>CHOCCE RÍOS, ANDRÉ BENJAMIN</h2><p>SATÉLITE UNIDO</p></div><div class="voto-nro">8</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🦁</div><div class="info-politica"><h2>CISNEROS MARCOS, GUILLERMO ALESSANDRO</h2><p>LEONES DE TELECOM</p></div><div class="voto-nro">9</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">⚙️</div><div class="info-politica"><h2>COA HUAMAN, CESAR RICARDO</h2><p>ENGRANAJE TÉCNICO</p></div><div class="voto-nro">10</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">📱</div><div class="info-politica"><h2>CRUZ CAYETANO, JUNIOR ALDAIR SONYU</h2><p>CONEXIÓN MÓVIL</p></div><div class="voto-nro">11</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🛠️</div><div class="info-politica"><h2>HUAMACCTO VICHARRA, JHON LENIN ALEXANDER</h2><p>REPARACIÓN NACIONAL</p></div><div class="voto-nro">12</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">📡</div><div class="info-politica"><h2>HUAMAN CORDOVA, GABI NICOLAI</h2><p>ANTENA DEMOCRÁTICA</p></div><div class="voto-nro">13</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">💡</div><div class="info-politica"><h2>JUICA ZEVALLOS, JOSE FERNANDO</h2><p>IDEAS CLARAS</p></div><div class="voto-nro">14</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🏔️</div><div class="info-politica"><h2>LLANOS CHAMBI, ANTHONY BRAYAN</h2><p>CUMBRE TECNOLÓGICA</p></div><div class="voto-nro">15</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🎯</div><div class="info-politica"><h2>LOPEZ GUTIERREZ, EDWIN ANTONIO</h2><p>OBJETIVO PROMO</p></div><div class="voto-nro">16</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🤜</div><div class="info-politica"><h2>MENDIETA HUAROTO, DIEGO ALBERTO</h2><p>PUÑO DE LA CANTUTA</p></div><div class="voto-nro">17</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🌟</div><div class="info-politica"><h2>PADILLA UNTIVEROS, DAYRON STARLY</h2><p>ESTRELLA DEL SUR</p></div><div class="voto-nro">18</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🌊</div><div class="info-politica"><h2>PEREZ SEGURA, RAMIRO AGUSTIN</h2><p>OLA DE CAMBIO</p></div><div class="voto-nro">19</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">⚖️</div><div class="info-politica"><h2>POVES CASTRO, ANGEL JEREMIAS</h2><p>JUSTICIA INFORMÁTICA</p></div><div class="voto-nro">20</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🏗️</div><div class="info-politica"><h2>RICSE BARRERA, DAVID MARVIN</h2><p>CONSTRUYENDO REDES</p></div><div class="voto-nro">21</div></div>
-        <div class="candidato-card" style="border: 2px solid gold;"><div class="simbolo-partido">👑</div><div class="info-politica"><h2>RODRIGUEZ MENDEZ, JEAN POOL</h2><p>PARTIDO ZMITSUGODZ - LÍDER STAE</p></div><div class="voto-nro">26</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">✅</div><div class="info-politica"><h2>ROJAS HUAYSARA, DAVID JESUS</h2><p>SÍ POR LA TECNOLOGÍA</p></div><div class="voto-nro">22</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🌀</div><div class="info-politica"><h2>ROJAS MENDOZA, JORDAN PERCY</h2><p>TORBELLINO T</p></div><div class="voto-nro">23</div></div>
-        <div class="candidato-card"><div class="simbolo-partido">🚦</div><div class="info-politica"><h2>VARGAS PEREZ, LUIS ENRIQUE</h2><p>CAMINO LIBRE</p></div><div class="voto-nro">24</div></div>
+    <div id="top-lista">
+        <!-- Generando los 25 amigos con los nombres de tu lista de Telecomunicaciones -->
+        <div class="amigo-card"><div class="numero">1</div><div class="nombre">ACARO BERRU, ANTAJHONY</div><div class="emoji-partido">🔥</div></div>
+        <div class="amigo-card"><div class="numero">2</div><div class="nombre">APOLINARIO GARCÍA, JHON</div><div class="emoji-partido">⚡</div></div>
+        <div class="amigo-card"><div class="numero">3</div><div class="nombre">BANZER IRENE, BEATRIZ</div><div class="emoji-partido">⭐</div></div>
+        <div class="amigo-card"><div class="numero">4</div><div class="nombre">BARZOLA MENDEZ, DAN</div><div class="emoji-partido">🚀</div></div>
+        <div class="amigo-card"><div class="numero">5</div><div class="nombre">BUITRON CHOQUE, MARIO</div><div class="emoji-partido">💎</div></div>
+        <div class="amigo-card"><div class="numero">6</div><div class="nombre">CARRILLO CACERES, CRISTHIAN</div><div class="emoji-partido">🛡️</div></div>
+        <div class="amigo-card"><div class="numero">7</div><div class="nombre">CCANSAYA CURASMA, LUIS</div><div class="emoji-partido">🦁</div></div>
+        <div class="amigo-card"><div class="numero">8</div><div class="nombre">CHAGUA CONTRERAS, JHON</div><div class="emoji-partido">⚓</div></div>
+        <div class="amigo-card"><div class="numero">9</div><div class="nombre">CHOCCE RÍOS, ANDRÉ</div><div class="emoji-partido">🛰️</div></div>
+        <div class="amigo-card"><div class="numero">10</div><div class="nombre">CISNEROS MARCOS, GUILLERMO</div><div class="emoji-partido">⚙️</div></div>
+        <div class="amigo-card"><div class="numero">11</div><div class="nombre">COA HUAMAN, CESAR</div><div class="emoji-partido">💡</div></div>
+        <div class="amigo-card"><div class="numero">12</div><div class="nombre">CRUZ CAYETANO, JUNIOR</div><div class="emoji-partido">📱</div></div>
+        <div class="amigo-card"><div class="numero">13</div><div class="nombre">DE LA CRUZ CONDOR, NOEMI</div><div class="emoji-partido">🌸</div></div>
+        <div class="amigo-card"><div class="numero">14</div><div class="nombre">GUTIERREZ OCHOA, GRECIA</div><div class="emoji-partido">🦋</div></div>
+        <div class="amigo-card"><div class="numero">15</div><div class="nombre">HUAMACCTO VICHARRA, JHON</div><div class="emoji-partido">🛠️</div></div>
+        <div class="amigo-card"><div class="numero">16</div><div class="nombre">HUAMAN CORDOVA, GABI</div><div class="emoji-partido">📡</div></div>
+        <div class="amigo-card"><div class="numero">17</div><div class="nombre">JUICA ZEVALLOS, JOSE</div><div class="emoji-partido">🏔️</div></div>
+        <div class="amigo-card"><div class="numero">18</div><div class="nombre">LLANOS CHAMBI, ANTHONY</div><div class="emoji-partido">🎯</div></div>
+        <div class="amigo-card"><div class="numero">19</div><div class="nombre">LOPEZ GUTIERREZ, EDWIN</div><div class="emoji-partido">🌊</div></div>
+        <div class="amigo-card"><div class="numero">20</div><div class="nombre">MENDIETA HUAROTO, DIEGO</div><div class="emoji-partido">🤜</div></div>
+        <div class="amigo-card"><div class="numero">21</div><div class="nombre">PADILLA UNTIVEROS, DAYRON</div><div class="emoji-partido">🌟</div></div>
+        <div class="amigo-card"><div class="numero">22</div><div class="nombre">PEREZ SEGURA, RAMIRO</div><div class="emoji-partido">⚖️</div></div>
+        <div class="amigo-card"><div class="numero">23</div><div class="nombre">PONCE APAZA, KATHERINE</div><div class="emoji-partido">🎵</div></div>
+        <div class="amigo-card"><div class="numero">24</div><div class="nombre">POVES CASTRO, ANGEL</div><div class="emoji-partido">🏗️</div></div>
+        <div class="amigo-card"><div class="numero">25</div><div class="nombre">RICSE BARRERA, DAVID</div><div class="emoji-partido">✅</div></div>
     </div>
 
     <script>
-        const lista = document.getElementById('lista-electoral');
+        const lista = document.getElementById('top-lista');
         Sortable.create(lista, {
-            animation: 150,
-            ghostClass: 'sortable-ghost'
+            animation: 350,
+            ghostClass: 'sortable-ghost',
+            // Al mover, re-numeramos la lista
+            onEnd: function() {
+                let cards = document.querySelectorAll('.numero');
+                cards.forEach((card, index) => {
+                    card.innerText = index + 1;
+                });
+            }
         });
     </script>
-
 </body>
 </html>
