@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zMitsuGodz | Top Amigos</title>
-    <!-- Cargamos la herramienta para arrastrar -->
+    <title>zMitsuGodz | Partido de la Promo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     <style>
         :root {
             --primary: #38bdf8;
             --bg: #0f172a;
             --card-bg: #1e293b;
+            --accent: #f43f5e;
         }
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -21,92 +21,101 @@
             align-items: center;
             padding: 20px;
         }
-        h1 { color: var(--primary); text-align: center; }
-        p { opacity: 0.8; text-align: center; margin-bottom: 30px; }
-
-        /* Contenedor de la lista */
-        #lista-amigos {
+        .header-electoral {
+            text-align: center;
+            border: 2px solid var(--primary);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            background: rgba(56, 189, 248, 0.1);
+        }
+        h1 { color: var(--primary); margin: 0; font-size: 1.5rem; text-transform: uppercase; }
+        
+        #lista-electoral {
             width: 100%;
-            max-width: 500px;
-            list-style: none;
+            max-width: 600px;
             padding: 0;
         }
 
-        /* Estilo de cada tarjeta */
-        .friend-card {
+        .candidato-card {
             background: var(--card-bg);
             margin: 10px 0;
             padding: 15px;
-            border-radius: 12px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            cursor: grab; /* Mano para agarrar */
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: background 0.2s;
+            cursor: grab;
+            border: 1px solid #334155;
+            position: relative;
         }
 
-        .friend-card:active { cursor: grabbing; }
-
-        /* Color cuando se está moviendo */
-        .sortable-ghost {
-            opacity: 0.4;
-            background: var(--primary);
-        }
-
-        .rank-icon {
+        .simbolo-partido {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: #0f172a;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: var(--primary);
             margin-right: 15px;
-            font-size: 1.2rem;
+            border: 2px solid var(--primary);
         }
 
-        .info h2 { margin: 0; font-size: 1rem; text-transform: uppercase; }
-        .info span { font-size: 0.8rem; opacity: 0.6; }
+        .info-politica h2 { margin: 0; font-size: 0.9rem; color: #f8fafc; }
+        .info-politica p { margin: 0; font-size: 0.75rem; color: var(--primary); font-weight: bold; }
+
+        .voto-nro {
+            position: absolute;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            opacity: 0.2;
+        }
+
+        .sortable-ghost { opacity: 0.1; background: var(--accent); }
     </style>
 </head>
 <body>
 
-    <h1>🏆 Top de la Promo - Inglés I</h1>
-    <p>Mantén presionado y arrastra para ordenar a tus amigos.</p>
-
-    <div id="lista-amigos">
-        <!-- Amigo 1: Diego (El de la recomendación) -->
-        <div class="friend-card">
-            <div class="rank-icon">☰</div>
-            <div class="info">
-                <h2>MENDIETA HUAROTO, DIEGO ALBERTO</h2>
-                <span>Puesto de honor por el consejo de Google Sites</span>
-            </div>
-        </div>
-
-        <!-- Amigo 2: Tu partner de la lista -->
-        <div class="friend-card">
-            <div class="rank-icon">☰</div>
-            <div class="info">
-                <h2>BARZOLA MENDEZ, DAN DEL ROY</h2>
-                <span>Firme de la facultad</span>
-            </div>
-        </div>
-
-        <!-- Amigo 3 -->
-        <div class="friend-card">
-            <div class="rank-icon">☰</div>
-            <div class="info">
-                <h2>ACARO BERRU, ANTAJHONY LEVIT</h2>
-                <span>Compañero de clase</span>
-            </div>
-        </div>
-
-        <!-- Puedes seguir agregando más bloques como el de arriba -->
+    <div class="header-electoral">
+        <h1>ELECCIONES PROMO CANTUTA 2026</h1>
+        <small>ORDENA TU LISTA PREFERENCIAL - STAE ACTIVO</small>
     </div>
 
-    <p style="margin-top: 40px; font-size: 0.8rem;">
-        Logueado como: <strong>zMitsuGodz</strong>
-    </p>
+    <div id="lista-electoral">
+        <!-- Candidatos Varones -->
+        <div class="candidato-card"><div class="simbolo-partido">⚡</div><div class="info-politica"><h2>ACARO BERRU, ANTAJHONY LEVIT</h2><p>PARTIDO DEL RAYO TECNOLÓGICO</p></div><div class="voto-nro">1</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">☀️</div><div class="info-politica"><h2>APOLINARIO GARCÍA, JHON BRAYAN</h2><p>FUERZA SOLAR CANTUTA</p></div><div class="voto-nro">2</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🛡️</div><div class="info-politica"><h2>BARZOLA MENDEZ, DAN DEL ROY</h2><p>UNIÓN DE SEGURIDAD INFORMÁTICA</p></div><div class="voto-nro">3</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🔥</div><div class="info-politica"><h2>BUITRON CHOQUE, MARIO ANGEL</h2><p>MOVIMIENTO FUEGO T</p></div><div class="voto-nro">4</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🚀</div><div class="info-politica"><h2>CARRILLO CACERES, CRISTHIAN GONZALO</h2><p>IMPULSO ESPACIAL</p></div><div class="voto-nro">5</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">💎</div><div class="info-politica"><h2>CCANSAYA CURASMA, LUIS ANGEL</h2><p>VALOR DIAMANTE</p></div><div class="voto-nro">6</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">⚓</div><div class="info-politica"><h2>CHAGUA CONTRERAS, JHON ALEJO</h2><span><p>ANCLA DE LA PROMOCIÓN</p></div><div class="voto-nro">7</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🛰️</div><div class="info-politica"><h2>CHOCCE RÍOS, ANDRÉ BENJAMIN</h2><p>SATÉLITE UNIDO</p></div><div class="voto-nro">8</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🦁</div><div class="info-politica"><h2>CISNEROS MARCOS, GUILLERMO ALESSANDRO</h2><p>LEONES DE TELECOM</p></div><div class="voto-nro">9</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">⚙️</div><div class="info-politica"><h2>COA HUAMAN, CESAR RICARDO</h2><p>ENGRANAJE TÉCNICO</p></div><div class="voto-nro">10</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">📱</div><div class="info-politica"><h2>CRUZ CAYETANO, JUNIOR ALDAIR SONYU</h2><p>CONEXIÓN MÓVIL</p></div><div class="voto-nro">11</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🛠️</div><div class="info-politica"><h2>HUAMACCTO VICHARRA, JHON LENIN ALEXANDER</h2><p>REPARACIÓN NACIONAL</p></div><div class="voto-nro">12</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">📡</div><div class="info-politica"><h2>HUAMAN CORDOVA, GABI NICOLAI</h2><p>ANTENA DEMOCRÁTICA</p></div><div class="voto-nro">13</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">💡</div><div class="info-politica"><h2>JUICA ZEVALLOS, JOSE FERNANDO</h2><p>IDEAS CLARAS</p></div><div class="voto-nro">14</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🏔️</div><div class="info-politica"><h2>LLANOS CHAMBI, ANTHONY BRAYAN</h2><p>CUMBRE TECNOLÓGICA</p></div><div class="voto-nro">15</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🎯</div><div class="info-politica"><h2>LOPEZ GUTIERREZ, EDWIN ANTONIO</h2><p>OBJETIVO PROMO</p></div><div class="voto-nro">16</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🤜</div><div class="info-politica"><h2>MENDIETA HUAROTO, DIEGO ALBERTO</h2><p>PUÑO DE LA CANTUTA</p></div><div class="voto-nro">17</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🌟</div><div class="info-politica"><h2>PADILLA UNTIVEROS, DAYRON STARLY</h2><p>ESTRELLA DEL SUR</p></div><div class="voto-nro">18</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🌊</div><div class="info-politica"><h2>PEREZ SEGURA, RAMIRO AGUSTIN</h2><p>OLA DE CAMBIO</p></div><div class="voto-nro">19</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">⚖️</div><div class="info-politica"><h2>POVES CASTRO, ANGEL JEREMIAS</h2><p>JUSTICIA INFORMÁTICA</p></div><div class="voto-nro">20</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🏗️</div><div class="info-politica"><h2>RICSE BARRERA, DAVID MARVIN</h2><p>CONSTRUYENDO REDES</p></div><div class="voto-nro">21</div></div>
+        <div class="candidato-card" style="border: 2px solid gold;"><div class="simbolo-partido">👑</div><div class="info-politica"><h2>RODRIGUEZ MENDEZ, JEAN POOL</h2><p>PARTIDO ZMITSUGODZ - LÍDER STAE</p></div><div class="voto-nro">26</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">✅</div><div class="info-politica"><h2>ROJAS HUAYSARA, DAVID JESUS</h2><p>SÍ POR LA TECNOLOGÍA</p></div><div class="voto-nro">22</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🌀</div><div class="info-politica"><h2>ROJAS MENDOZA, JORDAN PERCY</h2><p>TORBELLINO T</p></div><div class="voto-nro">23</div></div>
+        <div class="candidato-card"><div class="simbolo-partido">🚦</div><div class="info-politica"><h2>VARGAS PEREZ, LUIS ENRIQUE</h2><p>CAMINO LIBRE</p></div><div class="voto-nro">24</div></div>
+    </div>
 
     <script>
-        // Esta es la "magia" que permite moverlos
-        const lista = document.getElementById('lista-amigos');
+        const lista = document.getElementById('lista-electoral');
         Sortable.create(lista, {
             animation: 150,
             ghostClass: 'sortable-ghost'
