@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MitsuGod | Personal</title>
+    <style>
+        :root {
+            --primary: #38bdf8;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: white;
+            margin: 0;
+            line-height: 1.6;
+        }
+        header {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            border-bottom: 2px solid var(--primary);
+        }
+        h1 { font-size: 3.5rem; margin: 0; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { font-size: 1.2rem; opacity: 0.8; }
+        
+        .container {
+            max-width: 1000px;
+            margin: -50px auto 50px;
+            padding: 0 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+        }
+        .card h2 { color: var(--primary); margin-top: 0; }
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--bg);
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        footer { text-align: center; padding: 40px; opacity: 0.5; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>MitsuGod</h1>
+    <p class="subtitle">Tecnología • Educación • Soporte Técnico</p>
+</header>
+
+<div class="container">
+    <div class="grid">
+        <!-- Mitsugod Academy -->
+        <div class="card">
+            <h2>Mitsugod Academy</h2>
+            <p>Aprende reparación de celulares, computadoras y gestión de redes desde cero.</p>
+            <a href="#" class="btn">Próximamente</a>
+        </div>
+
+        <!-- Mitsugod Store -->
+        <div class="card">
+            <h2>Mitsugod Store</h2>
+            <p>Venta de servicios de streaming, hardware y periféricos gaming de alta calidad.</p>
+            <a href="#" class="btn">Ir a la tienda</a>
+        </div>
+
+        <!-- Luchito Import -->
+        <div class="card">
+            <h2>Luchito Import</h2>
+            <p>Importaciones directas y productos exclusivos al mejor precio del mercado.</p>
+            <a href="#" class="btn">Ver catálogo</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 Jean Pool Rodriguez Mendez. Todos los derechos reservados.
+</footer>
+
+</body>
+</html>
