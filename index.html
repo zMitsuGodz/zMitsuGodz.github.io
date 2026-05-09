@@ -3,196 +3,244 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MitsuGod Store - Oficial</title>
+<title>MitsuGod Store - Agencia Oficial</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    /* --- VARIABLES DE COLOR (Midnight Tech) --- */
+    /* ==========================================
+       VARIABLES CLARO / OSCURO (THEME)
+       ========================================== */
     :root {
-        --bg-dark: #0a0f1c; /* Fondo principal casi negro/azul */
-        --bg-nav: #0f172a;
-        --cyan: #00f2fe;
-        --blue-accent: #4facfe;
-        --text-light: #f8fafc;
+        /* MODO OSCURO (Por defecto) */
+        --bg-main: #080c17;
+        --bg-nav: rgba(10, 15, 28, 0.95);
+        --bg-card: #111827;
+        --text-main: #f8fafc;
         --text-muted: #94a3b8;
-        --wa-green: #25D366;
+        --cyan: #00f2fe;
+        --blue-accent: #0061ff;
+        --border-color: rgba(255,255,255,0.05);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    body.light-mode {
+        /* MODO CLARO */
+        --bg-main: #f0f4f8;
+        --bg-nav: rgba(255, 255, 255, 0.95);
+        --bg-card: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #475569;
+        --cyan: #0061ff; /* En modo claro el cyan se hace azul oscuro para que se lea */
+        --blue-accent: #00f2fe;
+        --border-color: rgba(0,0,0,0.1);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
         font-family: 'Poppins', sans-serif;
-        background-color: var(--bg-dark);
-        color: var(--text-light);
+        background-color: var(--bg-main);
+        color: var(--text-main);
         overflow-x: hidden;
+        transition: background-color 0.4s, color 0.4s;
     }
 
-    /* --- ANIMACIONES DE SCROLL (REVEAL) --- */
-    .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+    /* ==========================================
+       ANIMACIONES GENERALES (REVEAL)
+       ========================================== */
+    .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s all ease; }
     .reveal.active { opacity: 1; transform: translateY(0); }
     .delay-1 { transition-delay: 0.2s; }
     .delay-2 { transition-delay: 0.4s; }
-    .delay-3 { transition-delay: 0.6s; }
 
-    /* --- TOP BAR --- */
+    /* ==========================================
+       BARRA SUPERIOR (TOP BAR)
+       ========================================== */
     .top-bar {
-        background: #020617; color: var(--text-muted);
+        background: #020617; color: #94a3b8;
         font-size: 11px; padding: 8px 20px;
         display: flex; justify-content: space-between; align-items: center;
     }
     .top-contact { display: flex; gap: 20px; }
     .top-contact i { color: var(--cyan); margin-right: 5px; }
     .top-social { display: flex; gap: 15px; }
-    .top-social a { color: var(--text-muted); font-size: 14px; transition: 0.3s; text-decoration: none; }
-    .top-social a:hover { color: var(--cyan); transform: translateY(-2px); }
+    .top-social a { color: #94a3b8; font-size: 14px; transition: 0.3s; text-decoration: none; }
+    .top-social a:hover { color: var(--cyan); }
 
-    /* --- NAVBAR --- */
+    /* ==========================================
+       NUEVO NAVBAR CON DROPDOWNS Y MOBILE
+       ========================================== */
     .navbar {
-        background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
+        background: var(--bg-nav); backdrop-filter: blur(10px);
         padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
         position: sticky; top: 0; z-index: 1000;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        transition: background 0.4s;
     }
     .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .nav-brand img { width: 45px; filter: drop-shadow(0 0 5px var(--cyan)); }
-    .nav-brand h1 { 
-        font-family: 'Orbitron', sans-serif; font-size: 22px; color: white; margin: 0;
-        text-transform: uppercase; letter-spacing: 1px;
-    }
+    .nav-brand h1 { font-family: 'Orbitron'; font-size: 20px; color: var(--text-main); margin: 0; text-transform: uppercase; }
     .nav-brand h1 span { color: var(--cyan); }
-    
-    .nav-links { display: flex; gap: 25px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { 
-        color: white; text-decoration: none; font-size: 13px; font-weight: 600; 
-        text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 5px;
-    }
+
+    .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; margin: 0; }
+    .nav-links a { color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
     .nav-links a:hover { color: var(--cyan); }
-    
+
+    /* Estilos Dropdown (Menú Desplegable) */
+    .dropdown { position: relative; }
+    .dropdown-menu {
+        position: absolute; top: 100%; left: 0; background: var(--bg-card);
+        min-width: 200px; box-shadow: var(--shadow); border-radius: 8px;
+        opacity: 0; visibility: hidden; transform: translateY(10px);
+        transition: 0.3s; list-style: none; padding: 10px 0; border: 1px solid var(--border-color);
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-menu li a { display: block; padding: 10px 20px; text-transform: none; font-size: 13px; }
+    .dropdown-menu li a:hover { background: rgba(0, 242, 254, 0.1); color: var(--cyan); padding-left: 25px; }
+
     .btn-cotizar {
         background: linear-gradient(45deg, var(--blue-accent), var(--cyan));
-        color: #000 !important; padding: 8px 20px; border-radius: 5px; font-weight: 800 !important;
-        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        color: #fff !important; padding: 8px 20px; border-radius: 5px; font-weight: 800 !important;
+        display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
     }
-    .btn-cotizar:hover { box-shadow: 0 0 25px rgba(0, 242, 254, 0.7); transform: scale(1.05); }
+    .theme-toggle { cursor: pointer; font-size: 18px; color: var(--text-main); background: none; border: none; }
+    
+    /* Botón Hamburguesa */
+    .menu-toggle { display: none; font-size: 24px; color: var(--text-main); cursor: pointer; }
 
-    /* --- HERO SLIDER (Corte Diagonal) --- */
+    /* ==========================================
+       HERO (PORTADA DIAGONAL CORREGIDA)
+       ========================================== */
     .hero {
-        position: relative; width: 100%; height: 85vh; min-height: 600px;
-        /* AQUÍ ESTÁ EL CORTE DIAGONAL SOLICITADO */
-        clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        position: relative; width: 100%; min-height: 85vh;
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); /* Ángulo suavizado para no cortar texto */
         overflow: hidden; background: #000;
+        display: flex; align-items: center; /* Centrado vertical arreglado */
+        padding: 100px 5% 150px 5%; /* Mucho espacio arriba y abajo para no cortar */
     }
     .slide {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         opacity: 0; transition: opacity 1s ease-in-out;
-        background-size: cover; background-position: center;
+        background-size: cover; background-position: center; z-index: 0;
     }
     .slide.active { opacity: 1; }
-    .slide::before {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(90deg, rgba(10,15,28,0.9) 0%, rgba(10,15,28,0.5) 50%, transparent 100%);
-    }
+    .slide::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, rgba(8,12,23,0.95) 0%, rgba(8,12,23,0.6) 60%, transparent 100%); }
 
-    .hero-content {
-        position: absolute; top: 50%; left: 5%; transform: translateY(-50%);
-        max-width: 650px; z-index: 10;
-    }
+    .hero-content { position: relative; z-index: 10; max-width: 650px; }
     .hero-content h2 {
-        font-family: 'Orbitron', sans-serif; font-size: 45px; font-weight: 900;
+        font-family: 'Orbitron'; font-size: clamp(35px, 5vw, 50px); font-weight: 900;
         text-transform: uppercase; margin-bottom: 20px; line-height: 1.1;
-        background: linear-gradient(to right, #fff, var(--cyan));
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
+    .hero-content h2 span { color: var(--cyan); }
     .hero-content p { font-size: 16px; color: #cbd5e1; margin-bottom: 30px; }
-    .hero-list { list-style: none; margin-bottom: 35px; }
+    .hero-list { list-style: none; margin-bottom: 35px; color: #fff; }
     .hero-list li { margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
     .hero-list i { color: var(--cyan); }
 
-    /* --- SECCIÓN CATEGORÍAS (Grid tipo imagen) --- */
-    .section-padding { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
-    .section-title {
-        text-align: center; font-family: 'Orbitron', sans-serif; font-size: 32px;
-        margin-bottom: 15px; text-transform: uppercase;
-    }
+    /* ==========================================
+       CATEGORÍAS (SLIDER EN MÓVIL)
+       ========================================== */
+    .section-padding { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
+    .section-title { text-align: center; font-family: 'Orbitron'; font-size: 32px; margin-bottom: 10px; text-transform: uppercase; color: var(--text-main); }
     .section-subtitle { text-align: center; color: var(--cyan); font-weight: 600; margin-bottom: 50px; }
 
     .category-grid {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px;
     }
     .cat-card {
-        background: var(--bg-nav); border-radius: 15px; overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.05); transition: 0.4s;
-        position: relative; group; cursor: pointer;
+        background: var(--bg-card); border-radius: 15px; overflow: hidden;
+        border: 1px solid var(--border-color); transition: 0.4s; box-shadow: var(--shadow);
     }
-    .cat-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 242, 254, 0.15); border-color: var(--cyan); }
+    .cat-card:hover { transform: translateY(-10px); border-color: var(--cyan); }
     .cat-img { width: 100%; height: 200px; object-fit: cover; transition: 0.5s; }
-    .cat-card:hover .cat-img { transform: scale(1.1); filter: brightness(0.7); }
-    .cat-info { padding: 25px 20px; position: relative; z-index: 2; background: var(--bg-nav); }
-    .cat-info h3 { font-family: 'Orbitron'; font-size: 18px; margin-bottom: 10px; color: white; }
+    .cat-card:hover .cat-img { transform: scale(1.05); }
+    .cat-info { padding: 25px 20px; }
+    .cat-info h3 { font-family: 'Orbitron'; font-size: 18px; margin-bottom: 10px; color: var(--text-main); }
     .cat-info p { font-size: 13px; color: var(--text-muted); }
 
-    /* --- SECCIÓN CONFIANZA / CLIENTES --- */
-    .trust-section { background: #0f172a; padding: 60px 20px; text-align: center; border-top: 1px solid #1e293b; border-bottom: 1px solid #1e293b; }
+    /* ==========================================
+       SECCIÓN CONFIANZA (ANIMADA)
+       ========================================== */
+    .trust-section { background: var(--bg-nav); padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-color); }
     .trust-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 50px; max-width: 1000px; margin: 40px auto 0; }
-    .trust-item h4 { font-size: 40px; color: var(--cyan); font-family: 'Orbitron'; margin-bottom: 5px; }
-    .trust-item p { font-size: 14px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+    .trust-item h4 { font-size: 45px; color: var(--cyan); font-family: 'Orbitron'; margin-bottom: 5px; }
+    .trust-item p { font-size: 14px; color: var(--text-main); text-transform: uppercase; font-weight: 600; }
 
-    /* --- SECCIÓN VIDEO BACKGROUND --- */
+    /* ==========================================
+       VIDEO BACKGROUND CON SLIDER DE CAJAS
+       ========================================== */
     .video-section {
-        position: relative; padding: 100px 20px; text-align: center; overflow: hidden;
-        /* Corte diagonal invertido para diseño dinámico */
-        clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+        position: relative; padding: 120px 20px; text-align: center; overflow: hidden;
+        clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
     }
     .video-bg {
         position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -2;
-        object-fit: cover; opacity: 0.3;
+        min-width: 100%; min-height: 100%; z-index: -2; object-fit: cover; opacity: 0.4;
     }
-    .video-overlay {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(45deg, rgba(10,15,28,0.9), rgba(0,242,254,0.2)); z-index: -1;
-    }
-    .video-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+    .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, rgba(8,12,23,0.9), rgba(0,97,255,0.4)); z-index: -1; }
     
-    .floating-boxes { display: flex; justify-content: center; gap: 30px; margin-top: 50px; flex-wrap: wrap; }
-    .float-box {
-        background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
+    /* Slider automático de cajitas sobre el video */
+    .auto-slider-container { position: relative; max-width: 350px; height: 350px; margin: 40px auto 0; perspective: 1000px; }
+    .auto-slide {
+        position: absolute; top: 0; left: 0; width: 100%;
+        background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px);
         padding: 20px; border-radius: 15px; border: 1px solid var(--cyan);
-        width: 250px; animation: floatY 4s infinite ease-in-out;
+        opacity: 0; transform: rotateY(90deg); transition: 0.8s all ease;
     }
-    .float-box:nth-child(2) { animation-delay: 2s; }
-    .float-box img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
+    .auto-slide.active { opacity: 1; transform: rotateY(0deg); }
+    .auto-slide img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
 
-    /* --- POR QUÉ ELEGIRNOS --- */
+    /* ==========================================
+       POR QUÉ ELEGIRNOS Y FOOTER
+       ========================================== */
     .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-    .why-text ul { list-style: none; margin-top: 20px; }
     .why-text li {
-        background: rgba(255,255,255,0.03); margin-bottom: 15px; padding: 15px 20px;
+        background: var(--bg-card); margin-bottom: 15px; padding: 15px 20px;
         border-radius: 10px; border-left: 4px solid var(--cyan);
-        display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        display: flex; align-items: center; gap: 15px; transition: 0.3s; box-shadow: var(--shadow);
     }
-    .why-text li:hover { background: rgba(0, 242, 254, 0.1); transform: translateX(10px); }
+    .why-text li:hover { transform: translateX(10px); border-color: var(--blue-accent); }
 
-    /* Botón WhatsApp Flotante */
-    .wa-float {
-        position: fixed; bottom: 30px; right: 30px; background: var(--wa-green);
-        color: white; width: 60px; height: 60px; border-radius: 50%;
-        display: flex; justify-content: center; align-items: center; font-size: 30px;
-        box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5); z-index: 2000; text-decoration: none;
-        animation: pulseWa 2s infinite;
-    }
+    .footer { background: #020617; color: #94a3b8; padding: 60px 5% 20px; border-top: 2px solid var(--cyan); }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+    .footer-title { color: #fff; font-family: 'Orbitron'; margin-bottom: 20px; font-size: 18px; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a { color: #94a3b8; text-decoration: none; transition: 0.3s; }
+    .footer-links a:hover { color: var(--cyan); padding-left: 5px; }
 
-    @keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5); z-index: 2000; animation: pulseWa 2s infinite; }
     @keyframes pulseWa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
 
-    @media (max-width: 768px) {
-        .top-contact span { display: none; }
-        .nav-links { display: none; /* Aquí puedes agregar un menú hamburguesa luego */ }
-        .hero { clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%); }
-        .hero-content h2 { font-size: 30px; }
+    /* ==========================================
+       📱 RESPONSIVE (MÓVIL ARREGLADO)
+       ========================================== */
+    @media (max-width: 900px) {
+        .top-bar { display: none; } /* Ocultar barra superior en móvil para ahorrar espacio */
+        .menu-toggle { display: block; } /* Mostrar hamburguesa */
+        
+        .nav-links {
+            position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-nav);
+            flex-direction: column; padding: 20px; gap: 15px; text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: 0.4s ease-out;
+        }
+        .nav-links.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        .dropdown-menu { position: relative; box-shadow: none; border: none; background: transparent; display: none; }
+        .dropdown:active .dropdown-menu, .dropdown:hover .dropdown-menu { display: block; opacity: 1; visibility: visible; transform: none; }
+
+        .hero { padding-top: 60px; min-height: 80vh; clip-path: polygon(0 0, 100% 0, 100% 93%, 0 100%); }
+        
+        /* Efecto Swipe Horizontal para tarjetas en móvil (¡No más uno sobre otro aburrido!) */
+        .category-grid {
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 20px; gap: 15px;
+        }
+        .cat-card { min-width: 280px; scroll-snap-align: start; flex-shrink: 0; }
+        
         .why-grid { grid-template-columns: 1fr; }
+        .video-section { clip-path: polygon(0 2%, 100% 0, 100% 98%, 0 100%); }
     }
 </style>
 </head>
@@ -201,13 +249,11 @@
     <div class="top-bar">
         <div class="top-contact">
             <div><i class="fa-solid fa-phone"></i> +51 956 654 891</div>
-            <div><i class="fa-solid fa-envelope"></i> admin@mitsugod.com</div>
-            <div><i class="fa-solid fa-location-dot"></i> Lurigancho-Chosica, Lima - Perú</div>
+            <div><i class="fa-solid fa-location-dot"></i> Lima, Perú</div>
         </div>
         <div class="top-social">
             <a href="#"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://wa.me/51956654891"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
     </div>
 
@@ -216,63 +262,82 @@
             <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" alt="Logo">
             <h1>MitsuGod <span>Store</span></h1>
         </a>
+        
+        <div class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
         <ul class="nav-links">
             <li><a href="#">Inicio</a></li>
-            <li><a href="#servicios">Servicios <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i></a></li>
-            <li><a href="#academia">Academia</a></li>
-            <li><a href="#">Nosotros</a></li>
-            <li><a href="https://wa.me/51956654891" class="btn-cotizar">COTIZAR <i class="fa-solid fa-arrow-right"></i></a></li>
+            <li class="dropdown">
+                <a href="#servicios">Servicios <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="streaming.html">Streaming VIP</a></li>
+                    <li><a href="celulares.html">Celulares y Repuestos</a></li>
+                    <li><a href="tecnologia.html">Productos Tecnología</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#academia">Academia <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="academia.html">Cursos Grabados</a></li>
+                    <li><a href="clases-vivo.html" style="color:var(--cyan); font-weight:bold;">🔴 Clases en Vivo</a></li>
+                    <li><a href="#">Certificados</a></li>
+                </ul>
+            </li>
+            <li><button class="theme-toggle" onclick="toggleTheme()" title="Cambiar Tema">🌓</button></li>
+            <li><a href="https://wa.me/51956654891" class="btn-cotizar">COTIZAR <i class="fa-solid fa-paper-plane"></i></a></li>
         </ul>
     </nav>
 
     <header class="hero">
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1616469829581-73993eb86b02?q=80&w=1920&auto=format&fit=crop');"></div>
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=1920&auto=format&fit=crop');"></div>
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1920&auto=format&fit=crop');"></div>
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1616469829581-73993eb86b02?q=80&w=1920');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=1920');"></div>
 
         <div class="hero-content reveal">
-            <h2>Servicios de Tecnología y Streaming en Perú</h2>
-            <p>Especialistas en plataformas digitales, soporte técnico avanzado, reparación de dispositivos y formación académica con MitsuGod Academy.</p>
+            <h2>Tecnología y Streaming en <span>Perú</span></h2>
+            <p>Especialistas en plataformas digitales, soporte técnico avanzado, reparación de dispositivos y formación con MitsuGod Academy.</p>
             <ul class="hero-list">
-                <li><i class="fa-solid fa-circle-check"></i> Cuentas premium y paneles garantizados</li>
-                <li><i class="fa-solid fa-circle-check"></i> Reparación de Laptops y Celulares</li>
-                <li><i class="fa-solid fa-circle-check"></i> Soporte técnico profesional en Lima</li>
+                <li><i class="fa-solid fa-check"></i> Cuentas premium y paneles garantizados.</li>
+                <li><i class="fa-solid fa-check"></i> Reparación de Laptops y Celulares.</li>
+                <li><i class="fa-solid fa-check"></i> Clases en vivo y cursos de desarrollo.</li>
             </ul>
-            <a href="#servicios" class="btn-cotizar" style="display:inline-block; font-size:16px; padding:12px 30px;">Ver Catálogo <i class="fa-solid fa-arrow-down"></i></a>
+            <br>
+            <a href="#servicios" class="btn-cotizar" style="padding: 12px 30px; font-size:15px;">Ver Catálogo <i class="fa-solid fa-arrow-down"></i></a>
         </div>
     </header>
 
     <section id="servicios" class="section-padding">
-        <h2 class="section-title reveal">Servicios Digitales y Tecnología</h2>
+        <h2 class="section-title reveal">Servicios Digitales</h2>
         <p class="section-subtitle reveal">Calidad Profesional Garantizada</p>
         
         <div class="category-grid">
             <div class="cat-card reveal delay-1" onclick="window.location.href='streaming.html'">
-                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=600&auto=format&fit=crop" class="cat-img" alt="Streaming"></div>
+                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
                     <h3>Streaming VIP</h3>
-                    <p>Paneles, cuentas completas y perfiles de Netflix, Spotify, Max y más.</p>
+                    <p>Paneles, cuentas completas de Netflix, Spotify, Max.</p>
                 </div>
             </div>
             <div class="cat-card reveal delay-2" onclick="window.location.href='tecnologia.html'">
-                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1588508065123-287b28e01397?q=80&w=600&auto=format&fit=crop" class="cat-img" alt="Tecnología"></div>
+                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1588508065123-287b28e01397?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
-                    <h3>Productos de Tecnología</h3>
-                    <p>Licencias Windows, Office, antivirus, componentes y soporte técnico para PC.</p>
+                    <h3>Tecnología</h3>
+                    <p>Licencias Windows, Office, antivirus y componentes.</p>
                 </div>
             </div>
-            <div class="cat-card reveal delay-3" onclick="window.location.href='academia.html'">
-                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop" class="cat-img" alt="Academia"></div>
+            <div class="cat-card reveal delay-1" onclick="window.location.href='academia.html'">
+                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
-                    <h3>Academia MitsuGod</h3>
-                    <p>Formación en desarrollo web, soporte técnico y gestión de comunidades.</p>
+                    <h3>MitsuGod Academy</h3>
+                    <p>Clases en vivo, desarrollo web y gestión de comunidades.</p>
                 </div>
             </div>
-            <div class="cat-card reveal delay-1" onclick="window.location.href='celulares.html'">
-                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=600&auto=format&fit=crop" class="cat-img" alt="Celulares"></div>
+            <div class="cat-card reveal delay-2" onclick="window.location.href='celulares.html'">
+                <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
-                    <h3>Celulares y Repuestos</h3>
-                    <p>Equipos liberados, flasheo de software, cambios de pantalla y pines de carga.</p>
+                    <h3>Celulares</h3>
+                    <p>Reparación, flasheo, cambios de pantalla y pines de carga.</p>
                 </div>
             </div>
         </div>
@@ -280,24 +345,11 @@
 
     <section class="trust-section reveal">
         <h2 class="section-title" style="font-size: 24px;">Respaldados por la Excelencia</h2>
-        <p style="color:var(--text-muted);">Clientes satisfechos en todo el país confían en nuestra gestión.</p>
         <div class="trust-grid">
-            <div class="trust-item reveal delay-1">
-                <h4>+5</h4>
-                <p>Años de Experiencia</p>
-            </div>
-            <div class="trust-item reveal delay-2">
-                <h4>100%</h4>
-                <p>Garantía de Servicio</p>
-            </div>
-            <div class="trust-item reveal delay-3">
-                <h4>24/7</h4>
-                <p>Soporte Técnico</p>
-            </div>
-            <div class="trust-item reveal delay-1">
-                <h4>+1K</h4>
-                <p>Clientes Satisfechos</p>
-            </div>
+            <div class="trust-item reveal"><h4 class="counter" data-target="5">0</h4><p>Años Experiencia</p></div>
+            <div class="trust-item reveal"><h4 class="counter" data-target="100">0</h4><p>% Garantía</p></div>
+            <div class="trust-item reveal"><h4>24/7</h4><p>Soporte Técnico</p></div>
+            <div class="trust-item reveal"><h4 class="counter" data-target="1000">0</h4><p>Clientes Felices</p></div>
         </div>
     </section>
 
@@ -307,20 +359,20 @@
         </video>
         <div class="video-overlay"></div>
         
-        <div class="video-content reveal">
-            <h2 class="section-title" style="color:white; font-size:38px;">Experiencia Inmersiva</h2>
-            <p>Descubre el poder de tener el control de tu entretenimiento y herramientas digitales en un solo lugar.</p>
+        <div class="reveal" style="position: relative; z-index: 2;">
+            <h2 class="section-title" style="color:white;">Experiencia Inmersiva</h2>
+            <p style="color:#cbd5e1;">Descubre promociones y eventos en vivo exclusivos.</p>
             
-            <div class="floating-boxes">
-                <div class="float-box">
-                    <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=400&auto=format&fit=crop" alt="Series">
-                    <h4 style="color:var(--cyan); font-family:'Orbitron';">Catálogo Infinito</h4>
-                    <p style="font-size:12px; margin-top:5px;">Las mejores series y películas.</p>
+            <div class="auto-slider-container">
+                <div class="auto-slide active">
+                    <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=400">
+                    <h4 style="color:var(--cyan); font-family:'Orbitron'; font-size:20px;">Oferta Streaming</h4>
+                    <p style="font-size:13px; color:#fff;">Llévate Netflix + Spotify a un precio increíble solo por hoy.</p>
                 </div>
-                <div class="float-box">
-                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=400&auto=format&fit=crop" alt="Clases">
-                    <h4 style="color:var(--cyan); font-family:'Orbitron';">Masterclasses</h4>
-                    <p style="font-size:12px; margin-top:5px;">Aprende desde cero en la Academia.</p>
+                <div class="auto-slide">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=400">
+                    <h4 style="color:#00ff00; font-family:'Orbitron'; font-size:20px;">🔴 Clases en Vivo</h4>
+                    <p style="font-size:13px; color:#fff;">Inscríbete hoy en la Academia Mitsugod. Cupos limitados.</p>
                 </div>
             </div>
         </div>
@@ -329,58 +381,99 @@
     <section class="section-padding">
         <div class="why-grid">
             <div class="why-text reveal">
-                <h2 class="section-title" style="text-align:left;">¿Por qué elegir MitsuGod Store?</h2>
-                <p style="color:var(--text-muted); margin-bottom:20px;">Soluciones llave en mano para todas tus necesidades tecnológicas, desde entretenimiento hasta reparación de hardware.</p>
-                <ul>
-                    <li><i class="fa-solid fa-bolt" style="font-size:20px;"></i> Activación y entrega inmediata.</li>
-                    <li><i class="fa-solid fa-headset" style="font-size:20px;"></i> Soporte técnico especializado y monitoreo.</li>
-                    <li><i class="fa-solid fa-shield-halved" style="font-size:20px;"></i> Plataformas estables sin caídas.</li>
-                    <li><i class="fa-solid fa-graduation-cap" style="font-size:20px;"></i> Asesoramiento profesional y capacitaciones.</li>
+                <h2 class="section-title" style="text-align:left;">¿Por qué elegirnos?</h2>
+                <ul style="list-style:none; margin-top:30px;">
+                    <li><i class="fa-solid fa-bolt" style="color:var(--cyan); font-size:20px;"></i> Activación y entrega inmediata.</li>
+                    <li><i class="fa-solid fa-headset" style="color:var(--cyan); font-size:20px;"></i> Soporte técnico especializado.</li>
+                    <li><i class="fa-solid fa-shield" style="color:var(--cyan); font-size:20px;"></i> Plataformas estables sin caídas.</li>
+                    <li><i class="fa-solid fa-laptop-code" style="color:var(--cyan); font-size:20px;"></i> Clases en vivo e interactividad total.</li>
                 </ul>
             </div>
-            <div class="reveal delay-2" style="position:relative; text-align:center;">
-                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:80%; height:100%; background:var(--blue-accent); filter:blur(100px); opacity:0.3; z-index:-1;"></div>
-                <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" alt="MitsuGod Logo Grande" style="width:70%; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5)); animation: floatY 6s infinite;">
+            <div class="reveal delay-2" style="text-align:center;">
+                <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" style="width:60%; animation: translateY 4s infinite alternate ease-in-out;">
             </div>
         </div>
     </section>
 
-    <a href="https://wa.me/51956654891" target="_blank" class="wa-float">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <footer class="footer">
+        <div class="footer-grid">
+            <div>
+                <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" width="50" style="margin-bottom:15px;">
+                <h3 class="footer-title" style="margin-bottom:10px;">MitsuGod Store</h3>
+                <p style="font-size:13px; line-height:1.6;">Soluciones tecnológicas, streaming premium y formación académica en todo el Perú.</p>
+            </div>
+            <div>
+                <h3 class="footer-title">Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="streaming.html">Streaming VIP</a></li>
+                    <li><a href="tecnologia.html">Tecnología</a></li>
+                    <li><a href="clases-vivo.html">Clases en Vivo</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="footer-title">Contacto</h3>
+                <ul class="footer-links">
+                    <li><i class="fa-brands fa-whatsapp"></i> +51 956 654 891</li>
+                    <li><i class="fa-solid fa-envelope"></i> admin@mitsugod.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Lima, Perú</li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align:center; padding-top:20px; border-top:1px solid #1e293b; font-size:12px;">
+            &copy; 2026 MitsuGod Store. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <a href="https://wa.me/51956654891" target="_blank" class="wa-float"><i class="fa-brands fa-whatsapp"></i></a>
 
 <script>
-    // 1. Lógica del Slider de la cabecera (Cambio de imágenes)
-    const slides = document.querySelectorAll('.slide');
+    // 1. TEMA CLARO/OSCURO
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+    }
+
+    // 2. SLIDER FONDO PORTADA
+    const slides = document.querySelectorAll('.hero .slide');
     let currentSlide = 0;
-    
-    function nextSlide() {
+    setInterval(() => {
         slides[currentSlide].classList.remove('active');
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add('active');
-    }
-    // Cambia la imagen cada 5 segundos
-    setInterval(nextSlide, 5000);
+    }, 5000);
 
-    // 2. Animaciones al hacer Scroll (Intersection Observer)
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15 // Se activa cuando el 15% del elemento es visible
-    };
+    // 3. SLIDER DE CAJAS/BANNERS SOBRE EL VIDEO
+    const autoSlides = document.querySelectorAll('.auto-slide');
+    let autoSlideIndex = 0;
+    setInterval(() => {
+        autoSlides[autoSlideIndex].classList.remove('active');
+        autoSlideIndex = (autoSlideIndex + 1) % autoSlides.length;
+        autoSlides[autoSlideIndex].classList.add('active');
+    }, 4000);
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    // 4. ANIMACIONES AL HACER SCROLL
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Solo se anima la primera vez
+                
+                // Activar contador de números si es de la sección confianza
+                if(entry.target.querySelector('.counter')) {
+                    entry.target.querySelectorAll('.counter').forEach(count => {
+                        let target = +count.getAttribute('data-target');
+                        let c = 0;
+                        let interval = setInterval(() => {
+                            c += Math.ceil(target / 50);
+                            if(c >= target) { count.innerText = target + (target > 100 ? "+" : ""); clearInterval(interval); }
+                            else { count.innerText = c; }
+                        }, 40);
+                    });
+                }
+                observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.reveal').forEach((el) => {
-        observer.observe(el);
-    });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
 </body>
