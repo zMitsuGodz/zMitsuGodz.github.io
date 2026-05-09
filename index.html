@@ -1,141 +1,345 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zMitsuGodz | Top Friends</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <style>
-        :root {
-            --neon-blue: #00f2ff;
-            --neon-pink: #ff007a;
-            --dark-core: #050505;
-        }
-        body {
-            background-color: var(--dark-core);
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-        }
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(180deg, rgba(0,242,255,0.1) 0%, transparent 100%);
-            width: 100%;
-        }
-        h1 {
-            font-size: 1.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px var(--neon-blue);
-            margin: 0;
-        }
-        .subtitle {
-            color: var(--neon-pink);
-            font-size: 0.8rem;
-            text-shadow: 0 0 5px var(--neon-pink);
-            font-weight: bold;
-        }
-        #lista-politica {
-            width: 95%;
-            max-width: 500px;
-            margin-top: 20px;
-            padding-bottom: 50px;
-        }
-        .voto-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid #1a1a1a;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            transition: all 0.3s;
-            cursor: grab;
-        }
-        .voto-card:hover {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
-            background: rgba(255, 255, 255, 0.07);
-        }
-        .logo-partido {
-            width: 60px;
-            height: 60px;
-            background: #fff;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            margin-right: 15px;
-            border: 3px solid #333;
-        }
-        .info { flex-grow: 1; }
-        .info h2 { margin: 0; font-size: 0.85rem; color: #fff; letter-spacing: 1px; }
-        .info p { margin: 0; font-size: 0.7rem; color: var(--neon-blue); }
-        .pos {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: rgba(255,255,255,0.1);
-            font-style: italic;
-        }
-        .sortable-ghost { opacity: 0; }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MG Streaming - Jean Rodríguez</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  /* ANIMACIÓN DE ENTRADA SUAVE (SOLUCIÓN PANTALLAZO) */
+  @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+
+  body { 
+      margin: 0; 
+      font-family: 'Poppins', sans-serif; 
+      background: #fff; 
+      color: #333; 
+      overflow-x: hidden;
+      animation: fadeInPage 0.8s ease-out; /* Suaviza la carga inicial */
+  }
+  
+  /* 1. CABECERA */
+  .hero { text-align: center; padding: 25px 10px; background: #fff; }
+  .hero h1 { font-size: 24px; margin: 0; font-weight: 800; color: #1a202c; }
+  #typing { color: #0061ff; border-right: 3px solid #0061ff; padding-right: 5px; }
+
+  /* 2. BENEFICIOS ANIMADOS */
+  .benefits { display: flex; justify-content: space-around; padding: 20px 5px; text-align: center; gap: 10px; }
+  .ben-item { transition: transform 0.3s ease; }
+  .ben-item:hover { transform: scale(1.1); }
+  .ben-icon { 
+    font-size: 26px; margin-bottom: 8px; display: block; 
+    animation: floating-icons 3s ease-in-out infinite; 
+    filter: drop-shadow(0 5px 10px rgba(0,97,255,0.2));
+  }
+  .ben-item:nth-child(2) .ben-icon { animation-delay: 0.5s; }
+  .ben-item:nth-child(3) .ben-icon { animation-delay: 1s; }
+  .ben-txt { font-size: 9px; font-weight: 800; color: #0061ff; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* 3. CATEGORÍAS ESTILIZADAS */
+  .cat-header {
+    padding: 15px 20px; margin-top: 25px; margin-bottom: 10px;
+    background: #1a202c; color: white;
+    font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 10px;
+    border-left: 5px solid #0061ff; border-radius: 0 10px 10px 0;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  /* 4. CATALOGO Y TARJETAS */
+  .search-box { padding: 15px; position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); }
+  .search-bar { width: 100%; padding: 12px; border: 2px solid #0061ff; border-radius: 15px; outline: none; font-family: 'Poppins'; font-weight: 600; box-shadow: 0 5px 15px rgba(0,97,255,0.1); }
+    
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px 15px; }
+  
+  .card { 
+    background: white; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; 
+    position: relative; border: 2px solid transparent; background-clip: padding-box;
+    /* La animación fadeIn con delay evita que aparezcan de golpe */
+    animation: border-glow 3s infinite alternate, fadeIn 0.8s ease-out; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  .card::before {
+    content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; z-index: -1;
+    background: linear-gradient(45deg, #0061ff, #60efff, #0061ff);
+    background-size: 400%; border-radius: 18px; animation: move-border 10s linear infinite;
+  }
+
+  .img-box { height: 95px; display: flex; align-items: center; justify-content: center; padding: 10px; position: relative; }
+  .img-box img { max-width: 80%; max-height: 80%; animation: float-img 3.5s ease-in-out infinite; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); object-fit: contain; }
+  .badge-top { position: absolute; top: 0; right: 0; background: #0061ff; color: white; font-size: 9px; padding: 3px 8px; border-radius: 0 0 0 10px; font-weight: 800; z-index: 2; }
+
+  /* ESTILO MONEDITA */
+  .coin-overlay {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    animation: spin-coin 3s infinite ease-in-out;
+    z-index: 3;
+  }
+
+  .info { padding: 10px; text-align: center; }
+  .title { font-size: 11px; font-weight: 700; height: 32px; margin-bottom: 5px; color: #2d3748; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+  .stock-info { font-size: 8px; font-weight: 700; margin-bottom: 8px; display: flex; justify-content: center; gap: 3px; flex-wrap: wrap; }
+  .stock-badge { background: #fee2e2; color: #dc2626; padding: 2px 5px; border-radius: 4px; }
+  .sold-badge { background: #f0fdf4; color: #16a34a; padding: 2px 5px; border-radius: 4px; }
+
+  .price-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; margin-bottom: 10px; }
+  .old { font-size: 10px; color: #a0aec0; text-decoration: line-through; font-weight: 600; }
+  .new { font-size: 18px; color: #0061ff; font-weight: 800; line-height: 1; }
+
+  .btn-wa { 
+    background: #1a202c; color: white; text-decoration: none; padding: 10px; border-radius: 10px; 
+    font-size: 10px; font-weight: 800; display: block; 
+    animation: pulse-blue 2s infinite; border: 1px solid #0061ff;
+  }
+
+  /* LOADING SPINNER */
+  #loader-container { text-align: center; padding: 40px; }
+  .spinner { width: 40px; height: 40px; border: 4px solid rgba(0, 97, 255, 0.3); border-top: 4px solid #0061ff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes floating-icons { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes border-glow { from { box-shadow: 0 0 5px rgba(0,97,255,0.1); } to { box-shadow: 0 0 15px rgba(0,97,255,0.4); } }
+  @keyframes move-border { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  @keyframes float-img { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes pulse-blue { 0% { box-shadow: 0 0 0 0 rgba(0,97,255,0.4); } 70% { box-shadow: 0 0 0 8px rgba(0,97,255,0); } 100% { box-shadow: 0 0 0 0 rgba(0,97,255,0); } }
+  @keyframes spin-coin { 0% { transform: rotateY(0deg); } 50% { transform: rotateY(180deg); } 100% { transform: rotateY(360deg); } }
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>TOP MEJORES AMIGOS DE JEAN</h1>
-        <div class="subtitle">ELECCIONES GENERALES TELECOM 2026</div>
-    </header>
+  <div class="hero">
+    <h1>¡Adquiere tu cuenta de<br><span id="typing"></span></h1>
+    <p style="font-size:11px; color:#718096; margin-top:5px;">MG STREAMING</p>
+  </div>
 
-    <div id="lista-politica">
-        <!-- Candidatos Varones -->
-        <div class="voto-card"><div class="logo-partido">⚡</div><div class="info"><h2>ACARO BERRU, ANTAJHONY</h2><p>PARTIDO DEL RAYO</p></div><div class="pos">01</div></div>
-        <div class="voto-card"><div class="logo-partido">☀️</div><div class="info"><h2>APOLINARIO GARCÍA, JHON</h2><p>FUERZA SOLAR</p></div><div class="pos">02</div></div>
-        <div class="voto-card"><div class="logo-partido">🛡️</div><div class="info"><h2>BARZOLA MENDEZ, DAN</h2><p>UNIÓN INFORMÁTICA</p></div><div class="pos">03</div></div>
-        <div class="voto-card"><div class="logo-partido">🔥</div><div class="info"><h2>BUITRON CHOQUE, MARIO</h2><p>MOVIMIENTO FUEGO</p></div><div class="pos">04</div></div>
-        <div class="voto-card"><div class="logo-partido">🚀</div><div class="info"><h2>CARRILLO CACERES, CRISTHIAN</h2><p>IMPULSO PROMO</p></div><div class="pos">05</div></div>
-        <div class="voto-card"><div class="logo-partido">💎</div><div class="info"><h2>CCANSAYA CURASMA, LUIS</h2><p>VALOR TÉCNICO</p></div><div class="pos">06</div></div>
-        <div class="voto-card"><div class="logo-partido">⚓</div><div class="info"><h2>CHAGUA CONTRERAS, JHON</h2><p>ANCLA DE LA RED</p></div><div class="pos">07</div></div>
-        <div class="voto-card"><div class="logo-partido">🛰️</div><div class="info"><h2>CHOCCE RÍOS, ANDRÉ</h2><p>SATÉLITE UNIDO</p></div><div class="pos">08</div></div>
-        <div class="voto-card"><div class="logo-partido">🦁</div><div class="info"><h2>CISNEROS MARCOS, GUILLERMO</h2><p>LEONES DE LA FACU</p></div><div class="pos">09</div></div>
-        <div class="voto-card"><div class="logo-partido">⚙️</div><div class="info"><h2>COA HUAMAN, CESAR</h2><p>ENGRANAJE T</p></div><div class="pos">10</div></div>
-        <div class="voto-card"><div class="logo-partido">📱</div><div class="info"><h2>CRUZ CAYETANO, JUNIOR</h2><p>CONEXIÓN TOTAL</p></div><div class="pos">11</div></div>
-        <div class="voto-card"><div class="logo-partido">🛠️</div><div class="info"><h2>HUAMACCTO VICHARRA, JHON</h2><p>REPARACIÓN NACIONAL</p></div><div class="pos">12</div></div>
-        <div class="voto-card"><div class="logo-partido">📡</div><div class="info"><h2>HUAMAN CORDOVA, GABI</h2><p>ANTENA DEMOCRÁTICA</p></div><div class="pos">13</div></div>
-        <div class="voto-card"><div class="logo-partido">💡</div><div class="info"><h2>JUICA ZEVALLOS, JOSE</h2><p>IDEAS CLARAS</p></div><div class="pos">14</div></div>
-        <div class="voto-card"><div class="logo-partido">🏔️</div><div class="info"><h2>LLANOS CHAMBI, ANTHONY</h2><p>CUMBRE TÉCNICA</p></div><div class="pos">15</div></div>
-        <div class="voto-card"><div class="logo-partido">🎯</div><div class="info"><h2>LOPEZ GUTIERREZ, EDWIN</h2><p>OBJETIVO PROMO</p></div><div class="pos">16</div></div>
-        <div class="voto-card"><div class="logo-partido">🤜</div><div class="info"><h2>MENDIETA HUAROTO, DIEGO</h2><p>EL PUÑO DEL SALÓN</p></div><div class="pos">17</div></div>
-        <div class="voto-card"><div class="logo-partido">🌟</div><div class="info"><h2>PADILLA UNTIVEROS, DAYRON</h2><p>ESTRELLA T</p></div><div class="pos">18</div></div>
-        <div class="voto-card"><div class="logo-partido">🌊</div><div class="info"><h2>PEREZ SEGURA, RAMIRO</h2><p>OLA DE CAMBIO</p></div><div class="pos">19</div></div>
-        <div class="voto-card"><div class="logo-partido">⚖️</div><div class="info"><h2>POVES CASTRO, ANGEL</h2><p>JUSTICIA DIGITAL</p></div><div class="pos">20</div></div>
-        <div class="voto-card"><div class="logo-partido">🏗️</div><div class="info"><h2>RICSE BARRERA, DAVID</h2><p>REDES UNIDAS</p></div><div class="pos">21</div></div>
-        <div class="voto-card"><div class="logo-partido">✅</div><div class="info"><h2>ROJAS HUAYSARA, DAVID</h2><p>SÍ TÉCNICO</p></div><div class="pos">22</div></div>
-        <div class="voto-card"><div class="logo-partido">🌀</div><div class="info"><h2>ROJAS MENDOZA, JORDAN</h2><p>TORBELLINO T</p></div><div class="pos">23</div></div>
-        <div class="voto-card"><div class="logo-partido">🚦</div><div class="info"><h2>VARGAS PEREZ, LUIS</h2><p>CAMINO LIBRE</p></div><div class="pos">24</div></div>
-    </div>
+  <div class="benefits">
+    <div class="ben-item"><span class="ben-icon">⚡</span><div class="ben-txt">ENTREGA<br>RÁPIDA</div></div>
+    <div class="ben-item"><span class="ben-icon">🛡️</span><div class="ben-txt">GARANTÍA<br>TOP</div></div>
+    <div class="ben-item"><span class="ben-icon">🎓</span><div class="ben-txt">PRECIO<br>JUSTO</div></div>
+  </div>
 
-    <script>
-        const lista = document.getElementById('lista-politica');
-        Sortable.create(lista, {
-            animation: 350,
-            ghostClass: 'sortable-ghost',
-            onEnd: function() {
-                let cards = document.querySelectorAll('.pos');
-                cards.forEach((card, index) => {
-                    card.innerText = (index + 1).toString().padStart(2, '0');
-                });
-            }
-        });
-    </script>
+  <div class="search-box">
+    <input type="text" id="s" class="search-bar" placeholder="🔍 Buscar servicio..." onkeyup="renderAll()">
+  </div>
+    
+  <div id="loader-container"><div class="spinner"></div><p style="font-size:10px; margin-top:10px; color:#0061ff;">Cargando catálogo...</p></div>
+  <div id="main-container"></div>
+
+<script>
+  const wa = "51956654891";
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTAR03xD9ByjmRJnkfrTuFTybXUdkZ_rfhc1MllMDyrh_cqPNPYS_hELwRWsb7HJdHsmDKvtVPhOuXk/pub?gid=328695157&single=true&output=csv';
+  
+  let fullDatabase = [];
+
+  // --- LÓGICA DE TEXTO ANIMADO ---
+  const words = ["Netflix", "Spotify", "Windows", "IPTV"];
+  let iw = 0, jw = 0, del = false;
+  function type() {
+    let cur = words[iw];
+    const t = document.getElementById('typing');
+    if(!t) return;
+    t.textContent = del ? cur.substring(0, jw--) : cur.substring(0, jw++);
+    if (!del && jw > cur.length) { del = true; setTimeout(type, 1500); return; }
+    if (del && jw < 0) { del = false; iw = (iw + 1) % words.length; }
+    setTimeout(type, del ? 50 : 150);
+  }
+
+  // --- HERRAMIENTAS VISUALES ---
+  function getStock(name) {
+    if(name.includes("Netflix")) return Math.floor(Math.random() * 2) + 2; 
+    return Math.floor(Math.random() * 8) + 2; 
+  }
+  function getSold() { return Math.floor(Math.random() * 30) + 5; }
+
+  // --- MAPEO DE IMAGENES ---
+  function getIcon(name) {
+    const lower = name.toLowerCase();
+
+    // 1. REGLAS PRIORITARIAS (Tus imágenes específicas)
+    if(lower.includes("dgo") || lower.includes("liga 1")) return "https://i.ibb.co/LXGHXGwT/DIREC-TV.png";
+    if(lower.includes("windows 10")) return "https://i.ibb.co/wZypZ5yj/windows-10.png";
+    if(lower.includes("surfshark")) return "https://i.ibb.co/wFYM6dPN/surfshark.png";
+    if(lower.includes("express")) return "https://i.ibb.co/pj6qrmJv/Express-VPN.png";
+    if(lower.includes("drama")) return "https://i.ibb.co/mVY4rjFS/drama-box.png";
+    if(lower.includes("perplexity")) return "https://i.ibb.co/wZ6MF5Zx/perplexity.png";
+    
+    // 2. REGLA CANVA (Para que Canva Panel use esta imagen y no la de IPTV)
+    if(lower.includes("canva")) return "https://i.ibb.co/Gf4mzHr0/canva.png";
+
+    // 3. REGLA PANELES/IPTV (Para el resto de paneles)
+    if(lower.includes("panel") || lower.includes("créditos") || lower.includes("iptv")) return "https://i.ibb.co/Pz3dxffg/IPTV.jpg";
+
+    // 4. REGLAS GENERALES
+    if(lower.includes("netflix")) return "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg";
+    if(lower.includes("disney")) return "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg";
+    if(lower.includes("max")) return "https://upload.wikimedia.org/wikipedia/commons/c/ce/Max_logo.svg";
+    if(lower.includes("prime")) return "https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg";
+    if(lower.includes("crunchy")) return "https://i.ibb.co/gNxD0qh/crun.png";
+    if(lower.includes("paramount")) return "https://upload.wikimedia.org/wikipedia/commons/a/a5/Paramount_Plus.svg";
+    if(lower.includes("vix")) return "https://i.ibb.co/LzwXYD7y/VIX.png";
+    if(lower.includes("plex")) return "https://i.ibb.co/cKRKw1fZ/PLEX.png";
+    if(lower.includes("pornhub")) return "https://upload.wikimedia.org/wikipedia/commons/f/f1/Pornhub-logo.svg";
+    if(lower.includes("mubi")) return "https://i.ibb.co/4RyGv8v0/MUBI.png";
+    if(lower.includes("movistar")) return "https://i.ibb.co/8LzvDjxc/MOVISTAR.png";
+    if(lower.includes("tele latino")) return "https://i.ibb.co/cKYtqZ47/TELE.webp";
+    if(lower.includes("flujo")) return "https://i.ibb.co/kVLH0cxy/FLUJO.png";
+    if(lower.includes("spotify")) return "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg";
+    if(lower.includes("youtube")) return "https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg";
+    if(lower.includes("apple")) return "https://i.ibb.co/gMmJQznK/APPLEM.png";
+    if(lower.includes("deezer")) return "https://i.ibb.co/dJgk1GfJ/DEEZER.jpg";
+    if(lower.includes("tidal")) return "https://upload.wikimedia.org/wikipedia/commons/1/18/Tidal_%28service%29_logo.svg";
+    if(lower.includes("chatgpt")) return "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg";
+    if(lower.includes("gemini")) return "https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg";
+    if(lower.includes("capcut")) return "https://i.ibb.co/rDYL3gP/CAPCUT.png";
+    if(lower.includes("windows")) return "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Windows_11_logo.svg/1024px-Windows_11_logo.svg.png";
+    if(lower.includes("office")) return "https://i.ibb.co/tTQWrRmL/Whats-App-Image-2025-12-26-at-4-40-40-PM-3.jpg";
+    if(lower.includes("nod32") || lower.includes("antivirus")) return "https://i.ibb.co/B54KtX81/ESET.png";
+    if(lower.includes("adobe")) return "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Adobe_Systems_logo_and_wordmark.svg/1200px-Adobe_Systems_logo_and_wordmark.svg.png";
+    
+    return "https://cdn-icons-png.flaticon.com/512/1170/1170576.png"; 
+  }
+
+  function getBadge(name) {
+    const lower = name.toLowerCase();
+    if(lower.includes("netflix")) return "NETFLIX";
+    if(lower.includes("disney")) return "DISNEY";
+    if(lower.includes("max")) return "HBO";
+    if(lower.includes("prime")) return "AMAZON";
+    if(lower.includes("iptv")) return "TV";
+    if(lower.includes("spotify")) return "MUSIC";
+    if(lower.includes("canva")) return "DISEÑO";
+    if(lower.includes("gpt")) return "I.A.";
+    if(lower.includes("office") || lower.includes("windows")) return "PC";
+    if(lower.includes("panel") || lower.includes("créditos")) return "NEGOCIO";
+    return "VIP";
+  }
+
+  // --- CARGA DE DATOS DESDE GOOGLE SHEETS ---
+  async function fetchProducts() {
+    try {
+      const response = await fetch(CSV_URL);
+      const data = await response.text();
+      const rows = data.split(/\r?\n/).slice(1); 
+      
+      let sections = [];
+      let currentSection = { cat: "🔥 Destacados", items: [] };
+
+      rows.forEach(row => {
+        const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        
+        // LIMPIEZA DEL NOMBRE
+        let name = cols[0] ? cols[0].replace(/"/g, '').trim() : "";
+        
+        // *** CORRECCIÓN DE TÍTULO SOLICITADA ***
+        if (name === "Netflix Completa") {
+            name = "Cuentas Completas";
+        }
+
+        // --- USAR COLUMNA 5 (INDEX 4) = PRECIO CLIENTE ---
+        // Si la col 5 está vacía, usa la col 3 (Precio Distri) como respaldo
+        let rawPrice = cols[4] ? cols[4].replace(/"/g, '').trim() : (cols[2] ? cols[2].replace(/"/g, '').trim() : "");
+        
+        let cleanPrice = rawPrice.replace(',', '.');
+        let numericPrice = parseFloat(cleanPrice);
+
+        if (!name) return; 
+        
+        if (cleanPrice === "" || isNaN(numericPrice)) {
+          // Es un título de categoría
+          if (currentSection.items.length > 0) {
+            sections.push(currentSection);
+          }
+          currentSection = { cat: name, items: [] };
+        } else {
+          // Es un producto
+          let oldPrice = (numericPrice * 1.3).toFixed(2);
+          
+          currentSection.items.push({
+            n: name,
+            p: numericPrice.toFixed(2),
+            o: oldPrice,
+            b: getBadge(name),
+            i: getIcon(name)
+          });
+        }
+      });
+
+      if (currentSection.items.length > 0) sections.push(currentSection);
+      
+      fullDatabase = sections;
+      document.getElementById('loader-container').style.display = 'none';
+      renderAll();
+
+    } catch (e) {
+      console.error("Error cargando Excel:", e);
+      document.getElementById('loader-container').innerHTML = "<p>Error cargando precios.</p>";
+    }
+  }
+
+  // --- RENDERIZADO ---
+  function renderAll() {
+    const term = document.getElementById('s').value.toLowerCase();
+    const container = document.getElementById('main-container');
+    let html = "";
+
+    fullDatabase.forEach(section => {
+      const filteredItems = section.items.filter(item => item.n.toLowerCase().includes(term));
+      
+      if(filteredItems.length > 0) {
+        html += `<div class="cat-header"><span>📌</span> ${section.cat}</div>`;
+        html += `<div class="grid">`;
+        
+        html += filteredItems.map((p, index) => {
+           const stock = getStock(p.n);
+           const sold = getSold();
+           
+           // LÓGICA DE LA MONEDITA (Aplicada a Paneles Y Canva Panel)
+           let coinHtml = "";
+           if (p.n.toLowerCase().includes("panel") || p.n.toLowerCase().includes("créditos")) {
+               coinHtml = '<div class="coin-overlay">🪙</div>';
+           }
+
+           return `
+           <div class="card" style="animation-delay: ${index * 0.05}s">
+             <div class="img-box">
+               <div class="badge-top">${p.b}</div>
+               ${coinHtml}
+               <img src="${p.i}" alt="${p.n}">
+             </div>
+             <div class="info">
+               <div class="title">${p.n}</div>
+               <div class="stock-info">
+                 <span class="stock-badge">🔥 Solo ${stock}</span>
+                 <span class="sold-badge">✅ ${sold} hoy</span>
+               </div>
+               <div class="price-box">
+                 <span class="old">S/ ${p.o}</span>
+                 <span class="new">S/ ${p.p}</span>
+               </div>
+               <a href="https://wa.me/${wa}?text=Hola Jean, me interesa: ${encodeURIComponent(p.n)} a S/ ${p.p}" target="_blank" class="btn-wa">COMPRAR AHORA</a>
+             </div>
+           </div>`;
+        }).join('');
+        
+        html += `</div>`;
+      }
+    });
+
+    if(html === "") html = "<p style='text-align:center; padding:20px; font-weight:600;'>No encontramos ese producto 😢</p>";
+    container.innerHTML = html;
+  }
+
+  window.onload = () => {
+    type();
+    fetchProducts();
+  };
+</script>
 </body>
 </html>
