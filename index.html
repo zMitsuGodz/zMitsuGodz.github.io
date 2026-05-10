@@ -13,28 +13,30 @@
        ========================================== */
     :root {
         /* MODO OSCURO (Por defecto) */
-        --bg-main: #080c17;
-        --bg-nav: rgba(10, 15, 28, 0.95);
-        --bg-card: #111827;
+        --bg-main: #060913;
+        --bg-nav: rgba(6, 9, 19, 0.95);
+        --bg-card: #0d1326;
         --text-main: #f8fafc;
         --text-muted: #94a3b8;
         --cyan: #00f2fe;
         --blue-accent: #0061ff;
-        --border-color: rgba(255,255,255,0.05);
-        --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        --border-color: rgba(255,255,255,0.08);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        --glass-bg: rgba(13, 19, 38, 0.7);
     }
 
     body.light-mode {
-        /* MODO CLARO (Mejorado basado en tus fotos) */
-        --bg-main: #f4f6f9;
-        --bg-nav: rgba(255, 255, 255, 0.98);
+        /* MODO CLARO */
+        --bg-main: #f4f7fb;
+        --bg-nav: rgba(255, 255, 255, 0.95);
         --bg-card: #ffffff;
         --text-main: #0f172a;
         --text-muted: #475569;
         --cyan: #0061ff; 
         --blue-accent: #00f2fe;
-        --border-color: rgba(0,0,0,0.05);
-        --shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        --border-color: rgba(0,0,0,0.08);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        --glass-bg: rgba(255, 255, 255, 0.8);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,215 +52,227 @@
     /* ==========================================
        ANIMACIONES GENERALES (REVEAL)
        ========================================== */
-    .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s all ease; }
+    .reveal { opacity: 0; transform: translateY(40px); transition: 0.8s all cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .reveal.active { opacity: 1; transform: translateY(0); }
-    .delay-1 { transition-delay: 0.2s; }
-    .delay-2 { transition-delay: 0.4s; }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
 
     /* ==========================================
        BARRA SUPERIOR (TOP BAR)
        ========================================== */
     .top-bar {
-        background: #020617; color: #94a3b8;
-        font-size: 11px; padding: 8px 20px;
+        background: #02040a; color: #94a3b8;
+        font-size: 11px; padding: 8px 25px;
         display: flex; justify-content: space-between; align-items: center;
     }
     .top-contact { display: flex; gap: 20px; }
     .top-contact i { color: var(--cyan); margin-right: 5px; }
     .top-social { display: flex; gap: 15px; }
     .top-social a { color: #94a3b8; font-size: 14px; transition: 0.3s; text-decoration: none; }
-    .top-social a:hover { color: var(--cyan); }
+    .top-social a:hover { color: var(--cyan); transform: translateY(-2px); display: inline-block;}
 
     /* ==========================================
-       NAVBAR CON DROPDOWNS Y MOBILE
+       NUEVO NAVBAR CON DROPDOWNS Y MOBILE
        ========================================== */
     .navbar {
-        background: var(--bg-nav); backdrop-filter: blur(10px);
+        background: var(--bg-nav); backdrop-filter: blur(15px);
         padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
         position: sticky; top: 0; z-index: 1000;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        border-bottom: 1px solid var(--border-color);
         transition: background 0.4s;
     }
-    
-    /* Arreglo: Logo siempre en una línea */
-    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; white-space: nowrap; }
-    .nav-brand img { width: 45px; filter: drop-shadow(0 0 5px var(--cyan)); }
-    .nav-brand h1 { font-family: 'Orbitron'; font-size: 20px; color: var(--text-main); margin: 0; text-transform: uppercase; }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; white-space: nowrap; }
+    .nav-brand img { width: 45px; filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5)); transition: 0.3s; }
+    .nav-brand h1 { font-family: 'Orbitron'; font-size: 20px; color: var(--text-main); margin: 0; text-transform: uppercase; letter-spacing: 1px;}
     .nav-brand h1 span { color: var(--cyan); }
 
     .nav-links { display: flex; gap: 25px; list-style: none; align-items: center; margin: 0; }
     .nav-links a { color: var(--text-main); text-decoration: none; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: 0.3s; }
     .nav-links a:hover { color: var(--cyan); }
 
-    /* Estilos Dropdown */
+    /* Estilos Dropdown (Menú Desplegable) */
     .dropdown { position: relative; }
     .dropdown-menu {
         position: absolute; top: 100%; left: 0; background: var(--bg-card);
-        min-width: 200px; box-shadow: var(--shadow); border-radius: 8px;
-        opacity: 0; visibility: hidden; transform: translateY(10px);
-        transition: 0.3s; list-style: none; padding: 10px 0; border: 1px solid var(--border-color);
+        min-width: 220px; box-shadow: var(--shadow); border-radius: 12px;
+        opacity: 0; visibility: hidden; transform: translateY(15px);
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); list-style: none; padding: 10px 0; border: 1px solid var(--border-color);
     }
-    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-    .dropdown-menu li a { display: block; padding: 10px 20px; text-transform: none; font-size: 13px; }
-    .dropdown-menu li a:hover { background: rgba(0, 242, 254, 0.1); color: var(--cyan); padding-left: 25px; }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(5px); }
+    .dropdown-menu li a { display: block; padding: 12px 20px; text-transform: none; font-size: 13px; font-weight: 500; }
+    .dropdown-menu li a:hover { background: rgba(0, 242, 254, 0.1); color: var(--cyan); padding-left: 25px; border-left: 3px solid var(--cyan);}
 
     .btn-cotizar {
         background: linear-gradient(45deg, var(--blue-accent), var(--cyan));
-        color: #fff !important; padding: 8px 20px; border-radius: 5px; font-weight: 800 !important;
-        display: inline-flex; align-items: center; gap: 5px; text-decoration: none;
+        color: #fff !important; padding: 10px 22px; border-radius: 8px; font-weight: 800 !important;
+        display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+        box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3); transition: 0.3s;
     }
-    .theme-toggle { cursor: pointer; font-size: 18px; color: var(--text-main); background: none; border: none; }
+    .btn-cotizar:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 242, 254, 0.5); }
     
+    .theme-toggle { cursor: pointer; font-size: 18px; color: var(--text-main); background: none; border: none; transition: 0.3s;}
+    .theme-toggle:hover { transform: scale(1.2) rotate(15deg); }
+    
+    /* Botón Hamburguesa */
     .menu-toggle { display: none; font-size: 24px; color: var(--text-main); cursor: pointer; }
 
     /* ==========================================
-       HERO (PORTADA)
+       HERO (PORTADA DIAGONAL CORREGIDA)
        ========================================== */
     .hero {
         position: relative; width: 100%; min-height: 85vh;
-        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
         overflow: hidden; background: #000;
         display: flex; align-items: center; 
-        padding: 100px 5% 150px 5%;
+        padding: 100px 5% 150px 5%; 
     }
     .slide {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        opacity: 0; transition: opacity 1s ease-in-out;
+        opacity: 0; transition: opacity 1.5s ease-in-out;
         background-size: cover; background-position: center; z-index: 0;
     }
     .slide.active { opacity: 1; }
-    .slide::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, rgba(8,12,23,0.95) 0%, rgba(8,12,23,0.6) 60%, transparent 100%); }
+    .slide::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, rgba(6,9,19,0.95) 0%, rgba(6,9,19,0.7) 50%, transparent 100%); }
 
     .hero-content { position: relative; z-index: 10; max-width: 650px; }
     .hero-content h2 {
-        font-family: 'Orbitron'; font-size: clamp(30px, 5vw, 50px); font-weight: 900;
+        font-family: 'Orbitron'; font-size: clamp(38px, 5vw, 55px); font-weight: 900;
         text-transform: uppercase; margin-bottom: 20px; line-height: 1.1;
-        color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,0.8);
     }
-    .hero-content h2 span { color: var(--cyan); }
-    .hero-content p { font-size: 16px; color: #cbd5e1; margin-bottom: 30px; }
-    .hero-list { list-style: none; margin-bottom: 35px; color: #fff; }
-    .hero-list li { margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
-    .hero-list i { color: var(--cyan); }
+    .hero-content h2 span { color: var(--cyan); text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);}
+    .hero-content p { font-size: 16px; color: #e2e8f0; margin-bottom: 30px; font-weight: 300;}
+    .hero-list { list-style: none; margin-bottom: 40px; color: #fff; }
+    .hero-list li { margin-bottom: 12px; font-size: 15px; display: flex; align-items: center; gap: 12px; font-weight: 400;}
+    .hero-list i { color: var(--cyan); font-size: 18px;}
 
     /* ==========================================
-       CATEGORÍAS
+       CATEGORÍAS (AHORA 2X2 EN MÓVIL)
        ========================================== */
-    .section-padding { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
-    .section-title { text-align: center; font-family: 'Orbitron'; font-size: 32px; margin-bottom: 10px; text-transform: uppercase; color: var(--text-main); }
-    .section-subtitle { text-align: center; color: var(--cyan); font-weight: 600; margin-bottom: 50px; }
+    .section-padding { padding: 90px 5%; max-width: 1300px; margin: 0 auto; }
+    .section-title { text-align: center; font-family: 'Orbitron'; font-size: 35px; margin-bottom: 10px; text-transform: uppercase; color: var(--text-main); }
+    .section-subtitle { text-align: center; color: var(--cyan); font-weight: 600; margin-bottom: 50px; letter-spacing: 1px;}
 
     .category-grid {
         display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px;
     }
     .cat-card {
-        background: var(--bg-card); border-radius: 15px; overflow: hidden;
+        background: var(--bg-card); border-radius: 20px; overflow: hidden;
         border: 1px solid var(--border-color); transition: 0.4s; box-shadow: var(--shadow);
-        cursor: pointer;
+        cursor: pointer; position: relative;
     }
-    .cat-card:hover { transform: translateY(-10px); border-color: var(--cyan); }
-    .cat-img { width: 100%; height: 200px; object-fit: cover; transition: 0.5s; }
-    .cat-card:hover .cat-img { transform: scale(1.05); }
-    .cat-info { padding: 25px 20px; }
-    .cat-info h3 { font-family: 'Orbitron'; font-size: 18px; margin-bottom: 10px; color: var(--text-main); }
-    .cat-info p { font-size: 13px; color: var(--text-muted); }
+    .cat-card:hover { transform: translateY(-10px); border-color: var(--cyan); box-shadow: 0 15px 40px rgba(0, 242, 254, 0.15);}
+    .cat-img { width: 100%; height: 220px; object-fit: cover; transition: 0.7s; }
+    .cat-card:hover .cat-img { transform: scale(1.1); filter: brightness(0.8);}
+    .cat-info { padding: 25px; position: relative; background: var(--bg-card); z-index: 2;}
+    .cat-info h3 { font-family: 'Orbitron'; font-size: 19px; margin-bottom: 10px; color: var(--text-main); }
+    .cat-info p { font-size: 13px; color: var(--text-muted); line-height: 1.6;}
 
     /* ==========================================
-       SECCIÓN CONFIANZA
+       SECCIÓN CONFIANZA (ANIMADA)
        ========================================== */
-    .trust-section { background: var(--bg-nav); padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-color); }
-    .trust-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 50px; max-width: 1000px; margin: 40px auto 0; }
-    .trust-item h4 { font-size: 45px; color: var(--cyan); font-family: 'Orbitron'; margin-bottom: 5px; }
-    .trust-item p { font-size: 14px; color: var(--text-main); text-transform: uppercase; font-weight: 600; }
+    .trust-section { background: var(--bg-nav); padding: 70px 20px; text-align: center; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);}
+    .trust-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 60px; max-width: 1100px; margin: 40px auto 0; }
+    .trust-item h4 { font-size: 50px; color: var(--cyan); font-family: 'Orbitron'; margin-bottom: 5px; text-shadow: 0 0 15px rgba(0, 242, 254, 0.3);}
+    .trust-item p { font-size: 15px; color: var(--text-main); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;}
 
     /* ==========================================
-       VIDEO BACKGROUND CON SLIDER (ESTILO GLASS)
+       VIDEO BACKGROUND CON 4 SLIDES
        ========================================== */
     .video-section {
-        position: relative; padding: 120px 20px; text-align: center; overflow: hidden;
+        position: relative; padding: 130px 20px; text-align: center; overflow: hidden;
         clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
     }
     .video-bg {
         position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        min-width: 100%; min-height: 100%; z-index: -2; object-fit: cover; opacity: 0.4;
+        min-width: 100%; min-height: 100%; z-index: -2; object-fit: cover; opacity: 0.3;
     }
-    .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, rgba(8,12,23,0.9), rgba(0,97,255,0.3)); z-index: -1; }
+    .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, rgba(6,9,19,0.95), rgba(0,97,255,0.4)); z-index: -1; }
     
-    .auto-slider-container { position: relative; max-width: 350px; height: 360px; margin: 40px auto 0; perspective: 1000px; }
+    /* Slider automático de cajitas sobre el video */
+    .auto-slider-container { position: relative; max-width: 400px; height: 380px; margin: 50px auto 0; perspective: 1000px; }
     .auto-slide {
         position: absolute; top: 0; left: 0; width: 100%;
-        /* Efecto Glassmorphism mejorado */
-        background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(15px);
-        padding: 20px; border-radius: 20px; border: 1px solid rgba(0, 242, 254, 0.3);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-        opacity: 0; transform: rotateY(90deg); transition: 0.8s all ease;
+        background: rgba(13, 19, 38, 0.6); backdrop-filter: blur(15px); /* Efecto Glassmorphism */
+        padding: 25px; border-radius: 20px; border: 1px solid rgba(0, 242, 254, 0.3);
+        opacity: 0; transform: rotateY(90deg) scale(0.9); transition: 0.8s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
-    .auto-slide.active { opacity: 1; transform: rotateY(0deg); }
-    .auto-slide img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 15px; }
+    .auto-slide.active { opacity: 1; transform: rotateY(0deg) scale(1); }
+    .auto-slide img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);}
 
     /* ==========================================
-       POR QUÉ ELEGIRNOS Y FOOTER
+       POR QUÉ ELEGIRNOS
        ========================================== */
-    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
     .why-text li {
-        background: var(--bg-card); margin-bottom: 15px; padding: 18px 25px;
-        border-radius: 12px; border-left: 6px solid var(--cyan); /* Borde azul grueso como tu foto */
-        display: flex; align-items: center; gap: 15px; transition: 0.3s; box-shadow: var(--shadow);
-        font-weight: 600; color: var(--text-main);
+        background: var(--glass-bg); backdrop-filter: blur(10px);
+        margin-bottom: 20px; padding: 20px 25px;
+        border-radius: 12px; border-left: 4px solid var(--cyan); border-right: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
+        display: flex; align-items: center; gap: 20px; transition: 0.4s; box-shadow: var(--shadow);
     }
-    .why-text li:hover { transform: translateX(10px); }
-
-    .footer { background: #020617; color: #94a3b8; padding: 60px 5% 20px; border-top: 2px solid var(--cyan); }
-    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
-    .footer-title { color: #fff; font-family: 'Orbitron'; margin-bottom: 20px; font-size: 18px; }
-    .footer-links { list-style: none; }
-    .footer-links li { margin-bottom: 10px; }
-    .footer-links a { color: #94a3b8; text-decoration: none; transition: 0.3s; }
-    .footer-links a:hover { color: var(--cyan); padding-left: 5px; }
-
-    .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5); z-index: 2000; animation: pulseWa 2s infinite; }
-    @keyframes pulseWa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+    .why-text li:hover { transform: translateX(15px); border-color: var(--blue-accent); background: rgba(0, 242, 254, 0.05);}
+    .why-text li i { background: rgba(0, 242, 254, 0.1); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--cyan); font-size: 20px;}
 
     /* ==========================================
-       📱 RESPONSIVE (MÓVIL TOTALMENTE ARREGLADO)
+       FOOTER
+       ========================================== */
+    .footer { background: #02040a; color: #94a3b8; padding: 70px 5% 20px; border-top: 2px solid var(--cyan); position: relative; overflow: hidden;}
+    .footer::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width: 200px; height: 2px; background: #fff; box-shadow: 0 0 20px 5px var(--cyan);}
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-bottom: 50px; position: relative; z-index: 2;}
+    .footer-title { color: #fff; font-family: 'Orbitron'; margin-bottom: 25px; font-size: 19px; letter-spacing: 1px;}
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 15px; }
+    .footer-links a { color: #94a3b8; text-decoration: none; transition: 0.3s; display: flex; align-items: center; gap: 10px;}
+    .footer-links a i { font-size: 12px; color: var(--cyan);}
+    .footer-links a:hover { color: var(--cyan); padding-left: 8px; }
+
+    .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 35px; box-shadow: 0 5px 25px rgba(37, 211, 102, 0.6); z-index: 2000; transition: 0.3s; animation: pulseWa 2s infinite; }
+    .wa-float:hover { transform: scale(1.1); }
+    @keyframes pulseWa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.6); } 70% { box-shadow: 0 0 0 20px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+
+    /* ==========================================
+       📱 RESPONSIVE (MÓVIL ARREGLADO)
        ========================================== */
     @media (max-width: 900px) {
         .top-bar { display: none; } 
-        .menu-toggle { display: block; }
         
-        /* Arreglo específico para el Logo en móvil */
-        .nav-brand h1 { font-size: 16px; }
-        .nav-brand img { width: 35px; }
-        .navbar { padding: 15px 20px; }
+        /* 1. LOGO EN CELULAR ARREGLADO (No se cae el texto) */
+        .nav-brand img { width: 35px; } 
+        .nav-brand h1 { font-size: 16px; white-space: nowrap; } /* white-space evita que se parta en dos líneas */
+        
+        .menu-toggle { display: block; } 
         
         .nav-links {
             position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-nav);
-            flex-direction: column; padding: 20px; gap: 15px; text-align: center;
-            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: 0.4s ease-out;
+            flex-direction: column; padding: 25px; gap: 20px; text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-bottom: 1px solid var(--border-color);
         }
         .nav-links.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-        .dropdown-menu { position: relative; box-shadow: none; border: none; background: transparent; display: none; }
+        .dropdown-menu { position: relative; box-shadow: none; border: none; background: rgba(0,0,0,0.2); display: none; margin-top: 10px;}
         .dropdown:active .dropdown-menu, .dropdown:hover .dropdown-menu { display: block; opacity: 1; visibility: visible; transform: none; }
 
         .hero { padding-top: 60px; min-height: 80vh; clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%); }
         
-        /* Arreglo: Categorías en Cuadrícula 2x2 (No más deslizamiento) */
+        /* 2. CATEGORÍAS 2X2 EN MÓVIL ARREGLADO */
         .category-grid {
-            display: grid !important;
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 15px;
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* Crea exactamente 2 columnas */
+            gap: 15px; /* Espacio reducido para que entren en la pantalla */
         }
-        .cat-img { height: 110px; } /* Imagen más pequeña para encajar bien */
+        .cat-card { border-radius: 12px; }
+        .cat-img { height: 110px; } /* Imágenes más cortas para móvil */
         .cat-info { padding: 15px 10px; }
-        .cat-info h3 { font-size: 13px; margin-bottom: 5px; line-height: 1.2; }
-        .cat-info p { font-size: 10px; line-height: 1.3; }
-
-        /* Arreglo: Sección confianza 2x2 */
-        .trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .trust-item h4 { font-size: 35px; }
+        .cat-info h3 { font-size: 13px; margin-bottom: 5px; }
+        .cat-info p { font-size: 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } /* Acorta el texto a 2 líneas */
         
         .why-grid { grid-template-columns: 1fr; }
         .video-section { clip-path: polygon(0 2%, 100% 0, 100% 98%, 0 100%); }
+        .auto-slider-container { height: 340px; }
+        .auto-slide img { height: 160px; }
     }
 </style>
 </head>
@@ -277,7 +291,6 @@
 
     <nav class="navbar">
         <a href="#" class="nav-brand">
-            -->
             <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" alt="Logo">
             <h1>MitsuGod <span>Store</span></h1>
         </a>
@@ -289,7 +302,7 @@
         <ul class="nav-links">
             <li><a href="#">Inicio</a></li>
             <li class="dropdown">
-                <a href="#servicios">Servicios <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i></a>
+                <a href="#servicios">Servicios <i class="fa-solid fa-chevron-down" style="font-size:10px; margin-left:3px;"></i></a>
                 <ul class="dropdown-menu">
                     <li><a href="streaming.html">Streaming VIP</a></li>
                     <li><a href="celulares.html">Celulares y Repuestos</a></li>
@@ -297,7 +310,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#academia">Academia <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i></a>
+                <a href="#academia">Academia <i class="fa-solid fa-chevron-down" style="font-size:10px; margin-left:3px;"></i></a>
                 <ul class="dropdown-menu">
                     <li><a href="academia.html">Cursos Grabados</a></li>
                     <li><a href="clases-vivo.html" style="color:var(--cyan); font-weight:bold;">🔴 Clases en Vivo</a></li>
@@ -310,7 +323,6 @@
     </nav>
 
     <header class="hero">
-        -->
         <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1616469829581-73993eb86b02?q=80&w=1920');"></div>
         <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=1920');"></div>
 
@@ -318,12 +330,11 @@
             <h2>Tecnología y Streaming en <span>Perú</span></h2>
             <p>Especialistas en plataformas digitales, soporte técnico avanzado, reparación de dispositivos y formación con MitsuGod Academy.</p>
             <ul class="hero-list">
-                <li><i class="fa-solid fa-check"></i> Cuentas premium y paneles garantizados.</li>
-                <li><i class="fa-solid fa-check"></i> Reparación de Laptops y Celulares.</li>
-                <li><i class="fa-solid fa-check"></i> Clases en vivo y cursos de desarrollo.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Cuentas premium y paneles garantizados.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Reparación de Laptops y Celulares.</li>
+                <li><i class="fa-solid fa-circle-check"></i> Clases en vivo y cursos de desarrollo.</li>
             </ul>
-            <br>
-            <a href="#servicios" class="btn-cotizar" style="padding: 12px 30px; font-size:15px;">Ver Catálogo <i class="fa-solid fa-arrow-down"></i></a>
+            <a href="#servicios" class="btn-cotizar" style="padding: 12px 32px; font-size:15px;">Ver Catálogo <i class="fa-solid fa-arrow-down"></i></a>
         </div>
     </header>
 
@@ -333,15 +344,13 @@
         
         <div class="category-grid">
             <div class="cat-card reveal delay-1" onclick="window.location.href='streaming.html'">
-                -->
                 <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
                     <h3>Streaming VIP</h3>
-                    <p>Paneles, cuentas completas de Netflix, Spotify, Max.</p>
+                    <p>Paneles y cuentas completas de Netflix, Spotify, Max.</p>
                 </div>
             </div>
             <div class="cat-card reveal delay-2" onclick="window.location.href='tecnologia.html'">
-                -->
                 <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1588508065123-287b28e01397?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
                     <h3>Tecnología</h3>
@@ -349,57 +358,62 @@
                 </div>
             </div>
             <div class="cat-card reveal delay-1" onclick="window.location.href='academia.html'">
-                -->
                 <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
                     <h3>MitsuGod Academy</h3>
-                    <p>Clases en vivo, desarrollo web y gestión de comunidades.</p>
+                    <p>Clases en vivo, desarrollo web y gestión digital.</p>
                 </div>
             </div>
             <div class="cat-card reveal delay-2" onclick="window.location.href='celulares.html'">
-                -->
                 <div style="overflow:hidden;"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=600" class="cat-img"></div>
                 <div class="cat-info">
                     <h3>Celulares</h3>
-                    <p>Reparación, flasheo, pantallas y pines de carga.</p>
+                    <p>Reparación, flasheo, cambios de pantalla y pines.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="trust-section reveal">
-        <h2 class="section-title" style="font-size: 24px;">Respaldados por la Excelencia</h2>
+        <h2 class="section-title" style="font-size: 26px;">Respaldados por la Excelencia</h2>
         <div class="trust-grid">
-            <div class="trust-item reveal"><h4 class="counter" data-target="5">0</h4><p>Años Experiencia</p></div>
-            <div class="trust-item reveal"><h4 class="counter" data-target="100">0</h4><p>% Garantía</p></div>
-            <div class="trust-item reveal"><h4>24/7</h4><p>Soporte Técnico</p></div>
-            <div class="trust-item reveal"><h4 class="counter" data-target="1000">0</h4><p>Clientes Felices</p></div>
+            <div class="trust-item reveal delay-1"><h4 class="counter" data-target="5">0</h4><p>Años Experiencia</p></div>
+            <div class="trust-item reveal delay-2"><h4 class="counter" data-target="100">0</h4><p>% Garantía</p></div>
+            <div class="trust-item reveal delay-3"><h4>24/7</h4><p>Soporte Técnico</p></div>
+            <div class="trust-item reveal delay-1"><h4 class="counter" data-target="1000">0</h4><p>Clientes Felices</p></div>
         </div>
     </section>
 
     <section class="video-section">
-        -->
         <video class="video-bg" autoplay loop muted playsinline>
             <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
         
         <div class="reveal" style="position: relative; z-index: 2;">
-            <h2 class="section-title" style="color:white;">Experiencia Inmersiva</h2>
+            <h2 class="section-title" style="color:white; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">Experiencia Inmersiva</h2>
             <p style="color:#cbd5e1;">Descubre promociones y eventos en vivo exclusivos.</p>
             
             <div class="auto-slider-container">
                 <div class="auto-slide active">
-                    -->
                     <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=400">
-                    <h4 style="color:var(--blue-accent); font-family:'Orbitron'; font-size:20px;">Oferta Streaming</h4>
-                    <p style="font-size:13px; color:#fff;">Llévate Netflix + Spotify a un precio increíble solo por hoy.</p>
+                    <h4 style="color:var(--cyan); font-family:'Orbitron'; font-size:22px;">Oferta Streaming</h4>
+                    <p style="font-size:14px; color:#e2e8f0; margin-top:5px;">Llévate Netflix + Spotify a un precio increíble solo por hoy.</p>
                 </div>
                 <div class="auto-slide">
-                    -->
                     <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=400">
-                    <h4 style="color:var(--blue-accent); font-family:'Orbitron'; font-size:20px;">🔴 Clases en Vivo</h4>
-                    <p style="font-size:13px; color:#fff;">Inscríbete hoy en la Academia Mitsugod. Cupos limitados.</p>
+                    <h4 style="color:#00ff00; font-family:'Orbitron'; font-size:22px;">🔴 Clases en Vivo</h4>
+                    <p style="font-size:14px; color:#e2e8f0; margin-top:5px;">Inscríbete hoy en la Academia Mitsugod. Cupos limitados.</p>
+                </div>
+                <div class="auto-slide">
+                    <img src="https://images.unsplash.com/photo-1513885058097-9e7b23f815d7?q=80&w=400">
+                    <h4 style="color:#ff00ff; font-family:'Orbitron'; font-size:22px;">Sorteo Exclusivo</h4>
+                    <p style="font-size:14px; color:#e2e8f0; margin-top:5px;">Participa por licencias de Windows originales para tu PC.</p>
+                </div>
+                <div class="auto-slide">
+                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=400">
+                    <h4 style="color:#FFD700; font-family:'Orbitron'; font-size:22px;">Servicio Técnico</h4>
+                    <p style="font-size:14px; color:#e2e8f0; margin-top:5px;">Mantenimiento y flasheo de celulares con garantía.</p>
                 </div>
             </div>
         </div>
@@ -409,46 +423,45 @@
         <div class="why-grid">
             <div class="why-text reveal">
                 <h2 class="section-title" style="text-align:left;">¿Por qué elegirnos?</h2>
-                <ul style="list-style:none; margin-top:30px;">
-                    <li><i class="fa-solid fa-bolt" style="color:var(--cyan); font-size:20px;"></i> Activación y entrega inmediata.</li>
-                    <li><i class="fa-solid fa-headset" style="color:var(--cyan); font-size:20px;"></i> Soporte técnico especializado.</li>
-                    <li><i class="fa-solid fa-shield" style="color:var(--cyan); font-size:20px;"></i> Plataformas estables sin caídas.</li>
-                    <li><i class="fa-solid fa-laptop-code" style="color:var(--cyan); font-size:20px;"></i> Clases en vivo e interactividad total.</li>
+                <ul style="list-style:none; margin-top:35px;">
+                    <li><i class="fa-solid fa-bolt"></i> <span style="font-weight:500;">Activación y entrega inmediata.</span></li>
+                    <li><i class="fa-solid fa-headset"></i> <span style="font-weight:500;">Soporte técnico especializado.</span></li>
+                    <li><i class="fa-solid fa-shield"></i> <span style="font-weight:500;">Plataformas estables sin caídas.</span></li>
+                    <li><i class="fa-solid fa-laptop-code"></i> <span style="font-weight:500;">Clases en vivo e interactividad total.</span></li>
                 </ul>
             </div>
-            <div class="reveal delay-2" style="text-align:center;">
-                -->
-                <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" style="width:60%; animation: translateY 4s infinite alternate ease-in-out;">
+            <div class="reveal delay-2" style="text-align:center; position: relative;">
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width: 250px; height: 250px; background: var(--cyan); filter: blur(100px); opacity: 0.2; z-index: -1;"></div>
+                <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" style="width:65%; animation: translateY 4s infinite alternate ease-in-out; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5));">
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="footer-grid">
-            <div>
-                -->
-                <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" width="50" style="margin-bottom:15px;">
+            <div class="reveal delay-1">
+                <img src="https://i.ibb.co/F4wCzFx9/Captura-de-pantalla-2026-01-16-223134.png" width="55" style="margin-bottom:20px; filter: drop-shadow(0 0 5px var(--cyan));">
                 <h3 class="footer-title" style="margin-bottom:10px;">MitsuGod Store</h3>
-                <p style="font-size:13px; line-height:1.6;">Soluciones tecnológicas, streaming premium y formación académica en todo el Perú.</p>
+                <p style="font-size:13px; line-height:1.7;">Soluciones tecnológicas, streaming premium y formación académica en todo el Perú.</p>
             </div>
-            <div>
+            <div class="reveal delay-2">
                 <h3 class="footer-title">Enlaces Rápidos</h3>
                 <ul class="footer-links">
-                    <li><a href="streaming.html">Streaming VIP</a></li>
-                    <li><a href="tecnologia.html">Tecnología</a></li>
-                    <li><a href="clases-vivo.html">Clases en Vivo</a></li>
+                    <li><a href="streaming.html"><i class="fa-solid fa-angle-right"></i> Streaming VIP</a></li>
+                    <li><a href="tecnologia.html"><i class="fa-solid fa-angle-right"></i> Tecnología</a></li>
+                    <li><a href="clases-vivo.html"><i class="fa-solid fa-angle-right"></i> Clases en Vivo</a></li>
                 </ul>
             </div>
-            <div>
+            <div class="reveal delay-3">
                 <h3 class="footer-title">Contacto</h3>
                 <ul class="footer-links">
-                    <li><i class="fa-brands fa-whatsapp"></i> +51 956 654 891</li>
-                    <li><i class="fa-solid fa-envelope"></i> admin@mitsugod.com</li>
-                    <li><i class="fa-solid fa-location-dot"></i> Lima, Perú</li>
+                    <li><a href="https://wa.me/51956654891"><i class="fa-brands fa-whatsapp" style="font-size:16px;"></i> +51 956 654 891</a></li>
+                    <li><a href="#"><i class="fa-solid fa-envelope" style="font-size:16px;"></i> admin@mitsugod.com</a></li>
+                    <li><a href="#"><i class="fa-solid fa-location-dot" style="font-size:16px;"></i> Lima, Perú</a></li>
                 </ul>
             </div>
         </div>
-        <div style="text-align:center; padding-top:20px; border-top:1px solid #1e293b; font-size:12px;">
+        <div style="text-align:center; padding-top:25px; border-top:1px solid var(--border-color); font-size:12px; font-weight: 300;">
             &copy; 2026 MitsuGod Store. Todos los derechos reservados.
         </div>
     </footer>
@@ -470,22 +483,22 @@
         slides[currentSlide].classList.add('active');
     }, 5000);
 
-    // 3. SLIDER DE CAJAS/BANNERS SOBRE EL VIDEO
+    // 3. SLIDER DE 4 BANNERS SOBRE EL VIDEO
     const autoSlides = document.querySelectorAll('.auto-slide');
     let autoSlideIndex = 0;
     setInterval(() => {
         autoSlides[autoSlideIndex].classList.remove('active');
         autoSlideIndex = (autoSlideIndex + 1) % autoSlides.length;
         autoSlides[autoSlideIndex].classList.add('active');
-    }, 4000);
+    }, 4500); // Cambia cada 4.5 segundos
 
-    // 4. ANIMACIONES AL HACER SCROLL
+    // 4. ANIMACIONES AL HACER SCROLL (Efecto suave)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
                 
-                // Activar contador de números si es de la sección confianza
+                // Activar contador numérico
                 if(entry.target.querySelector('.counter')) {
                     entry.target.querySelectorAll('.counter').forEach(count => {
                         let target = +count.getAttribute('data-target');
