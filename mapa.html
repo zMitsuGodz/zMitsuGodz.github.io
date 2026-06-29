@@ -3,63 +3,70 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conoce tu Salón UNE - Mapa Interactivo</title>
+    <title>Conoce tu Salón UNE - Tour Virtual</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
     <style>
-        /* Estilos Generales */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f6f9; color: #333; }
+        body { background-color: #f4f6f9; color: #333; display: flex; flex-direction: column; min-height: 100vh; }
 
         /* Encabezado */
         header { background: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eef2f5; }
-        .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-placeholder { width: 50px; height: 50px; background: #0056b3; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; text-align: center; }
-        header h1 { font-size: 24px; color: #1a1a1a; }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .logo-placeholder { width: 55px; height: 55px; background: #002e5d; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; text-align: center; border: 2px solid #fbb03b; }
+        header h1 { font-size: 24px; color: #1a1a1a; display: flex; flex-direction: column; }
+        header h1 span { font-size: 16px; color: #666; font-weight: normal; margin-top: 4px; }
         
-        /* Barra de Navegación Superior */
-        nav { background: #fff; border-bottom: 1px solid #ddd; display: flex; justify-content: center; gap: 20px; }
-        nav a { padding: 12px 20px; text-decoration: none; color: #555; font-weight: 500; transition: 0.3s; }
-        nav a.active { color: white; background: #0056b3; }
-        nav a:hover:not(.active) { background: #f0f0f0; }
-
-        /* Contenedor Principal (Mapa + Sidebar) */
-        .main-container { display: flex; max-width: 1400px; margin: 20px auto; padding: 0 20px; gap: 20px; height: 600px; }
+        /* Contenedor Principal */
+        .main-container { display: flex; max-width: 1400px; margin: 20px auto; padding: 0 20px; gap: 20px; height: 600px; flex: 1; width: 100%; }
         
-        /* El Visor 360 */
-        .viewer-container { flex: 2; background: black; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; }
+        /* Visor 360 */
+        .viewer-container { flex: 3; background: black; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: relative; }
         #panorama { width: 100%; height: 100%; }
 
-        /* Barra Lateral de Destinos (Scroll habilitado para tantas facultades) */
-        .sidebar { flex: 1; background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
-        .sidebar h3 { font-size: 16px; margin-bottom: 5px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        /* Barra Lateral */
+        .sidebar { flex: 1; min-width: 300px; background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+        .sidebar::-webkit-scrollbar { width: 6px; }
+        .sidebar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+        .sidebar h3 { font-size: 14px; margin-bottom: 5px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         
-        /* Botones de Destinos */
-        .btn-destino { width: 100%; padding: 12px; background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; text-align: left; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; }
+        .btn-destino { width: 100%; padding: 8px 10px; background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; text-align: left; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 12px; }
         .btn-destino:hover { background: #edf2f7; border-color: #cbd5e1; }
         .btn-destino.active { background: #e0f2fe; border-color: #0ea5e9; color: #0369a1; }
-        
         .btn-info { display: flex; flex-direction: column; }
-        .btn-title { font-size: 14px; font-weight: 600; }
-        .btn-subtitle { font-size: 11px; color: #718096; font-weight: 400; margin-top: 2px; }
-        
-        .img-thumb { width: 45px; height: 45px; background: #cbd5e1; border-radius: 6px; background-size: cover; background-position: center; flex-shrink: 0; }
-        
-        /* Estilo especial para el botón de Rímac */
+        .btn-title { font-size: 13px; font-weight: 600; }
+        .img-thumb { width: 35px; height: 35px; background: #cbd5e1; border-radius: 6px; background-size: cover; background-position: center; flex-shrink: 0; }
         .btn-rimac { border-left: 4px solid #e53e3e; }
 
-        /* Sección de Tarjetas Inferiores */
-        .info-cards { max-width: 1400px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .card h4 { margin-bottom: 10px; color: #0056b3; display: flex; align-items: center; gap: 8px; }
-        .card input { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        /* Tarjetas Inferiores y Buscador con Dan */
+        .info-cards { max-width: 1400px; margin: 10px auto 30px; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; width: 100%; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .card h4 { margin-bottom: 10px; color: #002e5d; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        .card p { font-size: 14px; color: #555; line-height: 1.5; }
+        
+        /* Estilos específicos para Dan */
+        .dan-container { display: flex; align-items: stretch; gap: 20px; border: 2px solid #0056b3; }
+        .dan-search { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .search-box { display: flex; margin-top: 15px; }
+        .search-box input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px 0 0 6px; font-size: 14px; outline: none; }
+        .search-box button { padding: 12px 20px; background: #0056b3; color: white; border: none; border-radius: 0 6px 6px 0; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .search-box button:hover { background: #004494; }
+        
+        .dan-mascot { background: #f0fdf4; border: 2px dashed #bbf7d0; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 120px; }
+        .dan-mascot img { width: 80px; image-rendering: pixelated; margin-bottom: 10px; }
+        .dan-tag { background: white; border: 1px solid #ccc; padding: 4px 12px; border-radius: 15px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .mensaje-ruta { margin-top: 10px; font-weight: bold; color: #059669; font-size: 13px; min-height: 20px; }
+
+        /* Footer GitHub Pages */
+        footer { background: #1a202c; color: white; text-align: center; padding: 15px; margin-top: auto; font-size: 13px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        footer svg { fill: white; width: 20px; height: 20px; }
 
         @media (max-width: 992px) {
             .main-container { flex-direction: column; height: auto; }
-            #panorama { height: 380px; }
-            .sidebar { height: 400px; }
+            #panorama { height: 400px; }
+            .info-cards { grid-template-columns: 1fr; }
             header { flex-direction: column; text-align: center; gap: 10px; }
         }
     </style>
@@ -67,213 +74,235 @@
 <body>
 
     <header>
-        <div class="logo-area">
+        <div class="header-left">
             <div class="logo-placeholder">UNE</div>
-            <div>
-                <strong style="font-size: 14px; color:#555;">Universidad Nacional de Educación</strong><br>
-                <span style="font-size: 12px; color:#888;">Enrique Guzmán y Valle (La Cantuta)</span>
+            <div style="text-align: left;">
+                <strong style="font-size: 15px; color:#333;">Universidad Nacional de Educación</strong><br>
+                <span style="font-size: 13px; color:#777;">Enrique Guzmán y Valle (La Cantuta)</span>
             </div>
         </div>
-        <h1>Conoce tu Salón UNE</h1>
+        <h1>Conoce tu Salón UNE <span>- Tour Virtual 360 Interactivo</span></h1>
     </header>
 
-    <nav>
-        <a href="#" class="active">Mapa Interactivo</a>
-        <a href="#">Sobre el Proyecto</a>
-        <a href="#">Contacto</a>
-    </nav>
-
     <div class="main-container">
-        
         <div class="viewer-container">
             <div id="panorama"></div>
         </div>
 
         <div class="sidebar">
-            <h3>Sede Central Chosica</h3>
-            
-            <button class="btn-destino active" onclick="irAUbicacion('entrada', this)">
+            <h3>Instalaciones Principales</h3>
+            <button id="btn-entrada" class="btn-destino active" onclick="irAUbicacion('entrada', this)">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">Entrada Principal</span>
-                    <span class="btn-subtitle">Puerta de ingreso al campus</span>
-                </div>
+                <div class="btn-info"><span class="btn-title">Entrada Principal</span></div>
             </button>
-            
-            <button class="btn-destino" onclick="irAUbicacion('agropecuaria', this)">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">F. de Agropecuaria y Nutrición</span>
-                    <span class="btn-subtitle">Agropecuaria, Ind. Alimentaria, Nutrición...</span>
-                </div>
-            </button>
-            
-            <button class="btn-destino" onclick="irAUbicacion('ciencias', this)">
+            <button id="btn-biblioteca" class="btn-destino" onclick="irAUbicacion('biblioteca', this)">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">Facultad de Ciencias</span>
-                    <span class="btn-subtitle">Matemática, Informática, Biología, Física...</span>
-                </div>
+                <div class="btn-info"><span class="btn-title">Biblioteca Central</span></div>
             </button>
-
-            <button class="btn-destino" onclick="irAUbicacion('empresariales', this)">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">F. de Ciencias Empresariales</span>
-                    <span class="btn-subtitle">Administración, Turismo, Gastronomía</span>
-                </div>
-            </button>
-
-            <button class="btn-destino" onclick="irAUbicacion('sociales', this)">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">F. de Ciencias Sociales y Hum.</span>
-                    <span class="btn-subtitle">Lengua, Literatura, Historia, Geografía...</span>
-                </div>
-            </button>
-
-            <button class="btn-destino" onclick="irAUbicacion('inicial', this)">
+            <button id="btn-admision" class="btn-destino" onclick="irAUbicacion('admision', this)">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">Facultad de Educación Inicial</span>
-                    <span class="btn-subtitle">Educación de la primera infancia</span>
-                </div>
+                <div class="btn-info"><span class="btn-title">Oficina de Admisión</span></div>
             </button>
-
-            <button class="btn-destino" onclick="irAUbicacion('pedagogia', this)">
+            <button id="btn-comedor" class="btn-destino" onclick="irAUbicacion('comedor', this)">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">F. de Pedagogía y Cultura Física</span>
-                    <span class="btn-subtitle">Educación Física, Formación Pedagógica</span>
-                </div>
+                <div class="btn-info"><span class="btn-title">Comedor Universitario</span></div>
             </button>
 
-            <button class="btn-destino" onclick="irAUbicacion('tecnologia', this)">
+            <h3>Facultades</h3>
+            <button id="btn-tecnologia" class="btn-destino" onclick="irAUbicacion('tecnologia', this)">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
-                <div class="btn-info">
-                    <span class="btn-title">Facultad de Tecnología</span>
-                    <span class="btn-subtitle">Electrónica, Electricidad, Mecánica, Informática...</span>
-                </div>
+                <div class="btn-info"><span class="btn-title">Facultad de Tecnología</span></div>
+            </button>
+            <button id="btn-agropecuaria" class="btn-destino" onclick="irAUbicacion('agropecuaria', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Agropecuaria y Nutrición</span></div>
+            </button>
+            <button id="btn-ciencias" class="btn-destino" onclick="irAUbicacion('ciencias', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">Facultad de Ciencias</span></div>
+            </button>
+            <button id="btn-empresariales" class="btn-destino" onclick="irAUbicacion('empresariales', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Ciencias Empresariales</span></div>
+            </button>
+            <button id="btn-sociales" class="btn-destino" onclick="irAUbicacion('sociales', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Ciencias Sociales</span></div>
+            </button>
+            <button id="btn-inicial" class="btn-destino" onclick="irAUbicacion('inicial', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Educación Inicial</span></div>
+            </button>
+            <button id="btn-pedagogia" class="btn-destino" onclick="irAUbicacion('pedagogia', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Pedagogía y C. Física</span></div>
+            </button>
+
+            <h3>Bienestar y Deporte</h3>
+            <button id="btn-enfermeria" class="btn-destino" onclick="irAUbicacion('enfermeria', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">Enfermería de la UNE</span></div>
+            </button>
+            <button id="btn-estadio" class="btn-destino" onclick="irAUbicacion('estadio', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">Estadio de grass UNE</span></div>
+            </button>
+            <button id="btn-gimnasio" class="btn-destino" onclick="irAUbicacion('gimnasio', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">Gimnasio</span></div>
             </button>
 
             <h3>Otras Sedes</h3>
             <button class="btn-destino btn-rimac" onclick="irAUbicacion('rimac', this)">
                 <div class="img-thumb" style="background-color: #fca5a5;"></div>
-                <div class="btn-info">
-                    <span class="btn-title" style="color: #c53030;">Sede Rímac</span>
-                    <span class="btn-subtitle">Ubicación externa (Postgrado / Programas)</span>
-                </div>
+                <div class="btn-info"><span class="btn-title" style="color: #c53030;">Sede Rímac</span></div>
             </button>
         </div>
     </div>
 
     <div class="info-cards">
-        <div class="card">
-            <h4>🔍 ¿Cómo llegar a tu salón?</h4>
-            <p>Busca tu pabellón o especialidad para trazar la ruta interactiva más rápida desde la entrada.</p>
-            <input type="text" placeholder="Ej: Informática, Nutrición, Mecánica...">
+        <div class="card dan-container">
+            <div class="dan-search">
+                <h4>🔍 Buscador & Dan tu Guía</h4>
+                <p>Dan, nuestra mascota oficial, te guiará. Escribe tu salón y simularemos la mejor ruta para ti.</p>
+                <div class="search-box">
+                    <input type="text" id="input-lugar" placeholder="¿Cómo llegar a tu salón? ... Busca tu pabellón o especialidad" onkeypress="verificarEnter(event)">
+                    <button onclick="buscarConDan()">Ir</button>
+                </div>
+                <div class="mensaje-ruta" id="dan-texto"></div>
+            </div>
+            <div class="dan-mascot">
+                <img src="imagen_dan.png" alt="Dan la vaquita" onerror="this.src='https://via.placeholder.com/80x80.png?text=Vaquita'">
+                <div class="dan-tag">Dan</div>
+            </div>
         </div>
+
         <div class="card">
-            <h4>💡 Sugerencias de navegación</h4>
-            <p>Camina virtualmente haciendo clic sobre las flechas amarillas que aparecen dentro de las fotos 360.</p>
+            <h4>🗺️ Simulación de Rutas y Sugerencias</h4>
+            <p>Click en las rutas de búsqueda, click en tu barra o buscador. Simula rutas hacia la Enfermería, Estadio, Gimnasio, Comedor, Biblioteca y todas las Facultades.</p>
         </div>
+
         <div class="card">
-            <h4>❓ Información del Campus</h4>
-            <p>Usa la barra lateral para saltar directamente a la entrada de cualquier facultad listada.</p>
+            <h4>❓ Preguntas Frecuentes</h4>
+            <ul style="margin-left: 20px; font-size: 13px; color: #555; margin-top: 10px; line-height: 1.8;">
+                <li>¿Dónde queda la facultad de Tecnología?</li>
+                <li>¿Cómo llego al comedor desde la entrada?</li>
+                <li>¿Dónde atiende la enfermería?</li>
+            </ul>
         </div>
     </div>
 
-    <script>
-        // Configuración de las Escenas enlazadas
-        const viewer = pannellum.viewer('panorama', {
-            "default": {
-                "firstScene": "entrada",
-                "sceneFadeDuration": 800,
-                "autoLoad": true
-            },
+    <footer>
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+        Hospedado en GitHub Pages - Creado para la Universidad Nacional de Educación
+    </footer>
 
+    <script>
+        // Configuración Pannellum (He añadido marcadores internos hacia las nuevas áreas para ejemplificar)
+        const viewer = pannellum.viewer('panorama', {
+            "default": { "firstScene": "entrada", "sceneFadeDuration": 800, "autoLoad": true },
             "scenes": {
                 "entrada": {
-                    "title": "Entrada Principal - La Cantuta",
-                    "type": "equirectangular",
-                    "panorama": "https://pannellum.org/images/alma.jpg",
+                    "title": "Entrada Principal - La Cantuta", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg",
                     "hotSpots": [
-                        {
-                            "pitch": -5,
-                            "yaw": -30,
-                            "type": "scene",
-                            "text": "👉 Ir hacia: Facultad de Tecnología",
-                            "sceneId": "tecnologia"
-                        },
-                        {
-                            "pitch": -2,
-                            "yaw": 45,
-                            "type": "scene",
-                            "text": "👉 Ir hacia: Facultad de Ciencias",
-                            "sceneId": "ciencias"
-                        }
+                        { "pitch": -5, "yaw": -30, "type": "scene", "text": "→ Hacia Facultad de Tecnología", "sceneId": "tecnologia" },
+                        { "pitch": -2, "yaw": 45, "type": "scene", "text": "↑ Hacia Admisión / Biblioteca", "sceneId": "biblioteca" },
+                        { "pitch": 5, "yaw": 90, "type": "scene", "text": "→ Hacia Enfermería y Deporte", "sceneId": "enfermeria" }
                     ]
                 },
                 "tecnologia": {
-                    "title": "Facultad de Tecnología",
-                    "type": "equirectangular",
-                    "panorama": "https://pannellum.org/images/jure.jpg",
+                    "title": "Facultad de Tecnología", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg",
                     "hotSpots": [
-                        {
-                            "pitch": 0,
-                            "yaw": 180,
-                            "type": "scene",
-                            "text": "↩️ Regresar a la Entrada Principal",
-                            "sceneId": "entrada"
-                        }
+                        { "pitch": 0, "yaw": 180, "type": "scene", "text": "← Comedor Universitario", "sceneId": "comedor" },
+                        { "pitch": 0, "yaw": 0, "type": "scene", "text": "↩️ Regresar a Entrada", "sceneId": "entrada" }
                     ]
                 },
-                "ciences": {
-                    "title": "Facultad de Ciencias",
-                    "type": "equirectangular",
-                    "panorama": "https://pannellum.org/images/cerro-toco.jpg",
-                    "hotSpots": [
-                        {
-                            "pitch": 0,
-                            "yaw": 180,
-                            "type": "scene",
-                            "text": "↩️ Regresar a la Entrada Principal",
-                            "sceneId": "entrada"
-                        }
-                    ]
-                },
-                // Las demás escenas se configuran exactamente igual usando tus fotos reales
+                "biblioteca": { "title": "Biblioteca Central", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg", "hotSpots": [{ "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Entrada", "sceneId": "entrada" }] },
+                "admision": { "title": "Oficina de Admisión", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
+                "comedor": { "title": "Comedor Universitario", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg", "hotSpots": [{ "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Tecnología", "sceneId": "tecnologia" }] },
+                
                 "agropecuaria": { "title": "F. Agropecuaria y Nutrición", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
+                "ciencias": { "title": "Facultad de Ciencias", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
                 "empresariales": { "title": "F. Ciencias Empresariales", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
-                "sociales": { "title": "F. Ciencias Sociales y Humanidades", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
+                "sociales": { "title": "F. Ciencias Sociales", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
                 "inicial": { "title": "F. Educación Inicial", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
-                "pedagogia": { "title": "F. Pedagogía y Cultura Física", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" }
+                "pedagogia": { "title": "F. Pedagogía y Cultura Física", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
+                
+                "enfermeria": { "title": "Enfermería de la UNE", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg", "hotSpots": [{ "pitch": 0, "yaw": 90, "type": "scene", "text": "→ Ir al Estadio", "sceneId": "estadio" }] },
+                "estadio": { "title": "Estadio de grass de la UNE", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg", "hotSpots": [{ "pitch": 0, "yaw": 90, "type": "scene", "text": "→ Ir al Gimnasio", "sceneId": "gimnasio" }] },
+                "gimnasio": { "title": "Gimnasio Universitario", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" }
             }
         });
 
-        // Función para cambiar de escena y controlar excepciones como la del Rímac
+        // Control de navegación estándar
         function irAUbicacion(sceneId, botonPresionado) {
-            // EXCEPCIÓN: Si hacen clic en Rímac
             if (sceneId === 'rimac') {
-                alert("📍 Próximamente\n\nEsta sede se encuentra muy lejos de la Sede Central Chosica. Actualmente estamos trabajando en el mapeado de Chosica.");
-                return; // Detiene la función para que no intente cargar una escena que no existe
+                alert("📍 Próximamente\n\nEsta sede se encuentra muy lejos de la Sede Central Chosica.");
+                return;
             }
-
-            // Si es una facultad válida de Chosica, cambia la escena
             viewer.loadScene(sceneId);
-
-            // Actualiza visualmente el botón seleccionado
-            document.querySelectorAll('.btn-destino').forEach(btn => btn.classList.remove('active'));
-            botonPresionado.classList.add('active');
+            actualizarBotonesActivos(botonPresionado);
         }
 
-        // Sincroniza las flechas internas del 360 con la barra lateral
-        viewer.on('scenechange', function(sceneId) {
+        function actualizarBotonesActivos(botonActivo) {
             document.querySelectorAll('.btn-destino').forEach(btn => btn.classList.remove('active'));
-            const botonActivo = Array.from(document.querySelectorAll('.btn-destino'))
-                .find(btn => btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${sceneId}'`));
             if(botonActivo) botonActivo.classList.add('active');
+        }
+
+        viewer.on('scenechange', function(sceneId) {
+            const btn = document.getElementById('btn-' + sceneId);
+            actualizarBotonesActivos(btn);
         });
+
+        // LÓGICA DE DAN: El buscador inteligente
+        function verificarEnter(event) {
+            if (event.key === "Enter") { buscarConDan(); }
+        }
+
+        function buscarConDan() {
+            const input = document.getElementById('input-lugar').value.toLowerCase().trim();
+            const mensajeBox = document.getElementById('dan-texto');
+            
+            // Diccionario de búsqueda de Dan
+            const rutas = {
+                "tecnologia": "tecnologia", "tecnología": "tecnologia", "informática": "tecnologia", "electronica": "tecnologia",
+                "comedor": "comedor", "comer": "comedor",
+                "biblioteca": "biblioteca", "libros": "biblioteca",
+                "enfermeria": "enfermeria", "enfermería": "enfermeria", "medico": "enfermeria",
+                "estadio": "estadio", "cancha": "estadio", "futbol": "estadio",
+                "gimnasio": "gimnasio", "deporte": "gimnasio",
+                "ciencias": "ciencias", "biologia": "ciencias",
+                "agropecuaria": "agropecuaria", "nutricion": "agropecuaria",
+                "admision": "admision", "postular": "admision"
+            };
+
+            let sceneEncontrada = null;
+            
+            for (const clave in rutas) {
+                if (input.includes(clave)) {
+                    sceneEncontrada = rutas[clave];
+                    break;
+                }
+            }
+
+            if (sceneEncontrada) {
+                mensajeBox.style.color = "#059669";
+                mensajeBox.innerHTML = "¡Muuu! 🐄 Dan ha simulado la ruta. Transportándote...";
+                
+                // Retraso pequeño para que el usuario lea el mensaje antes de que cambie la foto
+                setTimeout(() => {
+                    viewer.loadScene(sceneEncontrada);
+                    actualizarBotonesActivos(document.getElementById('btn-' + sceneEncontrada));
+                    mensajeBox.innerHTML = ""; // Limpiar mensaje
+                }, 1500);
+            } else if (input.includes('rimac') || input.includes('rímac')) {
+                mensajeBox.style.color = "#c53030";
+                mensajeBox.innerHTML = "🐄 Dan dice: ¡La sede Rímac está muy lejos para ir caminando ahora!";
+            } else {
+                mensajeBox.style.color = "#c53030";
+                mensajeBox.innerHTML = "🐄 Dan está confundido. Intenta buscar palabras como 'tecnología', 'comedor' o 'estadio'.";
+            }
+        }
     </script>
 </body>
 </html>
