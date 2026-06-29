@@ -166,13 +166,13 @@
                 <h4>🔍 Buscador & Dan tu Guía</h4>
                 <p>Dan, nuestra mascota oficial, te guiará. Escribe tu salón y simularemos la mejor ruta para ti.</p>
                 <div class="search-box">
-                    <input type="text" id="input-lugar" placeholder="¿Cómo llegar a tu salón? ... Busca tu pabellón o especialidad" onkeypress="verificarEnter(event)">
+                    <input type="text" id="input-lugar" placeholder="¿Cómo llegar a tu salón? ... Busca tu pabellón" onkeypress="verificarEnter(event)">
                     <button onclick="buscarConDan()">Ir</button>
                 </div>
                 <div class="mensaje-ruta" id="dan-texto"></div>
             </div>
             <div class="dan-mascot">
-                <img src="imagen_dan.png" alt="Dan la vaquita" onerror="this.src='https://via.placeholder.com/80x80.png?text=Vaquita'">
+                <img src="https://i.ibb.co/6cLWMdHm/dan.png" alt="Dan la vaquita" onerror="this.src='https://via.placeholder.com/80x80.png?text=Vaquita'">
                 <div class="dan-tag">Dan</div>
             </div>
         </div>
@@ -198,50 +198,62 @@
     </footer>
 
     <script>
-        // Configuración Pannellum (He añadido marcadores internos hacia las nuevas áreas para ejemplificar)
+        // Configuración Pannellum con los 3 caminos en la entrada y todas las escenas
         const viewer = pannellum.viewer('panorama', {
             "default": { "firstScene": "entrada", "sceneFadeDuration": 800, "autoLoad": true },
             "scenes": {
                 "entrada": {
-                    "title": "Entrada Principal - La Cantuta", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg",
+                    "title": "Entrada Principal - Bifurcación", 
+                    "type": "equirectangular", 
+                    "panorama": "https://pannellum.org/images/alma.jpg",
                     "hotSpots": [
-                        { "pitch": -5, "yaw": -30, "type": "scene", "text": "→ Hacia Facultad de Tecnología", "sceneId": "tecnologia" },
-                        { "pitch": -2, "yaw": 45, "type": "scene", "text": "↑ Hacia Admisión / Biblioteca", "sceneId": "biblioteca" },
-                        { "pitch": 5, "yaw": 90, "type": "scene", "text": "→ Hacia Enfermería y Deporte", "sceneId": "enfermeria" }
+                        { "pitch": -2, "yaw": -45, "type": "scene", "text": "↖️ Camino Izquierdo: F. Tecnología y Ciencias", "sceneId": "tecnologia" },
+                        { "pitch": -5, "yaw": 0, "type": "scene", "text": "⬆️ Camino Central: Comedor y Biblioteca", "sceneId": "comedor" },
+                        { "pitch": -2, "yaw": 45, "type": "scene", "text": "↗️ Camino Derecho: Deportes y Enfermería", "sceneId": "estadio" }
                     ]
                 },
                 "tecnologia": {
                     "title": "Facultad de Tecnología", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg",
-                    "hotSpots": [
-                        { "pitch": 0, "yaw": 180, "type": "scene", "text": "← Comedor Universitario", "sceneId": "comedor" },
-                        { "pitch": 0, "yaw": 0, "type": "scene", "text": "↩️ Regresar a Entrada", "sceneId": "entrada" }
-                    ]
+                    "hotSpots": [ { "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Regresar a la Bifurcación", "sceneId": "entrada" } ]
                 },
-                "biblioteca": { "title": "Biblioteca Central", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg", "hotSpots": [{ "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Entrada", "sceneId": "entrada" }] },
+                "comedor": { 
+                    "title": "Comedor Universitario", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg", 
+                    "hotSpots": [{ "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Regresar a la Bifurcación", "sceneId": "entrada" }] 
+                },
+                "estadio": { 
+                    "title": "Estadio de grass", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg", 
+                    "hotSpots": [{ "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Regresar a la Bifurcación", "sceneId": "entrada" }] 
+                },
+                "biblioteca": { 
+                    "title": "Biblioteca Central", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg", 
+                    "hotSpots": [{ "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Entrada", "sceneId": "entrada" }] 
+                },
                 "admision": { "title": "Oficina de Admisión", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
-                "comedor": { "title": "Comedor Universitario", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg", "hotSpots": [{ "pitch": 0, "yaw": 180, "type": "scene", "text": "↩️ Tecnología", "sceneId": "tecnologia" }] },
-                
                 "agropecuaria": { "title": "F. Agropecuaria y Nutrición", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
                 "ciencias": { "title": "Facultad de Ciencias", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
                 "empresariales": { "title": "F. Ciencias Empresariales", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
                 "sociales": { "title": "F. Ciencias Sociales", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
                 "inicial": { "title": "F. Educación Inicial", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
                 "pedagogia": { "title": "F. Pedagogía y Cultura Física", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
-                
-                "enfermeria": { "title": "Enfermería de la UNE", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg", "hotSpots": [{ "pitch": 0, "yaw": 90, "type": "scene", "text": "→ Ir al Estadio", "sceneId": "estadio" }] },
-                "estadio": { "title": "Estadio de grass de la UNE", "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg", "hotSpots": [{ "pitch": 0, "yaw": 90, "type": "scene", "text": "→ Ir al Gimnasio", "sceneId": "gimnasio" }] },
+                "enfermeria": { "title": "Enfermería de la UNE", "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
                 "gimnasio": { "title": "Gimnasio Universitario", "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" }
             }
         });
 
-        // Control de navegación estándar
+        // Control de navegación desde la barra lateral
         function irAUbicacion(sceneId, botonPresionado) {
+            const mensajeBox = document.getElementById('dan-texto');
+
             if (sceneId === 'rimac') {
-                alert("📍 Próximamente\n\nEsta sede se encuentra muy lejos de la Sede Central Chosica.");
-                return;
+                mensajeBox.style.color = "#c53030";
+                mensajeBox.innerHTML = "🐄 Dan dice: ¡Muuu! La sede Rímac está muy lejos de Chosica. ¡Próximamente disponible!";
+                setTimeout(() => { mensajeBox.innerHTML = ""; }, 4000);
+                return; 
             }
+
             viewer.loadScene(sceneId);
             actualizarBotonesActivos(botonPresionado);
+            mensajeBox.innerHTML = ""; 
         }
 
         function actualizarBotonesActivos(botonActivo) {
@@ -263,7 +275,6 @@
             const input = document.getElementById('input-lugar').value.toLowerCase().trim();
             const mensajeBox = document.getElementById('dan-texto');
             
-            // Diccionario de búsqueda de Dan
             const rutas = {
                 "tecnologia": "tecnologia", "tecnología": "tecnologia", "informática": "tecnologia", "electronica": "tecnologia",
                 "comedor": "comedor", "comer": "comedor",
@@ -273,11 +284,14 @@
                 "gimnasio": "gimnasio", "deporte": "gimnasio",
                 "ciencias": "ciencias", "biologia": "ciencias",
                 "agropecuaria": "agropecuaria", "nutricion": "agropecuaria",
-                "admision": "admision", "postular": "admision"
+                "admision": "admision", "postular": "admision",
+                "empresariales": "empresariales", "administracion": "empresariales",
+                "sociales": "sociales", "historia": "sociales",
+                "inicial": "inicial",
+                "pedagogia": "pedagogia"
             };
 
             let sceneEncontrada = null;
-            
             for (const clave in rutas) {
                 if (input.includes(clave)) {
                     sceneEncontrada = rutas[clave];
@@ -288,12 +302,10 @@
             if (sceneEncontrada) {
                 mensajeBox.style.color = "#059669";
                 mensajeBox.innerHTML = "¡Muuu! 🐄 Dan ha simulado la ruta. Transportándote...";
-                
-                // Retraso pequeño para que el usuario lea el mensaje antes de que cambie la foto
                 setTimeout(() => {
                     viewer.loadScene(sceneEncontrada);
                     actualizarBotonesActivos(document.getElementById('btn-' + sceneEncontrada));
-                    mensajeBox.innerHTML = ""; // Limpiar mensaje
+                    mensajeBox.innerHTML = ""; 
                 }, 1500);
             } else if (input.includes('rimac') || input.includes('rímac')) {
                 mensajeBox.style.color = "#c53030";
