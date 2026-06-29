@@ -1,29 +1,227 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conoce tu Salón</title>
+    <title>Conoce tu Salón UNE - Mapa Interactivo</title>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
     <style>
-        #panorama {
-            width: 100%;
-            height: 500px;
+        /* Estilos Generales */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; }
+
+        /* Encabezado */
+        header { background: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eef2f5; }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-placeholder { width: 50px; height: 50px; background: #0056b3; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px; text-align: center; }
+        header h1 { font-size: 24px; color: #1a1a1a; }
+        
+        /* Barra de Navegación Superior */
+        nav { background: #fff; border-bottom: 1px solid #ddd; display: flex; justify-content: center; gap: 20px; }
+        nav a { padding: 12px 20px; text-decoration: none; color: #555; font-weight: 500; transition: 0.3s; }
+        nav a.active { color: white; background: #0056b3; }
+        nav a:hover:not(.active) { background: #f0f0f0; }
+
+        /* Contenedor Principal (Mapa + Sidebar) */
+        .main-container { display: flex; max-width: 1400px; margin: 20px auto; padding: 0 20px; gap: 20px; height: 550px; }
+        
+        /* El Visor 360 */
+        .viewer-container { flex: 3; background: black; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: relative; }
+        #panorama { width: 100%; height: 100%; }
+
+        /* Barra Lateral de Destinos */
+        .sidebar { flex: 1; background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+        .sidebar h3 { font-size: 16px; margin-bottom: 5px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-destino { width: 100%; padding: 12px; background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; text-align: left; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
+        .btn-destino:hover { background: #edf2f7; border-color: #cbd5e1; }
+        .btn-destino.active { background: #e0f2fe; border-color: #0ea5e9; color: #0369a1; }
+        .img-thumb { width: 40px; height: 40px; background: #ddd; border-radius: 6px; background-size: cover; background-position: center; }
+
+        /* Sección de Tarjetas Inferiores */
+        .info-cards { max-width: 1400px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .card h4 { margin-bottom: 10px; color: #0056b3; display: flex; align-items: center; gap: 8px; }
+        .card input { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px; }
+
+        /* Ajustes para Celulares */
+        @media (max-width: 768px) {
+            .main-container { flex-direction: column; height: auto; }
+            #panorama { height: 350px; }
+            header { flex-direction: column; text-align: center; gap: 10px; }
         }
     </style>
 </head>
 <body>
 
-<div id="panorama"></div>
+    <header>
+        <div class="logo-area">
+            <div class="logo-placeholder">UNE</div>
+            <div>
+                <strong style="font-size: 14px; color:#555;">Universidad Nacional de Educación</strong><br>
+                <span style="font-size: 12px; color:#888;">Enrique Guzmán y Valle (La Cantuta)</span>
+            </div>
+        </div>
+        <h1>Conoce tu Salón UNE</h1>
+    </header>
 
-<script>
-pannellum.viewer('panorama', {
-    "type": "equirectangular",
-    "panorama": "https://pannellum.org/images/alma.jpg",
-    "autoLoad": true
-});
-</script>
+    <nav>
+        <a href="#" class="active">Mapa Interactivo</a>
+        <a href="#">Sobre el Proyecto</a>
+        <a href="#">Contacto</a>
+    </nav>
 
+    <div class="main-container">
+        
+        <div class="viewer-container">
+            <div id="panorama"></div>
+        </div>
+
+        <div class="sidebar">
+            <h3>Selecciona un destino</h3>
+            
+            <button class="btn-destino active" onclick="irAUbicacion('entrada', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                Entrada Principal
+            </button>
+            
+            <button class="btn-destino" onclick="irAUbicacion('tecnologia', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                Facultad de Tecnología
+            </button>
+            
+            <button class="btn-destino" onclick="irAUbicacion('admision', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                Admisión / Biblioteca
+            </button>
+            
+            <button class="btn-destino" onclick="irAUbicacion('comedor', this)">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                Comedor Universitario
+            </button>
+        </div>
+    </div>
+
+    <div class="info-cards">
+        <div class="card">
+            <h4>🔍 ¿Cómo llegar a tu salón?</h4>
+            <p>Busca tu pabellón o aula para trazar la ruta interactiva más rápida desde la entrada.</p>
+            <input type="text" placeholder="Ej: Aula 102, Tecnología...">
+        </div>
+        <div class="card">
+            <h4>💡 Sugerencias</h4>
+            <p>Camina siguiendo las flechas amarillas dentro del mapa para simular tu recorrido a pie por el campus.</p>
+        </div>
+        <div class="card">
+            <h4>❓ Preguntas Frecuentes</h4>
+            <p>¿Dónde recojo mi ticket de comedor? ¿Cuál es el horario de la biblioteca central? Encuentra todo aquí.</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de las Escenas 360 enlazadas entre sí
+        const viewer = pannellum.viewer('panorama', {
+            "default": {
+                "firstScene": "entrada",
+                "sceneFadeDuration": 1000,
+                "autoLoad": true
+            },
+
+            "scenes": {
+                "entrada": {
+                    "title": "Entrada Principal - Inicio del Tour",
+                    "type": "equirectangular",
+                    "panorama": "https://pannellum.org/images/alma.jpg",
+                    "hotSpots": [
+                        {
+                            "pitch": -10,
+                            "yaw": -45,
+                            "type": "scene",
+                            "text": "👉 Caminar hacia: Facultad de Tecnología",
+                            "sceneId": "tecnologia"
+                        },
+                        {
+                            "pitch": -5,
+                            "yaw": 30,
+                            "type": "scene",
+                            "text": "👉 Caminar hacia: Admisión y Biblioteca",
+                            "sceneId": "admision"
+                        }
+                    ]
+                },
+                "tecnologia": {
+                    "title": "Pabellón de la Facultad de Tecnología",
+                    "type": "equirectangular",
+                    "panorama": "https://pannellum.org/images/jure.jpg",
+                    "hotSpots": [
+                        {
+                            "pitch": -15,
+                            "yaw": 0,
+                            "type": "scene",
+                            "text": "👉 Avanzar hacia: Comedor Universitario",
+                            "sceneId": "comedor"
+                        },
+                        {
+                            "pitch": 5,
+                            "yaw": 180,
+                            "type": "scene",
+                            "text": "↩️ Regresar a la Entrada Principal",
+                            "sceneId": "entrada"
+                        }
+                    ]
+                },
+                "admision": {
+                    "title": "Oficina de Admisión / Biblioteca Central",
+                    "type": "equirectangular",
+                    "panorama": "https://pannellum.org/images/cerro-toco.jpg",
+                    "hotSpots": [
+                        {
+                            "pitch": 0,
+                            "yaw": 180,
+                            "type": "scene",
+                            "text": "↩️ Regresar a la Entrada Principal",
+                            "sceneId": "entrada"
+                        }
+                    ]
+                },
+                "comedor": {
+                    "title": "Exterior del Comedor Universitario",
+                    "type": "equirectangular",
+                    "panorama": "https://pannellum.org/images/alma.jpg", // temporal
+                    "hotSpots": [
+                        {
+                            "pitch": 0,
+                            "yaw": 90,
+                            "type": "scene",
+                            "text": "↩️ Volver a Facultad de Tecnología",
+                            "sceneId": "tecnologia"
+                        }
+                    ]
+                }
+            }
+        });
+
+        // Función para cambiar de escena desde los botones de la barra lateral
+        function irAUbicacion(sceneId, botonPresionado) {
+            // Cargar la escena en el visor 360
+            viewer.loadScene(sceneId);
+
+            // Actualizar el diseño visual del botón activo en la barra lateral
+            document.querySelectorAll('.btn-destino').forEach(btn => btn.classList.remove('active'));
+            botonPresionado.classList.add('active');
+        }
+
+        // Evento para que si el usuario avanza con las flechas dentro del 360, 
+        // el botón de la barra lateral también cambie de color automáticamente.
+        viewer.on('scenechange', function(sceneId) {
+            document.querySelectorAll('.btn-destino').forEach(btn => btn.classList.remove('active'));
+            // Busca el botón que tiene la función con el ID de la escena actual
+            const botonActivo = Array.from(document.querySelectorAll('.btn-destino'))
+                .find(btn => btn.getAttribute('onclick').includes(`'${sceneId}'`));
+            if(botonActivo) botonActivo.classList.add('active');
+        });
+    </script>
 </body>
 </html>
