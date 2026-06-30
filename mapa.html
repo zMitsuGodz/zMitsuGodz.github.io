@@ -345,15 +345,26 @@
     </div>
 
     <div class="info-cards">
-        <div class="card gps-card">
-            <h4>📡 Herramienta de Mapeo (GPS) - Solo para Desarrollador</h4>
-            <p style="margin-bottom: 10px; font-size: 14px; color: #475569;">Presiona aquí para obtener las coordenadas exactas de donde estás parado ahora mismo en La Cantuta. Anótalas para programar las rutas definitivas en el futuro.</p>
-            <button onclick="obtenerMiUbicacion()" style="padding: 10px 15px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s;">📍 Obtener mis coordenadas</button>
-            <p id="resultado-gps" style="margin-top: 15px; font-family: monospace; font-size: 15px; color: #002e5d; font-weight: bold;"></p>
+        <div class="card gps-card" style="border-left: 4px solid #10b981; grid-column: span 3;">
+            <h4>🛰️ Navegación en Vivo (Beta)</h4>
+            <p style="margin-bottom: 15px; font-size: 14px; color: #475569;">Activa el GPS para que la app detecte dónde estás en el campus y te guíe paso a paso.</p>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button onclick="iniciarNavegacion()" style="padding: 10px 15px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s;">🚶 Activar Guía en Vivo</button>
+                <button onclick="detenerNavegacion()" style="padding: 10px 15px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Detener</button>
+            </div>
+
+            <div id="panel-instrucciones" style="padding: 15px; background: #e0f2fe; border: 2px solid #38bdf8; border-radius: 10px; font-size: 15px; color: #0369a1; font-weight: bold;">
+                Esperando ubicación... (Presiona Activar)
+            </div>
+            
+            <button onclick="obtenerMiUbicacion()" style="margin-top: 15px; padding: 5px 10px; background: #94a3b8; color: white; border: none; border-radius: 5px; font-size: 12px; cursor: pointer;">[Dev] Capturar nuevo punto GPS</button>
+            <p id="resultado-gps" style="font-family: monospace; font-size: 12px; color: #666; margin-top: 5px;"></p>
         </div>
     </div>
 
     <script>
+        // NOMBRES OFICIALES DE LAS UBICACIONES
         const nombresUbicaciones = {
             "entrada": "Entrada Principal",
             "tecnologia": "Facultad de Tecnología",
@@ -368,7 +379,23 @@
             "inicial": "F. Educación Inicial",
             "pedagogia": "F. Pedagogía y C. Física",
             "enfermeria": "Enfermería de la UNE",
-            "gimnasio": "Gimnasio Universitario"
+            "gimnasio": "Gimnasio Universitario",
+            "auditorio": "Auditorio Principal",
+            "capilla": "Capilla UNE"
+        };
+
+        // BASE DE DATOS DE COORDENADAS (Tus números inyectados aquí)
+        const puntosCampus = {
+            entrada: { lat: -11.94537026382922, lon: -76.70190469783391 },
+            biblioteca: { lat: -11.945808170406089, lon: -76.7013888204146 },
+            comedor: { lat: -11.946082789402729, lon: -76.69981842885784 },
+            estadio: { lat: -11.946639448735187, lon: -76.70279989688714 },
+            tecnologia: { lat: -11.945555817526646, lon: -76.69902185343015 },
+            ciencias: { lat: -11.946624604482778, lon: -76.69924185997662 },
+            inicial: { lat: -11.946260920529191, lon: -76.70144192544306 },
+            pedagogia: { lat: -11.947693387237692, lon: -76.70237505665425 },
+            auditorio: { lat: -11.945214398584772, lon: -76.69987153388631 },
+            capilla: { lat: -11.948294575673824, lon: -76.7018515928023 }
         };
 
         const viewer = pannellum.viewer('panorama', {
@@ -474,31 +501,85 @@
             }, 1200);
         }
 
-        function obtenerMiUbicacion() {
-            const resultadoGPS = document.getElementById('resultado-gps');
-            
+        // --- SISTEMA DE NAVEGACIÓN EN VIVO (GEOCERCAS DINÁMICAS) ---
+        let watchId = null;
+
+        function calcularDistanciaMetros(lat1, lon1, lat2, lon2) {
+            const R = 6371e3;
+            const f1 = lat1 * Math.PI/180;
+            const f2 = lat2 * Math.PI/180;
+            const df = (lat2-lat1) * Math.PI/180;
+            const dl = (lon2-lon1) * Math.PI/180;
+            const a = Math.sin(df/2) * Math.sin(df/2) + Math.cos(f1) * Math.cos(f2) * Math.sin(dl/2) * Math.sin(dl/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c; 
+        }
+
+        function iniciarNavegacion() {
+            const panel = document.getElementById('panel-instrucciones');
             if (!navigator.geolocation) {
-                resultadoGPS.innerHTML = "❌ Tu navegador no soporta geolocalización.";
+                panel.innerHTML = "❌ Tu navegador no soporta navegación GPS.";
                 return;
             }
 
-            resultadoGPS.innerHTML = "Buscando satélites... 🛰️ (Acepta el permiso del navegador en tu celular)";
+            panel.innerHTML = "Buscando tu posición en el campus... 🛰️ (Acepta los permisos)";
 
+            watchId = navigator.geolocation.watchPosition(
+                evaluarUbicacion, 
+                function(error) { panel.innerHTML = "❌ Error de GPS. Actívalo en tu celular."; },
+                { enableHighAccuracy: true, maximumAge: 0 }
+            );
+        }
+
+        function detenerNavegacion() {
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                document.getElementById('panel-instrucciones').innerHTML = "Navegación detenida. Usa el mapa manual.";
+            }
+        }
+
+        function evaluarUbicacion(pos) {
+            const miLat = pos.coords.latitude;
+            const miLon = pos.coords.longitude;
+            const panel = document.getElementById('panel-instrucciones');
+
+            let lugarMasCercano = null;
+            let distanciaMinima = Infinity;
+
+            // Busca el lugar más cercano iterando por todas tus coordenadas
+            for (const [id, coords] of Object.entries(puntosCampus)) {
+                const dist = calcularDistanciaMetros(miLat, miLon, coords.lat, coords.lon);
+                if (dist < distanciaMinima) {
+                    distanciaMinima = dist;
+                    lugarMasCercano = id;
+                }
+            }
+
+            const nombreLugar = nombresUbicaciones[lugarMasCercano] || lugarMasCercano;
+
+            // Si estás a menos de 30 metros de un punto clave
+            if (distanciaMinima < 30) {
+                panel.innerHTML = `📍 ¡Estás en: <strong>${nombreLugar}</strong>!<br>Explora a tu alrededor o selecciona otro destino.`;
+                
+                // Mueve la foto 360 al lugar donde estás parado (solo si es una escena válida que tenemos)
+                if(viewer.getScene() !== lugarMasCercano && viewer.getConfig().scenes[lugarMasCercano]) { 
+                    viewer.loadScene(lugarMasCercano); 
+                    actualizarBotonesActivos(document.getElementById('btn-' + lugarMasCercano));
+                }
+            } else {
+                panel.innerHTML = `🚶 Estás caminando por el campus...<br><span style="font-size:13px">El lugar más cercano es <strong>${nombreLugar}</strong> a ${Math.round(distanciaMinima)} metros de ti.</span>`;
+            }
+        }
+
+        // Herramienta Dev Oculta
+        function obtenerMiUbicacion() {
+            const resultadoGPS = document.getElementById('resultado-gps');
             navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const latitud = position.coords.latitude;
-                    const longitud = position.coords.longitude;
-                    
-                    resultadoGPS.innerHTML = `
-                        Latitud: ${latitud} <br>
-                        Longitud: ${longitud} <br><br>
-                        <span style="font-size:13px; color:#64748b;">✅ Copia estos números y sigue a la siguiente ubicación.</span>
-                    `;
+                function(pos) {
+                    resultadoGPS.innerHTML = `NUEVO PUNTO - Latitud: ${pos.coords.latitude} | Longitud: ${pos.coords.longitude}`;
                 }, 
-                function(error) {
-                    resultadoGPS.innerHTML = "❌ Error al obtener ubicación. Asegúrate de tener el GPS encendido en tu celular y darle permisos a la página.";
-                },
-                { enableHighAccuracy: true } 
+                function(err) { resultadoGPS.innerHTML = "Error capturando nueva ubicación."; },
+                { enableHighAccuracy: true }
             );
         }
     </script>
