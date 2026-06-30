@@ -183,15 +183,9 @@
 
         .mensaje-ruta { margin-top: 12px; font-weight: bold; font-size: 14px; min-height: 20px; transition: color 0.3s; }
 
-        /* Estilo especial para la tarjeta de la historia y próximos pasos */
-        .historia-card {
-            border-left: 4px solid #002e5d;
-            background: linear-gradient(to right, #f8fafc, #ffffff);
-        }
-
-        .proximamente-card {
-            border-left: 4px solid #fbb03b;
-        }
+        .historia-card { border-left: 4px solid #002e5d; background: linear-gradient(to right, #f8fafc, #ffffff); }
+        .proximamente-card { border-left: 4px solid #fbb03b; }
+        .gps-card { border-left: 4px solid #10b981; grid-column: span 3; margin-top: -15px; }
 
         @media (max-width: 992px) {
             .main-container { flex-direction: column; height: auto; }
@@ -201,6 +195,7 @@
             .dan-container { flex-direction: column; }
             .ruta-box div { flex-direction: column; }
             .ruta-box button { width: 100%; }
+            .gps-card { grid-column: span 1; }
         }
     </style>
 </head>
@@ -349,6 +344,15 @@
         </div>
     </div>
 
+    <div class="info-cards">
+        <div class="card gps-card">
+            <h4>📡 Herramienta de Mapeo (GPS) - Solo para Desarrollador</h4>
+            <p style="margin-bottom: 10px; font-size: 14px; color: #475569;">Presiona aquí para obtener las coordenadas exactas de donde estás parado ahora mismo en La Cantuta. Anótalas para programar las rutas definitivas en el futuro.</p>
+            <button onclick="obtenerMiUbicacion()" style="padding: 10px 15px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s;">📍 Obtener mis coordenadas</button>
+            <p id="resultado-gps" style="margin-top: 15px; font-family: monospace; font-size: 15px; color: #002e5d; font-weight: bold;"></p>
+        </div>
+    </div>
+
     <script>
         const nombresUbicaciones = {
             "entrada": "Entrada Principal",
@@ -468,6 +472,34 @@
                 mensajeBox.innerHTML = ""; 
                 select.value = "";
             }, 1200);
+        }
+
+        function obtenerMiUbicacion() {
+            const resultadoGPS = document.getElementById('resultado-gps');
+            
+            if (!navigator.geolocation) {
+                resultadoGPS.innerHTML = "❌ Tu navegador no soporta geolocalización.";
+                return;
+            }
+
+            resultadoGPS.innerHTML = "Buscando satélites... 🛰️ (Acepta el permiso del navegador en tu celular)";
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const latitud = position.coords.latitude;
+                    const longitud = position.coords.longitude;
+                    
+                    resultadoGPS.innerHTML = `
+                        Latitud: ${latitud} <br>
+                        Longitud: ${longitud} <br><br>
+                        <span style="font-size:13px; color:#64748b;">✅ Copia estos números y sigue a la siguiente ubicación.</span>
+                    `;
+                }, 
+                function(error) {
+                    resultadoGPS.innerHTML = "❌ Error al obtener ubicación. Asegúrate de tener el GPS encendido en tu celular y darle permisos a la página.";
+                },
+                { enableHighAccuracy: true } 
+            );
         }
     </script>
 </body>
