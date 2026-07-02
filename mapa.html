@@ -109,6 +109,68 @@
         .btn-rimac { border-left: 4px solid #ef4444; }
         .btn-rimac:hover { border-color: #ef4444; }
 
+        /* --- ESTILOS DEL CROQUIS INTERACTIVO --- */
+        .map-section {
+            background: white; padding: 25px; border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin: 0 20px 25px 20px; 
+            max-width: 1400px; margin-left: auto; margin-right: auto;
+        }
+
+        .map-container {
+            position: relative; width: 100%; border-radius: 12px; 
+            overflow: hidden; border: 3px solid #e2e8f0;
+        }
+
+        .map-container img { width: 100%; display: block; height: auto; }
+
+        .map-pin {
+            position: absolute; transform: translate(-50%, -100%); 
+            display: flex; flex-direction: column; align-items: center; 
+            cursor: pointer; transition: transform 0.2s; z-index: 10;
+        }
+
+        .map-pin:hover { transform: translate(-50%, -110%) scale(1.1); z-index: 20; }
+
+        .pin-icon {
+            background: #ef4444; color: white; width: 26px; height: 26px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 2px solid white;
+            transition: all 0.3s;
+        }
+
+        .pin-label {
+            background: rgba(255,255,255,0.95); color: #0f172a; padding: 3px 8px; 
+            border-radius: 6px; font-size: 11px; font-weight: 800; margin-top: 4px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; pointer-events: none;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Estado: Destino Seleccionado / Viendo ahora */
+        .map-pin.active .pin-icon {
+            background: #3b82f6; transform: scale(1.2); 
+            box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Estado: Ubicación actual del GPS */
+        .map-pin.user-location .pin-icon {
+            background: #10b981; animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green { 
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 
+            70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } 
+        }
+
+        .leyenda-mapa {
+            display: flex; gap: 20px; margin-top: 15px; font-size: 13px; 
+            justify-content: center; flex-wrap: wrap; font-weight: 600; color: #475569;
+        }
+        .leyenda-item { display: flex; align-items: center; gap: 8px; }
+        .leyenda-color { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 2px solid white;}
+
+        /* --- FIN ESTILOS CROQUIS --- */
+
         .info-cards { 
             max-width: 1400px; margin: 0 auto 40px; padding: 0 20px; 
             display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 25px; width: 100%; 
@@ -288,6 +350,59 @@
         </div>
     </div>
 
+    <!-- NUEVA SECCIÓN: CROQUIS INTERACTIVO -->
+    <div class="map-section">
+        <h4 style="margin-bottom: 10px; color: #002e5d; font-size: 18px; display: flex; align-items: center; gap: 10px;">🗺️ Croquis Interactivo del Campus</h4>
+        <p style="margin-bottom: 15px; font-size: 14px; color: #475569;">Toca los marcadores en el mapa para transportarte inmediatamente a esa ubicación en el visor 360. Sigue los caminos ilustrados para encontrar la mejor ruta.</p>
+        
+        <div class="map-container">
+            <!-- La imagen base del croquis que enviaste -->
+            <img src="image_52e5db.jpg" alt="Mapa Ilustrado de la UNE">
+            
+            <!-- PINES INTERACTIVOS -->
+            <!-- Nota: Los porcentajes top y left posicionan el pin sobre la imagen. Puedes ajustarlos ligeramente si lo necesitas. -->
+            
+            <div class="map-pin active" id="pin-mapa-entrada" style="top: 25%; left: 45%;" onclick="irAUbicacion('entrada', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Entrada</div>
+            </div>
+            
+            <div class="map-pin" id="pin-mapa-biblioteca" style="top: 40%; left: 55%;" onclick="irAUbicacion('biblioteca', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Biblioteca</div>
+            </div>
+            
+            <div class="map-pin" id="pin-mapa-estadio" style="top: 55%; left: 25%;" onclick="irAUbicacion('estadio', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Estadio</div>
+            </div>
+            
+            <div class="map-pin" id="pin-mapa-tecnologia" style="top: 88%; left: 50%;" onclick="irAUbicacion('tecnologia', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Tecnología</div>
+            </div>
+            
+            <div class="map-pin" id="pin-mapa-comedor" style="top: 40%; left: 72%;" onclick="irAUbicacion('comedor', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Comedor</div>
+            </div>
+            
+            <div class="map-pin" id="pin-mapa-ciencias" style="top: 55%; left: 65%;" onclick="irAUbicacion('ciencias', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Ciencias</div>
+            </div>
+            
+            <div class="map-pin" id="pin-mapa-enfermeria" style="top: 85%; left: 15%;" onclick="irAUbicacion('enfermeria', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Enfermería</div>
+            </div>
+            
+            <div class="map-pin" id="pin-mapa-gimnasio" style="top: 60%; left: 30%;" onclick="irAUbicacion('gimnasio', null)">
+                <div class="pin-icon">📍</div><div class="pin-label">Gimnasio</div>
+            </div>
+        </div>
+        
+        <div class="leyenda-mapa">
+            <div class="leyenda-item"><div class="leyenda-color" style="background: #ef4444;"></div> Destinos Disponibles</div>
+            <div class="leyenda-item"><div class="leyenda-color" style="background: #3b82f6;"></div> Viendo Actualmente</div>
+            <div class="leyenda-item"><div class="leyenda-color" style="background: #10b981;"></div> Tu Ubicación Real (GPS)</div>
+        </div>
+    </div>
+    <!-- FIN SECCIÓN CROQUIS -->
+
     <div class="info-cards" style="margin-bottom: 25px;">
         <div class="card dan-container" style="grid-column: span 3;">
             <div class="dan-search">
@@ -337,9 +452,9 @@
         <div class="card proximamente-card">
             <h4>🚀 Próximamente</h4>
             <p style="font-size: 13px;">
-                Estamos trabajando para añadir la búsqueda de <strong>salones específicos</strong> con integración GPS.<br><br>
+                Estamos trabajando para añadir la búsqueda inteligente por interiores usando GPS.<br><br>
                 <em>Ejemplo de actualización futura:</em><br>
-                "Quiero ir al <strong>Salón 108</strong> de la Facultad de Tecnología (1er piso, al fondo a la izquierda)."
+                Ruta directa para llegar al <strong>Salón 108 de Telecomunicaciones</strong> (1er piso de Tecnología, al fondo a la izquierda).
             </p>
         </div>
     </div>
@@ -347,7 +462,7 @@
     <div class="info-cards">
         <div class="card gps-card" style="border-left: 4px solid #10b981; grid-column: span 3;">
             <h4>🛰️ Navegación en Vivo (Beta)</h4>
-            <p style="margin-bottom: 15px; font-size: 14px; color: #475569;">Activa el GPS para que la app detecte dónde estás en el campus y te guíe paso a paso.</p>
+            <p style="margin-bottom: 15px; font-size: 14px; color: #475569;">Activa el GPS para que la app detecte dónde estás en el campus y te guíe paso a paso. Tu ubicación aparecerá en el mapa de arriba.</p>
             
             <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                 <button onclick="iniciarNavegacion()" style="padding: 10px 15px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.3s;">🚶 Activar Guía en Vivo</button>
@@ -384,7 +499,7 @@
             "capilla": "Capilla UNE"
         };
 
-        // BASE DE DATOS DE COORDENADAS (Tus números inyectados aquí)
+        // BASE DE DATOS DE COORDENADAS
         const puntosCampus = {
             entrada: { lat: -11.94537026382922, lon: -76.70190469783391 },
             biblioteca: { lat: -11.945808170406089, lon: -76.7013888204146 },
@@ -446,22 +561,29 @@
             }
 
             viewer.loadScene(sceneId);
-            actualizarBotonesActivos(botonPresionado);
+            actualizarBotonesActivos(document.getElementById('btn-' + sceneId));
             mensajeBox.innerHTML = ""; 
         }
 
         function actualizarBotonesActivos(botonActivo) {
+            // Actualizar Sidebar
             document.querySelectorAll('.btn-destino').forEach(btn => btn.classList.remove('active'));
             if(botonActivo) botonActivo.classList.add('active');
+
+            // Actualizar Mapa (Pines)
+            const sceneId = viewer.getScene();
+            document.querySelectorAll('.map-pin').forEach(pin => pin.classList.remove('active'));
+            const mapPin = document.getElementById('pin-mapa-' + sceneId);
+            if(mapPin) mapPin.classList.add('active');
+            
+            // Actualizar Texto Superior
+            const indicador = document.getElementById('origen-actual');
+            const nombreLegible = nombresUbicaciones[sceneId] || "Ubicación desconocida";
+            indicador.innerHTML = `📍 Estás viendo: ${nombreLegible}`;
         }
 
         viewer.on('scenechange', function(sceneId) {
-            const btn = document.getElementById('btn-' + sceneId);
-            actualizarBotonesActivos(btn);
-            
-            const indicador = document.getElementById('origen-actual');
-            const nombreLegible = nombresUbicaciones[sceneId] || "Ubicación desconocida";
-            indicador.innerHTML = `📍 Estás en: ${nombreLegible}`;
+            actualizarBotonesActivos(document.getElementById('btn-' + sceneId));
         });
 
         function trazarRuta() {
@@ -482,7 +604,6 @@
             }
 
             const escenaActual = viewer.getScene();
-            
             if (escenaActual === destinoId) {
                 mensajeBox.style.color = "#0284c7";
                 mensajeBox.innerHTML = "🐄 Dan dice: ¡Ya estás en ese lugar!";
@@ -490,12 +611,10 @@
             }
 
             mensajeBox.style.color = "#059669";
-            mensajeBox.innerHTML = "¡Muuu! 🐄 Dan está trazando la ruta. Transportándote...";
+            mensajeBox.innerHTML = "¡Muuu! 🐄 Dan trazó la ruta en el mapa. Transportándote...";
             
             setTimeout(() => {
-                viewer.loadScene(destinoId);
-                const btn = document.getElementById('btn-' + destinoId);
-                actualizarBotonesActivos(btn);
+                irAUbicacion(destinoId, document.getElementById('btn-' + destinoId));
                 mensajeBox.innerHTML = ""; 
                 select.value = "";
             }, 1200);
@@ -521,7 +640,6 @@
                 panel.innerHTML = "❌ Tu navegador no soporta navegación GPS.";
                 return;
             }
-
             panel.innerHTML = "Buscando tu posición en el campus... 🛰️ (Acepta los permisos)";
 
             watchId = navigator.geolocation.watchPosition(
@@ -535,6 +653,8 @@
             if (watchId !== null) {
                 navigator.geolocation.clearWatch(watchId);
                 document.getElementById('panel-instrucciones').innerHTML = "Navegación detenida. Usa el mapa manual.";
+                // Quitar indicador GPS del mapa
+                document.querySelectorAll('.map-pin').forEach(pin => pin.classList.remove('user-location'));
             }
         }
 
@@ -546,7 +666,6 @@
             let lugarMasCercano = null;
             let distanciaMinima = Infinity;
 
-            // Busca el lugar más cercano iterando por todas tus coordenadas
             for (const [id, coords] of Object.entries(puntosCampus)) {
                 const dist = calcularDistanciaMetros(miLat, miLon, coords.lat, coords.lon);
                 if (dist < distanciaMinima) {
@@ -556,22 +675,26 @@
             }
 
             const nombreLugar = nombresUbicaciones[lugarMasCercano] || lugarMasCercano;
+            
+            // Limpiar la ubicación anterior del mapa
+            document.querySelectorAll('.map-pin').forEach(pin => pin.classList.remove('user-location'));
 
-            // Si estás a menos de 30 metros de un punto clave
             if (distanciaMinima < 30) {
-                panel.innerHTML = `📍 ¡Estás en: <strong>${nombreLugar}</strong>!<br>Explora a tu alrededor o selecciona otro destino.`;
+                panel.innerHTML = `📍 ¡Estás en: <strong>${nombreLugar}</strong>!<br>El mapa arriba muestra tu posición en VERDE.`;
                 
-                // Mueve la foto 360 al lugar donde estás parado (solo si es una escena válida que tenemos)
+                // Muestra la luz verde en el mapa
+                const pinMapa = document.getElementById('pin-mapa-' + lugarMasCercano);
+                if(pinMapa) pinMapa.classList.add('user-location');
+
+                // Carga la foto 360 si es válida
                 if(viewer.getScene() !== lugarMasCercano && viewer.getConfig().scenes[lugarMasCercano]) { 
-                    viewer.loadScene(lugarMasCercano); 
-                    actualizarBotonesActivos(document.getElementById('btn-' + lugarMasCercano));
+                    irAUbicacion(lugarMasCercano, null);
                 }
             } else {
-                panel.innerHTML = `🚶 Estás caminando por el campus...<br><span style="font-size:13px">El lugar más cercano es <strong>${nombreLugar}</strong> a ${Math.round(distanciaMinima)} metros de ti.</span>`;
+                panel.innerHTML = `🚶 Estás caminando por el campus...<br><span style="font-size:13px">El lugar más cercano es <strong>${nombreLugar}</strong> a ${Math.round(distanciaMinima)} metros.</span>`;
             }
         }
 
-        // Herramienta Dev Oculta
         function obtenerMiUbicacion() {
             const resultadoGPS = document.getElementById('resultado-gps');
             navigator.geolocation.getCurrentPosition(
