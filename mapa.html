@@ -25,43 +25,48 @@
         
         .main-container { display: flex; max-width: 1400px; margin: 30px auto; padding: 0 20px; gap: 25px; height: 650px; flex: 1; width: 100%; animation: fadeIn 0.8s ease-out; }
         
-        /* Área Central (Mapa o 360) */
         .content-area { flex: 3; position: relative; display: flex; flex-direction: column; }
         
-        /* --- ESTILOS DEL CROQUIS --- */
         .map-container { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; background: #e2e8f0; }
         .map-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
-        /* Capa SVG para dibujar la ruta */
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .ruta-animada { stroke-dasharray: 8; animation: dash 1s linear infinite; }
 
         .map-pin { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; z-index: 10; }
         .map-pin:hover { transform: translate(-50%, -110%) scale(1.1); z-index: 20; }
-        .pin-icon { background: #ef4444; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 2px solid white; transition: all 0.3s; }
-        .pin-label { background: rgba(255,255,255,0.95); color: #0f172a; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; margin-top: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; border: 1px solid #e2e8f0; }
         
-        .map-pin.user-location .pin-icon { background: #10b981; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.4); }
+        .pin-foto { width: 45px; height: 45px; background-size: cover; background-position: center; border-radius: 50%; border: 3px solid white; position: absolute; bottom: 35px; opacity: 0; transition: all 0.3s; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transform: scale(0.5); }
+        .map-pin:hover .pin-foto { opacity: 1; transform: scale(1) translateY(-5px); }
 
-        /* --- ESTILOS DEL VISOR 360 --- */
+        .pin-icon { background: #ef4444; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 2px solid white; transition: all 0.3s; }
+        .pin-label { background: rgba(255,255,255,0.95); color: #0f172a; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; margin-top: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; border: 1px solid #e2e8f0; }
+        
+        .map-pin.active .pin-icon { background: #3b82f6; transform: scale(1.2); box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.4); }
+        .map-pin.user-location .pin-icon { background: #10b981; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.4); }
+        .map-pin.user-location .pin-label { background: #10b981; color: white; border-color: #059669; }
+
         .viewer-container { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; border: 4px solid white; display: none; background: black; }
         #panorama { width: 100%; height: 100%; }
         .btn-volver-mapa { position: absolute; top: 15px; left: 15px; z-index: 999; background: #ef4444; color: white; border: 2px solid white; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: 0.3s; }
         .btn-volver-mapa:hover { background: #dc2626; transform: scale(1.05); }
 
-        /* Sidebar */
-        .sidebar { flex: 1; min-width: 320px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 10px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.5); }
+        .sidebar { flex: 1; min-width: 320px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 8px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.5); }
         .sidebar::-webkit-scrollbar { width: 8px; }
         .sidebar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
-        .sidebar h3 { font-size: 13px; margin: 10px 0 5px 0; color: #64748b; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #f1f5f9; padding-bottom: 5px; font-weight: 700; }
+        .sidebar h3 { font-size: 13px; margin: 15px 0 5px 0; color: #64748b; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #f1f5f9; padding-bottom: 5px; font-weight: 700; }
         
-        .btn-destino { width: 100%; padding: 10px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; text-align: left; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 12px; }
+        .btn-destino { width: 100%; padding: 8px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; text-align: left; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 12px; }
         .btn-destino:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 46, 93, 0.1); border-color: #002e5d; }
+        .btn-destino.active { background: linear-gradient(135deg, #002e5d 0%, #004488 100%); border-color: #002e5d; color: white; box-shadow: 0 4px 15px rgba(0, 46, 93, 0.2); }
+        .btn-destino.active .btn-title { color: white; }
         .btn-info { display: flex; flex-direction: column; }
-        .btn-title { font-size: 14px; font-weight: 600; color: #1e293b; transition: color 0.3s; }
-        .img-thumb { width: 40px; height: 40px; background: #cbd5e1; border-radius: 8px; background-size: cover; background-position: center; flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn-title { font-size: 13px; font-weight: 600; color: #1e293b; transition: color 0.3s; }
+        .img-thumb { width: 35px; height: 35px; background: #cbd5e1; border-radius: 8px; background-size: cover; background-position: center; flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        /* Tarjetas Inferiores */
+        .btn-rimac { border-left: 4px solid #ef4444; }
+        .btn-rimac:hover { border-color: #ef4444; }
+
         .info-cards { max-width: 1400px; margin: 0 auto 40px; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 25px; width: 100%; animation: fadeIn 1s ease-out; }
         .card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.8); transition: transform 0.3s; }
         .card:hover { transform: translateY(-5px); }
@@ -119,31 +124,75 @@
             
             <div id="vista-mapa" class="map-container">
                 <img src="https://i.ibb.co/SX9cBTVH/bbcadf1a-e262-4a43-a6bf-88d44366a4d6.jpg" alt="Mapa Ilustrado UNE">
-                
                 <svg id="svg-rutas" class="route-svg"></svg>
                 
                 <div class="map-pin user-location" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
-                    <div class="pin-icon">📍</div><div class="pin-label">Entrada</div>
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                    <div class="pin-icon">🙋‍♂️</div><div class="pin-label">Tú estás aquí</div>
                 </div>
+                
                 <div class="map-pin" id="pin-mapa-biblioteca" style="top: 38%; left: 52%;" onclick="abrir360('biblioteca')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                     <div class="pin-icon">📍</div><div class="pin-label">Biblioteca</div>
                 </div>
+                
+                <div class="map-pin" id="pin-mapa-admision" style="top: 30%; left: 50%;" onclick="abrir360('admision')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                    <div class="pin-icon">📍</div><div class="pin-label">Admisión</div>
+                </div>
+
                 <div class="map-pin" id="pin-mapa-comedor" style="top: 42%; left: 70%;" onclick="abrir360('comedor')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                     <div class="pin-icon">📍</div><div class="pin-label">Comedor</div>
                 </div>
+                
                 <div class="map-pin" id="pin-mapa-tecnologia" style="top: 85%; left: 45%;" onclick="abrir360('tecnologia')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
                     <div class="pin-icon">📍</div><div class="pin-label">Tecnología</div>
                 </div>
+
+                <div class="map-pin" id="pin-mapa-agropecuaria" style="top: 80%; left: 55%;" onclick="abrir360('agropecuaria')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                    <div class="pin-icon">📍</div><div class="pin-label">Agropecuaria</div>
+                </div>
+                
                 <div class="map-pin" id="pin-mapa-ciencias" style="top: 55%; left: 65%;" onclick="abrir360('ciencias')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                     <div class="pin-icon">📍</div><div class="pin-label">Ciencias</div>
                 </div>
+
+                <div class="map-pin" id="pin-mapa-empresariales" style="top: 70%; left: 60%;" onclick="abrir360('empresariales')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                    <div class="pin-icon">📍</div><div class="pin-label">Empresariales</div>
+                </div>
+
+                <div class="map-pin" id="pin-mapa-sociales" style="top: 60%; left: 70%;" onclick="abrir360('sociales')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                    <div class="pin-icon">📍</div><div class="pin-label">Sociales</div>
+                </div>
+
+                <div class="map-pin" id="pin-mapa-inicial" style="top: 40%; left: 40%;" onclick="abrir360('inicial')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                    <div class="pin-icon">📍</div><div class="pin-label">Inicial</div>
+                </div>
+
+                <div class="map-pin" id="pin-mapa-pedagogia" style="top: 50%; left: 80%;" onclick="abrir360('pedagogia')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                    <div class="pin-icon">📍</div><div class="pin-label">Pedagogía</div>
+                </div>
+                
                 <div class="map-pin" id="pin-mapa-estadio" style="top: 55%; left: 25%;" onclick="abrir360('estadio')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
                     <div class="pin-icon">📍</div><div class="pin-label">Estadio</div>
                 </div>
+                
                 <div class="map-pin" id="pin-mapa-enfermeria" style="top: 80%; left: 15%;" onclick="abrir360('enfermeria')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                     <div class="pin-icon">📍</div><div class="pin-label">Enfermería</div>
                 </div>
+                
                 <div class="map-pin" id="pin-mapa-gimnasio" style="top: 65%; left: 30%;" onclick="abrir360('gimnasio')">
+                    <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                     <div class="pin-icon">📍</div><div class="pin-label">Gimnasio</div>
                 </div>
             </div>
@@ -156,7 +205,7 @@
         </div>
 
         <div class="sidebar">
-            <h3 style="margin-top:0;">Toca para entrar (360)</h3>
+            <h3 style="margin-top:0;">Instalaciones Principales</h3>
             <button class="btn-destino" onclick="abrir360('entrada')">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                 <div class="btn-info"><span class="btn-title">Entrada Principal</span></div>
@@ -165,29 +214,63 @@
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                 <div class="btn-info"><span class="btn-title">Biblioteca Central</span></div>
             </button>
+            <button class="btn-destino" onclick="abrir360('admision')">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">Oficina de Admisión</span></div>
+            </button>
             <button class="btn-destino" onclick="abrir360('comedor')">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                 <div class="btn-info"><span class="btn-title">Comedor Universitario</span></div>
             </button>
+
+            <h3>Facultades</h3>
             <button class="btn-destino" onclick="abrir360('tecnologia')">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
                 <div class="btn-info"><span class="btn-title">Facultad de Tecnología</span></div>
+            </button>
+            <button class="btn-destino" onclick="abrir360('agropecuaria')">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Agropecuaria y Nutrición</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('ciencias')">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                 <div class="btn-info"><span class="btn-title">Facultad de Ciencias</span></div>
             </button>
-            <button class="btn-destino" onclick="abrir360('estadio')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
-                <div class="btn-info"><span class="btn-title">Estadio de grass UNE</span></div>
+            <button class="btn-destino" onclick="abrir360('empresariales')">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Ciencias Empresariales</span></div>
             </button>
+            <button class="btn-destino" onclick="abrir360('sociales')">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Ciencias Sociales</span></div>
+            </button>
+            <button class="btn-destino" onclick="abrir360('inicial')">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Educación Inicial</span></div>
+            </button>
+            <button class="btn-destino" onclick="abrir360('pedagogia')">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">F. Pedagogía y C. Física</span></div>
+            </button>
+
+            <h3>Bienestar y Deporte</h3>
             <button class="btn-destino" onclick="abrir360('enfermeria')">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                 <div class="btn-info"><span class="btn-title">Enfermería de la UNE</span></div>
             </button>
+            <button class="btn-destino" onclick="abrir360('estadio')">
+                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="btn-info"><span class="btn-title">Estadio de grass UNE</span></div>
+            </button>
             <button class="btn-destino" onclick="abrir360('gimnasio')">
                 <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                 <div class="btn-info"><span class="btn-title">Gimnasio</span></div>
+            </button>
+
+            <h3>Otras Sedes</h3>
+            <button class="btn-destino btn-rimac" onclick="abrir360('rimac')">
+                <div class="img-thumb" style="background-color: #fca5a5;"></div>
+                <div class="btn-info"><span class="btn-title" style="color: #ef4444;">Sede Rímac</span></div>
             </button>
         </div>
     </div>
@@ -202,10 +285,17 @@
                     <div>
                         <select id="select-destino">
                             <option value="" disabled selected>¿A dónde quieres ir?</option>
+                            <option value="entrada">Entrada Principal</option>
                             <option value="biblioteca">Biblioteca Central</option>
+                            <option value="admision">Oficina de Admisión</option>
                             <option value="comedor">Comedor Universitario</option>
                             <option value="tecnologia">Facultad de Tecnología</option>
+                            <option value="agropecuaria">F. Agropecuaria y Nutrición</option>
                             <option value="ciencias">Facultad de Ciencias</option>
+                            <option value="empresariales">F. Ciencias Empresariales</option>
+                            <option value="sociales">F. Ciencias Sociales</option>
+                            <option value="inicial">F. Educación Inicial</option>
+                            <option value="pedagogia">F. Pedagogía y C. Física</option>
                             <option value="enfermeria">Enfermería de la UNE</option>
                             <option value="estadio">Estadio de grass UNE</option>
                             <option value="gimnasio">Gimnasio</option>
@@ -223,6 +313,24 @@
     </div>
 
     <div class="info-cards">
+        <div class="card historia-card" style="grid-column: span 2;">
+            <h4>📖 El porqué de este proyecto</h4>
+            <p>
+                <em>"Yo también fui cachimbo y los primeros días me perdía por completo en la inmensidad del campus buscando mi facultad o el comedor. Creé este recorrido virtual interactivo para dejar mi granito de arena a la Universidad Nacional de Educación y ayudar a las futuras generaciones de La Cantuta a orientarse fácilmente desde su celular antes de su primer día de clases."</em>
+            </p>
+        </div>
+
+        <div class="card proximamente-card">
+            <h4>🚀 Próximamente</h4>
+            <p style="font-size: 13px;">
+                Estamos trabajando para añadir la búsqueda inteligente por interiores usando GPS.<br><br>
+                <em>Ejemplo de actualización futura:</em><br>
+                Ruta directa para llegar al <strong>Salón 108 de Telecomunicaciones</strong> (1er piso de Tecnología, al fondo a la izquierda).
+            </p>
+        </div>
+    </div>
+
+    <div class="info-cards">
         <div class="card gps-card" style="border-left: 4px solid #10b981; grid-column: span 3;">
             <h4>🛰️ Navegación GPS (Modo de Captura)</h4>
             <p style="margin-bottom: 15px; font-size: 14px; color: #475569;">Herramienta para desarrolladores: Captura las coordenadas reales de los pabellones en el campus.</p>
@@ -232,79 +340,94 @@
     </div>
 
     <script>
-        // --- COORDENADAS DEL MAPA (PORCENTAJES PARA DIBUJAR RUTAS) ---
-        // Estos números coinciden con el style="top: X%; left: Y%;" de los pines del HTML
         const coordenadasMapa = {
             "entrada": { x: 45, y: 15 },
             "biblioteca": { x: 52, y: 38 },
+            "admision": { x: 50, y: 30 },
             "comedor": { x: 70, y: 42 },
             "tecnologia": { x: 45, y: 85 },
+            "agropecuaria": { x: 55, y: 80 },
             "ciencias": { x: 65, y: 55 },
+            "empresariales": { x: 60, y: 70 },
+            "sociales": { x: 70, y: 60 },
+            "inicial": { x: 40, y: 40 },
+            "pedagogia": { x: 80, y: 50 },
             "estadio": { x: 25, y: 55 },
             "enfermeria": { x: 15, y: 80 },
             "gimnasio": { x: 30, y: 65 }
         };
 
-        // Variable global para rastrear dónde está parado el usuario virtualmente
         let ubicacionActual = "entrada"; 
 
-        // --- SISTEMA DEL VISOR 360 ---
         let viewer = null;
 
         function inicializarPannellum(sceneId) {
-            // Si ya existe el visor, solo cambiamos la escena.
             if (viewer !== null) {
                 viewer.loadScene(sceneId);
                 return;
             }
-            // Si es la primera vez que se abre, se crea el visor.
             viewer = pannellum.viewer('panorama', {
                 "default": { "firstScene": sceneId, "sceneFadeDuration": 800, "autoLoad": true },
                 "scenes": {
                     "entrada": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
-                    "tecnologia": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
-                    "comedor": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
-                    "estadio": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
                     "biblioteca": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
+                    "admision": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
+                    "comedor": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
+                    "tecnologia": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
+                    "agropecuaria": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
                     "ciencias": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
+                    "empresariales": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
+                    "sociales": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
+                    "inicial": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
+                    "pedagogia": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
+                    "estadio": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
                     "enfermeria": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
                     "gimnasio": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" }
                 }
             });
         }
 
-        // Función para cambiar de "Modo Mapa" a "Modo 360"
         function abrir360(sceneId) {
-            // 1. Ocultar el mapa y la línea de ruta
+            if (sceneId === 'rimac') {
+                const msj = document.getElementById('dan-texto');
+                msj.style.color = "#dc2626";
+                msj.innerHTML = "🐄 Dan dice: ¡Muuu! La sede Rímac está muy lejos. ¡Próximamente!";
+                setTimeout(() => { msj.innerHTML = ""; }, 4000);
+                return; 
+            }
+
             document.getElementById('vista-mapa').style.display = 'none';
-            document.getElementById('svg-rutas').innerHTML = ''; // Limpiar la ruta dibujada
-            
-            // 2. Mostrar la ventana negra del 360
+            document.getElementById('svg-rutas').innerHTML = '';
             document.getElementById('vista-360').style.display = 'block';
             
-            // 3. Inicializar/Cargar la foto de la escena
             inicializarPannellum(sceneId);
-
-            // Actualizamos la ubicación actual
             ubicacionActual = sceneId;
             
-            // Limpiamos mensajes de Dan
             document.getElementById('dan-texto').innerHTML = "";
             document.getElementById('origen-actual').innerHTML = `📍 Ubicación Actual: ${sceneId.charAt(0).toUpperCase() + sceneId.slice(1)}`;
             
-            // Mover el pin verde de ubicación
-            document.querySelectorAll('.map-pin').forEach(pin => pin.classList.remove('user-location'));
+            document.querySelectorAll('.map-pin').forEach(pin => {
+                pin.classList.remove('user-location');
+                pin.querySelector('.pin-icon').innerHTML = "📍";
+                pin.querySelector('.pin-label').innerHTML = pin.querySelector('.pin-label').getAttribute('data-original') || pin.querySelector('.pin-label').innerHTML;
+            });
+
             const pinNuevo = document.getElementById('pin-mapa-' + sceneId);
-            if(pinNuevo) pinNuevo.classList.add('user-location');
+            if(pinNuevo) {
+                pinNuevo.classList.add('user-location');
+                pinNuevo.querySelector('.pin-icon').innerHTML = "🙋‍♂️";
+                if (!pinNuevo.querySelector('.pin-label').getAttribute('data-original')) {
+                    pinNuevo.querySelector('.pin-label').setAttribute('data-original', pinNuevo.querySelector('.pin-label').innerHTML);
+                }
+                pinNuevo.querySelector('.pin-label').innerHTML = "Tú estás aquí";
+            }
         }
 
-        // Función para cambiar de "Modo 360" a "Modo Mapa"
         function volverAlMapa() {
             document.getElementById('vista-360').style.display = 'none';
             document.getElementById('vista-mapa').style.display = 'block';
         }
 
-        // --- SISTEMA DE DIBUJO DE RUTAS EN EL CROQUIS ---
         function trazarRutaVisual() {
             const select = document.getElementById('select-destino');
             const destinoId = select.value;
@@ -323,36 +446,31 @@
                 return;
             }
 
-            // Asegurarnos de que el mapa sea visible
             if (document.getElementById('vista-mapa').style.display === 'none') {
                 volverAlMapa();
             }
 
-            // Limpiar rutas anteriores
             svgLayer.innerHTML = '';
 
-            // Obtener las coordenadas X, Y (top, left) del origen y del destino
             const origen = coordenadasMapa[ubicacionActual];
             const destino = coordenadasMapa[destinoId];
 
             if(origen && destino) {
-                // Dibujar la línea animada (SVG)
                 const linea = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                 linea.setAttribute('x1', origen.x + '%');
                 linea.setAttribute('y1', origen.y + '%');
                 linea.setAttribute('x2', destino.x + '%');
                 linea.setAttribute('y2', destino.y + '%');
-                linea.setAttribute('stroke', '#0284c7'); // Color azul llamativo
+                linea.setAttribute('stroke', '#0284c7');
                 linea.setAttribute('stroke-width', '4');
                 linea.classList.add('ruta-animada');
                 svgLayer.appendChild(linea);
 
                 mensajeBox.style.color = "#059669";
-                mensajeBox.innerHTML = `¡Muuu! 🐄 He trazado la línea en el mapa hacia tu destino.`;
+                mensajeBox.innerHTML = `¡Muuu! 🐄 He trazado la línea azul en el mapa hacia tu destino.`;
             }
         }
 
-        // --- HERRAMIENTA DE CAPTURA GPS ---
         function obtenerMiUbicacion() {
             const resultadoGPS = document.getElementById('resultado-gps');
             if (!navigator.geolocation) {
