@@ -28,7 +28,7 @@
         .content-area { flex: 3; position: relative; display: flex; flex-direction: column; }
         
         .map-container { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; border: 4px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; background: #e2e8f0; }
-        .map-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .map-container img { width: 100%; height: 100%; object-fit: contain; display: block; }
         
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .ruta-animada { stroke-dasharray: 8; animation: dash 1s linear infinite; }
@@ -126,9 +126,9 @@
                 <img src="https://i.ibb.co/SX9cBTVH/bbcadf1a-e262-4a43-a6bf-88d44366a4d6.jpg" alt="Mapa Ilustrado UNE">
                 <svg id="svg-rutas" class="route-svg"></svg>
                 
-                <div class="map-pin user-location" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
+                <div class="map-pin" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
                     <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
-                    <div class="pin-icon">🙋‍♂️</div><div class="pin-label">Tú estás aquí</div>
+                    <div class="pin-icon">📍</div><div class="pin-label">Entrada</div>
                 </div>
                 
                 <div class="map-pin" id="pin-mapa-biblioteca" style="top: 38%; left: 52%;" onclick="abrir360('biblioteca')">
@@ -279,7 +279,7 @@
         <div class="card dan-container" style="grid-column: span 3;">
             <div class="dan-search">
                 <h4>🧭 Trazar Ruta en el Mapa</h4>
-                <div class="ruta-indicador" id="origen-actual">📍 Ubicación Actual: Entrada Principal</div>
+                <div class="ruta-indicador" id="origen-actual">📍 Selecciona tu punto de origen en el mapa</div>
                 
                 <div class="ruta-box">
                     <div>
@@ -334,7 +334,12 @@
         <div class="card gps-card" style="border-left: 4px solid #10b981; grid-column: span 3;">
             <h4>🛰️ Navegación GPS (Modo de Captura)</h4>
             <p style="margin-bottom: 15px; font-size: 14px; color: #475569;">Herramienta para desarrolladores: Captura las coordenadas reales de los pabellones en el campus.</p>
-            <button onclick="obtenerMiUbicacion()" style="padding: 10px 15px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">📍 Obtener mis coordenadas actuales</button>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="iniciarNavegacion()" style="padding: 10px 15px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">🚶 Activar Guía en Vivo</button>
+                <button onclick="detenerNavegacion()" style="padding: 10px 15px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Detener</button>
+                <button onclick="obtenerMiUbicacion()" style="padding: 10px 15px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">📍 Capturar Punto</button>
+            </div>
+            <div id="panel-instrucciones" style="margin-top: 15px; font-weight: bold; color: #0369a1;"></div>
             <p id="resultado-gps" style="font-family: monospace; font-size: 14px; color: #002e5d; margin-top: 10px; font-weight: bold;"></p>
         </div>
     </div>
@@ -358,7 +363,6 @@
         };
 
         let ubicacionActual = "entrada"; 
-
         let viewer = null;
 
         function inicializarPannellum(sceneId) {
@@ -407,19 +411,12 @@
             document.getElementById('origen-actual').innerHTML = `📍 Ubicación Actual: ${sceneId.charAt(0).toUpperCase() + sceneId.slice(1)}`;
             
             document.querySelectorAll('.map-pin').forEach(pin => {
-                pin.classList.remove('user-location');
-                pin.querySelector('.pin-icon').innerHTML = "📍";
-                pin.querySelector('.pin-label').innerHTML = pin.querySelector('.pin-label').getAttribute('data-original') || pin.querySelector('.pin-label').innerHTML;
+                pin.classList.remove('active');
             });
 
             const pinNuevo = document.getElementById('pin-mapa-' + sceneId);
             if(pinNuevo) {
-                pinNuevo.classList.add('user-location');
-                pinNuevo.querySelector('.pin-icon').innerHTML = "🙋‍♂️";
-                if (!pinNuevo.querySelector('.pin-label').getAttribute('data-original')) {
-                    pinNuevo.querySelector('.pin-label').setAttribute('data-original', pinNuevo.querySelector('.pin-label').innerHTML);
-                }
-                pinNuevo.querySelector('.pin-label').innerHTML = "Tú estás aquí";
+                pinNuevo.classList.add('active');
             }
         }
 
@@ -468,6 +465,103 @@
 
                 mensajeBox.style.color = "#059669";
                 mensajeBox.innerHTML = `¡Muuu! 🐄 He trazado la línea azul en el mapa hacia tu destino.`;
+            }
+        }
+
+        const puntosCampus = {
+            entrada: { lat: -11.94537026382922, lon: -76.70190469783391 },
+            biblioteca: { lat: -11.945808170406089, lon: -76.7013888204146 },
+            comedor: { lat: -11.946082789402729, lon: -76.69981842885784 },
+            estadio: { lat: -11.946639448735187, lon: -76.70279989688714 },
+            tecnologia: { lat: -11.945555817526646, lon: -76.69902185343015 },
+            ciencias: { lat: -11.946624604482778, lon: -76.69924185997662 },
+            inicial: { lat: -11.946260920529191, lon: -76.70144192544306 },
+            pedagogia: { lat: -11.947693387237692, lon: -76.70237505665425 },
+            auditorio: { lat: -11.945214398584772, lon: -76.69987153388631 },
+            capilla: { lat: -11.948294575673824, lon: -76.7018515928023 }
+        };
+
+        let watchId = null;
+
+        function calcularDistanciaMetros(lat1, lon1, lat2, lon2) {
+            const R = 6371e3;
+            const f1 = lat1 * Math.PI/180;
+            const f2 = lat2 * Math.PI/180;
+            const df = (lat2-lat1) * Math.PI/180;
+            const dl = (lon2-lon1) * Math.PI/180;
+            const a = Math.sin(df/2) * Math.sin(df/2) + Math.cos(f1) * Math.cos(f2) * Math.sin(dl/2) * Math.sin(dl/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c; 
+        }
+
+        function iniciarNavegacion() {
+            const panel = document.getElementById('panel-instrucciones');
+            if (!navigator.geolocation) {
+                panel.innerHTML = "❌ Tu navegador no soporta navegación GPS.";
+                return;
+            }
+            panel.innerHTML = "Buscando tu posición en el campus... 🛰️ (Acepta los permisos)";
+
+            watchId = navigator.geolocation.watchPosition(
+                evaluarUbicacion, 
+                function(error) { panel.innerHTML = "❌ Error de GPS. Actívalo en tu celular."; },
+                { enableHighAccuracy: true, maximumAge: 0 }
+            );
+        }
+
+        function detenerNavegacion() {
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                document.getElementById('panel-instrucciones').innerHTML = "Navegación detenida. Usa el mapa manual.";
+                document.querySelectorAll('.map-pin').forEach(pin => {
+                    pin.classList.remove('user-location');
+                    pin.querySelector('.pin-icon').innerHTML = "📍";
+                    const originalText = pin.querySelector('.pin-label').getAttribute('data-original');
+                    if (originalText) {
+                        pin.querySelector('.pin-label').innerHTML = originalText;
+                    }
+                });
+            }
+        }
+
+        function evaluarUbicacion(pos) {
+            const miLat = pos.coords.latitude;
+            const miLon = pos.coords.longitude;
+            const panel = document.getElementById('panel-instrucciones');
+
+            let lugarMasCercano = null;
+            let distanciaMinima = Infinity;
+
+            for (const [id, coords] of Object.entries(puntosCampus)) {
+                const dist = calcularDistanciaMetros(miLat, miLon, coords.lat, coords.lon);
+                if (dist < distanciaMinima) {
+                    distanciaMinima = dist;
+                    lugarMasCercano = id;
+                }
+            }
+
+            document.querySelectorAll('.map-pin').forEach(pin => {
+                pin.classList.remove('user-location');
+                pin.querySelector('.pin-icon').innerHTML = "📍";
+                const originalText = pin.querySelector('.pin-label').getAttribute('data-original');
+                if (originalText) {
+                    pin.querySelector('.pin-label').innerHTML = originalText;
+                }
+            });
+
+            if (distanciaMinima < 30) {
+                panel.innerHTML = `📍 ¡Estás cerca de un punto clave! El mapa arriba muestra tu posición en VERDE.`;
+                const pinNuevo = document.getElementById('pin-mapa-' + lugarMasCercano);
+                if(pinNuevo) {
+                    pinNuevo.classList.add('user-location');
+                    pinNuevo.querySelector('.pin-icon').innerHTML = "🙋‍♂️";
+                    if (!pinNuevo.querySelector('.pin-label').getAttribute('data-original')) {
+                        pinNuevo.querySelector('.pin-label').setAttribute('data-original', pinNuevo.querySelector('.pin-label').innerHTML);
+                    }
+                    pinNuevo.querySelector('.pin-label').innerHTML = "Tú estás aquí";
+                }
+            } else {
+                panel.innerHTML = `🚶 Estás caminando por el campus...`;
             }
         }
 
