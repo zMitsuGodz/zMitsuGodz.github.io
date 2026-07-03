@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LISTA DE MEJORES AMIGOS DE JEAN</title>
+    <!-- Etiquetas Open Graph para Redes Sociales / WhatsApp -->
+    <title>TOP MEJORES AMIGOS DE JEAN</title>
+    <meta property="og:title" content="🏆 TOP MEJORES AMIGOS DE JEAN 🏆">
+    <meta property="og:description" content="El orden oficial e incuestionable del salón. Entra para ver quién subió y quién bajó esta semana.">
+    <!-- REEMPLAZA EL ENLACE DE ABAJO POR LA URL DE TU IMAGEN -->
+    <meta property="og:image" content="https://zmitsugodz.github.io/NOMBRE-DE-TU-REPOSITORIO/portada.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zmitsugodz.github.io/NOMBRE-DE-TU-REPOSITORIO/">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Righteous&family=VT323&family=Creepster&display=swap" rel="stylesheet">
     
@@ -28,6 +36,24 @@
             overflow-x: hidden;
             width: 100vw;
             min-height: 100vh;
+            position: relative;
+        }
+
+        /* -------------------------------------------
+           NUEVO: FONDO DE PARTÍCULAS / ESTRELLAS
+           ------------------------------------------- */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2;
+            background: #000 url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+            animation: moveStars 100s linear infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        @keyframes moveStars {
+            from { background-position: 0 0; }
+            to { background-position: -10000px 5000px; }
         }
 
         /* FONDO RETROWAVE ANIMADO */
@@ -35,9 +61,9 @@
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: 
-                linear-gradient(transparent 60%, rgba(157, 0, 255, 0.4) 100%),
-                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+                linear-gradient(transparent 60%, rgba(157, 0, 255, 0.3) 100%),
+                linear-gradient(rgba(0, 243, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.15) 1px, transparent 1px);
             background-size: 100% 100%, 40px 40px, 40px 40px;
             transform: perspective(500px) rotateX(60deg) translateY(100px) translateZ(-200px);
             animation: gridMove 3s linear infinite;
@@ -54,11 +80,11 @@
         .glitch-wrapper { text-align: center; margin: 40px 10px 0 10px; }
         .glitch {
             margin: 0; line-height: 1.1; font-family: 'Righteous', cursive;
-            font-size: clamp(2.5rem, 8vw, 4rem); 
+            font-size: clamp(2.2rem, 7vw, 4rem); 
             position: relative; display: inline-block; color: #fff; text-shadow: 0 0 20px var(--neon-blue);
         }
         .glitch::before, .glitch::after {
-            content: "TOP MEJORES AMIGOS DE JEAN"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #050505;
+            content: "TOP MEJORES AMIGOS DE JEAN"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent;
         }
         .glitch::before { left: 3px; text-shadow: -2px 0 var(--neon-pink); animation: glitch-anim 2s infinite linear alternate-reverse; clip: rect(44px, 450px, 56px, 0); }
         .glitch::after { left: -3px; text-shadow: -2px 0 var(--neon-blue); animation: glitch-anim2 3s infinite linear alternate-reverse; clip: rect(44px, 450px, 56px, 0); }
@@ -70,7 +96,9 @@
             text-align: center; font-family: 'VT323', monospace; font-size: clamp(1.2rem, 5vw, 2rem);
             color: var(--neon-pink); letter-spacing: 3px; margin-top: 10px; margin-bottom: 30px;
             text-shadow: 0 0 10px var(--neon-pink); padding: 0 10px;
+            animation: parpadeoLento 4s infinite alternate;
         }
+        @keyframes parpadeoLento { 0% { opacity: 0.8; } 100% { opacity: 1; text-shadow: 0 0 20px var(--neon-pink); } }
 
         /* -------------------------------------------
            RELOJ DEL INFRAMUNDO (AMENAZANTE) 
@@ -89,19 +117,25 @@
             margin: 0 auto 50px auto;
             max-width: 700px;
             text-align: center;
-            animation: latidoCardiaco 1.5s infinite;
+            animation: latidoCardiaco 1.5s infinite, bounceInDown 1s cubic-bezier(0.215, 0.61, 0.355, 1);
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.5), inset 0 0 20px rgba(255, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
         }
 
-        /* Sangre en los bordes del reloj */
+        /* Animación de entrada de rebote para el reloj */
+        @keyframes bounceInDown {
+            0% { opacity: 0; transform: translateY(-1000px); }
+            60% { opacity: 1; transform: translateY(25px); }
+            80% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
         .reloj-inframundo::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             box-shadow: inset 0 0 50px rgba(255, 0, 0, 0.8); pointer-events: none;
         }
 
-        /* Animación de latido brusco */
         @keyframes latidoCardiaco {
             0% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); border-color: #8b0000; }
             10% { transform: scale(1.03); box-shadow: 0 0 60px rgba(255, 0, 0, 1); border-color: #ff0000; }
@@ -129,31 +163,71 @@
         }
 
         /* CONTENEDOR PRINCIPAL */
-        .contenedor-main { max-width: 1200px; margin: 0 auto; padding: 0 15px 100px 15px; box-sizing: border-box; }
+        .contenedor-main { max-width: 1200px; margin: 0 auto; padding: 0 15px 100px 15px; box-sizing: border-box; position: relative; z-index: 1;}
 
         .fade-in-up { opacity: 0; transform: translateY(40px); animation: fadeInUp 0.8s forwards; }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* TARJETAS GLASSMORPHISM OPTIMIZADAS */
+        /* -------------------------------------------
+           NUEVO: ANIMACIÓN DE BORDES EN LAS CARTAS
+           ------------------------------------------- */
         .card-amigo, .card-god, .card-primero {
             background: rgba(15, 15, 25, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 20px;
             position: relative; transition: all 0.4s ease; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             box-sizing: border-box; width: 100%;
         }
+        
+        /* Efecto de luz dinámica en el borde superior e izquierdo */
+        .card-amigo::before, .card-god::before, .card-primero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(0, 243, 255, 0.3) 180deg, transparent 360deg);
+            animation: rotarLuz 4s linear infinite;
+            z-index: -1;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        @keyframes rotarLuz { 100% { transform: rotate(360deg); } }
+
+        .card-amigo::after, .card-god::after, .card-primero::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            background: rgba(15, 15, 25, 0.9);
+            border-radius: 18px;
+            z-index: -1;
+        }
+
+        /* Hover más épico para todas las cartas */
+        .card-amigo:hover, .card-primero:hover, .card-god:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.4);
+            border-color: var(--neon-blue);
+        }
+        .card-amigo:hover::before, .card-primero:hover::before, .card-god:hover::before {
+            opacity: 1;
+            background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(255, 0, 127, 0.8) 180deg, transparent 360deg);
+        }
+
 
         /* SECCIÓN GOD BLINDADA */
         .seccion-god { display: flex; justify-content: center; margin-bottom: 40px; }
         .card-god {
             max-width: 800px; text-align: center; border: 2px solid var(--neon-gold);
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
-            animation: floatGlowGod 4s infinite alternate; transform: scale(1.02);
+            animation: floatGlowGod 4s infinite alternate;
             opacity: 1 !important; visibility: visible !important;
         }
         @keyframes floatGlowGod {
             0% { transform: scale(1.02) translateY(0); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
             100% { transform: scale(1.02) translateY(-10px); box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), 0 0 80px var(--neon-pink); }
         }
+        .card-god::after { background: rgba(20, 10, 0, 0.9); } /* Fondo un poco más dorado para el rey */
+
         .god-badge {
             font-family: 'Righteous', cursive; font-size: clamp(1.8rem, 6vw, 2.5rem);
             color: var(--neon-gold); text-shadow: 0 0 20px var(--neon-gold); margin-bottom: 15px; letter-spacing: 3px;
@@ -162,13 +236,12 @@
         /* GRILLAS ADAPTABLES A MÓVIL */
         .seccion-podio-primeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
         .card-primero { border: 2px solid var(--neon-blue); box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); text-align: center; }
-        .card-primero:hover { transform: translateY(-5px); box-shadow: 0 0 30px var(--neon-blue); border-color: #fff; }
+        
         .puesto-1-badge {
             position: absolute; top: 20px; left: -35px; background: var(--neon-blue); color: #000; padding: 5px 40px;
             font-weight: bold; transform: rotate(-45deg); font-family: 'Righteous', cursive; box-shadow: 0 0 10px var(--neon-blue); z-index: 10;
         }
         .grid-restante { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .card-amigo:hover { transform: translateY(-5px); border-color: var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.5); }
 
         /* ICONOS ANIMADOS POR DEFECTO */
         @keyframes vibrarIcono {
@@ -187,7 +260,7 @@
         }
 
         /* TEXTOS INTERNOS */
-        .puesto-numero { position: absolute; top: 15px; left: 15px; font-family: 'Righteous', cursive; font-size: 1.3rem; color: rgba(255,255,255,0.3); z-index: 5; }
+        .puesto-numero { position: absolute; top: 15px; left: 15px; font-family: 'Righteous', cursive; font-size: 1.3rem; color: rgba(255,255,255,0.5); z-index: 5; text-shadow: 0 0 5px rgba(255,255,255,0.3);}
         .nombre {
             font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; letter-spacing: 1px;
             background: linear-gradient(90deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; word-wrap: break-word;
@@ -204,11 +277,9 @@
             border-radius: 5px; font-family: 'VT323', monospace; font-size: 1.2rem; color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); word-wrap: break-word; max-width: 90%;
         }
 
-        .motivo { font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; color: #a0a0b0; line-height: 1.4; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; font-weight: 500; margin-bottom: 25px;} /* Se agregó margen abajo para que no choque con la tendencia */
+        .motivo { font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; color: #a0a0b0; line-height: 1.4; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; font-weight: 500; margin-bottom: 25px;}
         
-        /* -------------------------------------------
-           NUEVOS CARTELES DE TENDENCIA (TEXTO EXPLICITO)
-           ------------------------------------------- */
+        /* CARTELES DE TENDENCIA */
         .tendencia-texto {
             position: absolute;
             bottom: 15px;
@@ -253,10 +324,12 @@
 </head>
 <body>
 
+    <!-- Fondos animados -->
+    <div class="stars"></div>
     <div class="grid-bg"></div>
 
     <div class="glitch-wrapper">
-        <h1 class="glitch" data-text="TOP AMIGOS DE JEAN">TOP AMIGOS DE JEAN</h1>
+        <h1 class="glitch" data-text="TOP MEJORES AMIGOS DE JEAN">TOP MEJORES AMIGOS DE JEAN</h1>
     </div>
     <div class="subtitulo">SYSTEM.OVERRIDE // CLASIFICACIÓN OFICIAL</div>
 
@@ -271,7 +344,7 @@
         
         <div id="contenedor-god" class="seccion-god">
             <div class="card-god">
-                <div class="god-badge">TOP SUPREMO</div>
+                <div class="god-badge">TITÁN SUPREMO</div>
                 <div class="avatar-icono">🌌</div>
                 <div class="nombre">Diego Mendieta</div>
                 <div class="apodo-container">
