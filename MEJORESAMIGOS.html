@@ -2,11 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LISTA DE MEJORES AMIGOS DE JEAN</title>
-    <!-- PapaParse para el Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <!-- Fuentes futuristas -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Righteous&family=VT323&display=swap" rel="stylesheet">
     
     <style>
@@ -26,7 +24,8 @@
             background-color: #050505;
             font-family: 'Orbitron', sans-serif;
             color: #fff;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Evita el scroll horizontal en celular */
+            width: 100vw;
             min-height: 100vh;
         }
 
@@ -50,17 +49,18 @@
             100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
         }
 
-        /* EFECTO GLITCH Y CORRECCIÓN DE ESPACIOS */
+        /* EFECTO GLITCH OPTIMIZADO PARA MÓVIL */
         .glitch-wrapper {
             text-align: center;
-            margin: 30px 0 0 0; /* Espacio superior reducido */
+            margin: 40px 10px 0 10px;
         }
 
         .glitch {
-            margin: 0; /* Quita el margen por defecto del h1 */
-            line-height: 1.1; /* Reduce el espacio vertical invisible */
+            margin: 0;
+            line-height: 1.1;
             font-family: 'Righteous', cursive;
-            font-size: 4rem;
+            /* clamp ajusta el tamaño dinámicamente: min 2.5rem, ideal 8vw, max 4rem */
+            font-size: clamp(2.5rem, 8vw, 4rem); 
             position: relative;
             display: inline-block;
             color: #fff;
@@ -88,39 +88,27 @@
             clip: rect(44px, 450px, 56px, 0);
         }
 
-        @keyframes glitch-anim {
-            0% { clip: rect(15px, 9999px, 81px, 0); }
-            20% { clip: rect(69px, 9999px, 25px, 0); }
-            40% { clip: rect(10px, 9999px, 60px, 0); }
-            60% { clip: rect(80px, 9999px, 90px, 0); }
-            80% { clip: rect(20px, 9999px, 40px, 0); }
-            100% { clip: rect(50px, 9999px, 10px, 0); }
-        }
-        @keyframes glitch-anim2 {
-            0% { clip: rect(65px, 9999px, 100px, 0); }
-            20% { clip: rect(10px, 9999px, 40px, 0); }
-            40% { clip: rect(90px, 9999px, 20px, 0); }
-            60% { clip: rect(30px, 9999px, 80px, 0); }
-            80% { clip: rect(80px, 9999px, 10px, 0); }
-            100% { clip: rect(20px, 9999px, 60px, 0); }
-        }
+        @keyframes glitch-anim { 0% { clip: rect(15px, 9999px, 81px, 0); } 20% { clip: rect(69px, 9999px, 25px, 0); } 40% { clip: rect(10px, 9999px, 60px, 0); } 60% { clip: rect(80px, 9999px, 90px, 0); } 80% { clip: rect(20px, 9999px, 40px, 0); } 100% { clip: rect(50px, 9999px, 10px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 20% { clip: rect(10px, 9999px, 40px, 0); } 40% { clip: rect(90px, 9999px, 20px, 0); } 60% { clip: rect(30px, 9999px, 80px, 0); } 80% { clip: rect(80px, 9999px, 10px, 0); } 100% { clip: rect(20px, 9999px, 60px, 0); } }
 
         .subtitulo {
             text-align: center;
             font-family: 'VT323', monospace;
-            font-size: 2rem;
+            font-size: clamp(1.2rem, 5vw, 2rem);
             color: var(--neon-pink);
-            letter-spacing: 5px;
-            margin-top: 10px; /* Acercamos el subtítulo al título */
-            margin-bottom: 40px; /* Reducimos el espacio antes de las cartas */
+            letter-spacing: 3px;
+            margin-top: 10px;
+            margin-bottom: 40px;
             text-shadow: 0 0 10px var(--neon-pink);
+            padding: 0 10px;
         }
 
-        /* CONTENEDOR PRINCIPAL Y ANIMACIONES DE ENTRADA */
+        /* CONTENEDOR PRINCIPAL */
         .contenedor-main {
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px 100px 20px;
+            padding: 0 15px 100px 15px;
+            box-sizing: border-box;
         }
 
         .fade-in-up {
@@ -129,70 +117,57 @@
             animation: fadeInUp 0.8s forwards;
         }
 
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* TARJETAS GLASSMORPHISM */
+        /* TARJETAS GLASSMORPHISM OPTIMIZADAS */
         .card-amigo, .card-god, .card-primero {
-            background: rgba(15, 15, 25, 0.6);
+            background: rgba(15, 15, 25, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
+            transition: all 0.4s ease;
+            overflow: hidden; /* Esto evita que la etiqueta N°1 se salga y rompa el ancho en celular */
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .card-amigo::before, .card-god::before, .card-primero::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-        }
-
-        .card-amigo:hover::before, .card-god:hover::before, .card-primero:hover::before {
-            opacity: 1;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         /* SECCIÓN GOD */
-        .seccion-god { display: flex; justify-content: center; margin-bottom: 60px; }
+        .seccion-god { display: flex; justify-content: center; margin-bottom: 40px; }
         
         .card-god {
-            width: 100%; max-width: 800px;
+            max-width: 800px;
             text-align: center;
             border: 2px solid var(--neon-gold);
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
             animation: floatGlowGod 4s infinite alternate;
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
         
         @keyframes floatGlowGod {
-            0% { transform: scale(1.05) translateY(0); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
-            100% { transform: scale(1.05) translateY(-15px); box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), 0 0 100px var(--neon-pink); }
+            0% { transform: scale(1.02) translateY(0); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+            100% { transform: scale(1.02) translateY(-10px); box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), 0 0 80px var(--neon-pink); }
         }
 
         .god-badge {
             font-family: 'Righteous', cursive;
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
             color: var(--neon-gold);
             text-shadow: 0 0 20px var(--neon-gold);
-            margin-bottom: 10px;
-            letter-spacing: 4px;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
         }
 
-        /* SECCIÓN PRIMEROS */
+        /* GRILLAS ADAPTABLES A MÓVIL */
         .seccion-podio-primeros {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+            /* Cambiado de 400px a 280px para que entren en celulares */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
 
         .card-primero {
@@ -202,90 +177,91 @@
         }
         
         .card-primero:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 0 40px var(--neon-blue), inset 0 0 15px var(--neon-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--neon-blue);
             border-color: #fff;
         }
 
         .puesto-1-badge {
-            position: absolute; top: 15px; left: -35px;
+            position: absolute; top: 20px; left: -35px;
             background: var(--neon-blue); color: #000;
             padding: 5px 40px; font-weight: bold;
             transform: rotate(-45deg); font-family: 'Righteous', cursive;
             box-shadow: 0 0 10px var(--neon-blue);
+            z-index: 10;
         }
 
-        /* RESTO DEL TOP */
         .grid-restante {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            /* Cambiado de 300px a 260px para celulares pequeños */
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
         }
 
         .card-amigo:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             border-color: var(--neon-purple);
             box-shadow: 0 0 25px rgba(157, 0, 255, 0.5);
         }
 
-        /* ESTILOS INTERNOS DE TEXTO E ICONOS */
+        /* TEXTOS INTERNOS */
         .avatar-icono {
-            font-size: 4rem; margin-bottom: 15px;
+            font-size: 3.5rem; margin-bottom: 10px;
             display: inline-block;
             filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: transform 0.4s;
         }
         
         .card-amigo:hover .avatar-icono, .card-primero:hover .avatar-icono, .card-god:hover .avatar-icono {
-            transform: scale(1.3) rotate(10deg);
+            transform: scale(1.2) rotate(10deg);
         }
 
         .puesto-numero {
             position: absolute; top: 15px; left: 15px;
-            font-family: 'Righteous', cursive; font-size: 1.5rem;
+            font-family: 'Righteous', cursive; font-size: 1.3rem;
             color: rgba(255,255,255,0.3);
+            z-index: 5;
         }
 
         .nombre {
-            font-size: 1.5rem; font-weight: 800; letter-spacing: 1px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem); 
+            font-weight: 800; letter-spacing: 1px;
             background: linear-gradient(90deg, #fff, #aaa);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            word-wrap: break-word;
         }
 
         .apodo {
-            display: inline-block; margin: 10px 0; padding: 4px 12px;
+            display: inline-block; margin: 8px 0; padding: 4px 10px;
             background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue);
-            border-radius: 5px; font-family: 'VT323', monospace; font-size: 1.2rem;
+            border-radius: 5px; font-family: 'VT323', monospace; font-size: 1.1rem;
             color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+            word-wrap: break-word;
+            max-width: 90%;
         }
 
         .motivo {
-            font-family: 'Rajdhani', sans-serif; font-size: 1rem; color: #a0a0b0;
-            line-height: 1.5; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1);
-            padding-top: 15px; font-weight: 500;
+            font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; color: #a0a0b0;
+            line-height: 1.4; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1);
+            padding-top: 12px; font-weight: 500;
         }
 
-        /* TENDENCIAS ANIMADAS */
         .tendencia-badge {
-            position: absolute; bottom: 20px; right: 20px;
-            font-size: 2rem; display: flex; align-items: center; justify-content: center;
-            width: 40px; height: 40px; border-radius: 50%;
+            position: absolute; bottom: 15px; right: 15px;
+            font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
+            width: 35px; height: 35px; border-radius: 50%;
             animation: pulseTendencia 2s infinite;
         }
 
         .subio { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); background: rgba(0, 255, 102, 0.1); }
         .bajo { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); background: rgba(255, 0, 60, 0.1); }
 
-        @keyframes pulseTendencia {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
+        @keyframes pulseTendencia { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
         #loading {
-            text-align: center; font-family: 'Righteous', cursive; font-size: 2.5rem;
+            text-align: center; font-family: 'Righteous', cursive; font-size: clamp(1.5rem, 5vw, 2.5rem);
             color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink);
-            margin-top: 10vh; animation: parpadeo 1s infinite alternate;
+            margin-top: 10vh; animation: parpadeo 1s infinite alternate; padding: 0 15px;
         }
         @keyframes parpadeo { from { opacity: 1; } to { opacity: 0.3; } }
     </style>
@@ -315,9 +291,7 @@
 
         function obtenerIcono(apodo, nombre) {
             const a = apodo.toUpperCase();
-            if (a.includes('PENDIENTE')) {
-                return iconosRandom[nombre.length % iconosRandom.length];
-            }
+            if (a.includes('PENDIENTE')) return iconosRandom[nombre.length % iconosRandom.length];
             if (a.includes('SAN DIEGO')) return '👁️‍🗨️';
             if (a.includes('LIDER')) return '👑';
             if (a.includes('PROTAGONISTA')) return '🎬';
@@ -345,10 +319,15 @@
             return ''; 
         }
 
-        // Función blindada para leer la columna sin importar si cambias el título en Excel
-        const leerColumna = (obj, palabraClave) => {
-            const key = Object.keys(obj).find(k => k.toLowerCase().includes(palabraClave.toLowerCase()));
-            return key && obj[key] ? String(obj[key]) : '';
+        // Extractor hiper-robusto: Escanea toda la fila buscando coincidencias de palabras clave
+        const extraerDato = (fila, palabrasClave) => {
+            for (let key in fila) {
+                let keyLimpia = key.toLowerCase();
+                for (let palabra of palabrasClave) {
+                    if (keyLimpia.includes(palabra)) return String(fila[key] || '').trim();
+                }
+            }
+            return '';
         };
 
         Papa.parse(urlCSV, {
@@ -365,14 +344,14 @@
                 let delay = 0;
 
                 datos.forEach(amigo => {
-                    // Extraemos los datos usando la función blindada
-                    const nombre = leerColumna(amigo, 'nombre');
-                    if (!nombre || nombre.trim() === '') return; // Ignora filas vacías
+                    // Usamos el extractor robusto para sacar los datos sin importar cómo se llamen las columnas en Excel
+                    const nombre = extraerDato(amigo, ['nombre', 'apellido', 'alumno']);
+                    if (!nombre) return; // Si la fila está vacía, la salta
 
-                    const puesto = leerColumna(amigo, 'puesto').trim().toUpperCase();
-                    const apodo = leerColumna(amigo, 'apodo') || leerColumna(amigo, 'alias') || 'Ninguno';
-                    const tendencia = leerColumna(amigo, 'tendencia');
-                    const motivo = leerColumna(amigo, 'motivo');
+                    const puesto = extraerDato(amigo, ['puesto', 'top', 'posicion']).toUpperCase();
+                    const apodo = extraerDato(amigo, ['apodo', 'alias']);
+                    const tendencia = extraerDato(amigo, ['tendencia', 'subio', 'bajo']);
+                    const motivo = extraerDato(amigo, ['motivo', 'razon']);
                     
                     const icono = obtenerIcono(apodo, nombre);
                     const tendenciaHTML = obtenerTendenciaHTML(tendencia);
@@ -380,7 +359,7 @@
                     const baseHTML = `
                         <div class="avatar-icono">${icono}</div>
                         <div class="nombre">${nombre}</div>
-                        <div class="apodo">[ ${apodo} ]</div>
+                        <div class="apodo">[ ${apodo || 'Sin apodo'} ]</div>
                         <div class="motivo">${motivo}</div>
                         ${tendenciaHTML}
                     `;
@@ -389,21 +368,20 @@
                     div.style.animationDelay = `${delay}s`;
                     delay += 0.1;
 
-                    // CONDICIÓN ESPECIAL PARA DIEGO: Si la fila tiene el nombre "Diego", LO FUERZA a ser GOD.
+                    // CONDICIÓN ABSOLUTA: Si el puesto es GOD o si el nombre contiene "DIEGO", lo manda arriba.
                     if (puesto === 'GOD' || nombre.toUpperCase().includes('DIEGO')) {
                         div.className = 'card-god fade-in-up';
                         div.innerHTML = `<div class="god-badge">OMNIPRESENTE</div>${baseHTML}`;
                         cGod.appendChild(div);
                     } 
-                    else if (puesto === '1') {
+                    else if (puesto === '1' || puesto === '#1') {
                         div.className = 'card-primero fade-in-up';
                         div.innerHTML = `<div class="puesto-1-badge">RANGO 1</div>${baseHTML}`;
                         cPrimeros.appendChild(div);
                     } 
                     else {
                         div.className = 'card-amigo fade-in-up';
-                        // Si hay puesto lo muestra, sino no pone nada para evitar "#" vacíos
-                        const textoPuesto = puesto ? `#${puesto}` : ''; 
+                        const textoPuesto = puesto ? `#${puesto.replace('#','')}` : ''; 
                         div.innerHTML = `<div class="puesto-numero">${textoPuesto}</div>${baseHTML}`;
                         cRestante.appendChild(div);
                     }
