@@ -50,13 +50,15 @@
             100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
         }
 
-        /* EFECTO GLITCH PARA EL TÍTULO */
+        /* EFECTO GLITCH Y CORRECCIÓN DE ESPACIOS */
         .glitch-wrapper {
             text-align: center;
-            margin: 50px 0 10px 0;
+            margin: 30px 0 0 0; /* Espacio superior reducido */
         }
 
         .glitch {
+            margin: 0; /* Quita el margen por defecto del h1 */
+            line-height: 1.1; /* Reduce el espacio vertical invisible */
             font-family: 'Righteous', cursive;
             font-size: 4rem;
             position: relative;
@@ -109,7 +111,8 @@
             font-size: 2rem;
             color: var(--neon-pink);
             letter-spacing: 5px;
-            margin-bottom: 50px;
+            margin-top: 10px; /* Acercamos el subtítulo al título */
+            margin-bottom: 40px; /* Reducimos el espacio antes de las cartas */
             text-shadow: 0 0 10px var(--neon-pink);
         }
 
@@ -342,6 +345,12 @@
             return ''; 
         }
 
+        // Función blindada para leer la columna sin importar si cambias el título en Excel
+        const leerColumna = (obj, palabraClave) => {
+            const key = Object.keys(obj).find(k => k.toLowerCase().includes(palabraClave.toLowerCase()));
+            return key && obj[key] ? String(obj[key]) : '';
+        };
+
         Papa.parse(urlCSV, {
             download: true,
             header: true,
@@ -353,17 +362,18 @@
                 const cPrimeros = document.getElementById('contenedor-primeros');
                 const cRestante = document.getElementById('contenedor-restante');
 
-                // Variable para escalonar la animación de entrada
                 let delay = 0;
 
                 datos.forEach(amigo => {
-                    if (!amigo['Nombre y Apellido']) return;
+                    // Extraemos los datos usando la función blindada
+                    const nombre = leerColumna(amigo, 'nombre');
+                    if (!nombre || nombre.trim() === '') return; // Ignora filas vacías
 
-                    const puesto = amigo['Puesto'] ? amigo['Puesto'].trim().toUpperCase() : '';
-                    const nombre = amigo['Nombre y Apellido'];
-                    const apodo = amigo['Alias / Apodo'] || 'Ninguno';
-                    const tendencia = amigo['Tendencia'] || '';
-                    const motivo = amigo['Motivo de la Tendencia'] || '';
+                    const puesto = leerColumna(amigo, 'puesto').trim().toUpperCase();
+                    const apodo = leerColumna(amigo, 'apodo') || leerColumna(amigo, 'alias') || 'Ninguno';
+                    const tendencia = leerColumna(amigo, 'tendencia');
+                    const motivo = leerColumna(amigo, 'motivo');
+                    
                     const icono = obtenerIcono(apodo, nombre);
                     const tendenciaHTML = obtenerTendenciaHTML(tendencia);
 
@@ -376,11 +386,11 @@
                     `;
 
                     const div = document.createElement('div');
-                    // Añadimos la clase fade-in-up y un delay progresivo para que aparezcan en cascada
                     div.style.animationDelay = `${delay}s`;
                     delay += 0.1;
 
-                    if (puesto === 'GOD') {
+                    // CONDICIÓN ESPECIAL PARA DIEGO: Si la fila tiene el nombre "Diego", LO FUERZA a ser GOD.
+                    if (puesto === 'GOD' || nombre.toUpperCase().includes('DIEGO')) {
                         div.className = 'card-god fade-in-up';
                         div.innerHTML = `<div class="god-badge">OMNIPRESENTE</div>${baseHTML}`;
                         cGod.appendChild(div);
@@ -392,7 +402,9 @@
                     } 
                     else {
                         div.className = 'card-amigo fade-in-up';
-                        div.innerHTML = `<div class="puesto-numero">#${puesto}</div>${baseHTML}`;
+                        // Si hay puesto lo muestra, sino no pone nada para evitar "#" vacíos
+                        const textoPuesto = puesto ? `#${puesto}` : ''; 
+                        div.innerHTML = `<div class="puesto-numero">${textoPuesto}</div>${baseHTML}`;
                         cRestante.appendChild(div);
                     }
                 });
