@@ -30,14 +30,18 @@
         
         .content-area { flex: 3; position: relative; display: flex; flex-direction: column; background: white; border-radius: 16px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
         
-        .map-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px; }
-        .map-controls h4 { color: #1e3a8a; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+        .map-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px; flex-wrap: wrap; gap: 10px; }
+        .map-controls h4 { color: #1e3a8a; font-size: 18px; display: flex; align-items: center; gap: 8px; margin: 0; }
+        
+        .filtro-container select { padding: 8px 15px; border-radius: 8px; border: 2px solid #cbd5e1; font-weight: bold; color: #1e293b; outline: none; cursor: pointer; transition: 0.3s; }
+        .filtro-container select:focus { border-color: #3b82f6; }
+        
         .zoom-btns button { background: #1e3a8a; color: white; border: none; width: 35px; height: 35px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .zoom-btns button:hover { background: #2563eb; transform: translateY(-2px); }
 
         .map-viewport { width: 100%; height: calc(100% - 50px); overflow: auto; border-radius: 12px; background: #cbd5e1; position: relative; border: 2px solid #e2e8f0; scroll-behavior: smooth; }
         .map-wrapper { position: relative; width: 100%; min-width: 800px; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: top left; }
-        .map-wrapper img { width: 100%; display: block; pointer-events: none; }
+        .map-wrapper img { width: 100%; display: block; pointer-events: auto; cursor: crosshair; }
         
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .ruta-animada { stroke-dasharray: 12; animation: dash 1s linear infinite; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3)); }
@@ -128,85 +132,105 @@
             
             <div class="map-controls" id="map-controls">
                 <h4>🗺️ Croquis del Campus</h4>
-                <div class="zoom-btns">
-                    <button onclick="hacerZoom(-20)">➖</button>
-                    <button onclick="hacerZoom(20)">➕</button>
+                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                    <div class="filtro-container">
+                        <select id="filtro-categoria" onchange="filtrarMarcadores(this.value)">
+                            <option value="todos">👁️ Mostrar Todos</option>
+                            <option value="principal">🏛️ Instalaciones Principales</option>
+                            <option value="facultad">📚 Facultades</option>
+                            <option value="bienestar">🏃 Bienestar y Deporte</option>
+                            <option value="areas-verdes">🌳 Áreas Verdes / Descanso</option>
+                            <option value="servicios">🚻 Baños y Servicios</option>
+                        </select>
+                    </div>
+                    <div class="zoom-btns">
+                        <button onclick="hacerZoom(-20)">➖</button>
+                        <button onclick="hacerZoom(20)">➕</button>
+                    </div>
                 </div>
             </div>
 
             <div id="vista-mapa" class="map-viewport">
                 <div class="map-wrapper" id="mapa-wrapper" style="width: 100%;">
-                    <img src="https://i.ibb.co/SX9cBTVH/bbcadf1a-e262-4a43-a6bf-88d44366a4d6.jpg" alt="Mapa Ilustrado UNE">
+                    <img id="img-mapa" src="https://i.ibb.co/SX9cBTVH/bbcadf1a-e262-4a43-a6bf-88d44366a4d6.jpg" alt="Mapa Ilustrado UNE">
                     <svg id="svg-rutas" class="route-svg"></svg>
                     
-                    <div class="map-pin" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Entrada</div>
                     </div>
                     
-                    <div class="map-pin" id="pin-mapa-biblioteca" style="top: 38%; left: 52%;" onclick="abrir360('biblioteca')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-biblioteca" style="top: 38%; left: 52%;" onclick="abrir360('biblioteca')">
                         <div class="pin-foto" style="background-image: url('FOTOS 360 UNE/BIBLIOTECA.png');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Biblioteca</div>
                     </div>
                     
-                    <div class="map-pin" id="pin-mapa-admision" style="top: 30%; left: 50%;" onclick="abrir360('admision')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-admision" style="top: 30%; left: 50%;" onclick="abrir360('admision')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Admisión</div>
                     </div>
 
-                    <div class="map-pin" id="pin-mapa-comedor" style="top: 42%; left: 70%;" onclick="abrir360('comedor')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-comedor" style="top: 42%; left: 70%;" onclick="abrir360('comedor')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Comedor</div>
                     </div>
                     
-                    <div class="map-pin" id="pin-mapa-tecnologia" style="top: 85%; left: 45%;" onclick="abrir360('tecnologia')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-tecnologia" style="top: 85%; left: 45%;" onclick="abrir360('tecnologia')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Tecnología</div>
                     </div>
 
-                    <div class="map-pin" id="pin-mapa-agropecuaria" style="top: 80%; left: 55%;" onclick="abrir360('agropecuaria')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-agropecuaria" style="top: 80%; left: 55%;" onclick="abrir360('agropecuaria')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Agropecuaria</div>
                     </div>
                     
-                    <div class="map-pin" id="pin-mapa-ciencias" style="top: 55%; left: 65%;" onclick="abrir360('ciencias')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-ciencias" style="top: 55%; left: 65%;" onclick="abrir360('ciencias')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Ciencias</div>
                     </div>
 
-                    <div class="map-pin" id="pin-mapa-empresariales" style="top: 70%; left: 60%;" onclick="abrir360('empresariales')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-empresariales" style="top: 70%; left: 60%;" onclick="abrir360('empresariales')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Empresariales</div>
                     </div>
 
-                    <div class="map-pin" id="pin-mapa-sociales" style="top: 60%; left: 70%;" onclick="abrir360('sociales')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-sociales" style="top: 60%; left: 70%;" onclick="abrir360('sociales')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Sociales</div>
                     </div>
 
-                    <div class="map-pin" id="pin-mapa-inicial" style="top: 40%; left: 40%;" onclick="abrir360('inicial')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-inicial" style="top: 40%; left: 40%;" onclick="abrir360('inicial')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Inicial</div>
                     </div>
 
-                    <div class="map-pin" id="pin-mapa-pedagogia" style="top: 50%; left: 80%;" onclick="abrir360('pedagogia')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-pedagogia" style="top: 50%; left: 80%;" onclick="abrir360('pedagogia')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Pedagogía</div>
                     </div>
                     
-                    <div class="map-pin" id="pin-mapa-estadio" style="top: 55%; left: 25%;" onclick="abrir360('estadio')">
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-estadio" style="top: 55%; left: 25%;" onclick="abrir360('estadio')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Estadio</div>
                     </div>
                     
-                    <div class="map-pin" id="pin-mapa-enfermeria" style="top: 80%; left: 15%;" onclick="abrir360('enfermeria')">
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-enfermeria" style="top: 80%; left: 15%;" onclick="abrir360('enfermeria')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Enfermería</div>
                     </div>
                     
-                    <div class="map-pin" id="pin-mapa-gimnasio" style="top: 65%; left: 30%;" onclick="abrir360('gimnasio')">
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-gimnasio" style="top: 65%; left: 30%;" onclick="abrir360('gimnasio')">
                         <div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
                         <div class="pin-icon">📍</div><div class="pin-label">Gimnasio</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="areas-verdes" id="pin-mapa-bosque" style="top: 48%; left: 35%;" onclick="alert('Próximamente: Áreas Verdes')">
+                        <div class="pin-icon" style="background: #22c55e;">🌳</div><div class="pin-label">Bosquecillo</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-banos1" style="top: 45%; left: 60%;" onclick="alert('Próximamente: Servicios Higiénicos')">
+                        <div class="pin-icon" style="background: #64748b;">🚻</div><div class="pin-label">Baños Centrales</div>
                     </div>
                 </div>
             </div>
@@ -351,9 +375,10 @@
                         <button onclick="iniciarNavegacion()" style="padding: 10px 15px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s;">🚶 Activar GPS</button>
                         <button onclick="detenerNavegacion()" style="padding: 10px 15px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Parar</button>
                         <button onclick="obtenerMiUbicacion()" style="padding: 10px 15px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Capturar Puntos</button>
+                        <button onclick="toggleModoEdicion()" style="padding: 10px 15px; background: #6366f1; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">📍 Activar Clic en Mapa</button>
                     </div>
                     <div id="panel-instrucciones" style="margin-top: 15px; font-weight: 800; color: #0369a1; background: #e0f2fe; padding: 10px; border-radius: 8px; border: 1px solid #bae6fd;">GPS Inactivo</div>
-                    <p id="resultado-gps" style="font-family: monospace; font-size: 12px; color: #64748b; margin-top: 10px;"></p>
+                    <p id="resultado-gps" style="font-family: monospace; font-size: 12px; color: #64748b; margin-top: 10px; font-weight: bold;"></p>
                 </div>
                 
                 <div class="joystick-container">
@@ -371,12 +396,49 @@
 
     <script>
         let zoomActual = 100;
+        let modoEdicionActivo = false;
+
         function hacerZoom(cambio) {
             zoomActual += cambio;
             if(zoomActual < 100) zoomActual = 100;
             if(zoomActual > 250) zoomActual = 250;
             document.getElementById('mapa-wrapper').style.width = zoomActual + '%';
         }
+
+        function filtrarMarcadores(categoria) {
+            document.querySelectorAll('.map-pin').forEach(pin => {
+                if (categoria === 'todos' || pin.getAttribute('data-categoria') === categoria) {
+                    pin.style.display = 'flex';
+                } else {
+                    pin.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleModoEdicion() {
+            modoEdicionActivo = !modoEdicionActivo;
+            const res = document.getElementById('resultado-gps');
+            if (modoEdicionActivo) {
+                res.innerHTML = "✅ MODO EDICIÓN: Haz clic en cualquier parte del mapa para obtener las coordenadas.";
+                res.style.color = "#10b981";
+                document.getElementById('img-mapa').style.cursor = "crosshair";
+            } else {
+                res.innerHTML = "❌ MODO EDICIÓN DESACTIVADO.";
+                res.style.color = "#ef4444";
+                document.getElementById('img-mapa').style.cursor = "default";
+            }
+        }
+
+        document.getElementById('img-mapa').addEventListener('click', function(e) {
+            if (!modoEdicionActivo) return;
+            const rect = e.target.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            const textoHTML = `top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;`;
+            const textoJS = `x: ${x.toFixed(2)}, y: ${y.toFixed(2)}`;
+            document.getElementById('resultado-gps').innerHTML = `<b>COPIA ESTO:</b><br>HTML: ${textoHTML}<br>JS: ${textoJS}`;
+            alert(`Ubicación guardada:\n\nPara el HTML:\n${textoHTML}\n\nPara el JS:\n${textoJS}`);
+        });
 
         const coordenadasMapa = {
             "entrada": { x: 45, y: 15 },
@@ -446,6 +508,9 @@
         }
 
         function trazarRutaVisual() {
+            document.getElementById('filtro-categoria').value = 'todos';
+            filtrarMarcadores('todos');
+
             const origenId = document.getElementById('select-origen').value;
             const destinoId = document.getElementById('select-destino').value;
             const mensajeBox = document.getElementById('dan-texto');
@@ -600,8 +665,13 @@
 
         function obtenerMiUbicacion() {
             const res = document.getElementById('resultado-gps');
+            if (!navigator.geolocation) {
+                res.innerHTML = "❌ Tu navegador no soporta geolocalización.";
+                return;
+            }
+            res.innerHTML = "Buscando satélites... 🛰️";
             navigator.geolocation.getCurrentPosition(
-                function(pos) { res.innerHTML = `LAT: ${pos.coords.latitude} | LON: ${pos.coords.longitude}`; }, 
+                function(pos) { res.innerHTML = `LAT: ${pos.coords.latitude} <br> LON: ${pos.coords.longitude}`; }, 
                 function(err) { res.innerHTML = "❌ Error capturando."; },
                 { enableHighAccuracy: true }
             );
