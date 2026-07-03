@@ -24,7 +24,7 @@
             background-color: #050505;
             font-family: 'Orbitron', sans-serif;
             color: #fff;
-            overflow-x: hidden; /* Evita el scroll horizontal en celular */
+            overflow-x: hidden;
             width: 100vw;
             min-height: 100vh;
         }
@@ -50,218 +50,107 @@
         }
 
         /* EFECTO GLITCH OPTIMIZADO PARA MÓVIL */
-        .glitch-wrapper {
-            text-align: center;
-            margin: 40px 10px 0 10px;
-        }
-
+        .glitch-wrapper { text-align: center; margin: 40px 10px 0 10px; }
         .glitch {
-            margin: 0;
-            line-height: 1.1;
-            font-family: 'Righteous', cursive;
-            /* clamp ajusta el tamaño dinámicamente: min 2.5rem, ideal 8vw, max 4rem */
+            margin: 0; line-height: 1.1; font-family: 'Righteous', cursive;
             font-size: clamp(2.5rem, 8vw, 4rem); 
-            position: relative;
-            display: inline-block;
-            color: #fff;
-            text-shadow: 0 0 20px var(--neon-blue);
+            position: relative; display: inline-block; color: #fff; text-shadow: 0 0 20px var(--neon-blue);
         }
-
         .glitch::before, .glitch::after {
-            content: "TOP AMIGOS DE JEAN";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #050505;
+            content: "TOP AMIGOS DE JEAN"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #050505;
         }
-
-        .glitch::before {
-            left: 3px;
-            text-shadow: -2px 0 var(--neon-pink);
-            animation: glitch-anim 2s infinite linear alternate-reverse;
-            clip: rect(44px, 450px, 56px, 0);
-        }
-
-        .glitch::after {
-            left: -3px;
-            text-shadow: -2px 0 var(--neon-blue);
-            animation: glitch-anim2 3s infinite linear alternate-reverse;
-            clip: rect(44px, 450px, 56px, 0);
-        }
+        .glitch::before { left: 3px; text-shadow: -2px 0 var(--neon-pink); animation: glitch-anim 2s infinite linear alternate-reverse; clip: rect(44px, 450px, 56px, 0); }
+        .glitch::after { left: -3px; text-shadow: -2px 0 var(--neon-blue); animation: glitch-anim2 3s infinite linear alternate-reverse; clip: rect(44px, 450px, 56px, 0); }
 
         @keyframes glitch-anim { 0% { clip: rect(15px, 9999px, 81px, 0); } 20% { clip: rect(69px, 9999px, 25px, 0); } 40% { clip: rect(10px, 9999px, 60px, 0); } 60% { clip: rect(80px, 9999px, 90px, 0); } 80% { clip: rect(20px, 9999px, 40px, 0); } 100% { clip: rect(50px, 9999px, 10px, 0); } }
         @keyframes glitch-anim2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 20% { clip: rect(10px, 9999px, 40px, 0); } 40% { clip: rect(90px, 9999px, 20px, 0); } 60% { clip: rect(30px, 9999px, 80px, 0); } 80% { clip: rect(80px, 9999px, 10px, 0); } 100% { clip: rect(20px, 9999px, 60px, 0); } }
 
         .subtitulo {
-            text-align: center;
-            font-family: 'VT323', monospace;
-            font-size: clamp(1.2rem, 5vw, 2rem);
-            color: var(--neon-pink);
-            letter-spacing: 3px;
-            margin-top: 10px;
-            margin-bottom: 40px;
-            text-shadow: 0 0 10px var(--neon-pink);
-            padding: 0 10px;
+            text-align: center; font-family: 'VT323', monospace; font-size: clamp(1.2rem, 5vw, 2rem);
+            color: var(--neon-pink); letter-spacing: 3px; margin-top: 10px; margin-bottom: 40px;
+            text-shadow: 0 0 10px var(--neon-pink); padding: 0 10px;
         }
 
         /* CONTENEDOR PRINCIPAL */
-        .contenedor-main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px 100px 15px;
-            box-sizing: border-box;
-        }
+        .contenedor-main { max-width: 1200px; margin: 0 auto; padding: 0 15px 100px 15px; box-sizing: border-box; }
 
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(40px);
-            animation: fadeInUp 0.8s forwards;
-        }
-
+        .fade-in-up { opacity: 0; transform: translateY(40px); animation: fadeInUp 0.8s forwards; }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
         /* TARJETAS GLASSMORPHISM OPTIMIZADAS */
         .card-amigo, .card-god, .card-primero {
-            background: rgba(15, 15, 25, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            position: relative;
-            transition: all 0.4s ease;
-            overflow: hidden; /* Esto evita que la etiqueta N°1 se salga y rompa el ancho en celular */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            box-sizing: border-box;
-            width: 100%;
+            background: rgba(15, 15, 25, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 20px;
+            position: relative; transition: all 0.4s ease; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-sizing: border-box; width: 100%;
         }
 
         /* SECCIÓN GOD */
         .seccion-god { display: flex; justify-content: center; margin-bottom: 40px; }
-        
         .card-god {
-            max-width: 800px;
-            text-align: center;
-            border: 2px solid var(--neon-gold);
+            max-width: 800px; text-align: center; border: 2px solid var(--neon-gold);
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
-            animation: floatGlowGod 4s infinite alternate;
-            transform: scale(1.02);
+            animation: floatGlowGod 4s infinite alternate; transform: scale(1.02);
         }
-        
         @keyframes floatGlowGod {
             0% { transform: scale(1.02) translateY(0); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
             100% { transform: scale(1.02) translateY(-10px); box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), 0 0 80px var(--neon-pink); }
         }
-
         .god-badge {
-            font-family: 'Righteous', cursive;
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            color: var(--neon-gold);
-            text-shadow: 0 0 20px var(--neon-gold);
-            margin-bottom: 15px;
-            letter-spacing: 3px;
+            font-family: 'Righteous', cursive; font-size: clamp(1.8rem, 6vw, 2.5rem);
+            color: var(--neon-gold); text-shadow: 0 0 20px var(--neon-gold); margin-bottom: 15px; letter-spacing: 3px;
         }
 
         /* GRILLAS ADAPTABLES A MÓVIL */
-        .seccion-podio-primeros {
-            display: grid;
-            /* Cambiado de 400px a 280px para que entren en celulares */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+        .seccion-podio-primeros { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .card-primero { border: 2px solid var(--neon-blue); box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); text-align: center; }
+        .card-primero:hover { transform: translateY(-5px); box-shadow: 0 0 30px var(--neon-blue); border-color: #fff; }
+        .puesto-1-badge {
+            position: absolute; top: 20px; left: -35px; background: var(--neon-blue); color: #000; padding: 5px 40px;
+            font-weight: bold; transform: rotate(-45deg); font-family: 'Righteous', cursive; box-shadow: 0 0 10px var(--neon-blue); z-index: 10;
+        }
+        .grid-restante { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .card-amigo:hover { transform: translateY(-5px); border-color: var(--neon-purple); box-shadow: 0 0 25px rgba(157, 0, 255, 0.5); }
+
+        /* ICONOS ANIMADOS POR DEFECTO */
+        @keyframes vibrarIcono {
+            0% { transform: scale(1) translateY(0px) rotate(-5deg); filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+            50% { transform: scale(1.1) translateY(-8px) rotate(5deg); filter: drop-shadow(0 0 20px var(--neon-blue)); }
+            100% { transform: scale(1) translateY(0px) rotate(-5deg); filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
         }
 
-        .card-primero {
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
-            text-align: center;
+        .avatar-icono {
+            font-size: 3.5rem; margin-bottom: 10px; display: inline-block;
+            animation: vibrarIcono 3s infinite ease-in-out alternate; /* ANIMACIÓN CONTINUA */
         }
         
-        .card-primero:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 30px var(--neon-blue);
-            border-color: #fff;
-        }
-
-        .puesto-1-badge {
-            position: absolute; top: 20px; left: -35px;
-            background: var(--neon-blue); color: #000;
-            padding: 5px 40px; font-weight: bold;
-            transform: rotate(-45deg); font-family: 'Righteous', cursive;
-            box-shadow: 0 0 10px var(--neon-blue);
-            z-index: 10;
-        }
-
-        .grid-restante {
-            display: grid;
-            /* Cambiado de 300px a 260px para celulares pequeños */
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .card-amigo:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 25px rgba(157, 0, 255, 0.5);
+        /* Al pasar el mouse, detenemos la animación y lo hacemos crecer más */
+        .card-amigo:hover .avatar-icono, .card-primero:hover .avatar-icono, .card-god:hover .avatar-icono {
+            animation: none; transform: scale(1.3) rotate(10deg); transition: transform 0.3s;
         }
 
         /* TEXTOS INTERNOS */
-        .avatar-icono {
-            font-size: 3.5rem; margin-bottom: 10px;
-            display: inline-block;
-            filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
-            transition: transform 0.4s;
-        }
-        
-        .card-amigo:hover .avatar-icono, .card-primero:hover .avatar-icono, .card-god:hover .avatar-icono {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        .puesto-numero {
-            position: absolute; top: 15px; left: 15px;
-            font-family: 'Righteous', cursive; font-size: 1.3rem;
-            color: rgba(255,255,255,0.3);
-            z-index: 5;
-        }
-
+        .puesto-numero { position: absolute; top: 15px; left: 15px; font-family: 'Righteous', cursive; font-size: 1.3rem; color: rgba(255,255,255,0.3); z-index: 5; }
         .nombre {
-            font-size: clamp(1.2rem, 4vw, 1.5rem); 
-            font-weight: 800; letter-spacing: 1px;
-            background: linear-gradient(90deg, #fff, #aaa);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            word-wrap: break-word;
+            font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; letter-spacing: 1px;
+            background: linear-gradient(90deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; word-wrap: break-word;
         }
-
         .apodo {
-            display: inline-block; margin: 8px 0; padding: 4px 10px;
-            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue);
-            border-radius: 5px; font-family: 'VT323', monospace; font-size: 1.1rem;
-            color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-            word-wrap: break-word;
-            max-width: 90%;
+            display: inline-block; margin: 8px 0; padding: 4px 10px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue);
+            border-radius: 5px; font-family: 'VT323', monospace; font-size: 1.1rem; color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); word-wrap: break-word; max-width: 90%;
         }
-
-        .motivo {
-            font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; color: #a0a0b0;
-            line-height: 1.4; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1);
-            padding-top: 12px; font-weight: 500;
-        }
-
+        .motivo { font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; color: #a0a0b0; line-height: 1.4; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; font-weight: 500; }
         .tendencia-badge {
-            position: absolute; bottom: 15px; right: 15px;
-            font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
-            width: 35px; height: 35px; border-radius: 50%;
-            animation: pulseTendencia 2s infinite;
+            position: absolute; bottom: 15px; right: 15px; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
+            width: 35px; height: 35px; border-radius: 50%; animation: pulseTendencia 2s infinite;
         }
-
         .subio { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); background: rgba(0, 255, 102, 0.1); }
         .bajo { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); background: rgba(255, 0, 60, 0.1); }
-
         @keyframes pulseTendencia { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
         #loading {
             text-align: center; font-family: 'Righteous', cursive; font-size: clamp(1.5rem, 5vw, 2.5rem);
-            color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink);
-            margin-top: 10vh; animation: parpadeo 1s infinite alternate; padding: 0 15px;
+            color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink); margin-top: 10vh; animation: parpadeo 1s infinite alternate; padding: 0 15px;
         }
         @keyframes parpadeo { from { opacity: 1; } to { opacity: 0.3; } }
     </style>
@@ -276,9 +165,19 @@
     <div class="subtitulo">SYSTEM.OVERRIDE // CLASIFICACIÓN OFICIAL</div>
 
     <div class="contenedor-main">
+        
+        <div id="contenedor-god" class="seccion-god">
+            <div class="card-god fade-in-up" style="animation-delay: 0s;">
+                <div class="god-badge">OMNIPRESENTE</div>
+                <div class="avatar-icono">👁️‍🗨️</div>
+                <div class="nombre">Diego Mendieta</div>
+                <div class="apodo">[ SAN DIEGO SAMA ]</div>
+                <div class="motivo">MOTIVOS SOBRAN PARA ENALTECER A DIEGO QUE ES LA PERSONA MAS GOD QUE CONOZCO Y ADMIRO</div>
+            </div>
+        </div>
+
         <div id="loading">ACCEDIENDO A LA MATRIX DE DATOS...</div>
         
-        <div id="contenedor-god" class="seccion-god"></div>
         <div id="contenedor-primeros" class="seccion-podio-primeros"></div>
         <div id="contenedor-restante" class="grid-restante"></div>
     </div>
@@ -319,7 +218,6 @@
             return ''; 
         }
 
-        // Extractor hiper-robusto: Escanea toda la fila buscando coincidencias de palabras clave
         const extraerDato = (fila, palabrasClave) => {
             for (let key in fila) {
                 let keyLimpia = key.toLowerCase();
@@ -337,16 +235,17 @@
                 document.getElementById('loading').style.display = 'none';
                 const datos = results.data;
 
-                const cGod = document.getElementById('contenedor-god');
                 const cPrimeros = document.getElementById('contenedor-primeros');
                 const cRestante = document.getElementById('contenedor-restante');
 
-                let delay = 0;
+                let delay = 0.2; // Empezamos un poco después porque Diego ya cargó instantáneo
 
                 datos.forEach(amigo => {
-                    // Usamos el extractor robusto para sacar los datos sin importar cómo se llamen las columnas en Excel
                     const nombre = extraerDato(amigo, ['nombre', 'apellido', 'alumno']);
-                    if (!nombre) return; // Si la fila está vacía, la salta
+                    if (!nombre) return; 
+
+                    // REGLA CLAVE: Si es Diego, lo ignoramos para que no salga repetido abajo
+                    if (nombre.toUpperCase().includes('DIEGO')) return;
 
                     const puesto = extraerDato(amigo, ['puesto', 'top', 'posicion']).toUpperCase();
                     const apodo = extraerDato(amigo, ['apodo', 'alias']);
@@ -368,13 +267,7 @@
                     div.style.animationDelay = `${delay}s`;
                     delay += 0.1;
 
-                    // CONDICIÓN ABSOLUTA: Si el puesto es GOD o si el nombre contiene "DIEGO", lo manda arriba.
-                    if (puesto === 'GOD' || nombre.toUpperCase().includes('DIEGO')) {
-                        div.className = 'card-god fade-in-up';
-                        div.innerHTML = `<div class="god-badge">OMNIPRESENTE</div>${baseHTML}`;
-                        cGod.appendChild(div);
-                    } 
-                    else if (puesto === '1' || puesto === '#1') {
+                    if (puesto === '1' || puesto === '#1') {
                         div.className = 'card-primero fade-in-up';
                         div.innerHTML = `<div class="puesto-1-badge">RANGO 1</div>${baseHTML}`;
                         cPrimeros.appendChild(div);
