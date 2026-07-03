@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LISTA DE MEJORES AMIGOS DE JEAN</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Righteous&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Righteous&family=VT323&family=Creepster&display=swap" rel="stylesheet">
     
     <style>
         /* RESET Y VARIABLES */
@@ -15,6 +15,7 @@
             --neon-purple: #9d00ff;
             --neon-green: #00ff66;
             --neon-red: #ff003c;
+            --neon-blood: #ff0000;
             --neon-gold: #ffd700;
         }
 
@@ -71,49 +72,60 @@
             text-shadow: 0 0 10px var(--neon-pink); padding: 0 10px;
         }
 
-        /* RELOJ DEL INFRAMUNDO / DIVINO */
+        /* -------------------------------------------
+           RELOJ DEL INFRAMUNDO (AMENAZANTE) 
+           ------------------------------------------- */
         .reloj-inframundo {
-            background: rgba(20, 0, 5, 0.85);
-            border: 2px solid var(--neon-red);
-            box-shadow: 0 0 20px rgba(255, 0, 60, 0.4), inset 0 0 15px rgba(255, 0, 60, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 0 auto 40px auto;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(15, 0, 0, 0.95),
+                rgba(15, 0, 0, 0.95) 10px,
+                rgba(35, 0, 5, 0.95) 10px,
+                rgba(35, 0, 5, 0.95) 20px
+            );
+            border: 3px solid #8b0000;
+            border-radius: 10px;
+            padding: 25px 20px;
+            margin: 0 auto 50px auto;
             max-width: 700px;
             text-align: center;
-            animation: latidoInframundo 2s infinite alternate;
-            backdrop-filter: blur(10px);
+            animation: latidoCardiaco 1.5s infinite;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5), inset 0 0 20px rgba(255, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes latidoInframundo {
-            0% { box-shadow: 0 0 20px rgba(255, 0, 60, 0.4), inset 0 0 15px rgba(255, 0, 60, 0.2); transform: scale(1); }
-            100% { box-shadow: 0 0 40px rgba(255, 0, 60, 0.8), inset 0 0 25px rgba(255, 0, 60, 0.5); border-color: #ff3366; transform: scale(1.02); }
+
+        /* Sangre en los bordes del reloj */
+        .reloj-inframundo::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 50px rgba(255, 0, 0, 0.8); pointer-events: none;
         }
+
+        /* Animación de latido brusco */
+        @keyframes latidoCardiaco {
+            0% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); border-color: #8b0000; }
+            10% { transform: scale(1.03); box-shadow: 0 0 60px rgba(255, 0, 0, 1); border-color: #ff0000; }
+            20% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); border-color: #8b0000; }
+            100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); border-color: #8b0000; }
+        }
+
         .reloj-titulo {
-            font-family: 'Righteous', cursive;
-            color: var(--neon-red);
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--neon-red);
+            font-family: 'Righteous', cursive; color: var(--neon-blood);
+            font-size: clamp(1.4rem, 4.5vw, 2rem); letter-spacing: 4px;
+            margin-bottom: 15px; text-shadow: 0 0 15px var(--neon-blood);
         }
         .reloj-hora {
-            font-family: 'Orbitron', sans-serif;
-            color: #fff;
-            font-size: clamp(1.2rem, 4.5vw, 2rem);
-            font-weight: 800;
-            text-shadow: 0 0 15px #fff, 0 0 30px var(--neon-red);
-            margin-bottom: 15px;
-            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif; color: #ff3333;
+            font-size: clamp(1.3rem, 5vw, 2.2rem); font-weight: 900;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 40px #ff0000;
+            margin-bottom: 20px; letter-spacing: 2px;
         }
         .reloj-aviso {
-            font-family: 'VT323', monospace;
-            color: var(--neon-gold);
-            font-size: clamp(1rem, 3.5vw, 1.4rem);
-            letter-spacing: 1px;
-            background: rgba(255, 215, 0, 0.1);
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: 1px dashed var(--neon-gold);
+            font-family: 'VT323', monospace; color: #fff;
+            font-size: clamp(1.1rem, 4vw, 1.5rem); letter-spacing: 2px;
+            background: rgba(255, 0, 0, 0.3); padding: 8px 15px;
+            border-radius: 5px; border: 1px solid var(--neon-blood);
+            text-shadow: 0 0 5px var(--neon-blood); font-weight: bold;
         }
 
         /* CONTENEDOR PRINCIPAL */
@@ -192,14 +204,45 @@
             border-radius: 5px; font-family: 'VT323', monospace; font-size: 1.2rem; color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); word-wrap: break-word; max-width: 90%;
         }
 
-        .motivo { font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; color: #a0a0b0; line-height: 1.4; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; font-weight: 500; }
-        .tendencia-badge {
-            position: absolute; bottom: 15px; right: 15px; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
-            width: 35px; height: 35px; border-radius: 50%; animation: pulseTendencia 2s infinite;
+        .motivo { font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; color: #a0a0b0; line-height: 1.4; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 12px; font-weight: 500; margin-bottom: 25px;} /* Se agregó margen abajo para que no choque con la tendencia */
+        
+        /* -------------------------------------------
+           NUEVOS CARTELES DE TENDENCIA (TEXTO EXPLICITO)
+           ------------------------------------------- */
+        .tendencia-texto {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            animation: pulseCartel 2s infinite;
         }
-        .subio { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); background: rgba(0, 255, 102, 0.1); }
-        .bajo { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); background: rgba(255, 0, 60, 0.1); }
-        @keyframes pulseTendencia { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        .subio { 
+            color: var(--neon-green); 
+            border: 1px solid var(--neon-green);
+            background: rgba(0, 255, 102, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+        
+        .bajo { 
+            color: var(--neon-red); 
+            border: 1px solid var(--neon-red);
+            background: rgba(255, 0, 60, 0.1);
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.4);
+            text-shadow: 0 0 5px var(--neon-red);
+        }
+
+        @keyframes pulseCartel { 
+            0% { transform: scale(1); } 
+            50% { transform: scale(1.05); } 
+            100% { transform: scale(1); } 
+        }
 
         #loading {
             text-align: center; font-family: 'Righteous', cursive; font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -217,17 +260,18 @@
     </div>
     <div class="subtitulo">SYSTEM.OVERRIDE // CLASIFICACIÓN OFICIAL</div>
 
+    <!-- EL RELOJ DIVINO/INFRAMUNDO -->
     <div class="reloj-inframundo fade-in-up">
-        <div class="reloj-titulo">👁️ RELOJ DEL JUICIO FINAL 👁️</div>
+        <div class="reloj-titulo">⚠️ EL RELOJ DEL JUICIO ⚠️</div>
         <div id="reloj-hora" class="reloj-hora">Sintonizando el tiempo...</div>
-        <div class="reloj-aviso">⚖️ EL CAMBIO DE BALANCE DEL TOP SE REALIZARÁ CADA SEMANA ⚖️</div>
+        <div class="reloj-aviso">LOS DESTINOS SE REESCRIBEN CADA SEMANA</div>
     </div>
 
     <div class="contenedor-main">
         
         <div id="contenedor-god" class="seccion-god">
             <div class="card-god">
-                <div class="god-badge">TITÁN SUPREMO</div>
+                <div class="god-badge">TOP SUPREMO</div>
                 <div class="avatar-icono">🌌</div>
                 <div class="nombre">Diego Mendieta</div>
                 <div class="apodo-container">
@@ -251,16 +295,13 @@
             
             setInterval(() => {
                 const ahora = new Date();
-                // Formato que muestra el día de la semana, fecha y hora exacta
                 const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
                 let textoFecha = ahora.toLocaleDateString('es-ES', opciones).toUpperCase();
-                // Eliminamos la coma que se genera después del día de la semana en algunos navegadores
                 textoFecha = textoFecha.replace(',', ' -');
                 elReloj.innerText = textoFecha;
             }, 1000);
         }
         
-        // Iniciamos el reloj de inmediato
         iniciarReloj();
 
         // TU ENLACE DIRECTO DE GOOGLE SHEETS
@@ -291,10 +332,11 @@
             return '🔥';
         }
 
+        // AHORA DEVUELVE CARTELES DE TEXTO CLAROS
         function obtenerTendenciaHTML(tendencia) {
             const t = tendencia.toUpperCase();
-            if (t.includes('SUBIO') || t.includes('SUBIÓ')) return `<div class="tendencia-badge subio">🡅</div>`;
-            if (t.includes('BAJO') || t.includes('BAJÓ')) return `<div class="tendencia-badge bajo">🡇</div>`;
+            if (t.includes('SUBIO') || t.includes('SUBIÓ')) return `<div class="tendencia-texto subio">▲ SUBIÓ</div>`;
+            if (t.includes('BAJO') || t.includes('BAJÓ')) return `<div class="tendencia-texto bajo">▼ BAJÓ</div>`;
             return ''; 
         }
 
