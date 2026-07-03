@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LISTA DE MEJORES AMIGOS DE JEAN</title>
+    <!-- PapaParse para el Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Fuentes futuristas -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Righteous&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        /* RESET Y VARIABLES */
+        :root {
+            --neon-pink: #ff007f;
+            --neon-blue: #00f3ff;
+            --neon-purple: #9d00ff;
+            --neon-green: #00ff66;
+            --neon-red: #ff003c;
+            --neon-gold: #ffd700;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* FONDO RETROWAVE ANIMADO */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: 
+                linear-gradient(transparent 60%, rgba(157, 0, 255, 0.4) 100%),
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            transform: perspective(500px) rotateX(60deg) translateY(100px) translateZ(-200px);
+            animation: gridMove 3s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
+        }
+
+        /* EFECTO GLITCH PARA EL TÍTULO */
+        .glitch-wrapper {
+            text-align: center;
+            margin: 50px 0 10px 0;
+        }
+
+        .glitch {
+            font-family: 'Righteous', cursive;
+            font-size: 4rem;
+            position: relative;
+            display: inline-block;
+            color: #fff;
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .glitch::before, .glitch::after {
+            content: "TOP AMIGOS DE JEAN";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505;
+        }
+
+        .glitch::before {
+            left: 3px;
+            text-shadow: -2px 0 var(--neon-pink);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+            clip: rect(44px, 450px, 56px, 0);
+        }
+
+        .glitch::after {
+            left: -3px;
+            text-shadow: -2px 0 var(--neon-blue);
+            animation: glitch-anim2 3s infinite linear alternate-reverse;
+            clip: rect(44px, 450px, 56px, 0);
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(15px, 9999px, 81px, 0); }
+            20% { clip: rect(69px, 9999px, 25px, 0); }
+            40% { clip: rect(10px, 9999px, 60px, 0); }
+            60% { clip: rect(80px, 9999px, 90px, 0); }
+            80% { clip: rect(20px, 9999px, 40px, 0); }
+            100% { clip: rect(50px, 9999px, 10px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            20% { clip: rect(10px, 9999px, 40px, 0); }
+            40% { clip: rect(90px, 9999px, 20px, 0); }
+            60% { clip: rect(30px, 9999px, 80px, 0); }
+            80% { clip: rect(80px, 9999px, 10px, 0); }
+            100% { clip: rect(20px, 9999px, 60px, 0); }
+        }
+
+        .subtitulo {
+            text-align: center;
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--neon-pink);
+            letter-spacing: 5px;
+            margin-bottom: 50px;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* CONTENEDOR PRINCIPAL Y ANIMACIONES DE ENTRADA */
+        .contenedor-main {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px 100px 20px;
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* TARJETAS GLASSMORPHISM */
+        .card-amigo, .card-god, .card-primero {
+            background: rgba(15, 15, 25, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-amigo::before, .card-god::before, .card-primero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .card-amigo:hover::before, .card-god:hover::before, .card-primero:hover::before {
+            opacity: 1;
+        }
+
+        /* SECCIÓN GOD */
+        .seccion-god { display: flex; justify-content: center; margin-bottom: 60px; }
+        
+        .card-god {
+            width: 100%; max-width: 800px;
+            text-align: center;
+            border: 2px solid var(--neon-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
+            animation: floatGlowGod 4s infinite alternate;
+            transform: scale(1.05);
+        }
+        
+        @keyframes floatGlowGod {
+            0% { transform: scale(1.05) translateY(0); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
+            100% { transform: scale(1.05) translateY(-15px); box-shadow: 0 0 60px rgba(255, 215, 0, 0.6), 0 0 100px var(--neon-pink); }
+        }
+
+        .god-badge {
+            font-family: 'Righteous', cursive;
+            font-size: 2.5rem;
+            color: var(--neon-gold);
+            text-shadow: 0 0 20px var(--neon-gold);
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+        }
+
+        /* SECCIÓN PRIMEROS */
+        .seccion-podio-primeros {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card-primero {
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            text-align: center;
+        }
+        
+        .card-primero:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 40px var(--neon-blue), inset 0 0 15px var(--neon-blue);
+            border-color: #fff;
+        }
+
+        .puesto-1-badge {
+            position: absolute; top: 15px; left: -35px;
+            background: var(--neon-blue); color: #000;
+            padding: 5px 40px; font-weight: bold;
+            transform: rotate(-45deg); font-family: 'Righteous', cursive;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        /* RESTO DEL TOP */
+        .grid-restante {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card-amigo:hover {
+            transform: translateY(-8px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 25px rgba(157, 0, 255, 0.5);
+        }
+
+        /* ESTILOS INTERNOS DE TEXTO E ICONOS */
+        .avatar-icono {
+            font-size: 4rem; margin-bottom: 15px;
+            display: inline-block;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .card-amigo:hover .avatar-icono, .card-primero:hover .avatar-icono, .card-god:hover .avatar-icono {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .puesto-numero {
+            position: absolute; top: 15px; left: 15px;
+            font-family: 'Righteous', cursive; font-size: 1.5rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .nombre {
+            font-size: 1.5rem; font-weight: 800; letter-spacing: 1px;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .apodo {
+            display: inline-block; margin: 10px 0; padding: 4px 12px;
+            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-blue);
+            border-radius: 5px; font-family: 'VT323', monospace; font-size: 1.2rem;
+            color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .motivo {
+            font-family: 'Rajdhani', sans-serif; font-size: 1rem; color: #a0a0b0;
+            line-height: 1.5; margin-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1);
+            padding-top: 15px; font-weight: 500;
+        }
+
+        /* TENDENCIAS ANIMADAS */
+        .tendencia-badge {
+            position: absolute; bottom: 20px; right: 20px;
+            font-size: 2rem; display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%;
+            animation: pulseTendencia 2s infinite;
+        }
+
+        .subio { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); background: rgba(0, 255, 102, 0.1); }
+        .bajo { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); background: rgba(255, 0, 60, 0.1); }
+
+        @keyframes pulseTendencia {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #loading {
+            text-align: center; font-family: 'Righteous', cursive; font-size: 2.5rem;
+            color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink);
+            margin-top: 10vh; animation: parpadeo 1s infinite alternate;
+        }
+        @keyframes parpadeo { from { opacity: 1; } to { opacity: 0.3; } }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <div class="glitch-wrapper">
+        <h1 class="glitch" data-text="TOP AMIGOS DE JEAN">TOP AMIGOS DE JEAN</h1>
+    </div>
+    <div class="subtitulo">SYSTEM.OVERRIDE // CLASIFICACIÓN OFICIAL</div>
+
+    <div class="contenedor-main">
+        <div id="loading">ACCEDIENDO A LA MATRIX DE DATOS...</div>
+        
+        <div id="contenedor-god" class="seccion-god"></div>
+        <div id="contenedor-primeros" class="seccion-podio-primeros"></div>
+        <div id="contenedor-restante" class="grid-restante"></div>
+    </div>
+
+    <script>
+        // TU ENLACE DIRECTO DE GOOGLE SHEETS
+        const urlCSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREQrPU6qF4vYVWQQHUpi19NiOSRuWB-76FfzD5fRUTFjR6bIJO8rKw62quL-R2Yh98oaJk_ZjfAIvx/pub?gid=367661690&single=true&output=csv';
+
+        const iconosRandom = ['👾', '🔥', '⚡', '🐉', '🔮', '🤖', '💀', '👽', '🎭', '🌀', '💎', '🚀', '🎸', '🐺'];
+
+        function obtenerIcono(apodo, nombre) {
+            const a = apodo.toUpperCase();
+            if (a.includes('PENDIENTE')) {
+                return iconosRandom[nombre.length % iconosRandom.length];
+            }
+            if (a.includes('SAN DIEGO')) return '👁️‍🗨️';
+            if (a.includes('LIDER')) return '👑';
+            if (a.includes('PROTAGONISTA')) return '🎬';
+            if (a.includes('MALCRIADO')) return '🤬';
+            if (a.includes('VAQUITA')) return '🐄';
+            if (a.includes('TONY')) return '😎';
+            if (a.includes('CHOCOTEJA')) return '🍬';
+            if (a.includes('INGENIERO')) return '⚙️';
+            if (a.includes('COMUNISTA')) return '⚒️';
+            if (a.includes('PASA SOLO')) return '📈';
+            if (a.includes('RAMIRO GOD')) return '🌟';
+            if (a.includes('TIBURON')) return '🦈';
+            if (a.includes('DELEGADO')) return '📚';
+            if (a.includes('LORAX')) return '🌲';
+            if (a.includes('NPC')) return '🧍‍♂️';
+            if (a.includes('SAPITO')) return '🐸';
+            if (a.includes('BABOSON')) return '🐌';
+            return '🔥';
+        }
+
+        function obtenerTendenciaHTML(tendencia) {
+            const t = tendencia.toUpperCase();
+            if (t.includes('SUBIO') || t.includes('SUBIÓ')) return `<div class="tendencia-badge subio">🡅</div>`;
+            if (t.includes('BAJO') || t.includes('BAJÓ')) return `<div class="tendencia-badge bajo">🡇</div>`;
+            return ''; 
+        }
+
+        Papa.parse(urlCSV, {
+            download: true,
+            header: true,
+            complete: function(results) {
+                document.getElementById('loading').style.display = 'none';
+                const datos = results.data;
+
+                const cGod = document.getElementById('contenedor-god');
+                const cPrimeros = document.getElementById('contenedor-primeros');
+                const cRestante = document.getElementById('contenedor-restante');
+
+                // Variable para escalonar la animación de entrada
+                let delay = 0;
+
+                datos.forEach(amigo => {
+                    if (!amigo['Nombre y Apellido']) return;
+
+                    const puesto = amigo['Puesto'] ? amigo['Puesto'].trim().toUpperCase() : '';
+                    const nombre = amigo['Nombre y Apellido'];
+                    const apodo = amigo['Alias / Apodo'] || 'Ninguno';
+                    const tendencia = amigo['Tendencia'] || '';
+                    const motivo = amigo['Motivo de la Tendencia'] || '';
+                    const icono = obtenerIcono(apodo, nombre);
+                    const tendenciaHTML = obtenerTendenciaHTML(tendencia);
+
+                    const baseHTML = `
+                        <div class="avatar-icono">${icono}</div>
+                        <div class="nombre">${nombre}</div>
+                        <div class="apodo">[ ${apodo} ]</div>
+                        <div class="motivo">${motivo}</div>
+                        ${tendenciaHTML}
+                    `;
+
+                    const div = document.createElement('div');
+                    // Añadimos la clase fade-in-up y un delay progresivo para que aparezcan en cascada
+                    div.style.animationDelay = `${delay}s`;
+                    delay += 0.1;
+
+                    if (puesto === 'GOD') {
+                        div.className = 'card-god fade-in-up';
+                        div.innerHTML = `<div class="god-badge">OMNIPRESENTE</div>${baseHTML}`;
+                        cGod.appendChild(div);
+                    } 
+                    else if (puesto === '1') {
+                        div.className = 'card-primero fade-in-up';
+                        div.innerHTML = `<div class="puesto-1-badge">RANGO 1</div>${baseHTML}`;
+                        cPrimeros.appendChild(div);
+                    } 
+                    else {
+                        div.className = 'card-amigo fade-in-up';
+                        div.innerHTML = `<div class="puesto-numero">#${puesto}</div>${baseHTML}`;
+                        cRestante.appendChild(div);
+                    }
+                });
+            },
+            error: function() {
+                document.getElementById('loading').innerText = 'ERROR DE SISTEMA: REVISA TU CONEXIÓN O EL ENLACE CSV';
+            }
+        });
+    </script>
+</body>
+</html>
