@@ -9,79 +9,80 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap');
 
         :root {
             --primary: #0f172a;
+            --accent: #f59e0b;
             --blue: #3b82f6;
             --green: #10b981;
-            --accent: #f59e0b;
-            --surface: rgba(255, 255, 255, 0.92);
+            --surface: rgba(255, 255, 255, 0.9);
             --zoom-factor: 1;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        @keyframes bg-pan { 0% { background-position: 0% 50%; filter: hue-rotate(0deg); } 50% { background-position: 100% 50%; filter: hue-rotate(15deg); } 100% { background-position: 0% 50%; filter: hue-rotate(0deg); } }
+        @keyframes bg-pan { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.9) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 calc(15px * var(--zoom-factor)) rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+        @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6); } 70% { box-shadow: 0 0 0 calc(15px * var(--zoom-factor)) rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
         @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8); } 70% { box-shadow: 0 0 0 calc(20px * var(--zoom-factor)) rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(calc(-6px * var(--zoom-factor))); } }
         @keyframes dash { to { stroke-dashoffset: -40; } }
-
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(calc(-6px * var(--zoom-factor))); } }
+        
         body { 
-            background: linear-gradient(-45deg, #020617, #1e1b4b, #172554, #0f172a);
-            background-size: 300% 300%;
-            animation: bg-pan 25s ease infinite;
-            color: #333; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #172554, #1e3a8a);
+            background-size: 400% 400%;
+            animation: bg-pan 20s ease infinite;
+            color: #333; display: flex; flex-direction: column; min-height: 100vh;
         }
 
-        header { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.6); color: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.15); }
+        header { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); color: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .header-left { display: flex; align-items: center; gap: 15px; }
-        .logo-placeholder { width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 900; font-size: 16px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.5); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .logo-placeholder { width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent), #fbbf24); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 900; font-size: 16px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .logo-placeholder:hover { transform: rotate(10deg) scale(1.1); }
-        header h1 { font-size: 19px; display: flex; flex-direction: column; font-weight: 900; letter-spacing: 0.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.6); }
-        header h1 span { font-size: 11px; color: #fbbf24; font-weight: 800; margin-top: 3px; text-transform: uppercase; letter-spacing: 2px; }
-
-        .route-planner-container { max-width: 1400px; margin: 25px auto 10px; padding: 0 15px; width: 100%; animation: popIn 0.5s ease-out forwards; }
-        .route-glass-panel { background: var(--surface); backdrop-filter: blur(25px); border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.4); display: flex; flex-direction: column; gap: 15px; }
+        header h1 { font-size: 18px; display: flex; flex-direction: column; font-weight: 900; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        header h1 span { font-size: 11px; color: var(--accent); font-weight: 800; margin-top: 2px; text-transform: uppercase; letter-spacing: 1.5px; }
+        
+        .route-planner-container { max-width: 1400px; margin: 20px auto 10px; padding: 0 15px; width: 100%; animation: popIn 0.5s ease-out forwards; }
+        .route-glass-panel { background: var(--surface); backdrop-filter: blur(20px); border-radius: 20px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.5); display: flex; flex-direction: column; gap: 15px; }
         .route-glass-panel h4 { color: var(--primary); font-size: 18px; display: flex; align-items: center; gap: 10px; font-weight: 900; }
-
+        
         .ruta-box { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
         .ruta-selector { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
         .ruta-selector label { font-size: 12px; font-weight: 900; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
         .ruta-box select { padding: 14px 15px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 14px; outline: none; transition: 0.3s; background: white; font-weight: 800; color: var(--primary); width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .ruta-box select:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); transform: translateY(-2px); }
-        .btn-trazar { padding: 14px 30px; background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 15px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 15px rgba(245, 158, 11, 0.4); white-space: nowrap; height: 50px; }
-        .btn-trazar:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 12px 20px rgba(234, 88, 12, 0.5); }
+        
+        .btn-trazar { padding: 14px 30px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 15px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 15px rgba(245, 158, 11, 0.4); white-space: nowrap; height: 50px; }
+        .btn-trazar:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 12px 20px rgba(245, 158, 11, 0.5); }
         .mensaje-ruta { font-weight: 800; font-size: 13px; min-height: 20px; transition: 0.3s; }
 
         .main-wrapper { display: flex; max-width: 1400px; margin: 0 auto 30px; padding: 0 15px; gap: 20px; width: 100%; animation: popIn 0.6s ease-out forwards; animation-delay: 0.1s; }
-
-        .map-section { flex: 3; background: var(--surface); backdrop-filter: blur(25px); border-radius: 24px; padding: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.3); display: flex; flex-direction: column; }
+        
+        .map-section { flex: 3; background: var(--surface); backdrop-filter: blur(20px); border-radius: 24px; padding: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.4); display: flex; flex-direction: column; }
         
         .map-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-        .filtro-container select { padding: 10px 15px; border-radius: 10px; border: none; font-weight: 800; color: white; background: var(--primary); outline: none; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .filtro-container select { padding: 10px 15px; border-radius: 10px; border: none; font-weight: 800; color: white; background: var(--primary); outline: none; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .zoom-btns { display: flex; gap: 8px; }
-        .zoom-btns button { background: var(--primary); color: white; border: none; width: 40px; height: 40px; border-radius: 10px; font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .zoom-btns button { background: var(--primary); color: white; border: none; width: 40px; height: 40px; border-radius: 10px; font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .zoom-btns button:hover { background: var(--blue); transform: translateY(-3px); }
 
-        .map-viewport { width: 100%; height: 60vh; min-height: 400px; overflow: auto; border-radius: 16px; background: #cbd5e1; position: relative; border: 4px solid white; box-shadow: inset 0 10px 30px rgba(0,0,0,0.3); cursor: grab; }
+        .map-viewport { width: 100%; height: 60vh; min-height: 400px; overflow: auto; border-radius: 16px; background: #e2e8f0; position: relative; border: 4px solid white; box-shadow: inset 0 10px 30px rgba(0,0,0,0.2); cursor: grab; }
         .map-viewport:active { cursor: grabbing; }
-        .map-viewport::-webkit-scrollbar { width: 10px; height: 10px; }
-        .map-viewport::-webkit-scrollbar-thumb { background: #64748b; border-radius: 5px; }
-
+        .map-viewport::-webkit-scrollbar { width: 8px; height: 8px; }
+        .map-viewport::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        
         .map-wrapper { position: relative; width: 100%; min-width: 900px; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: top left; }
         .map-wrapper img { width: 100%; height: auto; display: block; pointer-events: none; }
-
+        
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
         .ruta-animada { stroke-dasharray: calc(15px * var(--zoom-factor)); animation: dash 1s linear infinite; filter: drop-shadow(0px calc(4px * var(--zoom-factor)) calc(6px * var(--zoom-factor)) rgba(0,0,0,0.6)); }
 
-        .map-pin { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; z-index: 10; cursor: pointer; transition: z-index 0.2s; }
+        .map-pin { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transform: translate(-50%, -100%); transition: z-index 0.2s; }
         .pin-marker { width: calc(40px * var(--zoom-factor)); height: calc(40px * var(--zoom-factor)); background: white; border-radius: 50%; padding: calc(3px * var(--zoom-factor)); box-shadow: 0 calc(8px * var(--zoom-factor)) calc(15px * var(--zoom-factor)) rgba(0,0,0,0.5); position: relative; animation: float 3s ease-in-out infinite; border: calc(2px * var(--zoom-factor)) solid var(--blue); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .pin-foto { width: 100%; height: 100%; border-radius: 50%; background-size: cover; background-position: center; }
         .pin-marker::after { content: ''; position: absolute; bottom: calc(-8px * var(--zoom-factor)); left: 50%; transform: translateX(-50%); border-width: calc(8px * var(--zoom-factor)) calc(6px * var(--zoom-factor)) 0; border-style: solid; border-color: var(--blue) transparent transparent transparent; transition: 0.3s; }
-        .pin-label { background: rgba(255,255,255,0.95); color: var(--primary); padding: calc(3px * var(--zoom-factor)) calc(8px * var(--zoom-factor)); border-radius: calc(8px * var(--zoom-factor)); font-size: calc(12px * var(--zoom-factor)); font-weight: 900; margin-top: calc(5px * var(--zoom-factor)); box-shadow: 0 calc(4px * var(--zoom-factor)) calc(10px * var(--zoom-factor)) rgba(0,0,0,0.3); border: calc(1px * var(--zoom-factor)) solid rgba(0,0,0,0.1); white-space: nowrap; transition: 0.3s; }
+        .pin-label { background: rgba(255,255,255,0.95); color: var(--primary); padding: calc(3px * var(--zoom-factor)) calc(8px * var(--zoom-factor)); border-radius: calc(8px * var(--zoom-factor)); font-size: calc(12px * var(--zoom-factor)); font-weight: 900; margin-top: calc(6px * var(--zoom-factor)); box-shadow: 0 calc(4px * var(--zoom-factor)) calc(10px * var(--zoom-factor)) rgba(0,0,0,0.3); border: calc(1px * var(--zoom-factor)) solid rgba(0,0,0,0.1); white-space: nowrap; transition: 0.3s; }
 
         .map-pin:hover { z-index: 30; }
         .map-pin:hover .pin-marker { transform: scale(1.15); border-color: var(--accent); animation: none; }
@@ -100,14 +101,14 @@
 
         .viewer-container { width: 100%; height: 60vh; min-height: 400px; border-radius: 16px; overflow: hidden; position: relative; display: none; background: #000; box-shadow: inset 0 0 50px rgba(0,0,0,0.9); opacity: 0; transition: opacity 0.4s; border: 4px solid white; }
         #panorama { width: 100%; height: 100%; }
-        .btn-volver-mapa { position: absolute; top: 20px; left: 20px; z-index: 999; background: rgba(239, 68, 68, 0.9); backdrop-filter: blur(10px); color: white; border: 2px solid white; padding: 12px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-volver-mapa { position: absolute; top: 15px; left: 15px; z-index: 999; background: rgba(239, 68, 68, 0.9); backdrop-filter: blur(8px); color: white; border: 2px solid white; padding: 10px 20px; border-radius: 10px; font-weight: 900; cursor: pointer; box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
         .btn-volver-mapa:hover { background: #dc2626; transform: scale(1.05); }
 
-        .sidebar { flex: 1; min-width: 340px; background: var(--surface); backdrop-filter: blur(25px); border-radius: 24px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 10px; overflow-y: auto; height: 60vh; min-height: 400px; border: 1px solid rgba(255,255,255,0.3); }
+        .sidebar { flex: 1; min-width: 340px; background: var(--surface); backdrop-filter: blur(20px); border-radius: 24px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 10px; overflow-y: auto; height: 60vh; min-height: 400px; border: 1px solid rgba(255,255,255,0.4); }
         .sidebar::-webkit-scrollbar { width: 6px; }
         .sidebar::-webkit-scrollbar-thumb { background-color: #94a3b8; border-radius: 10px; }
         .sidebar h3 { font-size: 13px; margin: 10px 0 5px 0; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 900; }
-
+        
         .btn-destino { width: 100%; padding: 8px; background: white; border: 2px solid transparent; border-radius: 16px; text-align: left; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .btn-destino:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(30, 58, 138, 0.1); border-color: #cbd5e1; }
         .btn-destino.active { background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%); border-color: var(--blue); color: white; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.5); transform: translateX(8px); }
@@ -119,18 +120,17 @@
         .tools-container { max-width: 1400px; margin: 0 auto 40px; padding: 0 15px; width: 100%; animation: popIn 0.6s ease-out forwards; animation-delay: 0.2s; }
         .tools-card { background: var(--surface); backdrop-filter: blur(30px); padding: 25px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.3); }
         .tools-card h4 { margin-bottom: 20px; color: var(--primary); font-size: 20px; display: flex; align-items: center; gap: 12px; font-weight: 900; }
-
+        
         .gps-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
         .btn-action { padding: 12px 18px; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 15px rgba(0,0,0,0.3); color: white; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; flex: 1; min-width: 120px; }
         .btn-action:hover { transform: translateY(-3px) scale(1.02); }
         .bg-green { background: linear-gradient(135deg, #10b981, #059669); }
         .bg-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .bg-blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
         .bg-indigo { background: linear-gradient(135deg, #6366f1, #4f46e5); }
-
-        .joystick-container { background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.9); box-shadow: inset 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .joystick-container { background: rgba(255, 255, 255, 0.6); padding: 20px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.8); }
         .d-pad { display: grid; grid-template-columns: 60px 60px 60px; gap: 8px; justify-content: center; margin-top: 15px; }
-        .d-btn { width: 60px; height: 60px; background: white; border: none; border-radius: 16px; font-size: 24px; cursor: pointer; transition: 0.2s; color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #e2e8f0; }
+        .d-btn { width: 60px; height: 60px; background: white; border: none; border-radius: 16px; font-size: 24px; cursor: pointer; transition: 0.2s; color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 2px solid #e2e8f0; }
         .d-btn:active { background: #e2e8f0; transform: scale(0.9); }
         .d-up { grid-column: 2; } .d-left { grid-column: 1; } .d-right { grid-column: 3; } .d-down { grid-column: 2; }
 
@@ -240,72 +240,72 @@
                     <svg id="svg-rutas" class="route-svg"></svg>
                     
                     <div class="map-pin" data-categoria="principal" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div></div>
-                        <div class="pin-label">Entrada</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Entrada Principal</div>
                     </div>
                     
                     <div class="map-pin" data-categoria="principal" id="pin-mapa-biblioteca" style="top: 38%; left: 52%;" onclick="abrir360('biblioteca')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Biblioteca</div>
+                        <div class="pin-label">Biblioteca Central</div>
                     </div>
                     
                     <div class="map-pin" data-categoria="principal" id="pin-mapa-admision" style="top: 30%; left: 50%;" onclick="abrir360('admision')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div></div>
-                        <div class="pin-label">Admisión</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Oficina Admisión</div>
                     </div>
 
                     <div class="map-pin" data-categoria="principal" id="pin-mapa-comedor" style="top: 42%; left: 70%;" onclick="abrir360('comedor')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div></div>
-                        <div class="pin-label">Comedor</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Comedor Universitario</div>
                     </div>
                     
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-tecnologia" style="top: 85%; left: 45%;" onclick="abrir360('tecnologia')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div></div>
-                        <div class="pin-label">Tecnología</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Tecnología</div>
                     </div>
 
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-agropecuaria" style="top: 80%; left: 55%;" onclick="abrir360('agropecuaria')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div></div>
-                        <div class="pin-label">Agropecuaria</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Agropecuaria</div>
                     </div>
                     
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-ciencias" style="top: 55%; left: 65%;" onclick="abrir360('ciencias')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div></div>
-                        <div class="pin-label">Ciencias</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Ciencias</div>
                     </div>
 
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-empresariales" style="top: 70%; left: 60%;" onclick="abrir360('empresariales')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div></div>
-                        <div class="pin-label">Empresariales</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Empresariales</div>
                     </div>
 
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-sociales" style="top: 60%; left: 70%;" onclick="abrir360('sociales')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div></div>
-                        <div class="pin-label">Sociales</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Sociales</div>
                     </div>
 
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-inicial" style="top: 40%; left: 40%;" onclick="abrir360('inicial')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div></div>
-                        <div class="pin-label">Inicial</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Inicial</div>
                     </div>
 
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-pedagogia" style="top: 50%; left: 80%;" onclick="abrir360('pedagogia')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div></div>
-                        <div class="pin-label">Pedagogía</div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Pedagogía</div>
                     </div>
                     
                     <div class="map-pin" data-categoria="bienestar" id="pin-mapa-estadio" style="top: 55%; left: 25%;" onclick="abrir360('estadio')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div></div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Estadio</div>
                     </div>
                     
                     <div class="map-pin" data-categoria="bienestar" id="pin-mapa-enfermeria" style="top: 80%; left: 15%;" onclick="abrir360('enfermeria')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div></div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Enfermería</div>
                     </div>
                     
                     <div class="map-pin" data-categoria="bienestar" id="pin-mapa-gimnasio" style="top: 65%; left: 30%;" onclick="abrir360('gimnasio')">
-                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div></div>
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Gimnasio</div>
                     </div>
                 </div>
@@ -321,7 +321,7 @@
         <div class="sidebar">
             <h3>Instalaciones Principales</h3>
             <button class="btn-destino" onclick="abrir360('entrada')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Entrada Principal</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('biblioteca')">
@@ -329,55 +329,55 @@
                 <div class="btn-info"><span class="btn-title">Biblioteca Central</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('admision')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Oficina de Admisión</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('comedor')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Comedor Universitario</span></div>
             </button>
 
             <h3>Facultades</h3>
             <button class="btn-destino" onclick="abrir360('tecnologia')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Facultad de Tecnología</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('agropecuaria')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">F. Agropecuaria y Nutrición</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('ciencias')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Facultad de Ciencias</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('empresariales')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">F. Ciencias Empresariales</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('sociales')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">F. Ciencias Sociales</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('inicial')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">F. Educación Inicial</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('pedagogia')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">F. Pedagogía y C. Física</span></div>
             </button>
 
             <h3>Bienestar y Deporte</h3>
             <button class="btn-destino" onclick="abrir360('enfermeria')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/cerro-toco.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Enfermería de la UNE</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('estadio')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/jure.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Estadio de grass UNE</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('gimnasio')">
-                <div class="img-thumb" style="background-image: url('https://pannellum.org/images/alma.jpg');"></div>
+                <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Gimnasio</span></div>
             </button>
         </div>
@@ -385,19 +385,18 @@
 
     <div class="tools-container">
         <div class="tools-card">
-            <h4>🛰️ Navegación Satelital y Modo Prueba</h4>
+            <h4>🛰️ Navegación Satelital y Creador de Mapas</h4>
             
             <div class="gps-grid">
                 <div>
-                    <p style="margin-bottom: 15px; font-size: 14px; font-weight: 700; color: #475569;">Usa tu ubicación real o el joystick para recorrer el campus digitalmente.</p>
+                    <p style="margin-bottom: 15px; font-size: 14px; font-weight: 700; color: #475569;">Usa tu ubicación real o extrae puntos del mapa para seguir construyendo la web.</p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button class="btn-action bg-green" onclick="iniciarNavegacion()">🚶 Activar GPS</button>
                         <button class="btn-action bg-red" onclick="detenerNavegacion()">🛑 Detener</button>
-                        <button class="btn-action bg-blue" onclick="obtenerMiUbicacion()">📍 Capturar</button>
-                        <button class="btn-action bg-indigo" onclick="toggleModoEdicion()">✏️ Creador</button>
+                        <button class="btn-action bg-indigo" onclick="toggleModoEdicion()">✏️ Modo Dev (Capturar Punto)</button>
                     </div>
                     <div id="panel-instrucciones" style="margin-top: 20px; font-weight: 900; color: #1e3a8a; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border: 2px dashed #cbd5e1;">Sistema en espera...</div>
-                    <p id="resultado-gps" style="font-family: monospace; font-size: 13px; color: #64748b; margin-top: 15px;"></p>
+                    <div id="resultado-gps" style="font-family: monospace; font-size: 13px; color: #1e293b; margin-top: 15px; background: #f1f5f9; padding: 10px; border-radius: 8px; word-break: break-all;"></div>
                 </div>
                 
                 <div class="joystick-container">
@@ -464,26 +463,58 @@
         function toggleModoEdicion() {
             modoEdicionActivo = !modoEdicionActivo;
             const res = document.getElementById('resultado-gps');
+            const wrapper = document.getElementById('mapa-wrapper');
+            const img = document.getElementById('img-mapa');
+            
             if (modoEdicionActivo) {
-                res.innerHTML = "✅ MODO CREADOR: Haz clic en el mapa para extraer coordenadas.";
-                res.style.color = "#10b981";
-                document.getElementById('img-mapa').style.cursor = "crosshair";
+                res.innerHTML = "<span style='color:#10b981'>✅ MODO CREADOR ACTIVO:</span> Haz clic en cualquier parte de la imagen del mapa arriba. Aparecerá un punto rosado y te daré los números exactos aquí.";
+                img.style.cursor = "crosshair";
+                wrapper.style.cursor = "crosshair";
             } else {
-                res.innerHTML = "❌ MODO CREADOR DESACTIVADO.";
-                res.style.color = "#ef4444";
-                document.getElementById('img-mapa').style.cursor = "auto";
+                res.innerHTML = "<span style='color:#ef4444'>❌ MODO CREADOR DESACTIVADO.</span>";
+                img.style.cursor = "auto";
+                wrapper.style.cursor = "auto";
+                const puntero = document.getElementById('puntero-prueba');
+                if(puntero) puntero.remove();
             }
         }
 
-        document.getElementById('img-mapa').addEventListener('click', function(e) {
+        document.getElementById('mapa-wrapper').addEventListener('click', function(e) {
             if (!modoEdicionActivo) return;
-            const rect = e.target.getBoundingClientRect();
+            
+            const rect = this.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            const textoHTML = `top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;`;
-            const textoJS = `x: ${x.toFixed(2)}, y: ${y.toFixed(2)}`;
-            document.getElementById('resultado-gps').innerHTML = `<b>COPIA ESTO:</b><br>HTML: ${textoHTML}<br>JS: ${textoJS}`;
-            alert(`Coordenadas Listas:\n\nHTML:\n${textoHTML}\n\nJS:\n${textoJS}`);
+            
+            let puntero = document.getElementById('puntero-prueba');
+            if(!puntero) {
+                puntero = document.createElement('div');
+                puntero.id = 'puntero-prueba';
+                puntero.style.position = 'absolute';
+                puntero.style.width = '20px';
+                puntero.style.height = '20px';
+                puntero.style.background = '#ec4899';
+                puntero.style.border = '3px solid white';
+                puntero.style.borderRadius = '50%';
+                puntero.style.transform = 'translate(-50%, -50%)';
+                puntero.style.zIndex = '9999';
+                puntero.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+                this.appendChild(puntero);
+            }
+            puntero.style.left = x.toFixed(2) + '%';
+            puntero.style.top = y.toFixed(2) + '%';
+
+            document.getElementById('resultado-gps').innerHTML = `
+                <span style="color:#ec4899; font-weight:900;">● Punto rosado fijado</span><br><br>
+                <b>1. PARA EL CÓDIGO HTML (Mover el Pin):</b><br>
+                Busca tu Pin y cambia los porcentajes a:<br>
+                <span style="color:#2563eb;">top: ${y.toFixed(2)}%; left: ${x.toFixed(2)}%;</span><br><br>
+                <b>2. PARA JAVASCRIPT (Trazar Ruta):</b><br>
+                En 'coordenadasMapa' pon:<br>
+                <span style="color:#2563eb;">x: ${x.toFixed(2)}, y: ${y.toFixed(2)}</span>
+            `;
+            
+            document.getElementById('resultado-gps').scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
 
         const coordenadasMapa = {
@@ -511,20 +542,20 @@
             viewer = pannellum.viewer('panorama', {
                 "default": { "firstScene": sceneId, "sceneFadeDuration": 1000, "autoLoad": true, "crossOrigin": "anonymous" },
                 "scenes": {
-                    "entrada": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
+                    "entrada": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "biblioteca": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "admision": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
-                    "comedor": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
-                    "tecnologia": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
-                    "agropecuaria": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
-                    "ciencias": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
-                    "empresariales": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
-                    "sociales": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
-                    "inicial": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
-                    "pedagogia": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" },
-                    "estadio": { "type": "equirectangular", "panorama": "https://pannellum.org/images/jure.jpg" },
-                    "enfermeria": { "type": "equirectangular", "panorama": "https://pannellum.org/images/cerro-toco.jpg" },
-                    "gimnasio": { "type": "equirectangular", "panorama": "https://pannellum.org/images/alma.jpg" }
+                    "admision": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "comedor": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "tecnologia": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "agropecuaria": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "ciencias": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "empresariales": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "sociales": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "inicial": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "pedagogia": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "estadio": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "enfermeria": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "gimnasio": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" }
                 }
             });
         }
@@ -728,20 +759,6 @@
                 panel.style.background = "#e0e7ff";
                 panel.style.borderColor = "#3b82f6";
             }
-        }
-
-        function obtenerMiUbicacion() {
-            const res = document.getElementById('resultado-gps');
-            if (!navigator.geolocation) {
-                res.innerHTML = "❌ Tu navegador no soporta geolocalización.";
-                return;
-            }
-            res.innerHTML = "Buscando satélites... 🛰️";
-            navigator.geolocation.getCurrentPosition(
-                function(pos) { res.innerHTML = `LAT: ${pos.coords.latitude} | LON: ${pos.coords.longitude}`; }, 
-                function(err) { res.innerHTML = "❌ Error capturando."; },
-                { enableHighAccuracy: true }
-            );
         }
     </script>
 </body>
