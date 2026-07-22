@@ -101,7 +101,7 @@
     button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
     button.btn-swap { background: linear-gradient(45deg, #ffbe0b, #fb5607); color: #000; }
     
-    /* Botón NO HACER CLIC */
+    /* Botón Misterioso (No hacer clic) */
     button.btn-mystery {
       background: linear-gradient(45deg, #ff0000, #990000); color: #fff; border: 1px solid rgba(255,255,255,0.4);
       animation: glowMystery 1s infinite alternate; font-weight: 900; letter-spacing: 1px;
@@ -109,18 +109,6 @@
     @keyframes glowMystery {
       from { box-shadow: 0 0 5px #ff0000; transform: scale(1); }
       to { box-shadow: 0 0 15px #ff007f; transform: scale(1.02); }
-    }
-
-    button.btn-comoo {
-      background: linear-gradient(135deg, #ff007f, #ffbe0b, #00ffff);
-      color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px;
-      width: 100%; padding: 14px; border-radius: 14px; text-shadow: 0 0 5px #fff;
-      animation: pulseBtn 1.5s infinite;
-    }
-
-    @keyframes pulseBtn {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(255,0,127,0.8); }
-      50% { transform: scale(1.03); box-shadow: 0 0 25px rgba(0,255,255,0.9); }
     }
 
     .category-selector {
@@ -461,6 +449,17 @@
       }
     }
 
+    // INICIALIZACIÓN API YOUTUBE (BATERÍA REAL)
+    let drumPlayer;
+    function onYouTubeIframeAPIReady() {
+      drumPlayer = new YT.Player('drumPlayerDiv', {
+        height: '0',
+        width: '0',
+        videoId: 'ferfRClQKgY', 
+        playerVars: { 'autoplay': 0, 'controls': 0 }
+      });
+    }
+
     function controlMusic(action) {
        const urlInput = document.getElementById('ytUrl').value.trim();
        const ytContainer = document.getElementById('videoDisplay');
@@ -530,7 +529,7 @@
     const baseDatos = {
       chistes: {
         verdades: [
-          // Los solicitados explícitamente:
+          // Los solicitados explícitamente y nuevos
           "Júpiter... ¡porque traka traka por 2 pesos!",
           "Gaseosa por la mitad... ¡porque te la piden los linyeras, la agarran, la chupan, te la acaban y te la devuelven!",
           "Capa de ozono... ¡porque cada día está más abierta!",
@@ -544,7 +543,6 @@
           "Teléfono público... ¡porque cobra 25 centavos el minuto!",
           "Monedero... ¡porque se abre por una moneda!",
           "Chancleta africana... ¡porque se la ponen todos los negros!",
-          // Otros chistes
           "Tabla del 1... ¡porque es recontra fácil y cualquiera la saca!",
           "Caprichosa... ¡porque todos se la quieren dar!",
           "Bicicleta pública... ¡porque todo el mundo se sube sin pedir permiso!",
@@ -568,6 +566,7 @@
       },
       picante: {
         verdades: [
+          // PREGUNTAS GENERALES
           "🔥 ¿Quién de esta sala te parece el/la más atractivo/a?",
           "😏 ¿Alguna vez te ha gustado el/la novio/a o ex de alguien presente?",
           "🔥 ¿Qué es lo más atrevido o picante que has hecho en la universidad?",
@@ -582,13 +581,68 @@
           "😏 Si el mundo se acabara mañana, ¿con quién de aquí tendrías tu última aventura?",
           "😳 ¿Alguna vez te han descubierto haciéndolo en un lugar público?",
           "💋 ¿Te has besado con alguien de la misma carrera pero de otro ciclo?",
-          "👀 Di el nombre de la persona que más stalkeas cuando estás caliente."
+          "👀 Di el nombre de la persona que más stalkeas cuando estás caliente.",
+          
+          // NUEVAS VERDADES (50+)
+          "🔥 ¿Cuál es la fantasía más rara que has tenido con alguien de la universidad?",
+          "📱 ¿Alguna vez has mandado un 'nude' estando en el campus?",
+          "😏 ¿Con quién del salón tendrías una relación de 'amigos con derechos'?",
+          "💋 ¿Has besado a más de una persona del mismo salón?",
+          "🔥 ¿Quién del salón tiene la voz más sexy?",
+          "👂 ¿Qué es lo más caliente que te han dicho al oído?",
+          "😳 ¿Alguna vez te has excitado en plena clase? ¿Pensando en quién?",
+          "😈 ¿Tendrías un trío con alguien de este grupo? ¿Con quiénes?",
+          "💋 Si te obligaran a besar a alguien de tu mismo sexo en este salón, ¿quién sería?",
+          "🛏️ ¿Cuál es tu posición favorita en la intimidad?",
+          "😏 ¿Has tenido sueños húmedos con algún profesor(a)?",
+          "✋ ¿Qué parte de tu cuerpo te gusta que te acaricien más?",
+          "💡 ¿Prefieres hacerlo con luz apagada o encendida?",
+          "📱 ¿Alguna vez has sido 'infiel' por chat?",
+          "🔥 ¿Quién del salón crees que gime más fuerte?",
+          "📹 ¿Te has grabado alguna vez teniendo intimidad?",
+          "😳 ¿Alguna vez te han descubierto tocándote a ti mismo/a?",
+          "😈 ¿Qué es lo más atrevido que estarías dispuesto/a a hacer hoy con alguien de aquí?",
+          "🔋 ¿Has usado juguetes sexuales alguna vez?",
+          "😏 ¿Preferirías pasar una noche de pasión con tu ex o con la persona a tu derecha?",
+          "💔 ¿Alguna vez te has liado con alguien solo por despecho?",
+          "🔥 ¿Quién del salón crees que tiene el mayor 'body count' (número de parejas)?",
+          "🌳 ¿Has tenido intimidad en un parque o lugar muy público? ¿Dónde?",
+          "👀 ¿Te atrae alguien de aquí que actualmente tiene pareja?",
+          "🤢 ¿Cuál es el peor beso que te han dado en tu vida y por qué?",
+          "👠 ¿Qué fetiche tienes que te da vergüenza admitir en público?",
+          "⛓️ ¿En la cama, te gusta dominar o que te dominen?",
+          "💸 ¿Alguna vez has pagado por contenido en OnlyFans o te has suscrito al de alguien conocido?",
+          "🛗 ¿Con quién del salón te daría morbo quedar atrapado/a en un ascensor por horas?",
+          "📸 ¿Te han mandado fotos íntimas sin pedirlas? ¿De quién?",
+          "📱 ¿Qué es lo primero que miras en el perfil de Instagram de alguien cuando tienes intenciones candentes?",
+          "💋 ¿A quién de aquí le harías un chupetón en el cuello ahora mismo?",
+          "🚿 ¿Cuál es el lugar más sucio o incómodo donde lo has hecho?",
+          "👵👴 ¿Alguna vez te has acostado con alguien muchísimo mayor que tú?",
+          "🎭 ¿Has fingido un clímax/orgasmo para que ya termine?",
+          "😏 ¿Sientes atracción sexual por alguien de tu grupo de amigos más cercano?",
+          "🔥 ¿Cuál es la mayor locura que has hecho solo por estar caliente?",
+          "⭐ ¿Qué calificación te pondrías del 1 al 10 en la cama?",
+          "👙 ¿Qué ropa interior llevas puesta en este momento? (Descríbela al detalle)",
+          "💔 ¿Te han roto el corazón justo después de acostarte con esa persona?",
+          
+          // VERDADES ESPECÍFICAS DE MARVIN Y DAYRON
+          "🔥 ¡PREGUNTA PARA EL GRUPO! ¿Creen que Marvin y Dayron harían buena pareja en secreto?",
+          "😏 Si tuvieras que elegir, ¿a quién prefieres ver bailando sensualmente en tubo: a Marvin o a Dayron?",
+          "😈 ¿Quién crees que es más 'activo' (el que domina) en la intimidad, Marvin o Dayron?",
+          "💋 Si Marvin y Dayron se besaran ahorita mismo, ¿quién crees que tomaría la iniciativa y metería lengua?",
+          "🔥 Sé honesto/a: ¿Crees que Marvin tiene fantasías con Dayron? (O viceversa).",
+          "⏱️ Entre Marvin y Dayron, ¿quién crees que dura más tiempo en la cama?",
+          "💸 Si Marvin y Dayron tuvieran un OnlyFans juntos, ¿te suscribirías por morbo?",
+          "📱 ¿Quién es más probable que mande un mensaje caliente a las 3 AM buscando acción: Marvin o Dayron?",
+          "👀 ¿Alguna vez notaste tensión sexual o miraditas raras entre Marvin y Dayron?",
+          "😈 Si tuvieras que hacer un trío obligatoriamente con Marvin y Dayron, ¿qué rol tomarías tú?"
         ],
         retos: [
+          // RETOS GENERALES EXISTENTES
           "💋 Dale un beso tierno en la mejilla a la persona del salón que tú escojas.",
           "🤝 Dale un beso elegante en el reverso de la mano a la persona que elijas.",
           "💃 Hazle un baile sensual e improvisado de 10 segundos a la persona que escojas.",
-          "👀 Intenta seducir a la persona que elijas usando solo la mirada durante 15 segundos.",
+          "👀 Intenta seducir a la persona que elijas usando solo la mirada, sonrisas y gestos coquetos durante 15 segundos.",
           "🎙️ Envía un audio coqueteando al último contacto con quien hablaste en WhatsApp.",
           "👂 Susúrrale algo atrevido al oído a la persona a tu derecha para que se sonroje.",
           "🫂 Dale un abrazo apretado de 10 segundos a la persona que elijas del salón.",
@@ -597,7 +651,61 @@
           "💅 Muerde tu labio inferior mientras miras fijamente a la persona frente a ti por 10 segundos.",
           "🍷 Pasa un hielo o una bebida fría por el cuello de la persona a tu derecha.",
           "🔥 Quítate una prenda de ropa que no sea vital (casaca, medias, zapatos, chalina).",
-          "💄 Deja que la persona a tu izquierda te bese el cuello por 3 segundos."
+          "💄 Deja que la persona a tu izquierda te bese el cuello por 3 segundos.",
+          
+          // NUEVOS RETOS (50+)
+          "💋 Dale un beso en el cuello (suave) a la persona a tu izquierda.",
+          "👕 Quítate el polo/camiseta por las próximas 3 rondas (o prenda superior equivalente).",
+          "💃 Haz un baile de reguetón (perreo) muy pegado a la persona de enfrente por 15 segundos.",
+          "👄 Simula de forma actuada cómo gimes cuando estás llegando al clímax.",
+          "👂 Deja que la persona a tu derecha te muerda suavemente el lóbulo de la oreja.",
+          "👅 Chúpale el dedo índice a la persona que elijas de forma muy sugerente.",
+          "🪑 Siéntate a horcajadas sobre las piernas de la persona que te parezca más atractiva por 2 rondas.",
+          "💆‍♂️ Hazle un masaje sensual en los hombros y cuello a alguien del grupo durante 1 minuto.",
+          "👅 Pasa tu lengua rápidamente por el labio inferior de la persona a tu izquierda.",
+          "🦶 Quítale un zapato a alguien usando solo tus pies y piernas por debajo de la mesa.",
+          "✋ Mete la mano por debajo del polo de la persona a tu derecha y acaricia su espalda baja.",
+          "🙈 Cierra los ojos y adivina quién te está tocando el rostro de manera sensual (alguien debe ofrecerse).",
+          "👃 Huele el cuello de tres personas del salón y di frente a todos quién huele mejor.",
+          "⭐ Simula tu mejor pose de estrella porno frente a todos los presentes.",
+          "📱 Lee en voz alta el último chat candente, coqueto o pelea tóxica que tuviste en WhatsApp.",
+          "📸 Manda una foto tuya en ropa interior a tu mejor amigo/a (o a alguien de confianza que no esté aquí).",
+          "🍑 Déjate dar una nalgada fuerte por la persona que está sentada enfrente tuyo.",
+          "💋 Besa apasionadamente la mano de alguien mirándolo a los ojos con muchísimo deseo.",
+          "🐈 Gatea como un gatito/a sexy hasta la persona que más te atraiga del grupo.",
+          "🏋️ Haz 5 sentadillas o flexiones y en cada una suelta un gemido ligero.",
+          "🔥 Tócate a ti mismo/a de forma muy sugerente (sobre la ropa) por 10 segundos mientras todos miran.",
+          "🤫 Susurra al oído de la persona a tu derecha lo más sucio que te gustaría hacerle a solas.",
+          "🍓 Cómele un trozo de comida o un dulce directamente de la boca a alguien sin usar las manos.",
+          "🧊 Deja que alguien del grupo te pase un cubo de hielo por dentro de la camisa/polo.",
+          "🗣️ Gime en voz alta el nombre del profesor(a) que te parezca más atractivo/a.",
+          "🧦 Quítate un calcetín sin usar las manos y dáselo a oler a la persona de enfrente.",
+          "💋 Da un beso en la comisura de los labios a la persona que el resto del grupo elija.",
+          "💃 Hazle un 'lap dance' (baile en el regazo) candente a alguien por 20 segundos.",
+          "👀 Haz contacto visual intenso con alguien mientras te lames los labios por 15 segundos.",
+          "💸 Pasa un billete, tarjeta o moneda por el cuerpo de alguien como si fueras un/a stripper.",
+          "🦵 Acaricia el muslo de la persona de tu derecha por debajo de la mesa durante 1 minuto entero.",
+          "💋 Bésate tu propio dorso de la mano y muéstrale a todos cómo es que besas de verdad.",
+          "📺 Simula estar grabando un comercial de condones de manera muy provocativa y graciosa.",
+          "👖 Desabrocha el primer botón de tu pantalón por el resto de lo que dure el juego.",
+          "🤝 Entrelaza tus dedos con los de la persona de enfrente y mírense con deseo por 30 segundos en silencio.",
+          "🍆 Manda el emoji del durazno (🍑) y la berenjena (🍆) sin ningún contexto a la última persona con la que hablaste en IG.",
+          "💧 Haz que la persona a tu izquierda te dé de beber agua de forma muy lenta, derramando un poco.",
+          "✋ Toca el pecho/abdomen de la persona a tu derecha (por encima de la ropa) y describe cómo se siente.",
+          "🔊 Haz el sonido de un beso muy jugoso y ruidoso muy cerca del oído de alguien.",
+          "📏 Demuestra con tus dos manos el tamaño exacto de lo que tú consideras un 'buen paquete'.",
+          
+          // RETOS ESPECÍFICOS DE MARVIN Y DAYRON
+          "🔥 ¡RETO ÉPICO! Marvin y Dayron deben mirarse fijamente a los ojos por 30 segundos; el que se ría debe quitarse una prenda. (Si no están jugando, elijan a dos chicos del grupo).",
+          "💃 ¡RETO MARVIN & DAYRON! Dayron debe hacerle un baile sensual (perreo intenso) a Marvin por 15 segundos. (Si no están, los que tengan el turno).",
+          "💋 ¡RETO MARVIN & DAYRON! Marvin debe darle un beso en el cuello a Dayron muy despacio. (Si no están presentes, el afectado y el de su izquierda).",
+          "🤝 Si Marvin y Dayron están jugando, deben sentarse juntos, abrazarse y agarrarse de la mano por 3 rondas seguidas. ¡Que fluya el amor!",
+          "🤫 Dayron debe susurrarle al oído a Marvin una propuesta indecente y Marvin debe decir en voz alta si acepta o no. (Si no están, elígete a otra pareja).",
+          "👂 ¡RETO PICANTE! Marvin debe morderle suavemente el lóbulo de la oreja a Dayron. (Si no están, los jugadores en turno).",
+          "🚢 ¡RETO MARVIN & DAYRON! Recreen la escena romántica de Jack y Rose en el Titanic, pero de forma muy candente y pegados. (Si faltan, alguien más toma su lugar).",
+          "🪑 Dayron debe sentarse en el regazo (piernas) de Marvin durante toda una ronda completa de la ruleta. (Si no están, el que pierde el turno se sienta en alguien).",
+          "💆‍♂️ Marvin debe hacerle un masaje profundo en los hombros a Dayron mientras Dayron gime suavemente de placer. (Aplica para otros si no están).",
+          "💋 ¡RETO FINAL MARVIN & DAYRON! Deben darse un 'pico' (beso rápido en los labios). Si no se atreven, ambos pierden una vida en la ruleta."
         ]
       },
       curiosidad: {
@@ -944,7 +1052,7 @@
       hideOptionButtons();
       const list = baseDatos.chistes.verdades;
       
-      // Hacemos que la selección aleatoria favorezca muchísimo (90% de las veces) a los primeros 13 (los tuyos)
+      // Hacemos que la selección aleatoria favorezca muchísimo (90% de las veces) a los primeros 13 (los originales/clásicos)
       let randomIdx = 0;
       if (Math.random() < 0.9) {
           randomIdx = Math.floor(Math.random() * 13);
@@ -1007,15 +1115,19 @@
           u2.lang = 'es-ES'; u2.rate = 0.95; u2.volume = 1.0;
           u2.onend = function() {
             
-            // Reproducir Audio Local ROSA.mp3
+            // Reproducir Audio Local ROSA.mp3 de Github o Batería de YT
             const risaPlayer = document.getElementById('risaAudio');
             risaPlayer.currentTime = 0;
             risaPlayer.volume = 1.0;
             risaPlayer.play().catch(e => {
-                console.log("No se pudo cargar ROSA.mp3, saltando a animación de cierre.");
+                // Failsafe por si el audio local no carga, usa YT
+                if (drumPlayer && drumPlayer.seekTo) {
+                   drumPlayer.seekTo(0);
+                   drumPlayer.playVideo();
+                }
             });
             
-            // Cerrar el overlay y restaurar la música después de la risa
+            // Cerrar el overlay después de la risa
             setTimeout(() => {
                overlay.classList.add('hidden');
                restoreMusicVolume();
