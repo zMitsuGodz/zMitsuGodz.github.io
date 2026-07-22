@@ -31,37 +31,44 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 15px;
+      padding: 12px;
     }
 
     .header-bar {
-      width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+      width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
     }
 
     .visits-counter {
-      font-size: 0.85rem; background: rgba(255, 255, 255, 0.08); padding: 6px 14px; border-radius: 20px;
+      font-size: 0.8rem; background: rgba(255, 255, 255, 0.08); padding: 4px 12px; border-radius: 20px;
       backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--accent); font-weight: bold;
     }
 
     .badge-cat {
-      font-size: 0.75rem; background: linear-gradient(45deg, var(--primary), var(--secondary));
-      padding: 5px 12px; border-radius: 12px; font-weight: 800; letter-spacing: 1px;
+      font-size: 0.7rem; background: linear-gradient(45deg, var(--primary), var(--secondary));
+      padding: 4px 10px; border-radius: 12px; font-weight: 800; letter-spacing: 1px;
     }
 
-    /* Music Player Controls */
-    .music-bar {
+    /* Mini Reproductor Discreto */
+    .music-bar-mini {
       width: 100%; max-width: 500px;
-      background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 12px; border-radius: 14px; display: flex; gap: 8px; align-items: center; margin-bottom: 10px;
+      background: rgba(10, 8, 20, 0.7); border: 1px solid rgba(255,255,255,0.08);
+      padding: 6px 10px; border-radius: 12px; display: flex; gap: 6px; align-items: center; margin-bottom: 8px;
     }
+
     .music-input {
-      flex: 1; padding: 6px 10px; border-radius: 8px; border: 1px solid #3d3566;
-      background: #1b1538; color: white; font-size: 0.8rem; outline: none;
+      flex: 1; padding: 4px 8px; border-radius: 6px; border: 1px solid #2d2550;
+      background: #120e28; color: white; font-size: 0.75rem; outline: none;
     }
+
+    .btn-music-mini {
+      padding: 4px 8px; font-size: 0.7rem; border-radius: 6px; border: none; font-weight: bold; cursor: pointer;
+      background: #281e50; color: #fff;
+    }
+    .btn-music-mini:hover { background: var(--primary); }
 
     h1.logo {
       font-family: 'Bebas Neue', sans-serif;
-      margin: 2px 0 6px 0; font-size: 3.2rem; letter-spacing: 3px; line-height: 1;
+      margin: 0 0 2px 0; font-size: 3rem; letter-spacing: 3px; line-height: 1;
       background: linear-gradient(135deg, #00ffff, #ff007f, #9d4edd);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       text-shadow: 0 0 25px rgba(255, 0, 127, 0.6); text-align: center;
@@ -73,22 +80,22 @@
       100% { transform: scale(1.02); filter: drop-shadow(0 0 18px rgba(255,0,127,0.9)); }
     }
 
-    .sub-tag { text-align: center; font-size: 0.85rem; color: #bbb; margin-top: -6px; margin-bottom: 12px; letter-spacing: 1px; }
-    .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 14px; }
+    .sub-tag { text-align: center; font-size: 0.8rem; color: #bbb; margin-top: -4px; margin-bottom: 10px; letter-spacing: 1px; }
+    .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 12px; }
 
     .card {
-      background-color: var(--card-bg); padding: 16px; border-radius: 20px;
+      background-color: var(--card-bg); padding: 14px; border-radius: 18px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;
     }
 
-    .mode-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
+    .mode-selector { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
 
     button {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white;
-      padding: 10px 14px; font-weight: 700; border-radius: 12px; cursor: pointer; transition: all 0.25s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      font-size: 0.85rem;
+      padding: 9px 12px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+      font-size: 0.82rem;
     }
 
     button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,0,127,0.5); }
@@ -97,82 +104,80 @@
     button.btn-success { background: linear-gradient(45deg, #00e676, #00897b); }
     button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
     button.btn-swap { background: linear-gradient(45deg, #ffbe0b, #fb5607); color: #000; }
-    button.btn-talk { background: linear-gradient(45deg, #9d4edd, #ff007f); color: #fff; font-size: 1rem; width: 100%; }
+    button.btn-talk { background: linear-gradient(45deg, #9d4edd, #ff007f); color: #fff; font-size: 0.95rem; width: 100%; }
 
     .category-selector {
-      display: flex; justify-content: space-around; gap: 6px; margin-bottom: 12px;
-      background: rgba(0,0,0,0.4); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap;
+      display: flex; justify-content: space-around; gap: 5px; margin-bottom: 10px;
+      background: rgba(0,0,0,0.4); padding: 5px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap;
     }
 
     .cat-btn {
-      background: transparent; box-shadow: none; font-size: 0.78rem; padding: 6px 8px;
-      border-radius: 10px; color: #888; border: 1px solid transparent; flex: 1; min-width: 65px; font-weight: bold;
+      background: transparent; box-shadow: none; font-size: 0.75rem; padding: 5px 6px;
+      border-radius: 8px; color: #888; border: 1px solid transparent; flex: 1; min-width: 60px; font-weight: bold;
     }
 
     .cat-btn.active {
       background: var(--card-bg); color: var(--accent); border-color: var(--accent);
-      box-shadow: 0 0 12px rgba(0,255,255,0.4);
+      box-shadow: 0 0 10px rgba(0,255,255,0.4);
     }
 
     .cat-btn.locked { color: #ffbe0b; position: relative; cursor: pointer; }
 
-    .player-input { display: flex; gap: 8px; margin-bottom: 12px; }
+    .player-input { display: flex; gap: 8px; margin-bottom: 10px; }
     input[type="text"] {
-      flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #3d3566;
-      background: #1b1538; color: white; outline: none; font-size: 0.95rem; font-weight: bold;
+      flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #3d3566;
+      background: #1b1538; color: white; outline: none; font-size: 0.9rem; font-weight: bold;
     }
 
-    .player-tags { display: flex; flex-wrap: wrap; gap: 8px; max-height: 130px; overflow-y: auto; padding-right: 4px; }
+    .player-tags { display: flex; flex-wrap: wrap; gap: 6px; max-height: 120px; overflow-y: auto; padding-right: 4px; }
     
     .tag {
-      font-family: 'Bebas Neue', sans-serif; letter-spacing: 1.5px; font-size: 1.15rem;
-      background: linear-gradient(135deg, #2a1a58, #181135); padding: 6px 14px; border-radius: 20px;
-      display: flex; align-items: center; gap: 8px; border: 1px solid rgba(0, 255, 255, 0.3);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3); animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-family: 'Bebas Neue', sans-serif; letter-spacing: 1.2px; font-size: 1.1rem;
+      background: linear-gradient(135deg, #2a1a58, #181135); padding: 5px 12px; border-radius: 18px;
+      display: flex; align-items: center; gap: 6px; border: 1px solid rgba(0, 255, 255, 0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); animation: popIn 0.3s ease;
     }
     @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     
-    .tag .lives { color: var(--warning); font-size: 0.9rem; font-family: 'Poppins', sans-serif; font-weight: bold; }
-    .tag span.remove { cursor: pointer; color: var(--secondary); font-weight: bold; margin-left: 4px; font-size: 1.2rem; }
+    .tag .lives { color: var(--warning); font-size: 0.85rem; font-family: 'Poppins', sans-serif; font-weight: bold; }
+    .tag span.remove { cursor: pointer; color: var(--secondary); font-weight: bold; margin-left: 4px; font-size: 1.1rem; }
 
-    .game-area { height: 230px; display: flex; justify-content: center; align-items: center; position: relative; }
+    .game-area { height: 220px; display: flex; justify-content: center; align-items: center; position: relative; }
 
     .can-container {
-      position: relative; width: 120px; height: 200px;
+      position: relative; width: 110px; height: 190px;
       display: flex; justify-content: center; align-items: center;
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9));
     }
 
-    /* Eliminación del fondo blanco de la imagen usando mix-blend-mode */
     .custom-bottle-img {
-      width: 100%; height: 190px; object-fit: contain;
-      mix-blend-mode: multiply;
-      filter: contrast(120%) brightness(110%);
+      width: 100%; height: 180px; object-fit: contain;
+      mix-blend-mode: multiply; filter: contrast(120%) brightness(110%);
     }
 
     .roulette-display {
-      font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px;
-      color: var(--accent); min-height: 52px; display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px;
+      color: var(--accent); min-height: 48px; display: flex; align-items: center; justify-content: center;
       text-align: center; text-shadow: 0 0 15px var(--accent);
-      background: rgba(0,0,0,0.35); border-radius: 14px; padding: 6px 14px; border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.35); border-radius: 12px; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .result-box { text-align: center; min-height: 170px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .result-box { text-align: center; min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
     
     .joke-header {
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px;
-      color: var(--warning); text-shadow: 0 0 10px rgba(255, 190, 11, 0.6); margin-bottom: 4px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px;
+      color: var(--warning); text-shadow: 0 0 10px rgba(255, 190, 11, 0.6); margin-bottom: 2px;
     }
 
-    .prompt-text { font-size: 1.05rem; font-style: italic; color: #eee; padding: 0 10px; line-height: 1.4; }
-    .choice-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 5px; }
+    .prompt-text { font-size: 1rem; font-style: italic; color: #eee; padding: 0 8px; line-height: 1.4; }
+    .choice-btns { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
     .hidden { display: none !important; }
 
     .winner-flash { animation: flashAnim 0.5s ease 2; }
     @keyframes flashAnim {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.06); color: #ff007f; }
+      50% { opacity: 0.8; transform: scale(1.05); color: #ff007f; }
     }
   </style>
 </head>
@@ -183,10 +188,13 @@
     <div class="badge-cat">CATEGORÍA: RULETA</div>
   </div>
 
-  <div class="music-bar">
-    <span style="font-size: 1rem;">🎵</span>
-    <input type="text" id="ytUrl" class="music-input" placeholder="Pegar Link o ID de YouTube..." value="https://www.youtube.com/watch?v=jfKfPfyJRdk">
-    <button onclick="loadMusic()" style="padding: 6px 10px; font-size: 0.75rem;">▶️ Cargar/Play</button>
+  <!-- Reproductor Discreto de YouTube -->
+  <div class="music-bar-mini">
+    <span style="font-size: 0.9rem;">🎵</span>
+    <input type="text" id="ytUrl" class="music-input" placeholder="Música YouTube..." value="https://www.youtube.com/watch?v=jfKfPfyJRdk">
+    <button class="btn-music-mini" onclick="loadMusic('play')">▶️ Play</button>
+    <button class="btn-music-mini" onclick="loadMusic('pause')">⏸️ Parar</button>
+    <button class="btn-music-mini" onclick="loadMusic('next')">⏭️ Saltar</button>
   </div>
   <div id="ytPlayerContainer" style="display:none;"></div>
 
@@ -217,14 +225,15 @@
       <div class="player-tags" id="playerList"></div>
     </div>
 
-    <div class="card game-area">
+    <!-- Área de la Botella (Oculta si es Full Chistes Alexander) -->
+    <div class="card game-area" id="gameAreaCard">
       <div id="canContainer" class="can-container">
         <img src="https://i.ibb.co/mFR0Nxv7/asasasasasdasfasd.png" alt="Botella" class="custom-bottle-img">
       </div>
     </div>
 
-    <div class="card" style="text-align: center;">
-      <button id="spinBtn" onclick="spin()" style="font-size: 1.3rem; width: 100%; padding: 14px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">🎲 ¡GIRAR RULETA! 🎲</button>
+    <div class="card" style="text-align: center;" id="spinBtnCard">
+      <button id="spinBtn" onclick="spin()" style="font-size: 1.25rem; width: 100%; padding: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">🎲 ¡GIRAR RULETA! 🎲</button>
     </div>
 
     <div class="card result-box">
@@ -233,7 +242,7 @@
       <div id="jokeHeader" class="joke-header hidden">😂 A LA FLACA DE ALEXANDER LE DICEN...</div>
       <div id="promptText" class="prompt-text"></div>
 
-      <button id="btnTalk" class="btn-talk hidden" onclick="speakJokeAndDrums()">🔊 ¡REPRODUCIR CON VOZ Y TAMBORES! 🥁</button>
+      <button id="btnTalk" class="btn-talk hidden" onclick="speakJokeAndDrums()">🔊 REPRODUCIR CON VOZ Y TAMBORES 🥁</button>
       
       <div id="botellaOptions" class="choice-btns hidden">
         <button id="btnVerdadBotella" class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
@@ -250,6 +259,9 @@
         <button id="btnSwapRuleta" class="btn-swap hidden" onclick="swapPrompt()">🔄 Cambiar Opción</button>
         <button class="btn-danger" onclick="failChallenge()">💔 Perder Vida</button>
       </div>
+
+      <!-- Botón directo si están en MODO FULL ALEXANDER -->
+      <button id="btnFullAlexanderNext" class="btn-swap hidden" onclick="displayJoke()" style="width:100%; font-size: 1.1rem; padding: 12px;">😂 ¡Siguiente Chiste de Alexander!</button>
     </div>
   </div>
 
@@ -263,6 +275,7 @@
     let targetPlayer = null;
     let currentPromptType = null;
     let lockClicks = 0;
+    let isChistesUnlocked = false;
     let lastJokeText = "";
 
     const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
@@ -283,9 +296,7 @@
           "Moneda de sol... ¡porque pasa por todos los bolsillos del grupo!",
           "Asiento de combi... ¡porque siempre hay espacio para uno más!",
           "Sol de invierno... ¡porque no calienta a nadie pero igual sale!",
-          "Cuaderno de borrador... ¡porque todos los del salón le hacen un trazo!"
-        ],
-        retos: [
+          "Cuaderno de borrador... ¡porque todos los del salón le hacen un trazo!",
           "WhatsApp... ¡porque manda notificación a todo el salón E5!",
           "Parque Universitario... ¡porque para llena de gente a todas horas!",
           "Película pirateada... ¡porque se ve bien pero la consiguen fácil en cualquier esquina!",
@@ -500,30 +511,68 @@
       if (lockClicks === 1) {
         document.getElementById('cat-chistes-lock').innerText = "🔓 ¡1 Clic más!";
       } else if (lockClicks >= 2) {
+        isChistesUnlocked = true;
         document.getElementById('cat-chistes-lock').classList.add('hidden');
         document.getElementById('cat-chistes').classList.remove('hidden');
-        alert("🎉 ¡FELICIDADES! Has desbloqueado la categoría secreta: 😂 Chistes de Alexander");
+        alert("🎉 ¡FELICIDADES! Has desbloqueado permanentemente la categoría secreta: 😂 Chistes de Alexander");
         setCategory('chistes');
       }
     }
 
-    function loadMusic() {
+    // REPRODUCTOR DE MÚSICA CON CONTROLES (PLAY, PARAR, SALTAR)
+    let ytIframePlayer = null;
+
+    function loadMusic(action) {
+      const container = document.getElementById('ytPlayerContainer');
       const urlInput = document.getElementById('ytUrl').value.trim();
-      let videoId = "";
-      
+      let videoId = "jfKfPfyJRdk"; // ID por defecto
+
       if (urlInput.includes("v=")) {
         videoId = urlInput.split("v=")[1].split("&")[0];
       } else if (urlInput.includes("youtu.be/")) {
         videoId = urlInput.split("youtu.be/")[1].split("?")[0];
-      } else {
+      } else if (urlInput) {
         videoId = urlInput;
       }
 
-      if (videoId) {
-        const container = document.getElementById('ytPlayerContainer');
-        container.innerHTML = `<iframe width="200" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}" allow="autoplay"></iframe>`;
-        alert("🎵 ¡Música cargada e iniciando reproducción!");
+      if (action === 'play') {
+        container.innerHTML = `<iframe id="ytIframe" width="200" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1" allow="autoplay"></iframe>`;
+      } else if (action === 'pause') {
+        container.innerHTML = ""; // Detiene la reproducción inmediatamente
+      } else if (action === 'next') {
+        alert("⏭️ Cargando siguiente audio/canción...");
+        container.innerHTML = `<iframe id="ytIframe" width="200" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1" allow="autoplay"></iframe>`;
       }
+    }
+
+    // SONIDO SINTETIZADO DE GIRO DE RULETA (Tock Tock Tock)
+    function playSpinSound() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+
+      let speed = 60;
+      let count = 0;
+      
+      function playClick() {
+        if (count > 25) return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400 + (count * 10), ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.04);
+
+        count++;
+        speed += 10;
+        setTimeout(playClick, speed);
+      }
+
+      playClick();
     }
 
     function getSpecialEmoji(nameUpper) {
@@ -583,12 +632,26 @@
       const activeBtn = document.getElementById(`cat-${cat}`);
       if (activeBtn) activeBtn.classList.add('active');
       
+      const gameAreaCard = document.getElementById('gameAreaCard');
+      const spinBtnCard = document.getElementById('spinBtnCard');
+      const btnFullAlexanderNext = document.getElementById('btnFullAlexanderNext');
+
       if (cat === 'chistes') {
-        document.getElementById('btnChisteBotella').classList.remove('hidden');
-        document.getElementById('btnChisteRuleta').classList.remove('hidden');
+        // MODO FULL ALEXANDER: Oculta la botella y muestra directamente los chistes
+        gameAreaCard.classList.add('hidden');
+        spinBtnCard.classList.add('hidden');
+        btnFullAlexanderNext.classList.remove('hidden');
+        document.getElementById('actionTitle').innerText = "😂 MODO FULL CHISTES DE ALEXANDER";
+        displayJoke();
       } else {
-        document.getElementById('btnChisteBotella').classList.add('hidden');
-        document.getElementById('btnChisteRuleta').classList.add('hidden');
+        gameAreaCard.classList.remove('hidden');
+        spinBtnCard.classList.remove('hidden');
+        btnFullAlexanderNext.classList.add('hidden');
+        
+        if (isChistesUnlocked) {
+          document.getElementById('btnChisteBotella').classList.remove('hidden');
+          document.getElementById('btnChisteRuleta').classList.remove('hidden');
+        }
       }
     }
 
@@ -599,6 +662,7 @@
       document.getElementById('btnSwapRuleta').classList.add('hidden');
       document.getElementById('jokeHeader').classList.add('hidden');
       document.getElementById('btnTalk').classList.add('hidden');
+      document.getElementById('btnFullAlexanderNext').classList.add('hidden');
     }
 
     function spin() {
@@ -611,6 +675,8 @@
       isSpinning = true;
       hideOptionButtons();
       document.getElementById('promptText').innerText = '';
+
+      playSpinSound(); // Sonido sintetizado de ruleta girando
 
       if (currentMode === 'botella') {
         let rouletteInterval = setInterval(() => {
@@ -668,11 +734,15 @@
       titleEl.classList.add('winner-flash');
       setTimeout(() => titleEl.classList.remove('winner-flash'), 1000);
 
-      document.getElementById('promptText').innerText = `¡${activePlayer}, decide qué reto o verdad cumplirá ${targetPlayer}!`;
-      document.getElementById('botellaOptions').classList.remove('hidden');
-
       if (currentCategory === 'chistes') {
-        document.getElementById('btnChisteBotella').classList.remove('hidden');
+        displayJoke();
+      } else {
+        document.getElementById('promptText').innerText = `¡${activePlayer}, decide qué reto o verdad cumplirá ${targetPlayer}!`;
+        document.getElementById('botellaOptions').classList.remove('hidden');
+
+        if (isChistesUnlocked) {
+          document.getElementById('btnChisteBotella').classList.remove('hidden');
+        }
       }
     }
 
@@ -685,21 +755,25 @@
       titleEl.classList.add('winner-flash');
       setTimeout(() => titleEl.classList.remove('winner-flash'), 1000);
 
-      document.getElementById('promptText').innerText = `Llevas ${activePlayer.truthCount}/3 Verdades seguidas en modo ${currentCategory.toUpperCase()}.`;
-
-      const btnVerdad = document.getElementById('btnVerdad');
-      if (activePlayer.truthCount >= 3) {
-        btnVerdad.disabled = true;
-        btnVerdad.innerText = "❓ Verdad (Límite 3/3)";
-      } else {
-        btnVerdad.disabled = false;
-        btnVerdad.innerText = `❓ Verdad (${activePlayer.truthCount}/3)`;
-      }
-
-      document.getElementById('ruletaOptions').classList.remove('hidden');
-
       if (currentCategory === 'chistes') {
-        document.getElementById('btnChisteRuleta').classList.remove('hidden');
+        displayJoke();
+      } else {
+        document.getElementById('promptText').innerText = `Llevas ${activePlayer.truthCount}/3 Verdades seguidas en modo ${currentCategory.toUpperCase()}.`;
+
+        const btnVerdad = document.getElementById('btnVerdad');
+        if (activePlayer.truthCount >= 3) {
+          btnVerdad.disabled = true;
+          btnVerdad.innerText = "❓ Verdad (Límite 3/3)";
+        } else {
+          btnVerdad.disabled = false;
+          btnVerdad.innerText = `❓ Verdad (${activePlayer.truthCount}/3)`;
+        }
+
+        document.getElementById('ruletaOptions').classList.remove('hidden');
+
+        if (isChistesUnlocked) {
+          document.getElementById('btnChisteRuleta').classList.remove('hidden');
+        }
       }
     }
 
@@ -755,11 +829,16 @@
     }
 
     function displayJoke() {
-      const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
+      const list = baseDatos.chistes.verdades;
+      const randomC = list[Math.floor(Math.random() * list.length)];
       lastJokeText = randomC;
       document.getElementById('jokeHeader').classList.remove('hidden');
       document.getElementById('promptText').innerText = randomC;
       document.getElementById('btnTalk').classList.remove('hidden');
+
+      if (currentCategory === 'chistes') {
+        document.getElementById('btnFullAlexanderNext').classList.remove('hidden');
+      }
     }
 
     function speakJokeAndDrums() {
