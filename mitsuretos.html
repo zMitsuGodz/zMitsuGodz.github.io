@@ -266,7 +266,7 @@
     let currentRotation = 0;
     let activePlayer = null;
     let targetPlayer = null;
-    let currentPromptType = null; // 'verdad' o 'reto'
+    let currentPromptType = null;
 
     const emojis = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
 
@@ -276,7 +276,7 @@
           "🔥 ¿Quién de esta sala te parece el/la más atractivo/a?",
           "😏 ¿Alguna vez te ha gustado el/la novio/a o ex de alguien presente?",
           "🔥 ¿Qué es lo más atrevido o picante que has hecho en la universidad?",
-          "🌙 ¿Con quién del salón pasarías una noche entera sin dormir?",
+          "🌙 ¿Con quién del salón pasarías una noche entera a solas?",
           "👀 ¿Has enviado algún mensaje subido de tono a la persona equivocada?",
           "😳 ¿Cuál es tu fantasía secreta o lugar más raro donde te gustaría estar con alguien?",
           "💋 ¿A quién del grupo le darías un beso sin pensarlo dos veces?",
@@ -292,29 +292,38 @@
           "🙈 ¿Alguna vez te ha atraído algún profesor o profesora?",
           "❤️‍🔥 ¿Qué atuendo de los presentes te parece el más sexy hoy?",
           "🤐 ¿Quién de los presentes te cae bien pero te daría miedo tener una cita a solas?",
-          "🎯 Si tuvieras que tener una aventura de una noche con alguien del salón, ¿a quién eliges?"
+          "🎯 Si tuvieras que tener una aventura de una noche con alguien del salón, ¿a quién eliges?",
+          "👀 Si pudieras darle un beso en la mejilla o en los labios a alguien de este grupo ahora mismo, ¿a quién escogerías?",
+          "🔥 ¿Qué parte del cuerpo de la persona a tu derecha te parece más atractiva?",
+          "😏 ¿Has tenido algún sueño subido de tono con alguien que esté en este salón?",
+          "💋 ¿Preferirías darle un beso tierno en la mano o un beso coqueto en el cuello a la persona frente a ti?",
+          "🤫 ¿Has fingido que no te gustaba alguien del salón solo para que no sospechen?"
         ],
         retos: [
+          "💋 Dale un beso tierno en la mejilla a la persona del salón que tú escojas.",
+          "🤝 Dale un beso elegante en el reverso de la mano a la persona que elijas.",
+          "💃 Hazle un baile sensual e improvisado de 10 segundos a la persona que escojas.",
+          "👀 Intenta seducir a la persona que elijas usando solo la mirada, sonrisas y gestos coqueto durante 15 segundos.",
           "🎙️ Envía un audio coqueteando al último contacto con quien hablaste en WhatsApp.",
           "👂 Susúrrale algo atrevido al oído a la persona a tu derecha para que se sonroje.",
-          "🫂 Dale un abrazo de 10 segundos a la persona que elijas del salón.",
+          "🫂 Dale un abrazo apretado de 10 segundos a la persona que elijas del salón.",
           "📸 Ponte de foto de perfil en WhatsApp una selfie coqueta elegida por el grupo por 30 mins.",
-          "💌 Dedícale una frase romántica/coqueta mirando fijamente a la persona frente a ti.",
-          "🪑 Sienta a alguien en tu regazo durante las próximas 2 rondas.",
-          "💃 Hazle un baile divertido o coqueto de 10 segundos a alguien de la sala.",
+          "💌 Dedícale una frase romántica/coqueta mirando fijamente a los ojos a la persona frente a ti.",
+          "🪑 Sienta a la persona que tú escojas en tu regazo durante las próximas 2 rondas.",
           "📱 Deja que la persona a tu izquierda mire tus fotos recientes de la galería por 20 segundos.",
-          "🙈 Muestra cuál fue la última foto que guardaste o descargaste en tu celular.",
-          "💋 Dale un beso en la mejilla muy cerca de los labios a la persona a tu izquierda.",
+          "🙈 Muestra cuál fue la última foto o captura que guardaste en tu celular.",
+          "💋 Dale un beso en la mejilla muy cerquita de los labios a la persona a tu izquierda.",
           "💬 Envía un mensaje diciendo 'Te extraño mucho...' a un/a ex o un 'casi algo'.",
-          "🏋️ Haz 10 abdominales mientras miras fijamente a quien te parezca más atractivo/a.",
+          "🏋️ Haz 10 flexiones o abdominales mientras miras fijamente a quien te parezca más atractivo/a.",
           "🔥 Publica un estado en WhatsApp que diga: 'Siento ganas de enamorarme hoy... ¿quién se apunta?'",
-          "👑 Permite que el grupo te ponga un apodo coqueto por lo que resta del juego.",
-          "👀 Haz contacto visual con la persona a tu frente durante 20 segundos sin reírte.",
-          "🎵 Cántale un fragmento de una canción romántica o reggaetón lento a alguien del salón.",
-          "📱 Envia una carita coqueta (😘) sin contexto al tercer contacto de tu chat de WhatsApp.",
-          "💅 Deja que la persona a tu derecha te dibuje un pequeño corazón en el cuello con lapicero.",
-          "🤫 Confiesa en voz alta qué harías si te quedas a solas en el salón con la persona a tu derecha.",
-          "🦁 Haz un rugido seductor o pon tu mejor pose de modelo frente a todos."
+          "👑 Permite que la persona que elijas te ponga un apodo coqueto por lo que resta del juego.",
+          "👀 Haz contacto visual directo con la persona que escojas durante 20 segundos sin reírte.",
+          "🎵 Cántale un fragmento de una canción de reggaetón lento o romántica a alguien del salón.",
+          "💅 Deja que la persona a tu derecha te dibuje un pequeño corazón coqueto en el cuello o muñeca con lapicero.",
+          "🤫 Confiesa en voz alta y al oído de alguien qué harías si se quedan a solas en el salón.",
+          "🦁 Haz una caminata de modelo seductor o seductora frente a todos en la sala.",
+          "💄 Acaricia suavemente el cabello o el hombro de la persona a tu izquierda por 10 segundos.",
+          "💌 Dile un piropo súper atrevido y mirándola a los ojos a la persona que escojas."
         ]
       },
       curiosidad: {
@@ -343,12 +352,12 @@
         retos: [
           "🔍 Muestra tus últimas 3 búsquedas hechas en Google sin borrar nada.",
           "📱 Abre tu historial de YouTube y muestra el último video reproducido.",
-          "🗣️ Habla con acento extranjero (chileno, colombiano, español) durante las siguientes 2 rondas.",
+          "🗣️ Habla con acento extranjero durante las siguientes 2 rondas.",
           "📞 Llama a un amigo/a y dile que te acabas de ganar la lotería y cuelga rápido.",
           "📸 Tómate una foto haciendo la mueca más fea que puedas y envíala al grupo del salón.",
           "🎶 Canta el coro de tu canción vergonzosa favorita a todo volumen.",
           "🎭 Imita a un profesor del salón por 15 segundos y que los demás adivinen quién es.",
-          "📱 Deja que alguien del grupo escriba un estado en tu WhatsApp.",
+          "📱 Deja que alguien del grupo escriba un estado libre en tu WhatsApp.",
           "🤸 Intenta tocarte las puntas de los pies sin doblar las rodillas durante 15 segundos.",
           "🤐 Mantente en silencio absoluto sin hablar ni emitir sonidos por las próximas 2 rondas.",
           "👟 Cambia uno de tus zapatos con la persona de tu derecha durante 3 rondas.",
@@ -357,7 +366,7 @@
           "🙃 Haz 5 saltos mientras dices en voz alta '¡Soy el rey/la reina del salón E5!'",
           "📢 Dile a la persona a tu izquierda un piropo completamente absurdo.",
           "🎁 Ofrécela a alguien del grupo un objeto de tu mochila que tenga valor sentimental.",
-          "👃 Huela el zapato o la zapatilla de la persona a tu izquierda y pon cara de satisfacción.",
+          "👃 Huela la zapatilla de la persona a tu izquierda y pon cara de satisfacción.",
           "🤪 Pon cara de loco/a y tómate una foto que el grupo conservará.",
           "📤 Lee en voz alta la última notificación que te acaba de llegar al teléfono.",
           "🧠 Di 5 nombres de compañeros del salón al revés en menos de 10 segundos."
@@ -469,7 +478,6 @@
       const input = document.getElementById('playerName');
       let name = input.value.trim();
       if (name) {
-        // Conversión a MAYÚSCULAS y asignación de emoji aleatorio
         name = name.toUpperCase();
         const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
         const fullName = `${randomEmoji} ${name}`;
@@ -612,7 +620,6 @@
       document.getElementById('ruletaOptions').classList.remove('hidden');
     }
 
-    // Opciones Modo Botella/Four Loko
     function getBottlePrompt(type) {
       currentPromptType = type;
       const catData = baseDatos[currentCategory];
@@ -631,7 +638,6 @@
       }
     }
 
-    // Opciones Modo Ruleta Directa
     function chooseType(type) {
       if (!activePlayer) return;
       currentPromptType = type;
@@ -651,7 +657,6 @@
       renderPlayers();
     }
 
-    // Función para CAMBIAR RETO o CAMBIAR VERDAD
     function swapPrompt() {
       if (!currentPromptType || currentPromptType === 'custom') return;
       
