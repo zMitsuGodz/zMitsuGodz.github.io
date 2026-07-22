@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verdad o Reto - Salón E5</title>
+  <title>🍾 Verdad o Reto - Salón E5</title>
   <style>
     :root {
       --primary: #8a2be2;
       --secondary: #ff007f;
-      --bg: #121214;
-      --card-bg: #1e1e24;
+      --bg: #0f0c20;
+      --card-bg: #1a1636;
       --text: #ffffff;
       --danger: #ff4444;
       --success: #00c851;
+      --accent: #00ffff;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
     body {
-      background-color: var(--bg);
+      background: radial-gradient(circle, #1a1636 0%, #0f0c20 100%);
       color: var(--text);
       display: flex;
       flex-direction: column;
@@ -27,15 +28,40 @@
       padding: 15px;
     }
 
-    h1 { margin-bottom: 10px; color: var(--secondary); text-shadow: 0 0 10px rgba(255, 0, 127, 0.5); text-align: center; }
+    /* Contador de Visitas */
+    .visits-counter {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px 10px;
+      border-radius: 15px;
+      backdrop-filter: blur(5px);
+    }
+
+    h1 {
+      margin: 15px 0 10px 0;
+      color: var(--secondary);
+      text-shadow: 0 0 15px rgba(255, 0, 127, 0.7);
+      text-align: center;
+      font-size: 1.8rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
 
     .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; }
 
     .card {
       background-color: var(--card-bg);
       padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .mode-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
@@ -48,63 +74,108 @@
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
-      transition: transform 0.1s;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
+    button:hover { transform: translateY(-2px); }
     button:active { transform: scale(0.95); }
     button.btn-danger { background: var(--danger); }
     button.btn-success { background: var(--success); }
+    button.btn-accent { background: #00b4d8; }
 
     .player-input { display: flex; gap: 8px; margin-bottom: 10px; }
     input[type="text"] {
-      flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #333;
-      background: #2a2a32; color: white;
+      flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #444;
+      background: #252047; color: white; outline: none;
     }
 
     .player-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .tag {
-      background: #333344; padding: 6px 12px; border-radius: 15px;
+      background: #2a2456; padding: 6px 12px; border-radius: 20px;
       font-size: 0.85rem; display: flex; align-items: center; gap: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: popIn 0.3s ease;
     }
+    @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+    
     .tag .lives { color: #ffbb33; font-weight: bold; }
     .tag span.remove { cursor: pointer; color: var(--secondary); font-weight: bold; }
 
+    /* Área de Juego y Botella 3D */
     .game-area {
-      height: 200px; display: flex; justify-content: center; align-items: center; position: relative;
+      height: 220px; display: flex; justify-content: center; align-items: center; position: relative;
     }
 
-    .bottle {
-      width: 40px; height: 140px; background: #2e7d32; border-radius: 10px 10px 20px 20px;
-      position: relative; transition: transform 3s cubic-bezier(0.15, 0.9, 0.25, 1);
-      box-shadow: inset -4px 0 8px rgba(0,0,0,0.5);
+    .bottle-container {
+      position: relative; width: 60px; height: 180px;
+      display: flex; justify-content: center; align-items: center;
+      transition: transform 3s cubic-bezier(0.15, 0.9, 0.25, 1);
     }
-    .bottle::before { content: ''; position: absolute; top: -18px; left: 12px; width: 16px; height: 20px; background: #2e7d32; }
-    .bottle::after { content: ''; position: absolute; top: -22px; left: 10px; width: 20px; height: 5px; background: #c62828; }
 
-    .result-box { text-align: center; min-height: 120px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
-    .action-title { font-size: 1.2rem; font-weight: bold; color: #00ffff; }
-    .prompt-text { font-size: 1rem; font-style: italic; color: #ddd; }
-    .status-badge { font-size: 0.8rem; background: #333; padding: 4px 8px; border-radius: 10px; display: inline-block; }
+    /* Botella estilizada con CSS */
+    .bottle-body {
+      width: 45px; height: 120px;
+      background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 50%, #081c15 100%);
+      border-radius: 12px 12px 25px 25px;
+      position: absolute; bottom: 0;
+      box-shadow: inset -5px 0 10px rgba(255,255,255,0.2), 0 5px 15px rgba(0,0,0,0.5);
+    }
 
-    .choice-btns { display: flex; gap: 10px; justify-content: center; margin-top: 10px; }
+    .bottle-neck {
+      width: 18px; height: 50px;
+      background: linear-gradient(90deg, #2d6a4f, #1b4332);
+      position: absolute; top: 15px;
+      border-radius: 4px 4px 0 0;
+      box-shadow: inset -2px 0 5px rgba(255,255,255,0.2);
+    }
+
+    .bottle-cap {
+      width: 22px; height: 10px;
+      background: linear-gradient(90deg, #d62828, #9e2a2b);
+      position: absolute; top: 8px; border-radius: 3px;
+    }
+
+    .bottle-label {
+      position: absolute; bottom: 45px; width: 45px; height: 30px;
+      background: #fff3bf; color: #d62828; font-weight: bold; font-size: 0.6rem;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      border-radius: 3px; transform: rotate(-5deg);
+    }
+
+    /* Efecto de Nombres Girando */
+    .name-roulette {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: var(--accent);
+      min-height: 40px;
+      text-shadow: 0 0 10px var(--accent);
+    }
+
+    .result-box { text-align: center; min-height: 140px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .prompt-text { font-size: 1.05rem; font-style: italic; color: #ddd; padding: 0 10px; }
+
+    .choice-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 5px; }
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <h1>🍾 Botella & Ruleta - E5</h1>
+  <div class="visits-counter">👁️ Visitas: <span id="visitCount">1</span></div>
+
+  <h1>🍾 Verdad o Reto - Salón E5 🔥</h1>
 
   <div class="container">
     <!-- Selección de Modo y Jugadores -->
     <div class="card">
       <div class="mode-selector">
-        <button onclick="setMode('botella')">Modo Botella</button>
-        <button onclick="setMode('ruleta')">Modo Ruleta (Vidas)</button>
+        <button onclick="setMode('botella')">🍾 Modo Botella</button>
+        <button onclick="setMode('ruleta')">🎯 Ruleta (Vidas)</button>
       </div>
 
       <div class="player-input">
         <input type="text" id="playerName" placeholder="Nombre del compañero..." onkeydown="if(event.key==='Enter') addPlayer()">
-        <button onclick="addPlayer()">Añadir</button>
+        <button onclick="addPlayer()">➕ Añadir</button>
       </div>
 
       <div class="player-tags" id="playerList"></div>
@@ -112,56 +183,78 @@
 
     <!-- Tablero Animado -->
     <div class="card game-area">
-      <div id="bottle" class="bottle"></div>
+      <div id="bottleContainer" class="bottle-container">
+        <div class="bottle-cap"></div>
+        <div class="bottle-neck"></div>
+        <div class="bottle-body"></div>
+        <div class="bottle-label">E5 🔥</div>
+      </div>
     </div>
 
     <!-- Botón Girar -->
     <div class="card" style="text-align: center;">
-      <button id="spinBtn" onclick="spin()" style="font-size: 1.2rem; width: 100%; padding: 12px;">¡GIRAR!</button>
+      <button id="spinBtn" onclick="spin()" style="font-size: 1.2rem; width: 100%; padding: 12px;">🎲 ¡GIRAR! 🎲</button>
     </div>
 
     <!-- Panel de Resultados -->
     <div class="card result-box">
-      <div id="actionTitle" class="action-title">Añade jugadores y presiona Girar</div>
+      <div id="actionTitle" class="name-roulette">Añade jugadores y presiona Girar</div>
       <div id="promptText" class="prompt-text"></div>
       
-      <!-- Opciones dinámicas para el Modo Ruleta -->
+      <!-- Opciones dinámicas para Modo Botella -->
+      <div id="botellaOptions" class="choice-btns hidden">
+        <button class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
+        <button onclick="getBottlePrompt('reto')">🔥 Reto Aleatorio</button>
+        <button class="btn-accent" onclick="getBottlePrompt('custom')">✏️ Preguntar/Inventar</button>
+      </div>
+
+      <!-- Opciones dinámicas para Modo Ruleta -->
       <div id="ruletaOptions" class="choice-btns hidden">
-        <button id="btnVerdad" class="btn-success" onclick="chooseType('verdad')">Verdad</button>
-        <button id="btnReto" onclick="chooseType('reto')">Reto</button>
-        <button class="btn-danger" onclick="failChallenge()">Perder Vida 💔</button>
+        <button id="btnVerdad" class="btn-success" onclick="chooseType('verdad')">❓ Verdad</button>
+        <button id="btnReto" onclick="chooseType('reto')">🔥 Reto</button>
+        <button class="btn-danger" onclick="failChallenge()">💔 Perder Vida</button>
       </div>
     </div>
   </div>
 
   <script>
-    let players = []; // Estructura: { name: "", lives: 3, truthCount: 0 }
+    let players = [];
     let currentMode = 'botella';
     let isSpinning = false;
     let currentRotation = 0;
     let activePlayer = null;
+    let targetPlayer = null;
 
-    // Bancos de preguntas
+    // Bancos de preguntas (Picantes pero moderadas)
     const verdades = [
-      "¿Quién de esta sala te parece más atractivo/a?",
-      "¿Has fingido que te caía bien alguien de la universidad?",
-      "¿Cuál ha sido tu momento más vergonzoso en clase?",
-      "¿Alguna vez te ha gustado la pareja o ex de alguien presente?",
-      "¿Qué es lo más atrevido que has hecho en la universidad?",
-      "¿Con quién del salón pasarías una noche entera a solas?",
-      "¿Qué es lo primero que le miras a alguien cuando te gusta?",
-      "¿Has copiado en un examen de este ciclo y de quién?"
+      "😏 ¿Quién de este grupo te parece más atractivo/a?",
+      "🤫 ¿Has fingido que te caía bien alguien del salón solo por compromiso?",
+      "😳 ¿Cuál ha sido tu momento más vergonzoso en clase?",
+      "👀 ¿Alguna vez te ha gustado la pareja o el ex de alguien presente?",
+      "🔥 ¿Qué es lo más atrevido que has hecho en la universidad?",
+      "🌙 ¿Con quién del salón pasarías una noche entera a solas?",
+      "✨ ¿Qué es lo primero que le miras a alguien cuando te gusta?",
+      "📝 ¿Has copiado en un examen este ciclo y a quién?"
     ];
 
     const retos = [
-      "Envía un audio coqueteando a tu último contacto de WhatsApp.",
-      "Susúrrale algo atrevido al oído a la persona a tu derecha.",
-      "Dale un abrazo de 10 segundos a la persona que elijas del salón.",
-      "Muestra la última foto guardada en tu galería.",
-      "Ponte de foto de perfil en WhatsApp una selfie elegida por el grupo por 30 mins.",
-      "Dedícale una frase coqueta a la persona que esté frente a ti.",
-      "Sienta a alguien en tu regazo durante las próximas 2 rondas."
+      "🎙️ Envía un audio coqueto a tu último contacto de WhatsApp.",
+      "👂 Susúrrale algo atrevido al oído a la persona a tu derecha.",
+      "🫂 Dale un abrazo de 10 segundos a la persona que elijas del salón.",
+      "📱 Muestra la última foto guardada en tu galería.",
+      "📸 Ponte de foto de perfil en WhatsApp una selfie elegida por el grupo por 30 mins.",
+      "💌 Dedícale una frase romántica a la persona que esté frente a ti.",
+      "🪑 Sienta a alguien en tu regazo durante las próximas 2 rondas."
     ];
+
+    // Contador de visitas usando localStorage
+    function initVisits() {
+      let visits = localStorage.getItem('e5_game_visits') || 0;
+      visits++;
+      localStorage.setItem('e5_game_visits', visits);
+      document.getElementById('visitCount').innerText = visits;
+    }
+    initVisits();
 
     function addPlayer() {
       const input = document.getElementById('playerName');
@@ -190,31 +283,40 @@
 
     function setMode(mode) {
       currentMode = mode;
+      document.getElementById('botellaOptions').classList.add('hidden');
       document.getElementById('ruletaOptions').classList.add('hidden');
-      document.getElementById('actionTitle').innerText = `Modo: ${mode === 'botella' ? 'Botella (Pregunta / Responde)' : 'Ruleta con Vidas'}`;
+      document.getElementById('actionTitle').innerText = mode === 'botella' ? '🍾 Modo Botella' : '🎯 Modo Ruleta';
       document.getElementById('promptText').innerText = '';
       renderPlayers();
     }
 
     function spin() {
       if (players.length < 2) {
-        alert("¡Añade al menos 2 jugadores!");
+        alert("⚠️ ¡Añade al menos 2 jugadores para empezar!");
         return;
       }
       if (isSpinning) return;
 
       isSpinning = true;
+      document.getElementById('botellaOptions').classList.add('hidden');
       document.getElementById('ruletaOptions').classList.add('hidden');
-      document.getElementById('promptText').innerText = "Girando...";
-      document.getElementById('actionTitle').innerText = "???";
+      document.getElementById('promptText').innerText = '';
 
+      // Animación de nombres tipo Ruleta
+      let rouletteInterval = setInterval(() => {
+        const randomName = players[Math.floor(Math.random() * players.length)].name;
+        document.getElementById('actionTitle').innerText = `⚡ ${randomName} ⚡`;
+      }, 80);
+
+      // Animación de la botella
       const extraSpins = 5 + Math.floor(Math.random() * 5);
       const randomDegree = Math.floor(Math.random() * 360);
       currentRotation += (extraSpins * 360) + randomDegree;
 
-      document.getElementById('bottle').style.transform = `rotate(${currentRotation}deg)`;
+      document.getElementById('bottleContainer').style.transform = `rotate(${currentRotation}deg)`;
 
       setTimeout(() => {
+        clearInterval(rouletteInterval);
         isSpinning = false;
         processResult();
       }, 3000);
@@ -222,41 +324,54 @@
 
     function processResult() {
       if (currentMode === 'botella') {
-        // MODO BOTELLA: Dos jugadores al azar
         let indexA = Math.floor(Math.random() * players.length);
         let indexB;
         do {
           indexB = Math.floor(Math.random() * players.length);
         } while (indexA === indexB);
 
-        const askPlayer = players[indexA].name;
-        const answerPlayer = players[indexB].name;
+        activePlayer = players[indexA].name;
+        targetPlayer = players[indexB].name;
 
-        document.getElementById('actionTitle').innerText = `👉 ${askPlayer} le pregunta a ${answerPlayer}`;
-        document.getElementById('promptText').innerText = `¡${askPlayer}, elige si le pides Verdad o Reto a ${answerPlayer}!`;
+        document.getElementById('actionTitle').innerText = `👉 ${activePlayer} ➔ ${targetPlayer}`;
+        document.getElementById('promptText').innerText = `¡${activePlayer}, decide qué hará ${targetPlayer}!`;
+        document.getElementById('botellaOptions').classList.remove('hidden');
 
       } else {
-        // MODO RULETA (VIDAS Y LÍMITE DE VERDADES)
         const randomIndex = Math.floor(Math.random() * players.length);
         activePlayer = players[randomIndex];
 
-        document.getElementById('actionTitle').innerText = `Turno de: ${activePlayer.name} (❤️ ${activePlayer.lives})`;
-        document.getElementById('promptText').innerText = `Llevas ${activePlayer.truthCount}/3 Verdades seguidas. Elige opción:`;
+        document.getElementById('actionTitle').innerText = `🎯 Turno de: ${activePlayer.name}`;
+        document.getElementById('promptText').innerText = `Llevas ${activePlayer.truthCount}/3 Verdades seguidas.`;
 
         const btnVerdad = document.getElementById('btnVerdad');
-        // Si ya usó 3 verdades, forzar reto
         if (activePlayer.truthCount >= 3) {
           btnVerdad.disabled = true;
-          btnVerdad.innerText = "Verdad (Límite 3/3 alcanzado)";
+          btnVerdad.innerText = "❓ Verdad (Límite 3/3)";
         } else {
           btnVerdad.disabled = false;
-          btnVerdad.innerText = `Verdad (${activePlayer.truthCount}/3)`;
+          btnVerdad.innerText = `❓ Verdad (${activePlayer.truthCount}/3)`;
         }
 
         document.getElementById('ruletaOptions').classList.remove('hidden');
       }
     }
 
+    // Opciones para Modo Botella
+    function getBottlePrompt(type) {
+      if (type === 'verdad') {
+        const randomQ = verdades[Math.floor(Math.random() * verdades.length)];
+        document.getElementById('promptText').innerText = `[VERDAD]: ${randomQ}`;
+      } else if (type === 'reto') {
+        const randomR = retos[Math.floor(Math.random() * retos.length)];
+        document.getElementById('promptText').innerText = `[RETO]: ${randomR}`;
+      } else {
+        document.getElementById('promptText').innerText = `💬 ¡${activePlayer} le inventa/pregunta libremente el reto o la verdad a ${targetPlayer}!`;
+      }
+      document.getElementById('botellaOptions').classList.add('hidden');
+    }
+
+    // Opciones para Modo Ruleta
     function chooseType(type) {
       if (!activePlayer) return;
 
@@ -265,7 +380,7 @@
         const randomQ = verdades[Math.floor(Math.random() * verdades.length)];
         document.getElementById('promptText').innerText = `[VERDAD]: ${randomQ}`;
       } else {
-        activePlayer.truthCount = 0; // Resetea el contador si hace Reto
+        activePlayer.truthCount = 0;
         const randomR = retos[Math.floor(Math.random() * retos.length)];
         document.getElementById('promptText').innerText = `[RETO]: ${randomR}`;
       }
@@ -278,16 +393,16 @@
       if (!activePlayer) return;
 
       activePlayer.lives--;
-      alert(`¡${activePlayer.name} no cumplió y perdió 1 vida! Quedan: ${activePlayer.lives}`);
+      alert(`💔 ¡${activePlayer.name} no cumplió y perdió 1 vida! Quedan: ${activePlayer.lives}`);
 
       if (activePlayer.lives <= 0) {
-        alert(`☠️ ¡${activePlayer.name} se quedó sin vidas y ha sido eliminado del juego!`);
+        alert(`☠️ ¡${activePlayer.name} se quedó sin vidas y fue eliminado!`);
         removePlayer(activePlayer.name);
       }
 
       document.getElementById('ruletaOptions').classList.add('hidden');
-      document.getElementById('actionTitle').innerText = "Turno finalizado";
-      document.getElementById('promptText').innerText = "Giren de nuevo para continuar.";
+      document.getElementById('actionTitle').innerText = "💀 Turno Finalizado";
+      document.getElementById('promptText').innerText = "Giren la ruleta para la siguiente ronda.";
       renderPlayers();
     }
   </script>
