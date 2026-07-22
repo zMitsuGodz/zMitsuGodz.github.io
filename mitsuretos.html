@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MITSUGAMES - Verdad o Reto Salón E5</title>
-  <!-- Fuente llamativa para nombres y títulos -->
+  <!-- Fuentes llamativas -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,400;0,700;1,400;1,900&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -48,9 +48,20 @@
       padding: 5px 12px; border-radius: 12px; font-weight: 800; letter-spacing: 1px;
     }
 
+    /* Music Player Controls */
+    .music-bar {
+      width: 100%; max-width: 500px;
+      background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 12px; border-radius: 14px; display: flex; gap: 8px; align-items: center; margin-bottom: 10px;
+    }
+    .music-input {
+      flex: 1; padding: 6px 10px; border-radius: 8px; border: 1px solid #3d3566;
+      background: #1b1538; color: white; font-size: 0.8rem; outline: none;
+    }
+
     h1.logo {
       font-family: 'Bebas Neue', sans-serif;
-      margin: 2px 0 10px 0; font-size: 3rem; letter-spacing: 3px; line-height: 1;
+      margin: 2px 0 6px 0; font-size: 3.2rem; letter-spacing: 3px; line-height: 1;
       background: linear-gradient(135deg, #00ffff, #ff007f, #9d4edd);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       text-shadow: 0 0 25px rgba(255, 0, 127, 0.6); text-align: center;
@@ -62,7 +73,7 @@
       100% { transform: scale(1.02); filter: drop-shadow(0 0 18px rgba(255,0,127,0.9)); }
     }
 
-    .sub-tag { text-align: center; font-size: 0.85rem; color: #bbb; margin-top: -10px; margin-bottom: 15px; letter-spacing: 1px; }
+    .sub-tag { text-align: center; font-size: 0.85rem; color: #bbb; margin-top: -6px; margin-bottom: 12px; letter-spacing: 1px; }
     .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 14px; }
 
     .card {
@@ -75,8 +86,9 @@
     button {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white;
-      padding: 10px 16px; font-weight: 700; border-radius: 12px; cursor: pointer; transition: all 0.25s ease;
+      padding: 10px 14px; font-weight: 700; border-radius: 12px; cursor: pointer; transition: all 0.25s ease;
       box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-size: 0.85rem;
     }
 
     button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(255,0,127,0.5); }
@@ -85,6 +97,7 @@
     button.btn-success { background: linear-gradient(45deg, #00e676, #00897b); }
     button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
     button.btn-swap { background: linear-gradient(45deg, #ffbe0b, #fb5607); color: #000; }
+    button.btn-talk { background: linear-gradient(45deg, #9d4edd, #ff007f); color: #fff; font-size: 1rem; width: 100%; }
 
     .category-selector {
       display: flex; justify-content: space-around; gap: 6px; margin-bottom: 12px;
@@ -93,13 +106,15 @@
 
     .cat-btn {
       background: transparent; box-shadow: none; font-size: 0.78rem; padding: 6px 8px;
-      border-radius: 10px; color: #888; border: 1px solid transparent; flex: 1; min-width: 70px; font-weight: bold;
+      border-radius: 10px; color: #888; border: 1px solid transparent; flex: 1; min-width: 65px; font-weight: bold;
     }
 
     .cat-btn.active {
       background: var(--card-bg); color: var(--accent); border-color: var(--accent);
       box-shadow: 0 0 12px rgba(0,255,255,0.4);
     }
+
+    .cat-btn.locked { color: #ffbe0b; position: relative; cursor: pointer; }
 
     .player-input { display: flex; gap: 8px; margin-bottom: 12px; }
     input[type="text"] {
@@ -123,14 +138,17 @@
     .game-area { height: 230px; display: flex; justify-content: center; align-items: center; position: relative; }
 
     .can-container {
-      position: relative; width: 80px; height: 200px;
+      position: relative; width: 120px; height: 200px;
       display: flex; justify-content: center; align-items: center;
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9));
     }
 
+    /* Eliminación del fondo blanco de la imagen usando mix-blend-mode */
     .custom-bottle-img {
-      width: auto; height: 190px; object-fit: contain;
+      width: 100%; height: 190px; object-fit: contain;
+      mix-blend-mode: multiply;
+      filter: contrast(120%) brightness(110%);
     }
 
     .roulette-display {
@@ -140,7 +158,13 @@
       background: rgba(0,0,0,0.35); border-radius: 14px; padding: 6px 14px; border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .result-box { text-align: center; min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .result-box { text-align: center; min-height: 170px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    
+    .joke-header {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px;
+      color: var(--warning); text-shadow: 0 0 10px rgba(255, 190, 11, 0.6); margin-bottom: 4px;
+    }
+
     .prompt-text { font-size: 1.05rem; font-style: italic; color: #eee; padding: 0 10px; line-height: 1.4; }
     .choice-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 5px; }
     .hidden { display: none !important; }
@@ -159,6 +183,13 @@
     <div class="badge-cat">CATEGORÍA: RULETA</div>
   </div>
 
+  <div class="music-bar">
+    <span style="font-size: 1rem;">🎵</span>
+    <input type="text" id="ytUrl" class="music-input" placeholder="Pegar Link o ID de YouTube..." value="https://www.youtube.com/watch?v=jfKfPfyJRdk">
+    <button onclick="loadMusic()" style="padding: 6px 10px; font-size: 0.75rem;">▶️ Cargar/Play</button>
+  </div>
+  <div id="ytPlayerContainer" style="display:none;"></div>
+
   <h1 class="logo">MITSUGAMES</h1>
   <div class="sub-tag">🔥 VERDAD O RETO • SALÓN E5 🔥</div>
 
@@ -174,7 +205,8 @@
         <button class="cat-btn" id="cat-curiosidad" onclick="setCategory('curiosidad')">👀 Curiosidad</button>
         <button class="cat-btn" id="cat-amistad" onclick="setCategory('amistad')">🤝 Amistad</button>
         <button class="cat-btn" id="cat-pacifico" onclick="setCategory('pacifico')">🕊️ Pacífico</button>
-        <button class="cat-btn" id="cat-chistes" onclick="setCategory('chistes')">😂 Chistes Alexander</button>
+        <button class="cat-btn locked" id="cat-chistes-lock" onclick="unlockChistes()">🔒 Secret</button>
+        <button class="cat-btn hidden" id="cat-chistes" onclick="setCategory('chistes')">😂 Alexander</button>
       </div>
 
       <div class="player-input">
@@ -197,7 +229,11 @@
 
     <div class="card result-box">
       <div id="actionTitle" class="roulette-display">AÑADE JUGADORES Y PRESIONA GIRAR</div>
+      
+      <div id="jokeHeader" class="joke-header hidden">😂 A LA FLACA DE ALEXANDER LE DICEN...</div>
       <div id="promptText" class="prompt-text"></div>
+
+      <button id="btnTalk" class="btn-talk hidden" onclick="speakJokeAndDrums()">🔊 ¡REPRODUCIR CON VOZ Y TAMBORES! 🥁</button>
       
       <div id="botellaOptions" class="choice-btns hidden">
         <button id="btnVerdadBotella" class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
@@ -226,33 +262,34 @@
     let activePlayer = null;
     let targetPlayer = null;
     let currentPromptType = null;
+    let lockClicks = 0;
+    let lastJokeText = "";
 
     const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
 
     const baseDatos = {
       chistes: {
         verdades: [
-          "😂 A la flaca de Alexander le dicen Tabla del 1... porque es recontra fácil.",
-          "😂 A la flaca de Alexander le dicen Caprichosa... porque todos se la quieren dar.",
-          "😂 A la flaca de Alexander le dicen Bicicleta pública... porque todo el mundo se sube.",
-          "😂 A la flaca de Alexander le dicen Papita frita... porque está bien pasada por aceite.",
-          "😂 A la flaca de Alexander le dicen Wi-Fi gratis... porque cualquiera se conecta.",
-          "😂 A la flaca de Alexander le dicen Puerta de metropolitano... porque se abre para todo el mundo.",
-          "😂 A la flaca de Alexander le dicen Camión de basura... porque la recogen a cualquier hora.",
-          "😂 A la flaca de Alexander le dicen Pelota de playa... porque se la paran pasando de mano en mano.",
-          "😂 A la flaca de Alexander le dicen Semáforo de noche... porque nadie la respeta.",
-          "😂 A la flaca de Alexander le dicen Reloj público... porque da la hora a todo el salón.",
-          "😂 A la flaca de Alexander le dicen Moneda de sol... porque pasa por todos los bolsillos del grupo.",
-          "😂 A la flaca de Alexander le dicen Asiento de combi... siempre hay espacio para uno más.",
-          "😂 A la flaca de Alexander le dicen Sol de invierno... porque no calienta a nadie pero igual sale.",
-          "😂 A la flaca de Alexander le dicen Cuaderno de borrador... porque todos le hacen un trazo.",
-          "😂 A la flaca de Alexander le dicen Fotocopia... porque sale igualita para todos."
+          "Tabla del 1... ¡porque es recontra fácil y cualquiera la saca!",
+          "Caprichosa... ¡porque todos se la quieren dar!",
+          "Bicicleta pública... ¡porque todo el mundo se sube sin pedir permiso!",
+          "Papita frita... ¡porque está bien recontra pasada por aceite!",
+          "Wi-Fi gratis... ¡porque cualquiera se le conecta sin clave!",
+          "Puerta de metropolitano... ¡porque se abre de par en par para todo el mundo!",
+          "Camión de basura... ¡porque la recogen a cualquier hora de la noche!",
+          "Pelota de playa... ¡porque se la paran pasando de mano en mano en el grupo!",
+          "Semáforo de noche... ¡porque nadie la respeta!",
+          "Reloj público... ¡porque le da la hora a todo el salón!",
+          "Moneda de sol... ¡porque pasa por todos los bolsillos del grupo!",
+          "Asiento de combi... ¡porque siempre hay espacio para uno más!",
+          "Sol de invierno... ¡porque no calienta a nadie pero igual sale!",
+          "Cuaderno de borrador... ¡porque todos los del salón le hacen un trazo!"
         ],
         retos: [
-          "📢 Lee en voz alta con tono dramático: 'A la flaca de Alexander le dicen WhatsApp... porque manda notificación a todo el salón.'",
-          "📢 Cuenta este chiste riéndote fuerte: 'A la flaca de Alexander le dicen Parque Universitario... porque para llena de gente.'",
-          "📢 Cuéntale a la persona a tu derecha: 'A la flaca de Alexander le dicen Película pirateada... porque se ve bien pero la consiguen fácil.'",
-          "📢 Dilo actuado como si estuvieras triste: 'A la flaca de Alexander le dicen Copa de champán... porque la abren en todas las fiestas.'"
+          "WhatsApp... ¡porque manda notificación a todo el salón E5!",
+          "Parque Universitario... ¡porque para llena de gente a todas horas!",
+          "Película pirateada... ¡porque se ve bien pero la consiguen fácil en cualquier esquina!",
+          "Copa de champán... ¡porque la abren en todas las fiestas del ciclo!"
         ]
       },
       picante: {
@@ -287,7 +324,7 @@
           "💋 Dale un beso tierno en la mejilla a la persona del salón que tú escojas.",
           "🤝 Dale un beso elegante en el reverso de la mano a la persona que elijas.",
           "💃 Hazle un baile sensual e improvisado de 10 segundos a la persona que escojas.",
-          "👀 Intenta seducir a la persona que elijas usando solo la mirada, sonrisas y gestos coqueto durante 15 segundos.",
+          "👀 Intenta seducir a la persona que elijas usando solo la mirada, sonrisas y gestos coquetos durante 15 segundos.",
           "🎙️ Envía un audio coqueteando al último contacto con quien hablaste en WhatsApp.",
           "👂 Susúrrale algo atrevido al oído a la persona a tu derecha para que se sonroje.",
           "🫂 Dale un abrazo apretado de 10 segundos a la persona que elijas del salón.",
@@ -458,6 +495,37 @@
     }
     initVisits();
 
+    function unlockChistes() {
+      lockClicks++;
+      if (lockClicks === 1) {
+        document.getElementById('cat-chistes-lock').innerText = "🔓 ¡1 Clic más!";
+      } else if (lockClicks >= 2) {
+        document.getElementById('cat-chistes-lock').classList.add('hidden');
+        document.getElementById('cat-chistes').classList.remove('hidden');
+        alert("🎉 ¡FELICIDADES! Has desbloqueado la categoría secreta: 😂 Chistes de Alexander");
+        setCategory('chistes');
+      }
+    }
+
+    function loadMusic() {
+      const urlInput = document.getElementById('ytUrl').value.trim();
+      let videoId = "";
+      
+      if (urlInput.includes("v=")) {
+        videoId = urlInput.split("v=")[1].split("&")[0];
+      } else if (urlInput.includes("youtu.be/")) {
+        videoId = urlInput.split("youtu.be/")[1].split("?")[0];
+      } else {
+        videoId = urlInput;
+      }
+
+      if (videoId) {
+        const container = document.getElementById('ytPlayerContainer');
+        container.innerHTML = `<iframe width="200" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}" allow="autoplay"></iframe>`;
+        alert("🎵 ¡Música cargada e iniciando reproducción!");
+      }
+    }
+
     function getSpecialEmoji(nameUpper) {
       if (nameUpper.includes("MARVIN") || nameUpper.includes("MARVINA")) {
         return Math.random() < 0.5 ? "🏳️‍🌈" : "🐐";
@@ -512,7 +580,8 @@
     function setCategory(cat) {
       currentCategory = cat;
       document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`cat-${cat}`).classList.add('active');
+      const activeBtn = document.getElementById(`cat-${cat}`);
+      if (activeBtn) activeBtn.classList.add('active');
       
       if (cat === 'chistes') {
         document.getElementById('btnChisteBotella').classList.remove('hidden');
@@ -528,6 +597,8 @@
       document.getElementById('ruletaOptions').classList.add('hidden');
       document.getElementById('btnSwapBotella').classList.add('hidden');
       document.getElementById('btnSwapRuleta').classList.add('hidden');
+      document.getElementById('jokeHeader').classList.add('hidden');
+      document.getElementById('btnTalk').classList.add('hidden');
     }
 
     function spin() {
@@ -640,17 +711,21 @@
         const randomQ = catData.verdades[Math.floor(Math.random() * catData.verdades.length)];
         document.getElementById('promptText').innerText = `[VERDAD - ${currentCategory.toUpperCase()}]: ${randomQ}`;
         document.getElementById('btnSwapBotella').classList.remove('hidden');
+        document.getElementById('jokeHeader').classList.add('hidden');
+        document.getElementById('btnTalk').classList.add('hidden');
       } else if (type === 'reto') {
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
         document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
         document.getElementById('btnSwapBotella').classList.remove('hidden');
+        document.getElementById('jokeHeader').classList.add('hidden');
+        document.getElementById('btnTalk').classList.add('hidden');
       } else if (type === 'chiste') {
-        const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
-        document.getElementById('promptText').innerText = `[CHISTE ALEXANDER]: ${randomC}`;
-        document.getElementById('btnSwapBotella').classList.remove('hidden');
+        displayJoke();
       } else {
         document.getElementById('promptText').innerText = `💬 ¡${activePlayer} le inventa o pregunta libremente a ${targetPlayer}!`;
         document.getElementById('btnSwapBotella').classList.add('hidden');
+        document.getElementById('jokeHeader').classList.add('hidden');
+        document.getElementById('btnTalk').classList.add('hidden');
       }
     }
 
@@ -663,17 +738,96 @@
         activePlayer.truthCount++;
         const randomQ = catData.verdades[Math.floor(Math.random() * catData.verdades.length)];
         document.getElementById('promptText').innerText = `[VERDAD - ${currentCategory.toUpperCase()}]: ${randomQ}`;
+        document.getElementById('jokeHeader').classList.add('hidden');
+        document.getElementById('btnTalk').classList.add('hidden');
       } else if (type === 'chiste') {
-        const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
-        document.getElementById('promptText').innerText = `[CHISTE ALEXANDER]: ${randomC}`;
+        displayJoke();
       } else {
         activePlayer.truthCount = 0;
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
         document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
+        document.getElementById('jokeHeader').classList.add('hidden');
+        document.getElementById('btnTalk').classList.add('hidden');
       }
       
       document.getElementById('btnSwapRuleta').classList.remove('hidden');
       renderPlayers();
+    }
+
+    function displayJoke() {
+      const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
+      lastJokeText = randomC;
+      document.getElementById('jokeHeader').classList.remove('hidden');
+      document.getElementById('promptText').innerText = randomC;
+      document.getElementById('btnTalk').classList.remove('hidden');
+    }
+
+    function speakJokeAndDrums() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        
+        const introText = "A la flaca de Alexander le dicen...";
+        const fullSpeech = `${introText} ${lastJokeText}`;
+        const utterance = new SpeechSynthesisUtterance(fullSpeech);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.95;
+
+        utterance.onend = function() {
+          playDrumSound();
+        };
+
+        window.speechSynthesis.speak(utterance);
+      } else {
+        playDrumSound();
+      }
+    }
+
+    function playDrumSound() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+
+      function playSnare(time) {
+        const noise = ctx.createBufferSource();
+        const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+        const output = buffer.getChannelData(0);
+        for (let i = 0; i < buffer.length; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 1000;
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.5, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        noise.start(time);
+      }
+
+      function playCymbal(time) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(8000, time);
+        gain.gain.setValueAtTime(0.3, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + 0.4);
+      }
+
+      const now = ctx.currentTime;
+      playSnare(now);
+      playSnare(now + 0.15);
+      playCymbal(now + 0.35);
     }
 
     function swapPrompt() {
@@ -687,8 +841,7 @@
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
         document.getElementById('promptText').innerText = `[NUEVO RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
       } else if (currentPromptType === 'chiste') {
-        const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
-        document.getElementById('promptText').innerText = `[NUEVO CHISTE ALEXANDER]: ${randomC}`;
+        displayJoke();
       }
     }
 
