@@ -101,7 +101,7 @@
     button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
     button.btn-swap { background: linear-gradient(45deg, #ffbe0b, #fb5607); color: #000; }
     
-    /* Botón Misterioso (No hacer clic) */
+    /* Botón NO HACER CLIC */
     button.btn-mystery {
       background: linear-gradient(45deg, #ff0000, #990000); color: #fff; border: 1px solid rgba(255,255,255,0.4);
       animation: glowMystery 1s infinite alternate; font-weight: 900; letter-spacing: 1px;
@@ -109,6 +109,18 @@
     @keyframes glowMystery {
       from { box-shadow: 0 0 5px #ff0000; transform: scale(1); }
       to { box-shadow: 0 0 15px #ff007f; transform: scale(1.02); }
+    }
+
+    button.btn-comoo {
+      background: linear-gradient(135deg, #ff007f, #ffbe0b, #00ffff);
+      color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px;
+      width: 100%; padding: 14px; border-radius: 14px; text-shadow: 0 0 5px #fff;
+      animation: pulseBtn 1.5s infinite;
+    }
+
+    @keyframes pulseBtn {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(255,0,127,0.8); }
+      50% { transform: scale(1.03); box-shadow: 0 0 25px rgba(0,255,255,0.9); }
     }
 
     .category-selector {
@@ -155,7 +167,7 @@
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
     }
 
-    /* BOTELLA FLOTANTE SIN FILTROS EXTRAÑOS, SOLO LA IMAGEN ORIGINAL */
+    /* BOTELLA FLOTANTE */
     .custom-bottle-img {
       width: 100%; height: 210px; object-fit: contain;
       filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
@@ -205,10 +217,10 @@
 
     .pop-out { animation: popOutSeq 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
     @keyframes popOutSeq {
-      0% { transform: scale(0.1) translateZ(-500px); opacity: 0; }
-      40% { transform: scale(1.2) translateZ(100px); opacity: 1; }
-      80% { transform: scale(1) translateZ(50px); opacity: 1; }
-      100% { transform: scale(2.5) translateZ(300px); opacity: 0; }
+      0% { transform: scale(0.1) rotateX(60deg) translateZ(-600px); opacity: 0; }
+      40% { transform: scale(1.5) rotateX(0deg) translateZ(150px); opacity: 1; }
+      70% { transform: scale(1.2) rotateZ(-6deg) translateZ(80px); opacity: 1; }
+      100% { transform: scale(2.4) translateZ(400px); opacity: 0; }
     }
 
     .pop-stay { animation: popOutStay 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
@@ -277,7 +289,7 @@
   <!-- Audios Locales de GitHub -->
   <audio id="risaAudio" src="ROSA.mp3" preload="auto"></audio>
 
-  <!-- Reproductor oculto de Batería YouTube (Ba-Dum-Tss) -->
+  <!-- Reproductor oculto de Batería YouTube (Ba-Dum-Tss) de respaldo -->
   <div id="drumPlayerDiv" style="position:absolute; top:-9999px; left:-9999px; width:0; height:0;"></div>
 
   <div class="header-bar">
@@ -312,7 +324,7 @@
       <div class="player-tags" id="playerList"></div>
     </div>
 
-    <!-- Área de la Botella -->
+    <!-- Área de la Botella (Oculta si es Full Chistes Alexander) -->
     <div class="card game-area" id="gameAreaCard">
       <div id="canContainer" class="can-container">
         <!-- BOTELLA RUSKAYA ACTUALIZADA -->
@@ -327,6 +339,7 @@
     <div class="card result-box">
       <div id="actionTitle" class="roulette-display">AÑADE JUGADORES Y PRESIONA GIRAR</div>
       
+      <!-- Display grande en 3D para chistes -->
       <div id="jokeHeader" class="joke-header hidden">😂 PREPÁRATE...</div>
       <div id="promptText" class="prompt-text"></div>
       
@@ -345,11 +358,14 @@
         <button class="btn-danger" onclick="failChallenge()">💔 Perder Vida</button>
       </div>
 
+      <!-- BOTÓN ¡¿COMOO?! 😱 (Solo visible en secuencia de chistes) -->
+      <button id="btnTalk" class="btn-comoo hidden" onclick="triggerComooSequence()">¡¿COMOO?! 😱</button>
+
       <!-- Botón directo si están en MODO FULL ALEXANDER -->
       <button id="btnFullAlexanderNext" class="btn-swap hidden" onclick="displayJoke(true)" style="width:100%; font-size: 1.1rem; padding: 12px; margin-top: 5px;">🔄 ¡Siguiente Chiste de Alexander!</button>
     </div>
 
-    <!-- REPRODUCTOR Y BUSCADOR COMPLETO -->
+    <!-- REPRODUCTOR Y BUSCADOR COMPLETO DE YOUTUBE / AUDIO LOCAL -->
     <div class="yt-section">
       <div class="yt-title">📺 MÚSICA & REPRODUCTOR YOUTUBE</div>
       <div class="music-search-row">
@@ -386,16 +402,10 @@
     let isChistesUnlocked = false;
     let lastJokeText = "";
 
-    // INICIALIZACIÓN API YOUTUBE (BATERÍA REAL)
-    let drumPlayer;
-    function onYouTubeIframeAPIReady() {
-      drumPlayer = new YT.Player('drumPlayerDiv', {
-        height: '0',
-        width: '0',
-        videoId: 'ferfRClQKgY', 
-        playerVars: { 'autoplay': 0, 'controls': 0 }
-      });
-    }
+    // VARIABLE PARA CONTROLAR EL VOLUMEN DEL IFRAME DE YT
+    let mainYtPlayer = null;
+
+    const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
 
     // ============================================
     // SISTEMA DE MÚSICA LOCAL EN GITHUB Y ECUALIZADOR
@@ -403,7 +413,7 @@
     let localPlayer = new Audio();
     let currentTrackIdx = 0;
     
-    // IMPORTANTE: Asegúrate de que tu segundo archivo se llame exactamente así en Github
+    // Lista de MP3 Locales (Asegúrate de que el nombre del segundo MP3 coincida en GitHub)
     const playlist = [
       "123113123.mp3",
       "Top Abril 2026 - Dichavate, Gatita suelta, Cheve.mp3" 
@@ -430,11 +440,33 @@
       `;
     }
 
+    // CONTROL GLOBAL DE VOLUMEN (DUCKING)
+    function lowerMusicVolume() {
+      // Bajamos el volumen de la música local al 5%
+      localPlayer.volume = 0.05;
+      
+      // Bajamos el volumen del reproductor de YouTube al 5%
+      if (mainYtPlayer && typeof mainYtPlayer.setVolume === 'function') {
+        try { mainYtPlayer.setVolume(5); } catch(e) {}
+      }
+    }
+
+    function restoreMusicVolume() {
+      // Restauramos el volumen de la música local al 100%
+      localPlayer.volume = 1.0;
+      
+      // Restauramos el volumen del reproductor de YouTube al 100%
+      if (mainYtPlayer && typeof mainYtPlayer.setVolume === 'function') {
+        try { mainYtPlayer.setVolume(100); } catch(e) {}
+      }
+    }
+
     function controlMusic(action) {
        const urlInput = document.getElementById('ytUrl').value.trim();
        const ytContainer = document.getElementById('videoDisplay');
        
        if(urlInput === "" || (!urlInput.includes("youtube") && !urlInput.includes("youtu.be"))) {
+           // MÚSICA LOCAL
            ytContainer.style.display = "flex";
            ytContainer.innerHTML = getEqualizerHTML();
            
@@ -450,42 +482,69 @@
                ytContainer.innerHTML = getEqualizerHTML();
            }
        } else {
+           // YOUTUBE MÚSICA
            localPlayer.pause();
            ytContainer.style.display = "flex";
            let videoId = "";
+           let isSearch = false;
            
-           if (urlInput.includes("v=")) { videoId = urlInput.split("v=")[1].split("&")[0]; } 
-           else if (urlInput.includes("youtu.be/")) { videoId = urlInput.split("youtu.be/")[1].split("?")[0]; }
-           else { videoId = encodeURIComponent(urlInput); }
+           if (urlInput.includes("v=")) { 
+               videoId = urlInput.split("v=")[1].split("&")[0]; 
+           } else if (urlInput.includes("youtu.be/")) { 
+               videoId = urlInput.split("youtu.be/")[1].split("?")[0]; 
+           } else { 
+               videoId = encodeURIComponent(urlInput);
+               isSearch = true; 
+           }
            
            if(action === 'play' || action === 'search') {
-               ytContainer.innerHTML = `<iframe id="ytIframe" width="100%" height="210" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen style="border:none;"></iframe>`;
+               let srcUrl = isSearch 
+                   ? `https://www.youtube.com/embed?listType=search&list=${videoId}&autoplay=1&enablejsapi=1`
+                   : `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+
+               ytContainer.innerHTML = `<iframe id="mainYTIframe" width="100%" height="210" src="${srcUrl}" allow="autoplay; encrypted-media" allowfullscreen style="border:none;"></iframe>`;
+               
+               // Asignamos la API de YouTube al iframe recién creado
+               setTimeout(() => {
+                   mainYtPlayer = new YT.Player('mainYTIframe', {
+                       events: {
+                           'onReady': function(event) {
+                               event.target.setVolume(100);
+                           }
+                       }
+                   });
+               }, 1000);
            } else if(action === 'pause') {
-               ytContainer.innerHTML = "";
-               ytContainer.style.display = "none";
+               if(mainYtPlayer && typeof mainYtPlayer.pauseVideo === 'function') {
+                   mainYtPlayer.pauseVideo();
+               } else {
+                   ytContainer.innerHTML = "";
+                   ytContainer.style.display = "none";
+               }
+           } else if(action === 'next') {
+               alert("⏭️ Esta función de saltar la próxima canción requiere una playlist válida de YouTube.");
            }
        }
     }
 
-
-    const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
-
     const baseDatos = {
       chistes: {
         verdades: [
+          // Los solicitados explícitamente:
           "Júpiter... ¡porque traka traka por 2 pesos!",
-          "Gaseosa por la mitad... ¡porque todos la agarran, se la acaban y te la devuelven!",
+          "Gaseosa por la mitad... ¡porque te la piden los linyeras, la agarran, la chupan, te la acaban y te la devuelven!",
           "Capa de ozono... ¡porque cada día está más abierta!",
-          "Reloj de arena... ¡porque todos le dan vuelta!",
+          "Reloj de arena... ¡porque todos la dan vuelta!",
           "Caja de cartón reciclable... ¡porque la usan, la tiran, la usan, la tiran!",
           "Camisa celeste... ¡porque se la ponen todos los colectiveros!",
           "Ambulancia de hipódromo... ¡porque va detrás de los pingos!",
           "Colectivo sin frenos... ¡porque se come todas las paradas!",
           "Medalla de oro... ¡porque el primero que llega se la pone!",
           "Vaso de agua... ¡porque no se le niega a nadie!",
-          "Teléfono público... ¡porque cobra 50 céntimos el minuto!",
+          "Teléfono público... ¡porque cobra 25 centavos el minuto!",
           "Monedero... ¡porque se abre por una moneda!",
           "Chancleta africana... ¡porque se la ponen todos los negros!",
+          // Otros chistes
           "Tabla del 1... ¡porque es recontra fácil y cualquiera la saca!",
           "Caprichosa... ¡porque todos se la quieren dar!",
           "Bicicleta pública... ¡porque todo el mundo se sube sin pedir permiso!",
@@ -741,6 +800,7 @@
       document.getElementById('btnSwapBotella').classList.add('hidden');
       document.getElementById('btnSwapRuleta').classList.add('hidden');
       document.getElementById('jokeHeader').classList.add('hidden');
+      document.getElementById('btnTalk').classList.add('hidden');
       document.getElementById('btnFullAlexanderNext').classList.add('hidden');
     }
 
@@ -853,7 +913,6 @@
         document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
         document.getElementById('btnSwapBotella').classList.remove('hidden');
       } else if (type === 'chiste') {
-        // Al darle al botón misterioso, dispara la secuencia
         hideOptionButtons();
         displayJoke(true, true);
       }
@@ -884,11 +943,23 @@
     function displayJoke(forceNext = false, fromMystery = false) {
       hideOptionButtons();
       const list = baseDatos.chistes.verdades;
-      const randomC = list[Math.floor(Math.random() * list.length)];
-      lastJokeText = randomC;
       
-      // Iniciar la secuencia animada 3D
-      triggerComooSequence(fromMystery);
+      // Hacemos que la selección aleatoria favorezca muchísimo (90% de las veces) a los primeros 13 (los tuyos)
+      let randomIdx = 0;
+      if (Math.random() < 0.9) {
+          randomIdx = Math.floor(Math.random() * 13);
+      } else {
+          randomIdx = Math.floor(Math.random() * list.length);
+      }
+      
+      lastJokeText = list[randomIdx];
+      
+      document.getElementById('promptText').innerText = "👇 ¡Presiona el botón para descubrir el remate!";
+      document.getElementById('btnTalk').classList.remove('hidden');
+      
+      if (currentCategory === 'chistes') {
+        document.getElementById('btnFullAlexanderNext').classList.remove('hidden');
+      }
     }
 
     // SECUENCIA ÉPICA EN 3D PARA EL CHISTE
@@ -905,12 +976,15 @@
 
       overlay.classList.remove('hidden');
       
+      // Ducking de audio: bajar música general al 5%
+      lowerMusicVolume();
+
       // Fase 1: A la flaca...
       step1.classList.remove('hidden');
       step1.classList.add('pop-out');
       if ('speechSynthesis' in window) {
         let u1 = new SpeechSynthesisUtterance("A la flaca de Alexander le dicen...");
-        u1.lang = 'es-ES'; u1.rate = 1.1;
+        u1.lang = 'es-ES'; u1.rate = 1.1; u1.volume = 1.0;
         window.speechSynthesis.speak(u1);
       }
 
@@ -930,23 +1004,21 @@
 
         if ('speechSynthesis' in window) {
           let u2 = new SpeechSynthesisUtterance(lastJokeText);
-          u2.lang = 'es-ES'; u2.rate = 0.95;
+          u2.lang = 'es-ES'; u2.rate = 0.95; u2.volume = 1.0;
           u2.onend = function() {
             
-            // Reproducir Audio Local ROSA.mp3 de Github o Batería de YT
+            // Reproducir Audio Local ROSA.mp3
             const risaPlayer = document.getElementById('risaAudio');
             risaPlayer.currentTime = 0;
+            risaPlayer.volume = 1.0;
             risaPlayer.play().catch(e => {
-                // Failsafe por si el audio local no carga, usa YT
-                if (drumPlayer && drumPlayer.seekTo) {
-                   drumPlayer.seekTo(0);
-                   drumPlayer.playVideo();
-                }
+                console.log("No se pudo cargar ROSA.mp3, saltando a animación de cierre.");
             });
             
-            // Cerrar el overlay después de la risa
+            // Cerrar el overlay y restaurar la música después de la risa
             setTimeout(() => {
                overlay.classList.add('hidden');
+               restoreMusicVolume();
                
                if (currentCategory === 'chistes' || fromMystery) {
                  document.getElementById('jokeHeader').classList.remove('hidden');
