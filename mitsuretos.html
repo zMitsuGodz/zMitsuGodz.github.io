@@ -32,6 +32,8 @@
       align-items: center;
       min-height: 100vh;
       padding: 12px;
+      position: relative;
+      overflow-x: hidden;
     }
 
     .header-bar {
@@ -47,24 +49,6 @@
       font-size: 0.7rem; background: linear-gradient(45deg, var(--primary), var(--secondary));
       padding: 4px 10px; border-radius: 12px; font-weight: 800; letter-spacing: 1px;
     }
-
-    /* Mini Reproductor Discreto */
-    .music-bar-mini {
-      width: 100%; max-width: 500px;
-      background: rgba(10, 8, 20, 0.7); border: 1px solid rgba(255,255,255,0.08);
-      padding: 6px 10px; border-radius: 12px; display: flex; gap: 6px; align-items: center; margin-bottom: 8px;
-    }
-
-    .music-input {
-      flex: 1; padding: 4px 8px; border-radius: 6px; border: 1px solid #2d2550;
-      background: #120e28; color: white; font-size: 0.75rem; outline: none;
-    }
-
-    .btn-music-mini {
-      padding: 4px 8px; font-size: 0.7rem; border-radius: 6px; border: none; font-weight: bold; cursor: pointer;
-      background: #281e50; color: #fff;
-    }
-    .btn-music-mini:hover { background: var(--primary); }
 
     h1.logo {
       font-family: 'Bebas Neue', sans-serif;
@@ -148,12 +132,11 @@
       position: relative; width: 110px; height: 190px;
       display: flex; justify-content: center; align-items: center;
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9));
     }
 
     .custom-bottle-img {
       width: 100%; height: 180px; object-fit: contain;
-      mix-blend-mode: multiply; filter: contrast(120%) brightness(110%);
+      filter: drop-shadow(0 0 10px rgba(0,255,255,0.6));
     }
 
     .roulette-display {
@@ -163,14 +146,37 @@
       background: rgba(0,0,0,0.35); border-radius: 12px; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .result-box { text-align: center; min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .result-box { text-align: center; min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 8px; position: relative; }
     
     .joke-header {
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px;
-      color: var(--warning); text-shadow: 0 0 10px rgba(255, 190, 11, 0.6); margin-bottom: 2px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px;
+      color: var(--warning); text-shadow: 0 0 15px rgba(255, 190, 11, 0.8); margin-bottom: 2px;
     }
 
-    .prompt-text { font-size: 1rem; font-style: italic; color: #eee; padding: 0 8px; line-height: 1.4; }
+    /* ANIMACIÓN 3D ¿¿¿COMOOOOO??? */
+    .comoo-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center;
+      z-index: 9999; pointer-events: none; perspective: 1000px;
+    }
+
+    .comoo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4.5rem; color: #ff007f;
+      text-shadow: 0 0 20px #00ffff, 0 0 40px #ff007f, 5px 5px 0px #000;
+      letter-spacing: 5px;
+      animation: popOut3D 1.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) forwards;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes popOut3D {
+      0% { transform: scale(0.1) rotateX(45deg) translateZ(-500px); opacity: 0; }
+      40% { transform: scale(1.4) rotateX(0deg) translateZ(100px); opacity: 1; }
+      70% { transform: scale(1.1) rotateZ(-5deg) translateZ(50px); opacity: 1; }
+      100% { transform: scale(2.2) translateZ(300px); opacity: 0; }
+    }
+
+    .prompt-text { font-size: 1.05rem; font-style: italic; color: #eee; padding: 0 8px; line-height: 1.4; }
     .choice-btns { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
     .hidden { display: none !important; }
 
@@ -179,6 +185,28 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.8; transform: scale(1.05); color: #ff007f; }
     }
+
+    /* REPRODUCTOR AL FINAL DE LA PÁGINA */
+    .music-bar-bottom {
+      width: 100%; max-width: 500px;
+      background: rgba(10, 8, 20, 0.85); border: 1px solid rgba(255,255,255,0.12);
+      padding: 10px 14px; border-radius: 16px; display: flex; flex-direction: column; gap: 8px; margin-top: 10px;
+    }
+
+    .music-search-row { display: flex; gap: 6px; }
+
+    .music-input {
+      flex: 1; padding: 8px 10px; border-radius: 8px; border: 1px solid #2d2550;
+      background: #120e28; color: white; font-size: 0.8rem; outline: none;
+    }
+
+    .music-controls-row { display: flex; justify-content: space-between; gap: 6px; }
+
+    .btn-music-mini {
+      flex: 1; padding: 6px 8px; font-size: 0.75rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer;
+      background: #281e50; color: #fff; display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .btn-music-mini:hover { background: var(--primary); }
   </style>
 </head>
 <body>
@@ -187,16 +215,6 @@
     <div class="visits-counter">👁️ Visitas: <span id="visitCount">1</span></div>
     <div class="badge-cat">CATEGORÍA: RULETA</div>
   </div>
-
-  <!-- Reproductor Discreto de YouTube -->
-  <div class="music-bar-mini">
-    <span style="font-size: 0.9rem;">🎵</span>
-    <input type="text" id="ytUrl" class="music-input" placeholder="Música YouTube..." value="https://www.youtube.com/watch?v=jfKfPfyJRdk">
-    <button class="btn-music-mini" onclick="loadMusic('play')">▶️ Play</button>
-    <button class="btn-music-mini" onclick="loadMusic('pause')">⏸️ Parar</button>
-    <button class="btn-music-mini" onclick="loadMusic('next')">⏭️ Saltar</button>
-  </div>
-  <div id="ytPlayerContainer" style="display:none;"></div>
 
   <h1 class="logo">MITSUGAMES</h1>
   <div class="sub-tag">🔥 VERDAD O RETO • SALÓN E5 🔥</div>
@@ -225,9 +243,16 @@
       <div class="player-tags" id="playerList"></div>
     </div>
 
-    <!-- Área de la Botella (Oculta si es Full Chistes Alexander) -->
+    <!-- Área de la Botella -->
     <div class="card game-area" id="gameAreaCard">
       <div id="canContainer" class="can-container">
+        <svg width="0" height="0">
+          <defs>
+            <clipPath id="bottleClip" clipPathUnits="objectBoundingBox">
+              <path d="M 0.35,0.02 C 0.38,0 0.62,0 0.65,0.02 L 0.68,0.2 C 0.75,0.3 0.9,0.35 0.9,0.5 L 0.9,0.92 C 0.9,0.98 0.85,1 0.8,1 L 0.2,1 C 0.15,1 0.1,0.98 0.1,0.92 L 0.1,0.5 C 0.1,0.35 0.25,0.3 0.32,0.2 Z" />
+            </clipPath>
+          </defs>
+        </svg>
         <img src="https://i.ibb.co/mFR0Nxv7/asasasasasdasfasd.png" alt="Botella" class="custom-bottle-img">
       </div>
     </div>
@@ -239,10 +264,12 @@
     <div class="card result-box">
       <div id="actionTitle" class="roulette-display">AÑADE JUGADORES Y PRESIONA GIRAR</div>
       
+      <!-- Display grande para chistes -->
       <div id="jokeHeader" class="joke-header hidden">😂 A LA FLACA DE ALEXANDER LE DICEN...</div>
       <div id="promptText" class="prompt-text"></div>
 
-      <button id="btnTalk" class="btn-talk hidden" onclick="speakJokeAndDrums()">🔊 REPRODUCIR CON VOZ Y TAMBORES 🥁</button>
+      <!-- Botón Hablado con Tambores -->
+      <button id="btnTalk" class="btn-talk hidden" onclick="triggerComooAndJoke()">🔊 ¡DECIR CHISTE Y REPRODUCIR AUDIO! 🥁</button>
       
       <div id="botellaOptions" class="choice-btns hidden">
         <button id="btnVerdadBotella" class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
@@ -261,8 +288,28 @@
       </div>
 
       <!-- Botón directo si están en MODO FULL ALEXANDER -->
-      <button id="btnFullAlexanderNext" class="btn-swap hidden" onclick="displayJoke()" style="width:100%; font-size: 1.1rem; padding: 12px;">😂 ¡Siguiente Chiste de Alexander!</button>
+      <button id="btnFullAlexanderNext" class="btn-swap hidden" onclick="displayJoke(true)" style="width:100%; font-size: 1.1rem; padding: 12px;">😂 ¡Siguiente Chiste de Alexander!</button>
     </div>
+
+    <!-- REPRODUCTOR DE MÚSICA EN EL PIE DE PÁGINA -->
+    <div class="music-bar-bottom">
+      <div class="music-search-row">
+        <input type="text" id="ytUrl" class="music-input" placeholder="Buscar canción o pegar Link de YouTube..." value="https://www.youtube.com/watch?v=jfKfPfyJRdk" onkeydown="if(event.key==='Enter') loadMusic('search')">
+        <button class="btn-music-mini" onclick="loadMusic('search')" style="flex:0 0 70px; background: var(--secondary);">🔍 Buscar</button>
+      </div>
+      <div class="music-controls-row">
+        <button class="btn-music-mini" onclick="loadMusic('play')">▶️ Play/Cont</button>
+        <button class="btn-music-mini" onclick="loadMusic('pause')">⏸️ Parar</button>
+        <button class="btn-music-mini" onclick="loadMusic('next')">⏭️ Saltar</button>
+      </div>
+    </div>
+    <div id="ytPlayerContainer" style="display:none;"></div>
+
+  </div>
+
+  <!-- OVERLAY ANIMACIÓN 3D "COMOOOO???" -->
+  <div id="comooOverlay" class="comoo-overlay hidden">
+    <div class="comoo-text">¿¿¿COMOOOOO??? 😱</div>
   </div>
 
   <script>
@@ -300,7 +347,14 @@
           "WhatsApp... ¡porque manda notificación a todo el salón E5!",
           "Parque Universitario... ¡porque para llena de gente a todas horas!",
           "Película pirateada... ¡porque se ve bien pero la consiguen fácil en cualquier esquina!",
-          "Copa de champán... ¡porque la abren en todas las fiestas del ciclo!"
+          "Copa de champán... ¡porque la abren en todas las fiestas del ciclo!",
+          "Cancha de sintético... ¡porque la alquilan por horas!",
+          "Gaseosa sin gas... ¡porque perdió toda la chispa pero igual la consumen!",
+          "Plaza Vea en oferta... ¡porque para llena de remates!",
+          "Tapa de olla... ¡porque para caliente y no deja de sonar!",
+          "Control remoto universal... ¡porque funciona con cualquier televisión!",
+          "Hamburguesa de luka... ¡porque tiene de todo y sale rapidito!",
+          "Silla de parque... ¡porque cualquiera llega y se sienta a descansar!"
         ]
       },
       picante: {
@@ -519,38 +573,34 @@
       }
     }
 
-    // REPRODUCTOR DE MÚSICA CON CONTROLES (PLAY, PARAR, SALTAR)
-    let ytIframePlayer = null;
-
     function loadMusic(action) {
       const container = document.getElementById('ytPlayerContainer');
       const urlInput = document.getElementById('ytUrl').value.trim();
-      let videoId = "jfKfPfyJRdk"; // ID por defecto
+      let videoId = "jfKfPfyJRdk";
 
-      if (urlInput.includes("v=")) {
-        videoId = urlInput.split("v=")[1].split("&")[0];
-      } else if (urlInput.includes("youtu.be/")) {
-        videoId = urlInput.split("youtu.be/")[1].split("?")[0];
-      } else if (urlInput) {
-        videoId = urlInput;
-      }
+      if (action === 'search' || action === 'play') {
+        if (urlInput.includes("v=")) {
+          videoId = urlInput.split("v=")[1].split("&")[0];
+        } else if (urlInput.includes("youtu.be/")) {
+          videoId = urlInput.split("youtu.be/")[1].split("?")[0];
+        } else if (urlInput.length > 0 && !urlInput.includes("http")) {
+          videoId = urlInput; 
+        }
 
-      if (action === 'play') {
         container.innerHTML = `<iframe id="ytIframe" width="200" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1" allow="autoplay"></iframe>`;
+        if (action === 'search') alert("🎶 Reproduciendo la canción o búsqueda introducida...");
       } else if (action === 'pause') {
-        container.innerHTML = ""; // Detiene la reproducción inmediatamente
+        container.innerHTML = "";
       } else if (action === 'next') {
-        alert("⏭️ Cargando siguiente audio/canción...");
+        alert("⏭️ Saltando/Cargando siguiente tema...");
         container.innerHTML = `<iframe id="ytIframe" width="200" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&enablejsapi=1" allow="autoplay"></iframe>`;
       }
     }
 
-    // SONIDO SINTETIZADO DE GIRO DE RULETA (Tock Tock Tock)
     function playSpinSound() {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (!AudioContext) return;
       const ctx = new AudioContext();
-
       let speed = 60;
       let count = 0;
       
@@ -571,7 +621,6 @@
         speed += 10;
         setTimeout(playClick, speed);
       }
-
       playClick();
     }
 
@@ -637,7 +686,6 @@
       const btnFullAlexanderNext = document.getElementById('btnFullAlexanderNext');
 
       if (cat === 'chistes') {
-        // MODO FULL ALEXANDER: Oculta la botella y muestra directamente los chistes
         gameAreaCard.classList.add('hidden');
         spinBtnCard.classList.add('hidden');
         btnFullAlexanderNext.classList.remove('hidden');
@@ -676,7 +724,7 @@
       hideOptionButtons();
       document.getElementById('promptText').innerText = '';
 
-      playSpinSound(); // Sonido sintetizado de ruleta girando
+      playSpinSound();
 
       if (currentMode === 'botella') {
         let rouletteInterval = setInterval(() => {
@@ -828,12 +876,13 @@
       renderPlayers();
     }
 
-    function displayJoke() {
+    function displayJoke(forceNext = false) {
       const list = baseDatos.chistes.verdades;
       const randomC = list[Math.floor(Math.random() * list.length)];
       lastJokeText = randomC;
+      
       document.getElementById('jokeHeader').classList.remove('hidden');
-      document.getElementById('promptText').innerText = randomC;
+      document.getElementById('promptText').innerText = "👇 Presiona el botón para descubrir el remate...";
       document.getElementById('btnTalk').classList.remove('hidden');
 
       if (currentCategory === 'chistes') {
@@ -841,34 +890,59 @@
       }
     }
 
+    function triggerComooAndJoke() {
+      const overlay = document.getElementById('comooOverlay');
+      overlay.classList.remove('hidden');
+
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        document.getElementById('promptText').innerText = lastJokeText;
+        speakJokeAndDrums();
+      }, 1600);
+    }
+
     function speakJokeAndDrums() {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         
         const introText = "A la flaca de Alexander le dicen...";
-        const fullSpeech = `${introText} ${lastJokeText}`;
+        const fullSpeech = `${introText} ... ${lastJokeText}`;
         const utterance = new SpeechSynthesisUtterance(fullSpeech);
         utterance.lang = 'es-ES';
         utterance.rate = 0.95;
 
         utterance.onend = function() {
-          playDrumSound();
+          playNewDrumFinish();
         };
 
         window.speechSynthesis.speak(utterance);
       } else {
-        playDrumSound();
+        playNewDrumFinish();
       }
     }
 
-    function playDrumSound() {
+    function playNewDrumFinish() {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (!AudioContext) return;
       const ctx = new AudioContext();
 
-      function playSnare(time) {
+      function playTom(freq, time) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, time);
+        osc.frequency.exponentialRampToValueAtTime(30, time + 0.15);
+        gain.gain.setValueAtTime(0.8, time);
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + 0.15);
+      }
+
+      function playCrash(time) {
         const noise = ctx.createBufferSource();
-        const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
+        const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.4, ctx.sampleRate);
         const output = buffer.getChannelData(0);
         for (let i = 0; i < buffer.length; i++) {
           output[i] = Math.random() * 2 - 1;
@@ -877,11 +951,11 @@
 
         const filter = ctx.createBiquadFilter();
         filter.type = 'highpass';
-        filter.frequency.value = 1000;
+        filter.frequency.value = 3000;
 
         const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.5, time);
-        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+        gain.gain.setValueAtTime(0.6, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
 
         noise.connect(filter);
         filter.connect(gain);
@@ -890,23 +964,10 @@
         noise.start(time);
       }
 
-      function playCymbal(time) {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(8000, time);
-        gain.gain.setValueAtTime(0.3, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(time);
-        osc.stop(time + 0.4);
-      }
-
       const now = ctx.currentTime;
-      playSnare(now);
-      playSnare(now + 0.15);
-      playCymbal(now + 0.35);
+      playTom(150, now);          // Ba
+      playTom(100, now + 0.15);     // Dum
+      playCrash(now + 0.32);        // Tss!
     }
 
     function swapPrompt() {
