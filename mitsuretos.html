@@ -9,9 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,400;0,700;1,400;1,900&display=swap" rel="stylesheet">
   
-  <!-- YouTube Iframe API -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-
   <style>
     :root {
       --primary: #8a2be2;
@@ -27,15 +24,25 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
 
+    /* Fondo animado dinámico */
     body {
-      background: radial-gradient(circle at center, #1b1138 0%, #070510 100%);
+      background: radial-gradient(circle at center, #27144d 0%, #070510 100%);
+      background-size: 200% 200%;
+      animation: bgShift 15s ease infinite;
       color: var(--text);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
       padding: 12px;
+      position: relative;
       overflow-x: hidden;
+    }
+
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .header-bar {
@@ -54,7 +61,7 @@
 
     h1.logo {
       font-family: 'Bebas Neue', sans-serif;
-      margin: 0 0 2px 0; font-size: 3rem; letter-spacing: 3px; line-height: 1;
+      margin: 0 0 2px 0; font-size: 3.2rem; letter-spacing: 3px; line-height: 1;
       background: linear-gradient(135deg, #00ffff, #ff007f, #9d4edd);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       text-shadow: 0 0 25px rgba(255, 0, 127, 0.6); text-align: center;
@@ -90,6 +97,17 @@
     button.btn-success { background: linear-gradient(45deg, #00e676, #00897b); }
     button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
     button.btn-swap { background: linear-gradient(45deg, #ffbe0b, #fb5607); color: #000; }
+    
+    /* Botón Misterioso */
+    button.btn-mystery {
+      background: linear-gradient(45deg, #3a0ca3, #f72585); color: #fff; border: 1px solid rgba(255,255,255,0.4);
+      animation: glowMystery 2s infinite alternate;
+    }
+    @keyframes glowMystery {
+      from { box-shadow: 0 0 5px #f72585; }
+      to { box-shadow: 0 0 15px #00ffff; }
+    }
+
     button.btn-comoo {
       background: linear-gradient(135deg, #ff007f, #ffbe0b, #00ffff);
       color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px;
@@ -146,10 +164,15 @@
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
     }
 
-    /* BOTELLA NUEVA SIN BLEND-MODE PARA QUE SE VEA EL COLOR ORIGINAL */
+    /* BOTELLA CON ANIMACIÓN FLOTANTE */
     .custom-bottle-img {
       width: 100%; height: 210px; object-fit: contain;
       filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
+      animation: floatBottle 3s ease-in-out infinite;
+    }
+    @keyframes floatBottle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
     }
 
     .roulette-display {
@@ -161,15 +184,22 @@
 
     .result-box { text-align: center; min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 8px; position: relative; }
     
+    /* ENCABEZADO DE CHISTE EN 3D CON LUZ NEÓN */
     .joke-header {
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px;
-      color: var(--warning); text-shadow: 0 0 10px rgba(255, 190, 11, 0.8); margin-bottom: 2px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px;
+      color: var(--warning); text-shadow: 0 0 15px rgba(255, 190, 11, 0.9), 3px 3px 0px #000; margin-bottom: 4px;
+      animation: text3D 1s ease infinite alternate;
     }
 
-    /* ANIMACIÓN 3D PARA EL TEXTO SECUENCIAL */
+    @keyframes text3D {
+      0% { transform: scale(1) translateZ(0); text-shadow: 0 0 15px rgba(255, 190, 11, 0.9), 3px 3px 0px #000; }
+      100% { transform: scale(1.05) translateZ(20px); text-shadow: 0 0 25px rgba(255, 0, 127, 1), 6px 6px 0px #000; }
+    }
+
+    /* OVERLAY Y ANIMACIONES 3D IMPACTANTES */
     .comoo-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(5, 2, 15, 0.95); display: flex; justify-content: center; align-items: center;
+      background: rgba(5, 2, 15, 0.92); display: flex; justify-content: center; align-items: center;
       z-index: 9999; pointer-events: none; perspective: 1000px;
     }
 
@@ -205,7 +235,7 @@
       100% { transform: scale(1) translateZ(0px); opacity: 1; }
     }
 
-    .prompt-text { font-size: 1.05rem; font-style: italic; color: #eee; padding: 0 8px; line-height: 1.4; }
+    .prompt-text { font-size: 1.1rem; font-style: italic; color: #eee; padding: 0 8px; line-height: 1.4; }
     .choice-btns { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
     .hidden { display: none !important; }
 
@@ -215,7 +245,7 @@
       50% { opacity: 0.8; transform: scale(1.05); color: #ff007f; }
     }
 
-    /* BUSCADOR COMPLETO Y REPRODUCTOR YOUTUBE CON PANTALLA DE VIDEO COMPLETA */
+    /* BUSCADOR COMPLETO Y REPRODUCTOR YOUTUBE / LOCAL */
     .yt-section {
       width: 100%; max-width: 500px;
       background: rgba(13, 10, 30, 0.9); border: 1px solid rgba(255,255,255,0.12);
@@ -224,16 +254,22 @@
     }
 
     .yt-title {
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: #ff0000;
-      letter-spacing: 1.5px; display: flex; align-items: center; gap: 6px; text-shadow: 0 0 10px rgba(255,0,0,0.5);
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: #ff0000;
+      letter-spacing: 1.5px; display: flex; align-items: center; gap: 6px;
     }
 
-    .music-search-row { display: flex; gap: 8px; }
+    .music-search-row { display: flex; gap: 8px; flex-wrap: wrap;}
 
     .music-input {
       flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid #3d3566;
-      background: #191338; color: white; font-size: 0.85rem; outline: none; font-weight: bold;
+      background: #191338; color: white; font-size: 0.85rem; outline: none; font-weight: bold; min-width: 100%;
     }
+
+    .btn-music-mini {
+      flex: 1; padding: 8px 6px; font-size: 0.8rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer;
+      background: #281e50; color: #fff; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-music-mini:hover { background: var(--primary); }
 
     .video-container {
       width: 100%; height: 210px; border-radius: 12px; overflow: hidden;
@@ -247,8 +283,8 @@
 </head>
 <body>
 
-  <!-- Reproductor oculto de Batería YouTube (Ba-Dum-Tss) -->
-  <div id="drumPlayerDiv" style="position:absolute; top:-9999px; left:-9999px; width:0; height:0;"></div>
+  <!-- Audios Locales de GitHub -->
+  <audio id="risaAudio" src="ROSA.mp3" preload="auto"></audio>
 
   <div class="header-bar">
     <div class="visits-counter">👁️ Visitas: <span id="visitCount">1</span></div>
@@ -270,7 +306,7 @@
         <button class="cat-btn" id="cat-curiosidad" onclick="setCategory('curiosidad')">👀 Curiosidad</button>
         <button class="cat-btn" id="cat-amistad" onclick="setCategory('amistad')">🤝 Amistad</button>
         <button class="cat-btn" id="cat-pacifico" onclick="setCategory('pacifico')">🕊️ Pacífico</button>
-        <button class="cat-btn locked" id="cat-chistes-lock" onclick="unlockChistes()">🔒 Secret</button>
+        <button class="cat-btn locked" id="cat-chistes-lock" ondblclick="unlockChistes()">🔒 Secret</button>
         <button class="cat-btn hidden" id="cat-chistes" onclick="setCategory('chistes')">😂 Alexander</button>
       </div>
 
@@ -291,28 +327,30 @@
     </div>
 
     <div class="card" style="text-align: center;" id="spinBtnCard">
-      <button id="spinBtn" onclick="spin()" style="font-size: 1.3rem; width: 100%; padding: 14px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">🎲 ¡GIRAR RULETA! 🎲</button>
+      <button id="spinBtn" onclick="spin()" style="font-size: 1.25rem; width: 100%; padding: 12px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">🎲 ¡GIRAR RULETA! 🎲</button>
     </div>
 
     <div class="card result-box">
       <div id="actionTitle" class="roulette-display">AÑADE JUGADORES Y PRESIONA GIRAR</div>
       
-      <div id="jokeHeader" class="joke-header hidden">😂 PREPÁRATE...</div>
+      <!-- Display grande en 3D para chistes -->
+      <div id="jokeHeader" class="joke-header hidden">A LA FLACA DE ALEXANDER LE DICEEEEN...</div>
       <div id="promptText" class="prompt-text"></div>
 
-      <!-- BOTÓN ¡¿COMOO?! 😱 PARA ACTIVAR 3D Y SONIDOS -->
+      <!-- BOTÓN ¡¿COMOO?! 😱 -->
       <button id="btnTalk" class="btn-comoo hidden" onclick="triggerComooSequence()">¡¿COMOO?! 😱</button>
       
       <div id="botellaOptions" class="choice-btns hidden">
-        <button id="btnVerdadBotella" class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
-        <button id="btnRetoBotella" onclick="getBottlePrompt('reto')">🔥 Reto Aleatorio</button>
-        <button id="btnCustomBotella" class="btn-accent" onclick="getBottlePrompt('custom')">✏️ Inventar Pregunta/Reto</button>
+        <button id="btnVerdadBotella" class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad</button>
+        <button id="btnRetoBotella" onclick="getBottlePrompt('reto')">🔥 Reto</button>
+        <button id="btnHiddenJokeBotella" class="btn-mystery" onclick="getBottlePrompt('chiste')">🎁 Caja Misteriosa</button>
         <button id="btnSwapBotella" class="btn-swap hidden" onclick="swapPrompt()">🔄 Cambiar Opción</button>
       </div>
 
       <div id="ruletaOptions" class="choice-btns hidden">
         <button id="btnVerdad" class="btn-success" onclick="chooseType('verdad')">❓ Verdad</button>
         <button id="btnReto" onclick="chooseType('reto')">🔥 Reto</button>
+        <button id="btnHiddenJokeRuleta" class="btn-mystery" onclick="chooseType('chiste')">🎁 Caja Misteriosa</button>
         <button id="btnSwapRuleta" class="btn-swap hidden" onclick="swapPrompt()">🔄 Cambiar Opción</button>
         <button class="btn-danger" onclick="failChallenge()">💔 Perder Vida</button>
       </div>
@@ -321,17 +359,19 @@
       <button id="btnFullAlexanderNext" class="btn-swap hidden" onclick="displayJoke(true)" style="width:100%; font-size: 1.1rem; padding: 12px; margin-top: 5px;">🔄 ¡Siguiente Chiste de Alexander!</button>
     </div>
 
-    <!-- REPRODUCTOR Y BUSCADOR COMPLETO DE YOUTUBE -->
+    <!-- REPRODUCTOR Y BUSCADOR COMPLETO DE YOUTUBE / AUDIO LOCAL -->
     <div class="yt-section">
-      <div class="yt-title">📺 REPRODUCTOR DE YOUTUBE EN VIVO</div>
+      <div class="yt-title">📺 MÚSICA & REPRODUCTOR YOUTUBE</div>
       <div class="music-search-row">
-        <input type="text" id="ytUrl" class="music-input" placeholder="Ej: Reggaeton Mix 2026 o URL de YouTube" value="https://www.youtube.com/watch?v=jfKfPfyJRdk" onkeydown="if(event.key==='Enter') searchAndPlayYT()">
-        <button class="btn-music-mini" onclick="searchAndPlayYT()" style="padding:0 16px; background: #ff0000; font-size: 0.95rem;">🔎 Buscar</button>
+        <input type="text" id="ytUrl" class="music-input" placeholder="Pega un Link/ID de YouTube o déjalo vacío para Local" onkeydown="if(event.key==='Enter') controlMusic('search')">
       </div>
-      <div id="videoDisplay" class="video-container">
-        <!-- El iframe se cargará aquí dinámicamente -->
-        <iframe id="mainYTIframe" src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div class="music-search-row">
+        <button class="btn-music-mini" onclick="controlMusic('search')" style="background: #ff0000;">🔎 Buscar YT</button>
+        <button class="btn-music-mini" onclick="controlMusic('play')">▶️ Play/Cont</button>
+        <button class="btn-music-mini" onclick="controlMusic('pause')">⏸️ Parar</button>
+        <button class="btn-music-mini" onclick="controlMusic('next')">⏭️ Saltar</button>
       </div>
+      <div id="videoDisplay" class="video-container" style="display:none;"></div>
     </div>
 
   </div>
@@ -356,18 +396,64 @@
     let isChistesUnlocked = false;
     let lastJokeText = "";
 
-    // INICIALIZACIÓN API YOUTUBE (PARA BATERÍA REAL)
-    let drumPlayer;
-    function onYouTubeIframeAPIReady() {
-      drumPlayer = new YT.Player('drumPlayerDiv', {
-        height: '0',
-        width: '0',
-        videoId: 'ferfRClQKgY', // URL Pasada por el usuario (Ba-dum-tss real)
-        playerVars: { 'autoplay': 0, 'controls': 0 }
-      });
+    const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
+
+    // ============================================
+    // SISTEMA DE MÚSICA LOCAL EN GITHUB
+    // ============================================
+    let localPlayer = new Audio();
+    let currentTrackIdx = 0;
+    
+    // IMPORTANTE: Asegúrate que el segundo archivo en tu github se llame EXACTAMENTE igual a esto, o cámbiale el nombre a musica2.mp3
+    const playlist = [
+      "123113123.mp3",
+      "Top Abril 2026 - Dichavate, Gatita suelta, Cheve.mp3" 
+    ]; 
+    localPlayer.src = playlist[currentTrackIdx];
+    localPlayer.loop = false;
+
+    // Pasar a la siguiente canción automáticamente
+    localPlayer.addEventListener('ended', () => {
+        currentTrackIdx = (currentTrackIdx + 1) % playlist.length;
+        localPlayer.src = playlist[currentTrackIdx];
+        localPlayer.play();
+    });
+
+    function controlMusic(action) {
+       const urlInput = document.getElementById('ytUrl').value.trim();
+       const ytContainer = document.getElementById('videoDisplay');
+       
+       // Si no hay link de YouTube, reproducimos los MP3 de Github
+       if(urlInput === "" || (!urlInput.includes("youtube") && !urlInput.includes("youtu.be"))) {
+           ytContainer.style.display = "flex";
+           ytContainer.innerHTML = `<div style="color:var(--accent); font-weight:bold; font-size:1.1rem; text-align:center; padding:20px;">🎵 Reproduciendo Playlist Local<br><span style="color:#fff; font-size:0.8rem; font-weight:normal;">(Archivos MP3 de Github)</span></div>`;
+           
+           if(action === 'play' || action === 'search') localPlayer.play();
+           if(action === 'pause') localPlayer.pause();
+           if(action === 'next') {
+               currentTrackIdx = (currentTrackIdx + 1) % playlist.length;
+               localPlayer.src = playlist[currentTrackIdx];
+               localPlayer.play();
+           }
+       } else {
+           // Si pegaron un link, pausamos la música local y mostramos YouTube
+           localPlayer.pause();
+           ytContainer.style.display = "flex";
+           let videoId = "";
+           
+           if (urlInput.includes("v=")) { videoId = urlInput.split("v=")[1].split("&")[0]; } 
+           else if (urlInput.includes("youtu.be/")) { videoId = urlInput.split("youtu.be/")[1].split("?")[0]; }
+           else { videoId = encodeURIComponent(urlInput); }
+           
+           if(action === 'play' || action === 'search') {
+               ytContainer.innerHTML = `<iframe id="ytIframe" width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen style="border:none;"></iframe>`;
+           } else if(action === 'pause') {
+               ytContainer.innerHTML = "";
+               ytContainer.style.display = "none";
+           }
+       }
     }
 
-    const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
 
     const baseDatos = {
       chistes: {
@@ -497,27 +583,7 @@
       }
     }
 
-    // BUSCADOR DE YOUTUBE EN EL REPRODUCTOR INFERIOR
-    function searchAndPlayYT() {
-      const input = document.getElementById('ytUrl').value.trim();
-      const videoDisplay = document.getElementById('videoDisplay');
-      let videoId = "";
-
-      if (input.includes("v=")) {
-        videoId = input.split("v=")[1].split("&")[0];
-      } else if (input.includes("youtu.be/")) {
-        videoId = input.split("youtu.be/")[1].split("?")[0];
-      } else if (input.length > 0) {
-        videoId = encodeURIComponent(input);
-      }
-
-      if (input.includes("http")) {
-        videoDisplay.innerHTML = `<iframe id="mainYTIframe" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-      } else {
-        videoDisplay.innerHTML = `<iframe id="mainYTIframe" src="https://www.youtube.com/embed?listType=search&list=${videoId}&autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-      }
-    }
-
+    // SONIDO METÁLICO Y POTENTE PARA LA RULETA
     function playSpinSound() {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       if (!AudioContext) return;
@@ -529,9 +595,9 @@
         if (count > 25) return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'sine';
+        osc.type = 'square'; // Sonido más fuerte y notorio
         osc.frequency.setValueAtTime(400 + (count * 10), ctx.currentTime);
-        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.setValueAtTime(0.9, ctx.currentTime); // Volumen subido casi al máximo
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
         osc.connect(gain);
         gain.connect(ctx.destination);
@@ -595,7 +661,6 @@
       document.getElementById('promptText').innerText = '';
       renderPlayers();
       
-      // Asegurarse de mantener coherencia si estamos en chistes
       if(currentCategory === 'chistes'){
          setCategory('chistes');
       }
@@ -744,6 +809,8 @@
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
         document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
         document.getElementById('btnSwapBotella').classList.remove('hidden');
+      } else if (type === 'chiste') {
+        displayJoke();
       } else {
         document.getElementById('promptText').innerText = `💬 ¡${activePlayer} le inventa o pregunta libremente a ${targetPlayer}!`;
         document.getElementById('btnSwapBotella').classList.add('hidden');
@@ -759,13 +826,15 @@
         activePlayer.truthCount++;
         const randomQ = catData.verdades[Math.floor(Math.random() * catData.verdades.length)];
         document.getElementById('promptText').innerText = `[VERDAD - ${currentCategory.toUpperCase()}]: ${randomQ}`;
+        document.getElementById('btnSwapRuleta').classList.remove('hidden');
+      } else if (type === 'chiste') {
+        displayJoke();
       } else {
         activePlayer.truthCount = 0;
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
         document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
+        document.getElementById('btnSwapRuleta').classList.remove('hidden');
       }
-      
-      document.getElementById('btnSwapRuleta').classList.remove('hidden');
       renderPlayers();
     }
 
@@ -777,7 +846,10 @@
       
       document.getElementById('promptText').innerText = "👇 ¡Presiona el botón para descubrir el remate!";
       document.getElementById('btnTalk').classList.remove('hidden');
-      document.getElementById('btnFullAlexanderNext').classList.remove('hidden');
+      
+      if (currentCategory === 'chistes') {
+        document.getElementById('btnFullAlexanderNext').classList.remove('hidden');
+      }
     }
 
     // SECUENCIA ÉPICA EN 3D PARA EL CHISTE
@@ -810,7 +882,7 @@
         step2.classList.add('pop-out');
       }, 1500);
 
-      // Fase 3: Remate y Tambores Reales
+      // Fase 3: Remate y Tambores Locales (ROSA.mp3)
       setTimeout(() => {
         step2.classList.add('hidden');
         step3.innerText = lastJokeText;
@@ -821,15 +893,16 @@
           let u2 = new SpeechSynthesisUtterance(lastJokeText);
           u2.lang = 'es-ES'; u2.rate = 0.95;
           u2.onend = function() {
-            // Reproducir batería real (ferfRClQKgY)
-            if (drumPlayer && drumPlayer.seekTo) {
-               drumPlayer.seekTo(0);
-               drumPlayer.playVideo();
-            }
+            
+            // Reproducir Audio Local ROSA.mp3 de Github
+            const risaPlayer = document.getElementById('risaAudio');
+            risaPlayer.currentTime = 0;
+            risaPlayer.play();
             
             // Cerrar el overlay después de la risa
             setTimeout(() => {
                overlay.classList.add('hidden');
+               document.getElementById('promptText').innerText = lastJokeText;
             }, 3000);
           };
           window.speechSynthesis.speak(u2);
