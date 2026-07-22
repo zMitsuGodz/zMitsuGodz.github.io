@@ -20,7 +20,6 @@
       --success: #00e676;
       --accent: #00ffff;
       --warning: #ffbe0b;
-      --fourloko: #e30613;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
@@ -35,7 +34,6 @@
       padding: 15px;
     }
 
-    /* Counter Top Header */
     .header-bar {
       width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
     }
@@ -50,7 +48,6 @@
       padding: 5px 12px; border-radius: 12px; font-weight: 800; letter-spacing: 1px;
     }
 
-    /* Header Title MITSUGAMES */
     h1.logo {
       font-family: 'Bebas Neue', sans-serif;
       margin: 2px 0 10px 0; font-size: 3rem; letter-spacing: 3px; line-height: 1;
@@ -73,7 +70,6 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;
     }
 
-    /* Mode Selector Buttons */
     .mode-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
 
     button {
@@ -90,15 +86,14 @@
     button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
     button.btn-swap { background: linear-gradient(45deg, #ffbe0b, #fb5607); color: #000; }
 
-    /* Topic Categories */
     .category-selector {
       display: flex; justify-content: space-around; gap: 6px; margin-bottom: 12px;
-      background: rgba(0,0,0,0.4); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(0,0,0,0.4); padding: 6px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap;
     }
 
     .cat-btn {
       background: transparent; box-shadow: none; font-size: 0.78rem; padding: 6px 8px;
-      border-radius: 10px; color: #888; border: 1px solid transparent; flex: 1; font-weight: bold;
+      border-radius: 10px; color: #888; border: 1px solid transparent; flex: 1; min-width: 70px; font-weight: bold;
     }
 
     .cat-btn.active {
@@ -106,18 +101,14 @@
       box-shadow: 0 0 12px rgba(0,255,255,0.4);
     }
 
-    /* Inputs & Player List */
     .player-input { display: flex; gap: 8px; margin-bottom: 12px; }
     input[type="text"] {
       flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #3d3566;
       background: #1b1538; color: white; outline: none; font-size: 0.95rem; font-weight: bold;
-      transition: border 0.3s, box-shadow 0.3s;
     }
-    input[type="text"]:focus { border-color: var(--secondary); box-shadow: 0 0 10px rgba(255,0,127,0.3); }
 
     .player-tags { display: flex; flex-wrap: wrap; gap: 8px; max-height: 130px; overflow-y: auto; padding-right: 4px; }
     
-    /* TAG DE JUGADOR ESTILIZADO */
     .tag {
       font-family: 'Bebas Neue', sans-serif; letter-spacing: 1.5px; font-size: 1.15rem;
       background: linear-gradient(135deg, #2a1a58, #181135); padding: 6px 14px; border-radius: 20px;
@@ -129,43 +120,19 @@
     .tag .lives { color: var(--warning); font-size: 0.9rem; font-family: 'Poppins', sans-serif; font-weight: bold; }
     .tag span.remove { cursor: pointer; color: var(--secondary); font-weight: bold; margin-left: 4px; font-size: 1.2rem; }
 
-    /* Area de Juego y LATA FOUR LOKO */
     .game-area { height: 230px; display: flex; justify-content: center; align-items: center; position: relative; }
 
     .can-container {
-      position: relative; width: 65px; height: 170px;
+      position: relative; width: 80px; height: 200px;
       display: flex; justify-content: center; align-items: center;
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9));
     }
 
-    /* Estructura CSS de la Lata Four Loko */
-    .fourloko-can {
-      width: 58px; height: 155px;
-      background: linear-gradient(135deg, #7b2cbf 0%, #ff007f 40%, #e30613 80%, #000000 100%);
-      border-radius: 12px; position: relative;
-      border-top: 5px solid #d1d5db; border-bottom: 6px solid #9ca3af;
-      box-shadow: inset -8px 0 12px rgba(255,255,255,0.3), inset 8px 0 12px rgba(0,0,0,0.6);
-      overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    .custom-bottle-img {
+      width: auto; height: 190px; object-fit: contain;
     }
 
-    .fourloko-top {
-      position: absolute; top: -10px; width: 45px; height: 10px;
-      background: #e5e7eb; border-radius: 50%; border: 1px solid #9ca3af;
-    }
-
-    .fourloko-logo {
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: #fff;
-      text-shadow: 0 0 8px #000, 0 0 5px #ff007f; transform: rotate(-90deg);
-      letter-spacing: 2px; font-weight: bold; white-space: nowrap;
-    }
-
-    .fourloko-badge {
-      position: absolute; bottom: 8px; background: #000; color: var(--warning);
-      font-size: 0.5rem; font-weight: 900; padding: 2px 4px; border-radius: 3px; border: 1px solid var(--warning);
-    }
-
-    /* Ruleta / Nombres Girando */
     .roulette-display {
       font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px;
       color: var(--accent); min-height: 52px; display: flex; align-items: center; justify-content: center;
@@ -196,19 +163,18 @@
   <div class="sub-tag">🔥 VERDAD O RETO • SALÓN E5 🔥</div>
 
   <div class="container">
-    <!-- Configuración del juego -->
     <div class="card">
       <div class="mode-selector">
-        <button onclick="setMode('botella')">🥤 Modo Four Loko</button>
+        <button onclick="setMode('botella')">🍾 Modo Botella</button>
         <button onclick="setMode('ruleta')">🎯 Ruleta (Vidas)</button>
       </div>
 
-      <!-- Categorías de juego -->
       <div class="category-selector">
         <button class="cat-btn active" id="cat-picante" onclick="setCategory('picante')">🔥 Picante</button>
         <button class="cat-btn" id="cat-curiosidad" onclick="setCategory('curiosidad')">👀 Curiosidad</button>
         <button class="cat-btn" id="cat-amistad" onclick="setCategory('amistad')">🤝 Amistad</button>
         <button class="cat-btn" id="cat-pacifico" onclick="setCategory('pacifico')">🕊️ Pacífico</button>
+        <button class="cat-btn" id="cat-chistes" onclick="setCategory('chistes')">😂 Chistes Alexander</button>
       </div>
 
       <div class="player-input">
@@ -219,39 +185,32 @@
       <div class="player-tags" id="playerList"></div>
     </div>
 
-    <!-- Tablero Animado / LATA FOUR LOKO -->
     <div class="card game-area">
       <div id="canContainer" class="can-container">
-        <div class="fourloko-top"></div>
-        <div class="fourloko-can">
-          <div class="fourloko-logo">FOUR LOKO</div>
-          <div class="fourloko-badge">14% ALC</div>
-        </div>
+        <img src="https://i.ibb.co/mFR0Nxv7/asasasasasdasfasd.png" alt="Botella" class="custom-bottle-img">
       </div>
     </div>
 
-    <!-- Botón Girar -->
     <div class="card" style="text-align: center;">
       <button id="spinBtn" onclick="spin()" style="font-size: 1.3rem; width: 100%; padding: 14px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">🎲 ¡GIRAR RULETA! 🎲</button>
     </div>
 
-    <!-- Panel de Resultados -->
     <div class="card result-box">
       <div id="actionTitle" class="roulette-display">AÑADE JUGADORES Y PRESIONA GIRAR</div>
       <div id="promptText" class="prompt-text"></div>
       
-      <!-- Opciones Modo Botella/Four Loko -->
       <div id="botellaOptions" class="choice-btns hidden">
-        <button class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
-        <button onclick="getBottlePrompt('reto')">🔥 Reto Aleatorio</button>
-        <button class="btn-accent" onclick="getBottlePrompt('custom')">✏️ Inventar Pregunta/Reto</button>
+        <button id="btnVerdadBotella" class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
+        <button id="btnRetoBotella" onclick="getBottlePrompt('reto')">🔥 Reto Aleatorio</button>
+        <button id="btnCustomBotella" class="btn-accent" onclick="getBottlePrompt('custom')">✏️ Inventar Pregunta/Reto</button>
+        <button id="btnChisteBotella" class="btn-swap hidden" onclick="getBottlePrompt('chiste')">😂 Contar Chiste de Alexander</button>
         <button id="btnSwapBotella" class="btn-swap hidden" onclick="swapPrompt()">🔄 Cambiar Opción</button>
       </div>
 
-      <!-- Opciones Modo Ruleta con Vidas -->
       <div id="ruletaOptions" class="choice-btns hidden">
         <button id="btnVerdad" class="btn-success" onclick="chooseType('verdad')">❓ Verdad</button>
         <button id="btnReto" onclick="chooseType('reto')">🔥 Reto</button>
+        <button id="btnChisteRuleta" class="btn-swap hidden" onclick="chooseType('chiste')">😂 Chiste de Alexander</button>
         <button id="btnSwapRuleta" class="btn-swap hidden" onclick="swapPrompt()">🔄 Cambiar Opción</button>
         <button class="btn-danger" onclick="failChallenge()">💔 Perder Vida</button>
       </div>
@@ -268,9 +227,34 @@
     let targetPlayer = null;
     let currentPromptType = null;
 
-    const emojis = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
+    const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
 
     const baseDatos = {
+      chistes: {
+        verdades: [
+          "😂 A la flaca de Alexander le dicen Tabla del 1... porque es recontra fácil.",
+          "😂 A la flaca de Alexander le dicen Caprichosa... porque todos se la quieren dar.",
+          "😂 A la flaca de Alexander le dicen Bicicleta pública... porque todo el mundo se sube.",
+          "😂 A la flaca de Alexander le dicen Papita frita... porque está bien pasada por aceite.",
+          "😂 A la flaca de Alexander le dicen Wi-Fi gratis... porque cualquiera se conecta.",
+          "😂 A la flaca de Alexander le dicen Puerta de metropolitano... porque se abre para todo el mundo.",
+          "😂 A la flaca de Alexander le dicen Camión de basura... porque la recogen a cualquier hora.",
+          "😂 A la flaca de Alexander le dicen Pelota de playa... porque se la paran pasando de mano en mano.",
+          "😂 A la flaca de Alexander le dicen Semáforo de noche... porque nadie la respeta.",
+          "😂 A la flaca de Alexander le dicen Reloj público... porque da la hora a todo el salón.",
+          "😂 A la flaca de Alexander le dicen Moneda de sol... porque pasa por todos los bolsillos del grupo.",
+          "😂 A la flaca de Alexander le dicen Asiento de combi... siempre hay espacio para uno más.",
+          "😂 A la flaca de Alexander le dicen Sol de invierno... porque no calienta a nadie pero igual sale.",
+          "😂 A la flaca de Alexander le dicen Cuaderno de borrador... porque todos le hacen un trazo.",
+          "😂 A la flaca de Alexander le dicen Fotocopia... porque sale igualita para todos."
+        ],
+        retos: [
+          "📢 Lee en voz alta con tono dramático: 'A la flaca de Alexander le dicen WhatsApp... porque manda notificación a todo el salón.'",
+          "📢 Cuenta este chiste riéndote fuerte: 'A la flaca de Alexander le dicen Parque Universitario... porque para llena de gente.'",
+          "📢 Cuéntale a la persona a tu derecha: 'A la flaca de Alexander le dicen Película pirateada... porque se ve bien pero la consiguen fácil.'",
+          "📢 Dilo actuado como si estuvieras triste: 'A la flaca de Alexander le dicen Copa de champán... porque la abren en todas las fiestas.'"
+        ]
+      },
       picante: {
         verdades: [
           "🔥 ¿Quién de esta sala te parece el/la más atractivo/a?",
@@ -427,7 +411,7 @@
           "🎵 ¿Qué tipo de música escuchas cuando estudias o descansas?",
           "✈️ ¿A qué país o ciudad del mundo te gustaría viajar algún día?",
           "🎮 ¿Cuál es tu videojuego o juego de mesa preferido?",
-          "📚 ¿Cuál era tu materia o curso favorito cuando estabas en el colegio?",
+          "📚 ¿Cuál era tu materia o curso favorito cuando estaba en el colegio?",
           "🍦 ¿De qué sabor te gusta pedir siempre los helados?",
           "🌈 ¿Cuál es tu color preferido y qué significa para ti?",
           "☕ ¿Prefieres tomar café, té o chocolate caliente por las mañanas?",
@@ -474,13 +458,25 @@
     }
     initVisits();
 
+    function getSpecialEmoji(nameUpper) {
+      if (nameUpper.includes("MARVIN") || nameUpper.includes("MARVINA")) {
+        return Math.random() < 0.5 ? "🏳️‍🌈" : "🐐";
+      } else if (nameUpper.includes("JORDAN")) {
+        return "🐸";
+      } else if (nameUpper.includes("DAN")) {
+        return "🐮";
+      } else {
+        return emojisRandom[Math.floor(Math.random() * emojisRandom.length)];
+      }
+    }
+
     function addPlayer() {
       const input = document.getElementById('playerName');
       let name = input.value.trim();
       if (name) {
         name = name.toUpperCase();
-        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-        const fullName = `${randomEmoji} ${name}`;
+        const selectedEmoji = getSpecialEmoji(name);
+        const fullName = `${selectedEmoji} ${name}`;
 
         if (!players.find(p => p.rawName === name)) {
           players.push({ name: fullName, rawName: name, lives: 3, truthCount: 0 });
@@ -508,7 +504,7 @@
     function setMode(mode) {
       currentMode = mode;
       hideOptionButtons();
-      document.getElementById('actionTitle').innerText = mode === 'botella' ? '🥤 MODO FOUR LOKO GIRATORIO' : '🎯 MODO RULETA DIRECTA';
+      document.getElementById('actionTitle').innerText = mode === 'botella' ? '🍾 MODO BOTELLA GIRATORIA' : '🎯 MODO RULETA DIRECTA';
       document.getElementById('promptText').innerText = '';
       renderPlayers();
     }
@@ -517,6 +513,14 @@
       currentCategory = cat;
       document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById(`cat-${cat}`).classList.add('active');
+      
+      if (cat === 'chistes') {
+        document.getElementById('btnChisteBotella').classList.remove('hidden');
+        document.getElementById('btnChisteRuleta').classList.remove('hidden');
+      } else {
+        document.getElementById('btnChisteBotella').classList.add('hidden');
+        document.getElementById('btnChisteRuleta').classList.add('hidden');
+      }
     }
 
     function hideOptionButtons() {
@@ -595,6 +599,10 @@
 
       document.getElementById('promptText').innerText = `¡${activePlayer}, decide qué reto o verdad cumplirá ${targetPlayer}!`;
       document.getElementById('botellaOptions').classList.remove('hidden');
+
+      if (currentCategory === 'chistes') {
+        document.getElementById('btnChisteBotella').classList.remove('hidden');
+      }
     }
 
     function processRuletaResult() {
@@ -618,6 +626,10 @@
       }
 
       document.getElementById('ruletaOptions').classList.remove('hidden');
+
+      if (currentCategory === 'chistes') {
+        document.getElementById('btnChisteRuleta').classList.remove('hidden');
+      }
     }
 
     function getBottlePrompt(type) {
@@ -631,6 +643,10 @@
       } else if (type === 'reto') {
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
         document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
+        document.getElementById('btnSwapBotella').classList.remove('hidden');
+      } else if (type === 'chiste') {
+        const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
+        document.getElementById('promptText').innerText = `[CHISTE ALEXANDER]: ${randomC}`;
         document.getElementById('btnSwapBotella').classList.remove('hidden');
       } else {
         document.getElementById('promptText').innerText = `💬 ¡${activePlayer} le inventa o pregunta libremente a ${targetPlayer}!`;
@@ -647,6 +663,9 @@
         activePlayer.truthCount++;
         const randomQ = catData.verdades[Math.floor(Math.random() * catData.verdades.length)];
         document.getElementById('promptText').innerText = `[VERDAD - ${currentCategory.toUpperCase()}]: ${randomQ}`;
+      } else if (type === 'chiste') {
+        const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
+        document.getElementById('promptText').innerText = `[CHISTE ALEXANDER]: ${randomC}`;
       } else {
         activePlayer.truthCount = 0;
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
@@ -667,6 +686,9 @@
       } else if (currentPromptType === 'reto') {
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
         document.getElementById('promptText').innerText = `[NUEVO RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
+      } else if (currentPromptType === 'chiste') {
+        const randomC = baseDatos.chistes.verdades[Math.floor(Math.random() * baseDatos.chistes.verdades.length)];
+        document.getElementById('promptText').innerText = `[NUEVO CHISTE ALEXANDER]: ${randomC}`;
       }
     }
 
