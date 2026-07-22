@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verdad o Reto - Salón E5</title>
+  <style>
+    :root {
+      --primary: #8a2be2;
+      --secondary: #ff007f;
+      --bg: #121214;
+      --card-bg: #1e1e24;
+      --text: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: var(--secondary);
+      text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    /* Modos y Jugadores */
+    .card {
+      background-color: var(--card-bg);
+      padding: 15px;
+      border-radius: 12px;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .mode-selector {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .player-input {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #2a2a32;
+      color: white;
+    }
+
+    .player-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      background: #333344;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tag span {
+      cursor: pointer;
+      color: var(--secondary);
+      font-weight: bold;
+    }
+
+    /* Área de Juego / Botella / Ruleta */
+    .game-area {
+      height: 260px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bottle {
+      width: 50px;
+      height: 160px;
+      background: #2e7d32;
+      border-radius: 10px 10px 25px 25px;
+      position: relative;
+      transition: transform 3s cubic-bezier(0.15, 0.9, 0.25, 1);
+      box-shadow: inset -5px 0 10px rgba(0,0,0,0.5);
+    }
+
+    .bottle::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 15px;
+      width: 20px;
+      height: 25px;
+      background: #2e7d32;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .bottle::after {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: 13px;
+      width: 24px;
+      height: 6px;
+      background: #c62828;
+      border-radius: 2px;
+    }
+
+    /* Panel de Resultado */
+    .result-box {
+      text-align: center;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .selected-player {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #00ffff;
+      margin-bottom: 8px;
+    }
+
+    .prompt-text {
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍾 Botella & Ruleta - E5</h1>
+
+  <div class="container">
+    <!-- Configuración y Jugadores -->
+    <div class="card">
+      <div class="mode-selector">
+        <button onclick="setMode('botella')">Modo Botella</button>
+        <button onclick="setMode('ruleta')">Modo Ruleta Directa</button>
+      </div>
+
+      <div class="player-input">
+        <input type="text" id="playerName" placeholder="Nombre del compañero..." onkeydown="if(event.key==='Enter') addPlayer()">
+        <button onclick="addPlayer()">Añadir</button>
+      </div>
+
+      <div class="player-tags" id="playerList"></div>
+    </div>
+
+    <!-- Área interactiva -->
+    <div class="card game-area">
+      <div id="bottle" class="bottle"></div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="card" style="text-align: center;">
+      <button id="spinBtn" onclick="spin()" style="font-size: 1.2rem; width: 100%; padding: 12px;">¡GIRAR!</button>
+    </div>
+
+    <!-- Resultado -->
+    <div class="card result-box">
+      <div id="selectedPlayer" class="selected-player">Añade jugadores y presiona Girar</div>
+      <div id="promptText" class="prompt-text"></div>
+    </div>
+  </div>
+
+  <script>
+    let players = [];
+    let currentMode = 'botella';
+    let isSpinning = false;
+    let currentRotation = 0;
+
+    // Lista de Verdades Picantes (pero aptas para la U)
+    const verdades = [
+      "¿Quién de esta sala te parece más atractivo/a?",
+      "¿Has fingido que te caía bien alguien de la universidad solo por compromiso?",
+      "¿Cuál ha sido tu momento más vergonzoso en clase?",
+      "¿Alguna vez te ha gustado el/la novio/a o ex de alguien presente?",
+      "¿Qué es lo más picante que has hecho en la universidad o sus alrededores?",
+      "¿Con quién del grupo pasarías una noche entera sin dormir?",
+      "¿Has enviado un mensaje subido de tono a la persona equivocada?",
+      "¿Alguna vez has revisado el celular de tu pareja sin que se dé cuenta?",
+      "¿Qué rumor sobre ti es totalmente cierto?",
+      "¿Qué es lo primero que le miras a alguien que te gusta?"
+    ];
+
+    // Lista de Retos Picantes/Divertidos
+    const retos = [
+      "Envía un audio picante o coqueto a tu último contacto de WhatsApp.",
+      "Susúrrale algo al oído a la persona a tu derecha que la haga sonrojar.",
+      "Dale un abrazo de 10 segundos a la persona del grupo que elijas.",
+      "Deja que la persona a tu izquierda revise tus fotos recientes por 30 segundos.",
+      "Ponte de foto de perfil en WhatsApp una selfie divertida elegida por el grupo por 1 hora.",
+      "Hazle un baile improvisado de 10 segundos a alguien de la sala.",
+      "Muestra la última búsqueda que hiciste en tu navegador web.",
+      "Sienta a alguien en tu regazo durante las próximas 2 rondas.",
+      "Dedícale una frase romántica/coqueta a la persona que esté frente a ti.",
+      "Haz 10 abdominales o flexiones mientras dices el nombre de quien te gusta."
+    ];
+
+    function addPlayer() {
+      const input = document.getElementById('playerName');
+      const name = input.value.trim();
+      if (name && !players.includes(name)) {
+        players.push(name);
+        input.value = '';
+        renderPlayers();
+      }
+    }
+
+    function removePlayer(name) {
+      players = players.filter(p => p !== name);
+      renderPlayers();
+    }
+
+    function renderPlayers() {
+      const list = document.getElementById('playerList');
+      list.innerHTML = players.map(p => `
+        <div class="tag">${p} <span onclick="removePlayer('${p}')">&times;</span></div>
+      `).join('');
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('selectedPlayer').innerText = `Modo: ${mode === 'botella' ? 'Botella Borracha' : 'Ruleta Directa'}`;
+      document.getElementById('promptText').innerText = '';
+    }
+
+    function spin() {
+      if (players.length < 2) {
+        alert("¡Añade al menos 2 jugadores para poder jugar!");
+        return;
+      }
+      if (isSpinning) return;
+
+      isSpinning = true;
+      document.getElementById('promptText').innerText = "Girando...";
+      document.getElementById('selectedPlayer').innerText = "???";
+
+      // Cálculo de rotación al azar
+      const extraSpins = 5 + Math.floor(Math.random() * 5); // 5 a 10 vueltas
+      const randomDegree = Math.floor(Math.random() * 360);
+      currentRotation += (extraSpins * 360) + randomDegree;
+
+      const bottle = document.getElementById('bottle');
+      bottle.style.transform = `rotate(${currentRotation}deg)`;
+
+      setTimeout(() => {
+        isSpinning = false;
+        selectWinner();
+      }, 3000);
+    }
+
+    function selectWinner() {
+      // Selección aleatoria del jugador
+      const randomPlayerIndex = Math.floor(Math.random() * players.length);
+      const chosenPlayer = players[randomPlayerIndex];
+
+      // Elección entre Verdad o Reto
+      const isTruth = Math.random() < 0.5;
+      const list = isTruth ? verdades : retos;
+      const typeText = isTruth ? " [VERDAD] " : " [RETO] ";
+      const randomPrompt = list[Math.floor(Math.random() * list.length)];
+
+      document.getElementById('selectedPlayer').innerText = `👉 ${chosenPlayer}`;
+      document.getElementById('promptText').innerText = typeText + randomPrompt;
+    }
+  </script>
+</body>
+</html>
