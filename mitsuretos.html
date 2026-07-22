@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,400;0,700;1,400;1,900&display=swap" rel="stylesheet">
   
+  <!-- YouTube Iframe API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <style>
     :root {
       --primary: #8a2be2;
@@ -98,26 +101,14 @@
     button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
     button.btn-swap { background: linear-gradient(45deg, #ffbe0b, #fb5607); color: #000; }
     
-    /* Botón Misterioso */
+    /* Botón Misterioso (No hacer clic) */
     button.btn-mystery {
-      background: linear-gradient(45deg, #3a0ca3, #f72585); color: #fff; border: 1px solid rgba(255,255,255,0.4);
-      animation: glowMystery 2s infinite alternate;
+      background: linear-gradient(45deg, #ff0000, #990000); color: #fff; border: 1px solid rgba(255,255,255,0.4);
+      animation: glowMystery 1s infinite alternate; font-weight: 900; letter-spacing: 1px;
     }
     @keyframes glowMystery {
-      from { box-shadow: 0 0 5px #f72585; }
-      to { box-shadow: 0 0 15px #00ffff; }
-    }
-
-    button.btn-comoo {
-      background: linear-gradient(135deg, #ff007f, #ffbe0b, #00ffff);
-      color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px;
-      width: 100%; padding: 14px; border-radius: 14px; text-shadow: 0 0 5px #fff;
-      animation: pulseBtn 1.5s infinite;
-    }
-
-    @keyframes pulseBtn {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(255,0,127,0.8); }
-      50% { transform: scale(1.03); box-shadow: 0 0 25px rgba(0,255,255,0.9); }
+      from { box-shadow: 0 0 5px #ff0000; transform: scale(1); }
+      to { box-shadow: 0 0 15px #ff007f; transform: scale(1.02); }
     }
 
     .category-selector {
@@ -164,7 +155,7 @@
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
     }
 
-    /* BOTELLA CON ANIMACIÓN FLOTANTE */
+    /* BOTELLA FLOTANTE SIN FILTROS EXTRAÑOS, SOLO LA IMAGEN ORIGINAL */
     .custom-bottle-img {
       width: 100%; height: 210px; object-fit: contain;
       filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.5));
@@ -184,7 +175,6 @@
 
     .result-box { text-align: center; min-height: 160px; display: flex; flex-direction: column; justify-content: center; gap: 8px; position: relative; }
     
-    /* ENCABEZADO DE CHISTE EN 3D CON LUZ NEÓN */
     .joke-header {
       font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px;
       color: var(--warning); text-shadow: 0 0 15px rgba(255, 190, 11, 0.9), 3px 3px 0px #000; margin-bottom: 4px;
@@ -209,17 +199,9 @@
       transform-style: preserve-3d; opacity: 0;
     }
 
-    .text-alex {
-      font-size: 3.5rem; color: #00ffff; text-shadow: 0 0 20px #00ffff, 4px 4px 0px #000; letter-spacing: 2px;
-    }
-
-    .text-comoo {
-      font-size: 5.5rem; color: #ff007f; text-shadow: 0 0 25px #ff007f, 6px 6px 0px #000; letter-spacing: 5px;
-    }
-
-    .text-punchline {
-      font-size: 3.2rem; color: #ffbe0b; text-shadow: 0 0 20px #ffbe0b, 4px 4px 0px #000; letter-spacing: 1px;
-    }
+    .text-alex { font-size: 3.5rem; color: #00ffff; text-shadow: 0 0 20px #00ffff, 4px 4px 0px #000; letter-spacing: 2px; }
+    .text-comoo { font-size: 5.5rem; color: #ff007f; text-shadow: 0 0 25px #ff007f, 6px 6px 0px #000; letter-spacing: 5px; }
+    .text-punchline { font-size: 3.2rem; color: #ffbe0b; text-shadow: 0 0 20px #ffbe0b, 4px 4px 0px #000; letter-spacing: 1px; }
 
     .pop-out { animation: popOutSeq 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
     @keyframes popOutSeq {
@@ -245,7 +227,7 @@
       50% { opacity: 0.8; transform: scale(1.05); color: #ff007f; }
     }
 
-    /* BUSCADOR COMPLETO Y REPRODUCTOR YOUTUBE / LOCAL */
+    /* REPRODUCTOR YOUTUBE / LOCAL */
     .yt-section {
       width: 100%; max-width: 500px;
       background: rgba(13, 10, 30, 0.9); border: 1px solid rgba(255,255,255,0.12);
@@ -259,7 +241,6 @@
     }
 
     .music-search-row { display: flex; gap: 8px; flex-wrap: wrap;}
-
     .music-input {
       flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid #3d3566;
       background: #191338; color: white; font-size: 0.85rem; outline: none; font-weight: bold; min-width: 100%;
@@ -272,12 +253,22 @@
     .btn-music-mini:hover { background: var(--primary); }
 
     .video-container {
-      width: 100%; height: 210px; border-radius: 12px; overflow: hidden;
-      background: #000; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center;
+      width: 100%; min-height: 120px; border-radius: 12px; overflow: hidden;
+      background: #05030f; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; align-items: center;
     }
+    .video-container iframe { width: 100%; height: 210px; border: none; }
 
-    .video-container iframe {
-      width: 100%; height: 100%; border: none;
+    /* ECUALIZADOR ANIMADO PARA MÚSICA LOCAL */
+    .eq-container {
+      display: flex; gap: 5px; height: 50px; align-items: flex-end; margin-bottom: 10px;
+    }
+    .eq-bar {
+      width: 12px; background: linear-gradient(to top, #00ffff, #ff007f);
+      border-radius: 4px 4px 0 0; animation: eqAnim 0.5s ease infinite alternate;
+    }
+    @keyframes eqAnim {
+      0% { height: 10px; }
+      100% { height: 50px; }
     }
   </style>
 </head>
@@ -285,6 +276,9 @@
 
   <!-- Audios Locales de GitHub -->
   <audio id="risaAudio" src="ROSA.mp3" preload="auto"></audio>
+
+  <!-- Reproductor oculto de Batería YouTube (Ba-Dum-Tss) -->
+  <div id="drumPlayerDiv" style="position:absolute; top:-9999px; left:-9999px; width:0; height:0;"></div>
 
   <div class="header-bar">
     <div class="visits-counter">👁️ Visitas: <span id="visitCount">1</span></div>
@@ -318,7 +312,7 @@
       <div class="player-tags" id="playerList"></div>
     </div>
 
-    <!-- Área de la Botella (Oculta si es Full Chistes Alexander) -->
+    <!-- Área de la Botella -->
     <div class="card game-area" id="gameAreaCard">
       <div id="canContainer" class="can-container">
         <!-- BOTELLA RUSKAYA ACTUALIZADA -->
@@ -333,24 +327,20 @@
     <div class="card result-box">
       <div id="actionTitle" class="roulette-display">AÑADE JUGADORES Y PRESIONA GIRAR</div>
       
-      <!-- Display grande en 3D para chistes -->
-      <div id="jokeHeader" class="joke-header hidden">A LA FLACA DE ALEXANDER LE DICEEEEN...</div>
+      <div id="jokeHeader" class="joke-header hidden">😂 PREPÁRATE...</div>
       <div id="promptText" class="prompt-text"></div>
-
-      <!-- BOTÓN ¡¿COMOO?! 😱 -->
-      <button id="btnTalk" class="btn-comoo hidden" onclick="triggerComooSequence()">¡¿COMOO?! 😱</button>
       
       <div id="botellaOptions" class="choice-btns hidden">
         <button id="btnVerdadBotella" class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad</button>
         <button id="btnRetoBotella" onclick="getBottlePrompt('reto')">🔥 Reto</button>
-        <button id="btnHiddenJokeBotella" class="btn-mystery" onclick="getBottlePrompt('chiste')">🎁 Caja Misteriosa</button>
+        <button id="btnHiddenJokeBotella" class="btn-mystery" onclick="getBottlePrompt('chiste')">🚫 NO HACER CLIC PORFAVOR</button>
         <button id="btnSwapBotella" class="btn-swap hidden" onclick="swapPrompt()">🔄 Cambiar Opción</button>
       </div>
 
       <div id="ruletaOptions" class="choice-btns hidden">
         <button id="btnVerdad" class="btn-success" onclick="chooseType('verdad')">❓ Verdad</button>
         <button id="btnReto" onclick="chooseType('reto')">🔥 Reto</button>
-        <button id="btnHiddenJokeRuleta" class="btn-mystery" onclick="chooseType('chiste')">🎁 Caja Misteriosa</button>
+        <button id="btnHiddenJokeRuleta" class="btn-mystery" onclick="chooseType('chiste')">🚫 NO HACER CLIC PORFAVOR</button>
         <button id="btnSwapRuleta" class="btn-swap hidden" onclick="swapPrompt()">🔄 Cambiar Opción</button>
         <button class="btn-danger" onclick="failChallenge()">💔 Perder Vida</button>
       </div>
@@ -359,7 +349,7 @@
       <button id="btnFullAlexanderNext" class="btn-swap hidden" onclick="displayJoke(true)" style="width:100%; font-size: 1.1rem; padding: 12px; margin-top: 5px;">🔄 ¡Siguiente Chiste de Alexander!</button>
     </div>
 
-    <!-- REPRODUCTOR Y BUSCADOR COMPLETO DE YOUTUBE / AUDIO LOCAL -->
+    <!-- REPRODUCTOR Y BUSCADOR COMPLETO -->
     <div class="yt-section">
       <div class="yt-title">📺 MÚSICA & REPRODUCTOR YOUTUBE</div>
       <div class="music-search-row">
@@ -396,15 +386,24 @@
     let isChistesUnlocked = false;
     let lastJokeText = "";
 
-    const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
+    // INICIALIZACIÓN API YOUTUBE (BATERÍA REAL)
+    let drumPlayer;
+    function onYouTubeIframeAPIReady() {
+      drumPlayer = new YT.Player('drumPlayerDiv', {
+        height: '0',
+        width: '0',
+        videoId: 'ferfRClQKgY', 
+        playerVars: { 'autoplay': 0, 'controls': 0 }
+      });
+    }
 
     // ============================================
-    // SISTEMA DE MÚSICA LOCAL EN GITHUB
+    // SISTEMA DE MÚSICA LOCAL EN GITHUB Y ECUALIZADOR
     // ============================================
     let localPlayer = new Audio();
     let currentTrackIdx = 0;
     
-    // IMPORTANTE: Asegúrate que el segundo archivo en tu github se llame EXACTAMENTE igual a esto, o cámbiale el nombre a musica2.mp3
+    // IMPORTANTE: Asegúrate de que tu segundo archivo se llame exactamente así en Github
     const playlist = [
       "123113123.mp3",
       "Top Abril 2026 - Dichavate, Gatita suelta, Cheve.mp3" 
@@ -412,31 +411,45 @@
     localPlayer.src = playlist[currentTrackIdx];
     localPlayer.loop = false;
 
-    // Pasar a la siguiente canción automáticamente
     localPlayer.addEventListener('ended', () => {
         currentTrackIdx = (currentTrackIdx + 1) % playlist.length;
         localPlayer.src = playlist[currentTrackIdx];
         localPlayer.play();
     });
 
+    function getEqualizerHTML() {
+      return `
+        <div class="eq-container">
+          <div class="eq-bar" style="animation-delay: 0.1s"></div>
+          <div class="eq-bar" style="animation-delay: 0.4s"></div>
+          <div class="eq-bar" style="animation-delay: 0.2s"></div>
+          <div class="eq-bar" style="animation-delay: 0.5s"></div>
+          <div class="eq-bar" style="animation-delay: 0.3s"></div>
+        </div>
+        <div style="color:var(--accent); font-weight:bold; font-size:1.1rem; text-align:center;">🎵 MÚSICA LOCAL ACTIVA<br><span style="color:#fff; font-size:0.8rem; font-weight:normal;">Reproduciendo desde GitHub</span></div>
+      `;
+    }
+
     function controlMusic(action) {
        const urlInput = document.getElementById('ytUrl').value.trim();
        const ytContainer = document.getElementById('videoDisplay');
        
-       // Si no hay link de YouTube, reproducimos los MP3 de Github
        if(urlInput === "" || (!urlInput.includes("youtube") && !urlInput.includes("youtu.be"))) {
            ytContainer.style.display = "flex";
-           ytContainer.innerHTML = `<div style="color:var(--accent); font-weight:bold; font-size:1.1rem; text-align:center; padding:20px;">🎵 Reproduciendo Playlist Local<br><span style="color:#fff; font-size:0.8rem; font-weight:normal;">(Archivos MP3 de Github)</span></div>`;
+           ytContainer.innerHTML = getEqualizerHTML();
            
            if(action === 'play' || action === 'search') localPlayer.play();
-           if(action === 'pause') localPlayer.pause();
+           if(action === 'pause') {
+              localPlayer.pause();
+              ytContainer.innerHTML = `<div style="color:#ffbe0b; font-weight:bold; font-size:1.1rem; text-align:center;">⏸️ MÚSICA LOCAL PAUSADA</div>`;
+           }
            if(action === 'next') {
                currentTrackIdx = (currentTrackIdx + 1) % playlist.length;
                localPlayer.src = playlist[currentTrackIdx];
                localPlayer.play();
+               ytContainer.innerHTML = getEqualizerHTML();
            }
        } else {
-           // Si pegaron un link, pausamos la música local y mostramos YouTube
            localPlayer.pause();
            ytContainer.style.display = "flex";
            let videoId = "";
@@ -446,7 +459,7 @@
            else { videoId = encodeURIComponent(urlInput); }
            
            if(action === 'play' || action === 'search') {
-               ytContainer.innerHTML = `<iframe id="ytIframe" width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen style="border:none;"></iframe>`;
+               ytContainer.innerHTML = `<iframe id="ytIframe" width="100%" height="210" src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen style="border:none;"></iframe>`;
            } else if(action === 'pause') {
                ytContainer.innerHTML = "";
                ytContainer.style.display = "none";
@@ -455,42 +468,43 @@
     }
 
 
+    const emojisRandom = ["😎", "🔥", "⚡", "👑", "💥", "🤪", "🦁", "🍻", "🥳", "😈", "🚀", "🎯", "✨", "🍿"];
+
     const baseDatos = {
       chistes: {
         verdades: [
+          "Júpiter... ¡porque traka traka por 2 pesos!",
+          "Gaseosa por la mitad... ¡porque todos la agarran, se la acaban y te la devuelven!",
+          "Capa de ozono... ¡porque cada día está más abierta!",
+          "Reloj de arena... ¡porque todos le dan vuelta!",
+          "Caja de cartón reciclable... ¡porque la usan, la tiran, la usan, la tiran!",
+          "Camisa celeste... ¡porque se la ponen todos los colectiveros!",
+          "Ambulancia de hipódromo... ¡porque va detrás de los pingos!",
+          "Colectivo sin frenos... ¡porque se come todas las paradas!",
+          "Medalla de oro... ¡porque el primero que llega se la pone!",
+          "Vaso de agua... ¡porque no se le niega a nadie!",
+          "Teléfono público... ¡porque cobra 50 céntimos el minuto!",
+          "Monedero... ¡porque se abre por una moneda!",
+          "Chancleta africana... ¡porque se la ponen todos los negros!",
           "Tabla del 1... ¡porque es recontra fácil y cualquiera la saca!",
           "Caprichosa... ¡porque todos se la quieren dar!",
           "Bicicleta pública... ¡porque todo el mundo se sube sin pedir permiso!",
           "Papita frita... ¡porque está bien recontra pasada por aceite!",
-          "Wi-Fi gratis... ¡porque cualquiera se le conecta sin clave!",
           "Puerta de metropolitano... ¡porque se abre de par en par para todo el mundo!",
-          "Camión de basura... ¡porque la recogen a cualquier hora de la noche!",
-          "Pelota de playa... ¡porque se la paran pasando de mano en mano en el grupo!",
           "Semáforo de noche... ¡porque nadie la respeta!",
           "Reloj público... ¡porque le da la hora a todo el salón!",
-          "Moneda de sol... ¡porque pasa por todos los bolsillos del grupo!",
           "Asiento de combi... ¡porque siempre hay espacio para uno más!",
-          "Sol de invierno... ¡porque no calienta a nadie pero igual sale!",
           "Cuaderno de borrador... ¡porque todos los del salón le hacen un trazo!",
-          "WhatsApp... ¡porque manda notificación a todo el salón E5!",
-          "Parque Universitario... ¡porque para llena de gente a todas horas!",
           "Película pirateada... ¡porque se ve bien pero la consiguen fácil en cualquier esquina!",
           "Copa de champán... ¡porque la abren en todas las fiestas del ciclo!",
           "Cancha de sintético... ¡porque la alquilan por horas!",
-          "Gaseosa sin gas... ¡porque perdió toda la chispa pero igual la consumen!",
-          "Plaza Vea en oferta... ¡porque para llena de remates!",
-          "Tapa de olla... ¡porque para caliente y no deja de sonar!",
-          "Control remoto universal... ¡porque funciona con cualquier televisión!",
           "Hamburguesa de luka... ¡porque tiene de todo y sale rapidito!",
           "Silla de parque... ¡porque cualquiera llega y se sienta a descansar!",
           "Carretilla de emoliente... ¡porque tiene de todos los sabores y calienta a cualquiera!",
           "Cajero automático... ¡porque entrega fácil todo lo que tiene!",
           "Fotocopia de 10 céntimos... ¡porque sale idéntica para todos!",
           "Entrada de concierto chicha... ¡porque entra hasta el que no tiene pase!",
-          "Mochila de colegio... ¡porque para cargada por todos lados!",
-          "Helado de cono... ¡porque todos le meten lengua!",
-          "Puerta de combi... ¡porque cierra cuando ya metieron todo adentro!",
-          "Alarma de reloj... ¡porque suena y suena hasta que le meten la mano!"
+          "Mochila de colegio... ¡porque para cargada por todos lados!"
         ]
       },
       picante: {
@@ -504,7 +518,12 @@
           "💋 ¿A quién del grupo le darías un beso sin pensarlo dos veces?",
           "📲 ¿Has revisado el celular de tu pareja o ex a sus espaldas?",
           "🤫 ¿Qué rumor caliente o picante sobre ti es totalmente cierto?",
-          "✨ ¿Qué es lo primero que le miras a alguien cuando te atrae física o sexualmente?"
+          "✨ ¿Qué es lo primero que le miras a alguien cuando te atrae física o sexualmente?",
+          "🔥 ¿A quién del salón consideras que tiene el mejor cuerpo?",
+          "😏 Si el mundo se acabara mañana, ¿con quién de aquí tendrías tu última aventura?",
+          "😳 ¿Alguna vez te han descubierto haciéndolo en un lugar público?",
+          "💋 ¿Te has besado con alguien de la misma carrera pero de otro ciclo?",
+          "👀 Di el nombre de la persona que más stalkeas cuando estás caliente."
         ],
         retos: [
           "💋 Dale un beso tierno en la mejilla a la persona del salón que tú escojas.",
@@ -514,7 +533,12 @@
           "🎙️ Envía un audio coqueteando al último contacto con quien hablaste en WhatsApp.",
           "👂 Susúrrale algo atrevido al oído a la persona a tu derecha para que se sonroje.",
           "🫂 Dale un abrazo apretado de 10 segundos a la persona que elijas del salón.",
-          "🪑 Sienta a la persona que tú escojas en tu regazo durante las próximas 2 rondas."
+          "🪑 Sienta a la persona que tú escojas en tu regazo durante las próximas 2 rondas.",
+          "📸 Tómate una foto provocativa (sin cruzar la línea) y mándala al grupo de salón.",
+          "💅 Muerde tu labio inferior mientras miras fijamente a la persona frente a ti por 10 segundos.",
+          "🍷 Pasa un hielo o una bebida fría por el cuello de la persona a tu derecha.",
+          "🔥 Quítate una prenda de ropa que no sea vital (casaca, medias, zapatos, chalina).",
+          "💄 Deja que la persona a tu izquierda te bese el cuello por 3 segundos."
         ]
       },
       curiosidad: {
@@ -523,13 +547,23 @@
           "🤫 ¿Has fingido que te caía bien alguien de la universidad solo por compromiso?",
           "😳 ¿Cuál ha sido tu momento más vergonzoso en pleno salón de clases?",
           "💸 ¿Qué es lo más ridículo o absurdo en lo que has gastado dinero?",
-          "🤐 ¿Qué secreto de alguien del grupo sabes pero nunca has contado?"
+          "🤐 ¿Qué secreto de alguien del grupo sabes pero nunca has contado?",
+          "🤥 ¿Cuál es la mentira más grande que le has dicho a un profesor para no dar un examen?",
+          "🎓 ¿Alguna vez te has robado un trabajo o tarea de internet copiando y pegando todo?",
+          "🧐 Si pudieras echar a alguien de este grupo sin que nadie lo sepa, ¿a quién sacarías?",
+          "🤡 ¿Qué es lo más tonto que has hecho estando borracho/a en una fiesta de la U?",
+          "📲 ¿Cuál es la última búsqueda rara que hiciste de madrugada en YouTube?"
         ],
         retos: [
           "🔍 Muestra tus últimas 3 búsquedas hechas en Google sin borrar nada.",
           "📱 Abre tu historial de YouTube y muestra el último video reproducido.",
           "🗣️ Habla con acento extranjero durante las siguientes 2 rondas.",
-          "📸 Tómate una foto haciendo la mueca más fea que puedas y envíala al grupo del salón."
+          "📸 Tómate una foto haciendo la mueca más fea que puedas y envíala al grupo del salón.",
+          "📞 Llama a tu mamá o papá y dile que jalaste todos los cursos este ciclo.",
+          "🎒 Abre tu mochila y muestra todo lo que tienes adentro sin ocultar nada.",
+          "🚶‍♂️ Camina como un pingüino alrededor de la mesa de juego.",
+          "🎶 Canta una canción de opening de anime a todo pulmón.",
+          "📱 Publica un estado en Facebook o WhatsApp diciendo 'Soy el más feo/a del E5'."
         ]
       },
       amistad: {
@@ -537,13 +571,22 @@
           "🤝 ¿Quién del grupo sientes que es tu apoyo más leal en la universidad?",
           "⭐ ¿Qué es lo que más admiras de la persona que está sentada a tu izquierda?",
           "💛 ¿A quién del salón acudirías primero si tuvieras un problema grave?",
-          "🎉 ¿Cuál ha sido el momento más divertido que has compartido con la clase?"
+          "🎉 ¿Cuál ha sido el momento más divertido que has compartido con la clase?",
+          "🎓 ¿Con quién del grupo sientes que vas a seguir siendo amigo/a de acá a 10 años?",
+          "💬 ¿Alguna vez te sentiste excluido de este grupo? ¿Por qué?",
+          "🎁 Si tuvieras que regalarle 100 soles a alguien de este grupo, ¿a quién sería?",
+          "🤗 ¿Qué pequeña cosa hace alguien del grupo que siempre te saca una sonrisa?",
+          "🌟 ¿Quién de aquí crees que tiene el potencial para ser el más millonario?"
         ],
         retos: [
           "🫂 Dale un abrazo sincero a dos personas diferentes del salón.",
           "💬 Dile tres cualidades positivas a la persona que tienes enfrente.",
           "🤝 Dale la mano a la persona a tu izquierda y dile 'Gracias por estar en el salón'.",
-          "📸 Tómate una foto grupal sonriendo con las personas que tengas al lado."
+          "📸 Tómate una foto grupal sonriendo con las personas que tengas al lado.",
+          "🍫 Comparte un poco del snack o agua que tengas con la persona que peor te cae del grupo.",
+          "🗣️ Di un discurso motivacional de 20 segundos para todos tus compañeros.",
+          "🙌 Hagan todos un saludo especial secreto de manos y úsenlo el resto de la clase.",
+          "💌 Escríbele en un papelito algo bonito a la persona a tu derecha y guárdalo en su mochila."
         ]
       },
       pacifico: {
@@ -551,24 +594,25 @@
           "🕊️ ¿Cuál es tu pasatiempo o hobby favorito para relajarte?",
           "🍕 ¿Cuál es tu comida o platillo preferido de todos los tiempos?",
           "🎬 ¿Cuál es tu película o serie animada favorita de la infancia?",
-          "✈️ ¿A qué país o ciudad del mundo te gustaría viajar algún día?"
+          "✈️ ¿A qué país o ciudad del mundo te gustaría viajar algún día?",
+          "🎨 Si pudieras tener un talento instantáneo (tocar piano, pintar), ¿cuál elegirías?",
+          "🎵 ¿Cuál es tu canción confort o la que escuchas cuando estás triste?",
+          "📚 ¿Qué libro o historia te marcó profundamente cuando eras niño/a?",
+          "🐶 Si fueras un animal, ¿cuál serías y por qué?",
+          "☁️ Describe cómo sería un fin de semana perfecto y relajante para ti."
         ],
         retos: [
           "🕊️ Respira profundo 3 veces y suelta un suspiro de relajación.",
           "🎵 Tararea una canción suave para que el grupo intente adivinarla.",
           "👍 Dale un 'pulgar arriba' a cada compañero de la mesa.",
-          "😊 Regálale una sonrisa amable a cada persona del salón."
+          "😊 Regálale una sonrisa amable a cada persona del salón.",
+          "🧘‍♀️ Haz un estiramiento de yoga básico e invita a todos a copiarte.",
+          "🎨 Dibuja en una hoja una carita sonriente y déjala en la mesa del profesor.",
+          "🥤 Toma un buen vaso de agua lentamente para hidratarte.",
+          "💆‍♀️ Masajea tus propias sienes y cierra los ojos por 15 segundos."
         ]
       }
     };
-
-    function initVisits() {
-      let visits = localStorage.getItem('mitsugames_e5_visits') || 0;
-      visits++;
-      localStorage.setItem('mitsugames_e5_visits', visits);
-      document.getElementById('visitCount').innerText = visits;
-    }
-    initVisits();
 
     function unlockChistes() {
       lockClicks++;
@@ -595,14 +639,14 @@
         if (count > 25) return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'square'; // Sonido más fuerte y notorio
-        osc.frequency.setValueAtTime(400 + (count * 10), ctx.currentTime);
-        gain.gain.setValueAtTime(0.9, ctx.currentTime); // Volumen subido casi al máximo
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        osc.type = 'square'; // Sonido cuadrado más fuerte y notorio
+        osc.frequency.setValueAtTime(500 + (count * 15), ctx.currentTime);
+        gain.gain.setValueAtTime(0.8, ctx.currentTime); // Volumen alto
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.04);
+        osc.stop(ctx.currentTime + 0.05);
 
         count++;
         speed += 10;
@@ -697,7 +741,6 @@
       document.getElementById('btnSwapBotella').classList.add('hidden');
       document.getElementById('btnSwapRuleta').classList.add('hidden');
       document.getElementById('jokeHeader').classList.add('hidden');
-      document.getElementById('btnTalk').classList.add('hidden');
       document.getElementById('btnFullAlexanderNext').classList.add('hidden');
     }
 
@@ -810,10 +853,9 @@
         document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
         document.getElementById('btnSwapBotella').classList.remove('hidden');
       } else if (type === 'chiste') {
-        displayJoke();
-      } else {
-        document.getElementById('promptText').innerText = `💬 ¡${activePlayer} le inventa o pregunta libremente a ${targetPlayer}!`;
-        document.getElementById('btnSwapBotella').classList.add('hidden');
+        // Al darle al botón misterioso, dispara la secuencia
+        hideOptionButtons();
+        displayJoke(true, true);
       }
     }
 
@@ -828,7 +870,8 @@
         document.getElementById('promptText').innerText = `[VERDAD - ${currentCategory.toUpperCase()}]: ${randomQ}`;
         document.getElementById('btnSwapRuleta').classList.remove('hidden');
       } else if (type === 'chiste') {
-        displayJoke();
+        hideOptionButtons();
+        displayJoke(true, true);
       } else {
         activePlayer.truthCount = 0;
         const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
@@ -838,22 +881,18 @@
       renderPlayers();
     }
 
-    function displayJoke(forceNext = false) {
+    function displayJoke(forceNext = false, fromMystery = false) {
       hideOptionButtons();
       const list = baseDatos.chistes.verdades;
       const randomC = list[Math.floor(Math.random() * list.length)];
       lastJokeText = randomC;
       
-      document.getElementById('promptText').innerText = "👇 ¡Presiona el botón para descubrir el remate!";
-      document.getElementById('btnTalk').classList.remove('hidden');
-      
-      if (currentCategory === 'chistes') {
-        document.getElementById('btnFullAlexanderNext').classList.remove('hidden');
-      }
+      // Iniciar la secuencia animada 3D
+      triggerComooSequence(fromMystery);
     }
 
     // SECUENCIA ÉPICA EN 3D PARA EL CHISTE
-    function triggerComooSequence() {
+    function triggerComooSequence(fromMystery) {
       const overlay = document.getElementById('comooOverlay');
       const step1 = document.getElementById('animStep1');
       const step2 = document.getElementById('animStep2');
@@ -882,7 +921,7 @@
         step2.classList.add('pop-out');
       }, 1500);
 
-      // Fase 3: Remate y Tambores Locales (ROSA.mp3)
+      // Fase 3: Remate y Tambores/Audio Local
       setTimeout(() => {
         step2.classList.add('hidden');
         step3.innerText = lastJokeText;
@@ -894,15 +933,36 @@
           u2.lang = 'es-ES'; u2.rate = 0.95;
           u2.onend = function() {
             
-            // Reproducir Audio Local ROSA.mp3 de Github
+            // Reproducir Audio Local ROSA.mp3 de Github o Batería de YT
             const risaPlayer = document.getElementById('risaAudio');
             risaPlayer.currentTime = 0;
-            risaPlayer.play();
+            risaPlayer.play().catch(e => {
+                // Failsafe por si el audio local no carga, usa YT
+                if (drumPlayer && drumPlayer.seekTo) {
+                   drumPlayer.seekTo(0);
+                   drumPlayer.playVideo();
+                }
+            });
             
             // Cerrar el overlay después de la risa
             setTimeout(() => {
                overlay.classList.add('hidden');
-               document.getElementById('promptText').innerText = lastJokeText;
+               
+               if (currentCategory === 'chistes' || fromMystery) {
+                 document.getElementById('jokeHeader').classList.remove('hidden');
+                 document.getElementById('promptText').innerText = lastJokeText;
+               }
+               
+               if(currentCategory === 'chistes') {
+                   document.getElementById('btnFullAlexanderNext').classList.remove('hidden');
+               } else if (fromMystery) {
+                   if (currentMode === 'botella') {
+                       document.getElementById('botellaOptions').classList.remove('hidden');
+                   } else {
+                       document.getElementById('ruletaOptions').classList.remove('hidden');
+                   }
+               }
+
             }, 3000);
           };
           window.speechSynthesis.speak(u2);
