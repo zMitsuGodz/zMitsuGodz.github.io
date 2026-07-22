@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🍾 Verdad o Reto - Salón E5</title>
+  <title>MITSUGAMES - Verdad o Reto Salón E5</title>
   <style>
     :root {
       --primary: #8a2be2;
       --secondary: #ff007f;
-      --bg: #0f0c20;
-      --card-bg: #1a1636;
+      --bg: #090714;
+      --card-bg: #15102a;
       --text: #ffffff;
       --danger: #ff4444;
       --success: #00c851;
       --accent: #00ffff;
+      --warning: #ffbb33;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
     body {
-      background: radial-gradient(circle, #1a1636 0%, #0f0c20 100%);
+      background: radial-gradient(circle at center, #1f1841 0%, #090714 100%);
       color: var(--text);
       display: flex;
       flex-direction: column;
@@ -28,149 +29,156 @@
       padding: 15px;
     }
 
-    /* Contador de Visitas */
+    .header-bar {
+      width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+    }
+
     .visits-counter {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 0.8rem;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 5px 10px;
-      border-radius: 15px;
-      backdrop-filter: blur(5px);
+      font-size: 0.85rem; background: rgba(255, 255, 255, 0.08); padding: 6px 12px; border-radius: 20px;
+      backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--accent);
     }
 
-    h1 {
-      margin: 15px 0 10px 0;
-      color: var(--secondary);
-      text-shadow: 0 0 15px rgba(255, 0, 127, 0.7);
-      text-align: center;
-      font-size: 1.8rem;
-      animation: pulse 2s infinite;
+    .badge-cat {
+      font-size: 0.75rem; background: linear-gradient(45deg, var(--primary), var(--secondary));
+      padding: 4px 10px; border-radius: 12px; font-weight: bold; letter-spacing: 1px;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
+    h1.logo {
+      margin: 5px 0 15px 0; font-size: 2.3rem; font-weight: 900; letter-spacing: 2px;
+      background: linear-gradient(135deg, #00ffff, #ff007f, #8a2be2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255, 0, 127, 0.5); text-align: center;
+      animation: neonPulse 2.5s infinite alternate;
     }
 
+    @keyframes neonPulse {
+      0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(0,255,255,0.4)); }
+      100% { transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(255,0,127,0.8)); }
+    }
+
+    .sub-tag { text-align: center; font-size: 0.9rem; color: #aaa; margin-top: -12px; margin-bottom: 15px; }
     .container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; }
 
     .card {
-      background-color: var(--card-bg);
-      padding: 15px;
-      border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background-color: var(--card-bg); padding: 16px; border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7); border: 1px solid rgba(255, 255, 255, 0.08); position: relative; overflow: hidden;
     }
 
-    .mode-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
+    .mode-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
 
     button {
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      border: none;
-      color: white;
-      padding: 10px 15px;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white;
+      padding: 10px 16px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     }
 
-    button:hover { transform: translateY(-2px); }
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255,0,127,0.4); }
     button:active { transform: scale(0.95); }
-    button.btn-danger { background: var(--danger); }
-    button.btn-success { background: var(--success); }
-    button.btn-accent { background: #00b4d8; }
+    button.btn-danger { background: linear-gradient(45deg, #ff4444, #cc0000); }
+    button.btn-success { background: linear-gradient(45deg, #00c851, #007e33); }
+    button.btn-accent { background: linear-gradient(45deg, #00b4d8, #0077b6); }
+
+    .category-selector {
+      display: flex; justify-content: space-around; gap: 6px; margin-bottom: 12px;
+      background: rgba(0,0,0,0.3); padding: 6px; border-radius: 12px;
+    }
+
+    .cat-btn {
+      background: transparent; box-shadow: none; font-size: 0.8rem; padding: 6px 8px;
+      border-radius: 8px; color: #888; border: 1px solid transparent; flex: 1;
+    }
+
+    .cat-btn.active {
+      background: var(--card-bg); color: var(--accent); border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(0,255,255,0.3);
+    }
 
     .player-input { display: flex; gap: 8px; margin-bottom: 10px; }
     input[type="text"] {
-      flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #444;
-      background: #252047; color: white; outline: none;
+      flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #3d3566;
+      background: #1d173b; color: white; outline: none; font-size: 0.95rem;
     }
 
-    .player-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .player-tags { display: flex; flex-wrap: wrap; gap: 8px; max-height: 120px; overflow-y: auto; }
     .tag {
-      background: #2a2456; padding: 6px 12px; border-radius: 20px;
-      font-size: 0.85rem; display: flex; align-items: center; gap: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, #281e50, #1f1841); padding: 6px 14px; border-radius: 20px;
+      font-size: 0.88rem; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255, 255, 255, 0.12);
       animation: popIn 0.3s ease;
     }
     @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
     
-    .tag .lives { color: #ffbb33; font-weight: bold; }
-    .tag span.remove { cursor: pointer; color: var(--secondary); font-weight: bold; }
+    .tag .lives { color: var(--warning); font-weight: bold; }
+    .tag span.remove { cursor: pointer; color: var(--secondary); font-weight: bold; margin-left: 4px; }
 
-    /* Área de Juego y Botella 3D */
-    .game-area {
-      height: 220px; display: flex; justify-content: center; align-items: center; position: relative;
-    }
+    .game-area { height: 220px; display: flex; justify-content: center; align-items: center; position: relative; }
 
     .bottle-container {
-      position: relative; width: 60px; height: 180px;
-      display: flex; justify-content: center; align-items: center;
-      transition: transform 3s cubic-bezier(0.15, 0.9, 0.25, 1);
+      position: relative; width: 60px; height: 180px; display: flex; justify-content: center; align-items: center;
+      transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8));
     }
 
-    /* Botella estilizada con CSS */
     .bottle-body {
-      width: 45px; height: 120px;
-      background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 50%, #081c15 100%);
-      border-radius: 12px 12px 25px 25px;
-      position: absolute; bottom: 0;
-      box-shadow: inset -5px 0 10px rgba(255,255,255,0.2), 0 5px 15px rgba(0,0,0,0.5);
+      width: 46px; height: 120px; background: linear-gradient(135deg, #00f5d4 0%, #00bbf9 50%, #0b091a 100%);
+      border-radius: 14px 14px 25px 25px; position: absolute; bottom: 0;
+      box-shadow: inset -6px 0 12px rgba(255,255,255,0.3), inset 6px 0 12px rgba(0,0,0,0.5);
     }
 
     .bottle-neck {
-      width: 18px; height: 50px;
-      background: linear-gradient(90deg, #2d6a4f, #1b4332);
-      position: absolute; top: 15px;
-      border-radius: 4px 4px 0 0;
-      box-shadow: inset -2px 0 5px rgba(255,255,255,0.2);
+      width: 18px; height: 50px; background: linear-gradient(90deg, #00f5d4, #00bbf9);
+      position: absolute; top: 15px; border-radius: 4px 4px 0 0; box-shadow: inset -2px 0 5px rgba(255,255,255,0.4);
     }
 
     .bottle-cap {
-      width: 22px; height: 10px;
-      background: linear-gradient(90deg, #d62828, #9e2a2b);
-      position: absolute; top: 8px; border-radius: 3px;
+      width: 22px; height: 10px; background: linear-gradient(90deg, #ff007f, #ff4d6d);
+      position: absolute; top: 8px; border-radius: 3px; box-shadow: 0 0 8px #ff007f;
     }
 
     .bottle-label {
-      position: absolute; bottom: 45px; width: 45px; height: 30px;
-      background: #fff3bf; color: #d62828; font-weight: bold; font-size: 0.6rem;
+      position: absolute; bottom: 45px; width: 44px; height: 28px; background: #ffffff; color: #090714;
+      font-weight: 900; font-size: 0.55rem; display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; transform: rotate(-5deg); box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .roulette-display {
+      font-size: 1.5rem; font-weight: 800; color: var(--accent); min-height: 48px;
       display: flex; align-items: center; justify-content: center; text-align: center;
-      border-radius: 3px; transform: rotate(-5deg);
+      text-shadow: 0 0 12px var(--accent); background: rgba(0,0,0,0.25); border-radius: 12px; padding: 8px 12px;
     }
 
-    /* Efecto de Nombres Girando */
-    .name-roulette {
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: var(--accent);
-      min-height: 40px;
-      text-shadow: 0 0 10px var(--accent);
-    }
-
-    .result-box { text-align: center; min-height: 140px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
-    .prompt-text { font-size: 1.05rem; font-style: italic; color: #ddd; padding: 0 10px; }
-
+    .result-box { text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .prompt-text { font-size: 1.05rem; font-style: italic; color: #eee; padding: 0 10px; line-height: 1.4; }
     .choice-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 5px; }
     .hidden { display: none !important; }
+
+    .winner-flash { animation: flashAnim 0.5s ease 2; }
+    @keyframes flashAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); color: #ff007f; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="visits-counter">👁️ Visitas: <span id="visitCount">1</span></div>
+  <div class="header-bar">
+    <div class="visits-counter">👁️ Visitas: <span id="visitCount">1</span></div>
+    <div class="badge-cat">CATEGORÍA: RULETA</div>
+  </div>
 
-  <h1>🍾 Verdad o Reto - Salón E5 🔥</h1>
+  <h1 class="logo">MITSUGAMES</h1>
+  <div class="sub-tag">🔥 Verdad o Reto • Salón E5 🔥</div>
 
   <div class="container">
-    <!-- Selección de Modo y Jugadores -->
     <div class="card">
       <div class="mode-selector">
         <button onclick="setMode('botella')">🍾 Modo Botella</button>
         <button onclick="setMode('ruleta')">🎯 Ruleta (Vidas)</button>
+      </div>
+
+      <div class="category-selector">
+        <button class="cat-btn active" id="cat-picante" onclick="setCategory('picante')">🔥 Picante</button>
+        <button class="cat-btn" id="cat-curiosidad" onclick="setCategory('curiosidad')">👀 Curiosidad</button>
+        <button class="cat-btn" id="cat-amistad" onclick="setCategory('amistad')">🤝 Amistad</button>
+        <button class="cat-btn" id="cat-pacifico" onclick="setCategory('pacifico')">🕊️ Pacífico</button>
       </div>
 
       <div class="player-input">
@@ -181,34 +189,29 @@
       <div class="player-tags" id="playerList"></div>
     </div>
 
-    <!-- Tablero Animado -->
     <div class="card game-area">
       <div id="bottleContainer" class="bottle-container">
         <div class="bottle-cap"></div>
         <div class="bottle-neck"></div>
         <div class="bottle-body"></div>
-        <div class="bottle-label">E5 🔥</div>
+        <div class="bottle-label">MITSU</div>
       </div>
     </div>
 
-    <!-- Botón Girar -->
     <div class="card" style="text-align: center;">
-      <button id="spinBtn" onclick="spin()" style="font-size: 1.2rem; width: 100%; padding: 12px;">🎲 ¡GIRAR! 🎲</button>
+      <button id="spinBtn" onclick="spin()" style="font-size: 1.25rem; width: 100%; padding: 14px;">🎲 ¡GIRAR RULETA! 🎲</button>
     </div>
 
-    <!-- Panel de Resultados -->
     <div class="card result-box">
-      <div id="actionTitle" class="name-roulette">Añade jugadores y presiona Girar</div>
+      <div id="actionTitle" class="roulette-display">Añade jugadores y presiona Girar</div>
       <div id="promptText" class="prompt-text"></div>
       
-      <!-- Opciones dinámicas para Modo Botella -->
       <div id="botellaOptions" class="choice-btns hidden">
         <button class="btn-success" onclick="getBottlePrompt('verdad')">❓ Verdad Aleatoria</button>
         <button onclick="getBottlePrompt('reto')">🔥 Reto Aleatorio</button>
-        <button class="btn-accent" onclick="getBottlePrompt('custom')">✏️ Preguntar/Inventar</button>
+        <button class="btn-accent" onclick="getBottlePrompt('custom')">✏️ Inventar Pregunta/Reto</button>
       </div>
 
-      <!-- Opciones dinámicas para Modo Ruleta -->
       <div id="ruletaOptions" class="choice-btns hidden">
         <button id="btnVerdad" class="btn-success" onclick="chooseType('verdad')">❓ Verdad</button>
         <button id="btnReto" onclick="chooseType('reto')">🔥 Reto</button>
@@ -220,38 +223,203 @@
   <script>
     let players = [];
     let currentMode = 'botella';
+    let currentCategory = 'picante';
     let isSpinning = false;
     let currentRotation = 0;
     let activePlayer = null;
     let targetPlayer = null;
 
-    // Bancos de preguntas (Picantes pero moderadas)
-    const verdades = [
-      "😏 ¿Quién de este grupo te parece más atractivo/a?",
-      "🤫 ¿Has fingido que te caía bien alguien del salón solo por compromiso?",
-      "😳 ¿Cuál ha sido tu momento más vergonzoso en clase?",
-      "👀 ¿Alguna vez te ha gustado la pareja o el ex de alguien presente?",
-      "🔥 ¿Qué es lo más atrevido que has hecho en la universidad?",
-      "🌙 ¿Con quién del salón pasarías una noche entera a solas?",
-      "✨ ¿Qué es lo primero que le miras a alguien cuando te gusta?",
-      "📝 ¿Has copiado en un examen este ciclo y a quién?"
-    ];
+    const baseDatos = {
+      picante: {
+        verdades: [
+          "🔥 ¿Quién de esta sala te parece el/la más atractivo/a?",
+          "😏 ¿Alguna vez te ha gustado el/la novio/a o ex de alguien presente?",
+          "🔥 ¿Qué es lo más atrevido o picante que has hecho en la universidad?",
+          "🌙 ¿Con quién del salón pasarías una noche entera sin dormir?",
+          "👀 ¿Has enviado algún mensaje subido de tono a la persona equivocada?",
+          "😳 ¿Cuál es tu fantasía secreta o lugar más raro donde te gustaría estar con alguien?",
+          "💋 ¿A quién del grupo le darías un beso sin pensarlo dos veces?",
+          "📲 ¿Has revisado el celular de tu pareja o ex a sus espaldas?",
+          "🤫 ¿Qué rumor caliente o picante sobre ti es totalmente cierto?",
+          "✨ ¿Qué es lo primero que le miras a alguien cuando te atrae física o sexualmente?",
+          "🔥 ¿Quién del salón crees que liga o besa mejor?",
+          "😳 ¿Qué es lo más vergonzoso que te ha pasado en una cita romántica?",
+          "🏼 ¿Has fingido sentir algo por alguien solo para no dejarlo/a mal?",
+          "😈 ¿Harías un trío con personas de esta sala si nadie se entera?",
+          "🚨 ¿Alguna vez te han atrapado haciendo algo privado?",
+          "💬 Muestra la conversación de WhatsApp más picante o comprometedora que tengas.",
+          "🙈 ¿Alguna vez te ha atraído algún profesor o profesora?",
+          "❤️‍🔥 ¿Qué atuendo de los presentes te parece el más sexy hoy?",
+          "🤐 ¿Quién de los presentes te cae bien pero te daría miedo tener una cita a solas?",
+          "🎯 Si tuvieras que tener una aventura de una noche con alguien del salón, ¿a quién eliges?"
+        ],
+        retos: [
+          "🎙️ Envía un audio coqueteando al último contacto con quien hablaste en WhatsApp.",
+          "👂 Susúrrale algo atrevido al oído a la persona a tu derecha para que se sonroje.",
+          "🫂 Dale un abrazo de 10 segundos a la persona que elijas del salón.",
+          "📸 Ponte de foto de perfil en WhatsApp una selfie coqueta elegida por el grupo por 30 mins.",
+          "💌 Dedícale una frase romántica/coqueta mirando fijamente a la persona frente a ti.",
+          "🪑 Sienta a alguien en tu regazo durante las próximas 2 rondas.",
+          "💃 Hazle un baile divertido o coqueto de 10 segundos a alguien de la sala.",
+          "📱 Deja que la persona a tu izquierda mire tus fotos recientes de la galería por 20 segundos.",
+          "🙈 Muestra cuál fue la última foto que guardaste o descargaste en tu celular.",
+          "💋 Dale un beso en la mejilla muy cerca de los labios a la persona a tu izquierda.",
+          "💬 Envía un mensaje diciendo 'Te extraño mucho...' a un/a ex o un 'casi algo'.",
+          "🏋️ Haz 10 abdominales mientras miras fijamente a quien te parezca más atractivo/a.",
+          "🔥 Publica un estado en WhatsApp que diga: 'Siento ganas de enamorarme hoy... ¿quién se apunta?'",
+          "👑 Permite que el grupo te ponga un apodo coqueto por lo que resta del juego.",
+          "👀 Haz contacto visual con la persona a tu frente durante 20 segundos sin reírte.",
+          "🎵 Cántale un fragmento de una canción romántica o reggaetón lento a alguien del salón.",
+          "📱 Envia una carita coqueta (😘) sin contexto al tercer contacto de tu chat de WhatsApp.",
+          "💅 Deja que la persona a tu derecha te dibuje un pequeño corazón en el cuello con lapicero.",
+          "🤫 Confiesa en voz alta qué harías si te quedas a solas en el salón con la persona a tu derecha.",
+          "🦁 Haz un rugido seductor o pon tu mejor pose de modelo frente a todos."
+        ]
+      },
+      curiosidad: {
+        verdades: [
+          "👀 ¿Has copiado en un examen importante de este ciclo y a quién le copiaste?",
+          "🤫 ¿Has fingido que te caía bien alguien de la universidad solo por compromiso?",
+          "😳 ¿Cuál ha sido tu momento más vergonzoso en pleno salón de clases?",
+          "💸 ¿Qué es lo más ridículo o absurdo en lo que has gastado dinero?",
+          "📱 ¿Cuál es el tiempo exacto de pantalla de tu celular hoy?",
+          "🍕 ¿Qué combinación rara de comida te encanta comer a escondidas?",
+          "🤐 ¿Qué secreto de alguien del grupo sabes pero nunca has contado?",
+          "🤡 ¿Alguna vez dijiste una mentira épica para faltar a clases o a una reunión?",
+          "🎒 ¿Alguna vez has buscado en Google el nombre de algún compañero/a de clase?",
+          "🧐 ¿Quién del grupo crees que oculta mejor su verdadera personalidad?",
+          "🎓 ¿Qué curso o materia te da más miedo reprobar este ciclo?",
+          "😴 ¿Te has quedado dormido/a en una clase presencial o virtual?",
+          "🔍 ¿A qué persona de la universidad has stalkeado más en Instagram o TikTok?",
+          "🤪 ¿Cuál es el habito más raro que tienes cuando estás solo/a en tu casa?",
+          "🎭 ¿Qué opinión tenías de la persona a tu izquierda antes de conocerla bien?",
+          "📉 ¿Cuál ha sido la nota o calificación más baja que has sacado en tu vida?",
+          "🤔 Si pudieras cambiar de lugar con alguien del grupo por un día, ¿quién sería?",
+          "💬 ¿Le has hablado mal a espaldas de alguien de los presentes alguna vez?",
+          "🚨 ¿Qué es lo más arriesgado que has hecho para no llegar tarde a la universidad?",
+          "🏆 ¿Quién crees que terminará siendo el/la más exitoso/a del salón E5?"
+        ],
+        retos: [
+          "🔍 Muestra tus últimas 3 búsquedas hechas en Google sin borrar nada.",
+          "📱 Abre tu historial de YouTube y muestra el último video reproducido.",
+          "🗣️ Habla con acento extranjero (chileno, colombiano, español) durante las siguientes 2 rondas.",
+          "📞 Llama a un amigo/a y dile que te acabas de ganar la lotería y cuelga rápido.",
+          "📸 Tómate una foto haciendo la mueca más fea que puedas y envíala al grupo del salón.",
+          "🎶 Canta el coro de tu canción vergonzosa favorita a todo volumen.",
+          "🎭 Imita a un profesor del salón por 15 segundos y que los demás adivinen quién es.",
+          "📱 Deja que alguien del grupo escriba un estado en tu WhatsApp.",
+          "🤸 Intenta tocarte las puntas de los pies sin doblar las rodillas durante 15 segundos.",
+          "🤐 Mantente en silencio absoluto sin hablar ni emitir sonidos por las próximas 2 rondas.",
+          "👟 Cambia uno de tus zapatos con la persona de tu derecha durante 3 rondas.",
+          "🍕 Cuéntanos la historia de tu peor borrachera o momento de vergüenza total.",
+          "📲 Muestra tu lista de aplicaciones instaladas en el celular.",
+          "🙃 Haz 5 saltos mientras dices en voz alta '¡Soy el rey/la reina del salón E5!'",
+          "📢 Dile a la persona a tu izquierda un piropo completamente absurdo.",
+          "🎁 Ofrécela a alguien del grupo un objeto de tu mochila que tenga valor sentimental.",
+          "👃 Huela el zapato o la zapatilla de la persona a tu izquierda y pon cara de satisfacción.",
+          "🤪 Pon cara de loco/a y tómate una foto que el grupo conservará.",
+          "📤 Lee en voz alta la última notificación que te acaba de llegar al teléfono.",
+          "🧠 Di 5 nombres de compañeros del salón al revés en menos de 10 segundos."
+        ]
+      },
+      amistad: {
+        verdades: [
+          "🤝 ¿Quién del grupo sientes que es tu apoyo más leal en la universidad?",
+          "⭐ ¿Qué es lo que más admiras de la persona que está sentada a tu izquierda?",
+          "💛 ¿A quién del salón acudirías primero si tuvieras un problema grave?",
+          "🎉 ¿Cuál ha sido el momento más divertido que has compartido con la clase?",
+          "💬 ¿Qué compañero/a crees que da los mejores consejos?",
+          "🌟 ¿Qué cualidad te gustaría tener de la persona que tienes enfrente?",
+          "🎁 ¿A quién del grupo le comprarías un regalo sorpresa sin motivo especial?",
+          "🙌 ¿Quién consideras que es la persona más alegre y contagiosa del salón?",
+          "😊 ¿Cuál fue tu primera impresión de la persona a tu derecha y cómo cambió?",
+          "✨ ¿Qué compañero/a te ha salvado más veces con los trabajos o tareas?",
+          "🤗 ¿Con quién del salón te gustaría entablar una amistad mucho más cercana?",
+          "🍕 ¿A quién invitarías una comida o almuerzo hoy si tuvieras dinero ilimitado?",
+          "🎓 ¿Con quién del grupo harías equipo para todos los proyectos universitarios?",
+          "💬 ¿Qué valoras más en una amistad sincera dentro de la universidad?",
+          "🥳 ¿Quién del grupo organiza o animaría las mejores reuniones?",
+          "🏆 ¿Quién crees que es el/la más responsable del salón E5?",
+          "🚀 ¿Qué compañero/a te motiva más a seguir estudiando cuando estás cansado/a?",
+          "☀️ ¿Quién tiene la sonrisa o vibra más positiva del grupo?",
+          "🎶 ¿Qué canción te recuerda a las horas libres con el salón?",
+          "👏 Di tres cosas bonitas y sinceras sobre la persona a tu derecha."
+        ],
+        retos: [
+          "🫂 Dale un abrazo sincero a dos personas diferentes del salón.",
+          "💬 Dile tres cualidades positivas a la persona que tienes enfrente.",
+          "🤝 Dale la mano a la persona a tu izquierda y dile 'Gracias por estar en el salón'.",
+          "📸 Tómate una foto grupal sonriendo con las personas que tengas al lado.",
+          "🎁 Regálale un caramelo, galleta o detalle que tengas en tu mochila a alguien.",
+          "🎶 Canten juntos el coro de una canción entre todos los presentes.",
+          "👏 Organiza un aplauso cerrado de 5 segundos para todo el salón E5.",
+          "📱 Envíale un mensaje de agradecimiento a un amigo/a del salón.",
+          "😊 Pon tu mejor sonrisa y mantenla durante 30 segundos seguidos.",
+          "👑 Ponle una 'corona' imaginaria a la persona que consideres más trabajadora.",
+          "🙌 Haz un chocar de manos (high five) con todos los presentes en la ronda.",
+          "🍫 Compártele un snack o bebida a la persona que elijas.",
+          "🗣️ Cuéntanos un recuerdo bonito o divertido que tengas con el grupo.",
+          "💌 Escribe un pequeño cumplido en una hoja y dáselo a la persona a tu derecha.",
+          "💃 Haz un paso de baile en pareja con la persona a tu izquierda.",
+          "🤳 Hazte una selfie divertida tipo 'mejor amistad' con quien tengas al lado.",
+          "🌟 Hazle un cumplido sincero sobre su estilo o vestimenta a alguien.",
+          "🤗 Sostén la mano de tu compañero/a durante 15 segundos sin soltarla.",
+          "📢 Di en voz alta: '¡Me siento orgulloso/a de pertenecer al salón E5!'",
+          "🎉 Levanten las manos todos juntos y hagan una ola como en el estadio."
+        ]
+      },
+      pacifico: {
+        verdades: [
+          "🕊️ ¿Cuál es tu pasatiempo o hobby favorito para relajarte?",
+          "🍕 ¿Cuál es tu comida o platillo preferido de todos los tiempos?",
+          "🎬 ¿Cuál es tu película o serie animada favorita de la infancia?",
+          "🐶 ¿Tienes mascotas y cuál es su nombre o cómo es?",
+          "🎵 ¿Qué tipo de música escuchas cuando estudias o descansas?",
+          "✈️ ¿A qué país o ciudad del mundo te gustaría viajar algún día?",
+          "🎮 ¿Cuál es tu videojuego o juego de mesa preferido?",
+          "📚 ¿Cuál era tu materia o curso favorito cuando estabas en el colegio?",
+          "🍦 ¿De qué sabor te gusta pedir siempre los helados?",
+          "🌈 ¿Cuál es tu color preferido y qué significa para ti?",
+          "☕ ¿Prefieres tomar café, té o chocolate caliente por las mañanas?",
+          "🚗 ¿Prefieres viajar a la playa o a la montaña en vacaciones?",
+          "⚽ ¿Practicas algún deporte o sigues a algún equipo deportivo?",
+          "📱 ¿Cuál es la aplicación que más usas en tu teléfono?",
+          "🌙 ¿Eres una persona más madrugadora o más nocturna?",
+          "🎧 ¿Cuál fue el último concierto o evento al que asististe?",
+          "🎨 ¿Tienes algún talento oculto como dibujar, cantar o cocinar?",
+          "🏖️ ¿Cómo sería tu día de descanso ideal?",
+          "🍰 ¿Prefieres los postres dulces o las comidas saladas?",
+          "📖 ¿Cuál es tu libro, cómic o manga preferido si tienes uno?"
+        ],
+        retos: [
+          "🕊️ Respira profundo 3 veces y suelta un suspiro de relajación.",
+          "🥛 Bebe un sorbo de agua o refresco tranquilamente.",
+          "🧘 Haz una postura sencilla de yoga o estiramiento por 10 segundos.",
+          "🎵 Tararea una canción suave para que el grupo intente adivinarla.",
+          "🐱 Haz el sonido de un gatito o perrito de forma tierna.",
+          "✌️ Haz el signo de la paz con tus dedos y sonríe para la cámara.",
+          "📜 Dinos una frase motivacional o refrán positivo que recuerdes.",
+          "👏 Da tres aplausos suaves al ritmo de la música de fondo.",
+          "🎨 Dibuja una carita feliz en una hoja y muéstrala.",
+          "👍 Dale un 'pulgar arriba' a cada compañero de la mesa.",
+          "⌛ Quédate estático como estatua durante 10 segundos.",
+          "🍃 Haz el sonido del viento o de las olas del mar.",
+          "🥤 Invita un sorbo de tu agua o bebida a tu compañero/a si desea.",
+          "🎈 Simula que inflas un globo gigante y lo dejas volar.",
+          "👋 Saluda a la cámara con ambas manos amablemente.",
+          "🏽 Dobla una hojita de papel en forma de barquito o avión sencillo.",
+          "⏳ Cuenta tranquilamente del 10 al 1 en voz baja.",
+          "👟 Tócate las puntas de los dedos de las manos con los pies sentado.",
+          "🕊️ Cierra los ojos por 5 segundos y piensa en un lugar tranquilo.",
+          "😊 Regálale una sonrisa amable a cada persona del salón."
+        ]
+      }
+    };
 
-    const retos = [
-      "🎙️ Envía un audio coqueto a tu último contacto de WhatsApp.",
-      "👂 Susúrrale algo atrevido al oído a la persona a tu derecha.",
-      "🫂 Dale un abrazo de 10 segundos a la persona que elijas del salón.",
-      "📱 Muestra la última foto guardada en tu galería.",
-      "📸 Ponte de foto de perfil en WhatsApp una selfie elegida por el grupo por 30 mins.",
-      "💌 Dedícale una frase romántica a la persona que esté frente a ti.",
-      "🪑 Sienta a alguien en tu regazo durante las próximas 2 rondas."
-    ];
-
-    // Contador de visitas usando localStorage
     function initVisits() {
-      let visits = localStorage.getItem('e5_game_visits') || 0;
+      let visits = localStorage.getItem('mitsugames_e5_visits') || 0;
       visits++;
-      localStorage.setItem('e5_game_visits', visits);
+      localStorage.setItem('mitsugames_e5_visits', visits);
       document.getElementById('visitCount').innerText = visits;
     }
     initVisits();
@@ -259,7 +427,7 @@
     function addPlayer() {
       const input = document.getElementById('playerName');
       const name = input.value.trim();
-      if (name && !players.find(p => p.name === name)) {
+      if (name && !players.find(p => p.name.toLowerCase() === name.toLowerCase())) {
         players.push({ name: name, lives: 3, truthCount: 0 });
         input.value = '';
         renderPlayers();
@@ -285,14 +453,20 @@
       currentMode = mode;
       document.getElementById('botellaOptions').classList.add('hidden');
       document.getElementById('ruletaOptions').classList.add('hidden');
-      document.getElementById('actionTitle').innerText = mode === 'botella' ? '🍾 Modo Botella' : '🎯 Modo Ruleta';
+      document.getElementById('actionTitle').innerText = mode === 'botella' ? '🍾 Modo Botella Giratoria' : '🎯 Modo Ruleta Directa';
       document.getElementById('promptText').innerText = '';
       renderPlayers();
     }
 
+    function setCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`cat-${cat}`).classList.add('active');
+    }
+
     function spin() {
       if (players.length < 2) {
-        alert("⚠️ ¡Añade al menos 2 jugadores para empezar!");
+        alert("⚠️ ¡Añade al menos 2 jugadores para poder jugar!");
         return;
       }
       if (isSpinning) return;
@@ -302,87 +476,115 @@
       document.getElementById('ruletaOptions').classList.add('hidden');
       document.getElementById('promptText').innerText = '';
 
-      // Animación de nombres tipo Ruleta
-      let rouletteInterval = setInterval(() => {
-        const randomName = players[Math.floor(Math.random() * players.length)].name;
-        document.getElementById('actionTitle').innerText = `⚡ ${randomName} ⚡`;
-      }, 80);
-
-      // Animación de la botella
-      const extraSpins = 5 + Math.floor(Math.random() * 5);
-      const randomDegree = Math.floor(Math.random() * 360);
-      currentRotation += (extraSpins * 360) + randomDegree;
-
-      document.getElementById('bottleContainer').style.transform = `rotate(${currentRotation}deg)`;
-
-      setTimeout(() => {
-        clearInterval(rouletteInterval);
-        isSpinning = false;
-        processResult();
-      }, 3000);
-    }
-
-    function processResult() {
       if (currentMode === 'botella') {
-        let indexA = Math.floor(Math.random() * players.length);
-        let indexB;
-        do {
-          indexB = Math.floor(Math.random() * players.length);
-        } while (indexA === indexB);
+        let rouletteInterval = setInterval(() => {
+          const randA = players[Math.floor(Math.random() * players.length)].name;
+          let randB;
+          do {
+            randB = players[Math.floor(Math.random() * players.length)].name;
+          } while (randA === randB && players.length > 1);
 
-        activePlayer = players[indexA].name;
-        targetPlayer = players[indexB].name;
+          document.getElementById('actionTitle').innerHTML = `👉 ${randA} ➔ ${randB}`;
+        }, 70);
 
-        document.getElementById('actionTitle').innerText = `👉 ${activePlayer} ➔ ${targetPlayer}`;
-        document.getElementById('promptText').innerText = `¡${activePlayer}, decide qué hará ${targetPlayer}!`;
-        document.getElementById('botellaOptions').classList.remove('hidden');
+        const extraSpins = 5 + Math.floor(Math.random() * 5);
+        const randomDegree = Math.floor(Math.random() * 360);
+        currentRotation += (extraSpins * 360) + randomDegree;
+        document.getElementById('bottleContainer').style.transform = `rotate(${currentRotation}deg)`;
+
+        setTimeout(() => {
+          clearInterval(rouletteInterval);
+          isSpinning = false;
+          processBotellaResult();
+        }, 3500);
 
       } else {
-        const randomIndex = Math.floor(Math.random() * players.length);
-        activePlayer = players[randomIndex];
+        let rouletteInterval = setInterval(() => {
+          const rand = players[Math.floor(Math.random() * players.length)].name;
+          document.getElementById('actionTitle').innerText = `🎯 ${rand}`;
+        }, 70);
 
-        document.getElementById('actionTitle').innerText = `🎯 Turno de: ${activePlayer.name}`;
-        document.getElementById('promptText').innerText = `Llevas ${activePlayer.truthCount}/3 Verdades seguidas.`;
+        const extraSpins = 5 + Math.floor(Math.random() * 5);
+        const randomDegree = Math.floor(Math.random() * 360);
+        currentRotation += (extraSpins * 360) + randomDegree;
+        document.getElementById('bottleContainer').style.transform = `rotate(${currentRotation}deg)`;
 
-        const btnVerdad = document.getElementById('btnVerdad');
-        if (activePlayer.truthCount >= 3) {
-          btnVerdad.disabled = true;
-          btnVerdad.innerText = "❓ Verdad (Límite 3/3)";
-        } else {
-          btnVerdad.disabled = false;
-          btnVerdad.innerText = `❓ Verdad (${activePlayer.truthCount}/3)`;
-        }
-
-        document.getElementById('ruletaOptions').classList.remove('hidden');
+        setTimeout(() => {
+          clearInterval(rouletteInterval);
+          isSpinning = false;
+          processRuletaResult();
+        }, 3500);
       }
     }
 
-    // Opciones para Modo Botella
+    function processBotellaResult() {
+      let indexA = Math.floor(Math.random() * players.length);
+      let indexB;
+      do {
+        indexB = Math.floor(Math.random() * players.length);
+      } while (indexA === indexB);
+
+      activePlayer = players[indexA].name;
+      targetPlayer = players[indexB].name;
+
+      const titleEl = document.getElementById('actionTitle');
+      titleEl.innerHTML = `👉 <span style="color:#00ffff">${activePlayer}</span> ➔ <span style="color:#ff007f">${targetPlayer}</span>`;
+      titleEl.classList.add('winner-flash');
+      setTimeout(() => titleEl.classList.remove('winner-flash'), 1000);
+
+      document.getElementById('promptText').innerText = `¡${activePlayer}, decide qué reto o verdad cumplirá ${targetPlayer}!`;
+      document.getElementById('botellaOptions').classList.remove('hidden');
+    }
+
+    function processRuletaResult() {
+      const randomIndex = Math.floor(Math.random() * players.length);
+      activePlayer = players[randomIndex];
+
+      const titleEl = document.getElementById('actionTitle');
+      titleEl.innerHTML = `🎯 Turno de: <span style="color:#00ffff">${activePlayer.name}</span> (❤️ ${activePlayer.lives})`;
+      titleEl.classList.add('winner-flash');
+      setTimeout(() => titleEl.classList.remove('winner-flash'), 1000);
+
+      document.getElementById('promptText').innerText = `Llevas ${activePlayer.truthCount}/3 Verdades seguidas en modo ${currentCategory.toUpperCase()}.`;
+
+      const btnVerdad = document.getElementById('btnVerdad');
+      if (activePlayer.truthCount >= 3) {
+        btnVerdad.disabled = true;
+        btnVerdad.innerText = "❓ Verdad (Límite 3/3)";
+      } else {
+        btnVerdad.disabled = false;
+        btnVerdad.innerText = `❓ Verdad (${activePlayer.truthCount}/3)`;
+      }
+
+      document.getElementById('ruletaOptions').classList.remove('hidden');
+    }
+
     function getBottlePrompt(type) {
+      const catData = baseDatos[currentCategory];
       if (type === 'verdad') {
-        const randomQ = verdades[Math.floor(Math.random() * verdades.length)];
-        document.getElementById('promptText').innerText = `[VERDAD]: ${randomQ}`;
+        const randomQ = catData.verdades[Math.floor(Math.random() * catData.verdades.length)];
+        document.getElementById('promptText').innerText = `[VERDAD - ${currentCategory.toUpperCase()}]: ${randomQ}`;
       } else if (type === 'reto') {
-        const randomR = retos[Math.floor(Math.random() * retos.length)];
-        document.getElementById('promptText').innerText = `[RETO]: ${randomR}`;
+        const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
+        document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
       } else {
         document.getElementById('promptText').innerText = `💬 ¡${activePlayer} le inventa/pregunta libremente el reto o la verdad a ${targetPlayer}!`;
       }
       document.getElementById('botellaOptions').classList.add('hidden');
     }
 
-    // Opciones para Modo Ruleta
     function chooseType(type) {
       if (!activePlayer) return;
+      const catData = baseDatos[currentCategory];
 
       if (type === 'verdad') {
         activePlayer.truthCount++;
-        const randomQ = verdades[Math.floor(Math.random() * verdades.length)];
-        document.getElementById('promptText').innerText = `[VERDAD]: ${randomQ}`;
+        const randomQ = catData.verdades[Math.floor(Math.random() * catData.verdades.length)];
+        document.getElementById('promptText').innerText = `[VERDAD - ${currentCategory.toUpperCase()}]: ${randomQ}`;
       } else {
         activePlayer.truthCount = 0;
-        const randomR = retos[Math.floor(Math.random() * retos.length)];
-        document.getElementById('promptText').innerText = `[RETO]: ${randomR}`;
+        const randomR = catData.retos[Math.floor(Math.random() * catData.retos.length)];
+        document.getElementById('promptText').innerText = `[RETO - ${currentCategory.toUpperCase()}]: ${randomR}`;
       }
       
       document.getElementById('ruletaOptions').classList.add('hidden');
@@ -402,7 +604,7 @@
 
       document.getElementById('ruletaOptions').classList.add('hidden');
       document.getElementById('actionTitle').innerText = "💀 Turno Finalizado";
-      document.getElementById('promptText').innerText = "Giren la ruleta para la siguiente ronda.";
+      document.getElementById('promptText').innerText = "Giren la ruleta para continuar la siguiente ronda.";
       renderPlayers();
     }
   </script>
