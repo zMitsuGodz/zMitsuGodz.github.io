@@ -5,206 +5,359 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elecciones E5 - La Cantuta</title>
     <style>
-        /* Estilos Generales */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5; /* Un gris muy claro y moderno */
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
             color: #333;
             margin: 0;
             padding: 0;
         }
 
-        /* Cabecera / Banner */
+        /* Banner estilo noticiero */
         header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
+            background-color: #fff;
             text-align: center;
-            padding: 3rem 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px 10px;
+            border-bottom: 4px solid #e3000f; /* Rojo ONPE */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         header h1 {
             margin: 0;
-            font-size: 2.8rem;
-            letter-spacing: 1px;
+            color: #e3000f;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            font-weight: 900;
         }
-        header p {
+        header h2 {
+            margin: 5px 0 0;
+            font-size: 3rem;
+            color: #000;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+        header .subtitulo {
             font-size: 1.2rem;
-            opacity: 0.9;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #555;
         }
 
-        /* Contenedor Principal */
         .container {
-            max-width: 1100px;
-            margin: -2rem auto 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
             padding: 0 1rem;
-            position: relative;
         }
 
-        /* Secciones (Temporadas) */
-        section {
-            background: white;
-            border-radius: 12px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-        }
-        section h2 {
-            color: #1e3c72;
-            border-bottom: 3px solid #f0f2f5;
-            padding-bottom: 1rem;
-            margin-top: 0;
-        }
-
-        /* Cuadrícula de Tarjetas */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        /* Tarjetas de los Delegados */
-        .card {
-            background: #ffffff;
-            border: 1px solid #e1e4e8;
+        /* Contenedor del Gráfico de Barras */
+        .grafico-onpe {
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 40px 20px 20px;
+            background: #fff;
             border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            /* Para que funcione bien el scroll en celulares */
+            scroll-snap-type: x mandatory; 
+        }
+
+        /* Columna individual de cada candidato */
+        .candidato-col {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-        }
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-            border-color: #2a5298;
-        }
-        
-        .card h3 {
-            margin: 0.5rem 0;
-            color: #222;
-        }
-        .card .cargo {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            font-weight: bold;
+            align-items: center;
+            width: 130px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
         }
 
-        /* Tarjeta Especial para el Delegado de Chow */
-        .card.chow {
-            border: 2px solid #ff9800;
-            background: linear-gradient(to bottom, #fffdfa, #fff3e0);
-        }
-        .card.chow h3 {
-            color: #e65100;
-        }
-
-        /* Botones Interactivos */
-        .botones-accion {
+        /* La barra de porcentaje */
+        .barra {
+            width: 60px;
             display: flex;
             justify-content: center;
-            gap: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding-top: 10px;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
-        .btn {
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: background-color 0.2s, transform 0.1s;
+
+        /* Foto del candidato superpuesta en la barra */
+        .foto-candidato {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-top: -30px; /* Hace que la foto suba y monte la barra */
+            border: 4px solid white;
+            background-color: #ddd; /* Color de fondo si no hay foto */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        /* Logo en la parte inferior estilo partido político */
+        .logo-curso {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            margin-top: -15px;
+            background-color: white;
+            z-index: 3;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-align: center;
+            line-height: 1;
         }
-        .btn:active {
-            transform: scale(0.95);
-        }
-        .btn-piedra { background-color: #e0e0e0; color: #333; }
-        .btn-piedra:hover { background-color: #d5d5d5; }
-        
-        .btn-estrella { background-color: #fff9c4; color: #f57f17; }
-        .btn-estrella:hover { background-color: #fff59d; }
 
-        .btn-votar { background-color: #4CAF50; color: white; width: 100%; margin-top: 1rem;}
-        .btn-votar:hover { background-color: #45a049; }
+        /* Textos */
+        .nombre {
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.2;
+        }
+        .cargo {
+            font-size: 0.75rem;
+            text-align: center;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Botones de acción (Piedra y Estrella) */
+        .acciones {
+            display: flex;
+            gap: 5px;
+            margin-top: auto;
+        }
+        .btn-accion {
+            border: none;
+            background: #eee;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.1s;
+        }
+        .btn-accion:active {
+            transform: scale(0.9);
+        }
+        .btn-accion:hover {
+            background: #ddd;
+        }
+
+        /* Colores de las barras para cada cargo */
+        .bg-general { background-color: #ff3b30; height: 220px; }
+        .bg-sub { background-color: #4cd964; height: 180px; }
+        .bg-chow { background-color: #ff9500; height: 250px; }
+        .bg-curso1 { background-color: #007aff; height: 140px; }
+        .bg-curso2 { background-color: #5ac8fa; height: 130px; }
+        .bg-curso3 { background-color: #5856d6; height: 150px; }
+        .bg-curso4 { background-color: #ff2d55; height: 120px; }
+        
+        /* Título de sección */
+        h3.titulo-seccion {
+            text-align: center;
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Elecciones Generales Salón E5</h1>
-        <p>Temporada 4 vs Temporada 5. ¡Que empiece el juego!</p>
+        <div class="subtitulo">RESULTADOS AL 100%</div>
+        <h1>ELECCIONES GENERALES E5</h1>
+        <h2>TEMPORADA 4</h2>
     </header>
 
     <div class="container">
+        <h3 class="titulo-seccion">EL MURO DEL PUEBLO</h3>
+        <p style="text-align: center; color: #666;">Evalúa la gestión de los delegados salientes. Tira una piedra 🪨 o deja una estrella ⭐.</p>
         
-        <!-- ================= TEMPORADA 4 ================= -->
-        <section id="temporada-4">
-            <h2>El Muro del Pueblo (Temporada 4)</h2>
-            <p>Es hora del balance. Califica la gestión pasada con una estrella ⭐ o tira una piedra 🪨 si la situación lo amerita.</p>
-            
-            <div class="grid">
-                <!-- Tarjeta Valery -->
-                <div class="card">
-                    <h3>Valery "La Pulga"</h3>
-                    <div class="cargo">Delegada General</div>
-                    <div class="botones-accion">
-                        <button class="btn btn-piedra">🪨 Piedra</button>
-                        <button class="btn btn-estrella">⭐ Estrella</button>
-                    </div>
-                </div>
+        <!-- Gráfico estilo ONPE -->
+        <div class="grafico-onpe">
 
-                <!-- Tarjeta André -->
-                <div class="card">
-                    <h3>André Chocce</h3>
-                    <div class="cargo">Subdelegado</div>
-                    <div class="botones-accion">
-                        <button class="btn btn-piedra">🪨 Piedra</button>
-                        <button class="btn btn-estrella">⭐ Estrella</button>
-                    </div>
-                </div>
-
-                <!-- Tarjeta Alexander (CHOW) -->
-                <div class="card chow">
-                    <h3>Alexander</h3>
-                    <div class="cargo">Delegado de Chow 🤡</div>
-                    <div class="botones-accion">
-                        <button class="btn btn-piedra">🪨 Piedra</button>
-                        <button class="btn btn-estrella">⭐ Estrella</button>
-                    </div>
-                </div>
-                
-                <!-- Tarjeta Ejemplo Curso -->
-                <div class="card">
-                    <h3>Jordan Percy</h3>
-                    <div class="cargo">Matemáticas Básicas 2</div>
-                    <div class="botones-accion">
-                        <button class="btn btn-piedra">🪨 Piedra</button>
-                        <button class="btn btn-estrella">⭐ Estrella</button>
-                    </div>
+            <!-- 1. Delegada General -->
+            <div class="candidato-col">
+                <div class="barra bg-general">100%</div>
+                <!-- Cambia 'foto_valery.jpg' por el enlace o archivo de su foto -->
+                <img src="foto_valery.jpg" alt="Valery" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">DG</div>
+                <div class="nombre">Valery Suarez (La Pulga)</div>
+                <div class="cargo">Delegada General</div>
+                <div class="acciones">
+                    <button class="btn-accion" title="Tirar Piedra">🪨</button>
+                    <button class="btn-accion" title="Dar Estrella">⭐</button>
                 </div>
             </div>
-        </section>
 
-        <!-- ================= TEMPORADA 5 ================= -->
-        <section id="temporada-5">
-            <h2>Nuevos Candidatos (Temporada 5)</h2>
-            <p>Las urnas están abiertas. Revisa las propuestas y elige a tus nuevos representantes de la Facultad de Tecnología.</p>
-            
-            <div class="grid">
-                <!-- Tarjeta Candidato Nuevo -->
-                <div class="card">
-                    <h3>ALEXANDER CACHUDO</h3>
-                    <div class="cargo">Candidato a Delegado General</div>
-                    <button class="btn btn-votar">🗳️ Votar</button>
+            <!-- 2. Subdelegado -->
+            <div class="candidato-col">
+                <div class="barra bg-sub">85%</div>
+                <img src="foto_andre.jpg" alt="André" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">SUB</div>
+                <div class="nombre">André Chocce</div>
+                <div class="cargo">Subdelegado</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
                 </div>
             </div>
-        </section>
+
+            <!-- 3. Delegado de Chow -->
+            <div class="candidato-col">
+                <div class="barra bg-chow">99%</div>
+                <img src="foto_alexander.jpg" alt="Alexander" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">🤡</div>
+                <div class="nombre">Alexander Huamaccto</div>
+                <div class="cargo">Delegado de Chow</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 4. Matemática Básica 2 -->
+            <div class="candidato-col">
+                <div class="barra bg-curso1">70%</div>
+                <img src="foto_jordan.jpg" alt="Jordan" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">MB2</div>
+                <div class="nombre">Jordan Percy</div>
+                <div class="cargo">Mat. Básicas 2</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 5. Ecología -->
+            <div class="candidato-col">
+                <div class="barra bg-curso2">65%</div>
+                <img src="foto_dan.jpg" alt="Dan" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">ECO</div>
+                <div class="nombre">Dan Barzola</div>
+                <div class="cargo">Ecología</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 6. Filosofía -->
+            <div class="candidato-col">
+                <div class="barra bg-curso3">75%</div>
+                <img src="foto_noemi.jpg" alt="Noemi" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">FIL</div>
+                <div class="nombre">Noemi De La Cruz</div>
+                <div class="cargo">Filosofía</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 7. Ed. Artística -->
+            <div class="candidato-col">
+                <div class="barra bg-curso4">80%</div>
+                <img src="foto_fernando.jpg" alt="Fernando" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">ART</div>
+                <div class="nombre">Fernando Juica</div>
+                <div class="cargo">Ed. Artística</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 8. Comunicación -->
+            <div class="candidato-col">
+                <div class="barra bg-curso1">82%</div>
+                <img src="foto_marvin.jpg" alt="Marvin" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">COM</div>
+                <div class="nombre">Marvin Ricse</div>
+                <div class="cargo">Comunicación</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 9. Cálculo Grupo B -->
+            <div class="candidato-col">
+                <div class="barra bg-curso2">60%</div>
+                <img src="foto_ramiro.jpg" alt="Ramiro" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">CAB</div>
+                <div class="nombre">Ramiro Perez</div>
+                <div class="cargo">Cálculo Gr. B</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 10. Cálculo Grupo A -->
+            <div class="candidato-col">
+                <div class="barra bg-curso3">68%</div>
+                <img src="foto_jhon.jpg" alt="Jhon" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">CAA</div>
+                <div class="nombre">Jhon Chagua</div>
+                <div class="cargo">Cálculo Gr. A</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 11. Geografía -->
+            <div class="candidato-col">
+                <div class="barra bg-curso4">72%</div>
+                <img src="foto_grecia.jpg" alt="Grecia" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">GEO</div>
+                <div class="nombre">Grecia Ochoa</div>
+                <div class="cargo">Geografía</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 12. Inglés -->
+            <div class="candidato-col">
+                <div class="barra bg-curso1">88%</div>
+                <img src="foto_beatriz.jpg" alt="Beatriz" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">ING</div>
+                <div class="nombre">Beatriz Banzer</div>
+                <div class="cargo">Inglés</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+            <!-- 13. Alimentaria -->
+            <div class="candidato-col">
+                <div class="barra bg-curso2">77%</div>
+                <img src="foto_cesar.jpg" alt="Cesar" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
+                <div class="logo-curso">ALI</div>
+                <div class="nombre">Cesar Coa</div>
+                <div class="cargo">Alimentaria</div>
+                <div class="acciones">
+                    <button class="btn-accion">🪨</button>
+                    <button class="btn-accion">⭐</button>
+                </div>
+            </div>
+
+        </div> <!-- Fin gráfico ONPE -->
 
     </div>
 
