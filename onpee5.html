@@ -63,8 +63,8 @@
             justify-content: center;
             align-items: flex-end;
             gap: 20px;
-            margin: 40px 0 60px 0;
-            height: 350px; /* Altura para que las barras quepan */
+            margin: 60px 0;
+            height: 350px; 
         }
 
         .candidato-podio {
@@ -73,6 +73,7 @@
             align-items: center;
             width: 160px;
             text-align: center;
+            position: relative;
         }
 
         .barra-podio {
@@ -87,35 +88,50 @@
             box-shadow: 0 -4px 10px rgba(0,0,0,0.15);
             padding-top: 15px;
             position: relative;
+            transition: all 0.3s ease;
         }
 
-        /* Alturas y colores del podio */
-        .puesto-2 { height: 180px; background-color: #4cd964; } /* Subdelegado */
-        .puesto-1 { height: 260px; background-color: #ff3b30; z-index: 2; } /* General */
-        .puesto-3 { height: 150px; background-color: #ff9500; } /* Chow */
+        .porcentaje {
+            font-size: 1.5rem;
+            margin-top: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
 
-        .foto-podio {
+        .texto-aprobacion {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        /* Alturas y colores dinámicos basados en aprobación */
+        .puesto-2 { height: 180px; background-color: #4cd964; } 
+        .puesto-1 { height: 260px; background-color: #ff3b30; z-index: 2; } 
+        .puesto-3 { height: 150px; background-color: #ff9500; } 
+
+        .foto-candidato {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 50%;
             border: 5px solid white;
             background-color: #ddd;
-            margin-top: -60px; /* Sube la foto sobre la barra */
+            margin-top: -60px; 
             box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 5;
         }
 
-        .nombre-podio { font-size: 1.1rem; font-weight: bold; margin-top: 10px; color: #333; }
+        .nombre-podio { font-size: 1.1rem; font-weight: bold; margin-top: 15px; color: #333; }
         .cargo-podio { font-size: 0.85rem; color: #666; margin-bottom: 10px;}
-        .puesto-numero { font-size: 3rem; opacity: 0.3; margin-top: auto; padding-bottom: 10px; }
+        .puesto-numero { font-size: 3rem; opacity: 0.2; margin-top: auto; padding-bottom: 10px; }
 
-        /* ================= PARLAMENTO ANDINO (CARRUSEL) ================= */
+        /* ================= DELEGADOS DE CURSOS (CARRUSEL) ================= */
         .parlamento-section {
             background: #fff;
             padding: 30px 0;
             border-top: 4px solid #333;
             border-bottom: 4px solid #333;
-            overflow: hidden; /* Oculta lo que se sale de la pantalla */
+            overflow: hidden; 
             position: relative;
         }
         
@@ -133,11 +149,9 @@
             display: flex;
             gap: 30px;
             width: max-content;
-            /* La animación hace que se mueva a la izquierda infinitamente */
             animation: scroll-parlamento 25s linear infinite;
         }
 
-        /* Pausar el carrusel al pasar el mouse */
         .carrusel-track:hover {
             animation-play-state: paused;
         }
@@ -146,21 +160,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 120px;
+            width: 130px;
             background: #f9f9f9;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border: 1px solid #eee;
+            position: relative;
         }
 
-        .foto-parlamento {
+        .foto-curso {
             width: 70px;
             height: 70px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid #007aff;
             margin-bottom: 10px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .aprobacion-curso {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #007aff;
+            margin-bottom: 5px;
         }
 
         .nombre-parlamento { font-size: 0.85rem; font-weight: bold; text-align: center; }
@@ -169,13 +193,57 @@
         @keyframes scroll-parlamento {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); } 
-            /* Se mueve el 50% porque duplicaremos la lista de delegados para que el bucle sea perfecto */
         }
 
-        /* Botones de piedra y estrella (generales) */
-        .acciones { display: flex; gap: 5px; margin-top: 10px; }
-        .btn-accion { border: none; background: #eee; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
+        /* ================= BOTONES Y ANIMACIONES ================= */
+        .acciones { display: flex; gap: 5px; margin-top: 10px; z-index: 10;}
+        .btn-accion { 
+            border: none; 
+            background: #eee; 
+            padding: 8px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 1.2rem;
+            transition: transform 0.1s;
+        }
+        .btn-accion:active { transform: scale(0.8); }
         .btn-accion:hover { background: #ddd; }
+        
+        .btn-piedra { background: #e0e0e0; }
+        .btn-estrella { background: #fff9c4; }
+
+        /* Clases generadas por JS para animar */
+        .particula {
+            position: fixed;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease-out;
+        }
+
+        /* Animación de temblor al recibir impacto */
+        @keyframes temblor {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-5px) rotate(-5deg); }
+            40% { transform: translateX(5px) rotate(5deg); }
+            60% { transform: translateX(-5px) rotate(-5deg); }
+            80% { transform: translateX(5px) rotate(5deg); }
+            100% { transform: translateX(0); }
+        }
+        .shake {
+            animation: temblor 0.4s ease-in-out;
+            border-color: #ff3b30 !important;
+        }
+
+        /* Animación de brillo al recibir estrella */
+        @keyframes brillo {
+            0% { filter: drop-shadow(0 0 0px #ffd700); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 15px #ffd700); transform: scale(1.1); border-color: #ffd700 !important; }
+            100% { filter: drop-shadow(0 0 0px #ffd700); transform: scale(1); }
+        }
+        .glow {
+            animation: brillo 0.6s ease-in-out;
+        }
 
     </style>
 </head>
@@ -192,111 +260,223 @@
     <div class="container">
         
         <!-- ================= PODIO DE GANADORES ================= -->
-        <h2 style="text-align: center; color: #333; margin-bottom: 50px;">LOS REYES DE LA TEMPORADA 4</h2>
+        <h2 style="text-align: center; color: #333; margin-bottom: 20px;">LOS REYES DE LA TEMPORADA 4</h2>
         
         <div class="podio-container">
             <!-- 2do Lugar (Izquierda) - Subdelegado -->
             <div class="candidato-podio">
                 <div class="barra-podio puesto-2">
-                    <img src="foto_andre.jpg" alt="André" class="foto-podio" onerror="this.src='https://via.placeholder.com/100'">
+                    <!-- Foto apuntando a la carpeta FOTOS en tu GitHub -->
+                    <img src="FOTOS/COA.jpg" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'">
+                    <span class="texto-aprobacion">Aprobación</span>
+                    <span class="porcentaje">85%</span>
                     <span class="puesto-numero">2</span>
                 </div>
                 <div class="nombre-podio">André Chocce</div>
                 <div class="cargo-podio">Subdelegado</div>
                 <div class="acciones">
-                    <button class="btn-accion">🪨</button> <button class="btn-accion">⭐</button>
+                    <button class="btn-accion btn-piedra">🪨</button> 
+                    <button class="btn-accion btn-estrella">⭐</button>
                 </div>
             </div>
 
             <!-- 1er Lugar (Centro) - Delegada General -->
             <div class="candidato-podio">
                 <div class="barra-podio puesto-1">
-                    <img src="foto_valery.jpg" alt="Valery" class="foto-podio" onerror="this.src='https://via.placeholder.com/100'">
+                    <img src="FOTOS/COA.jpg" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'">
+                    <span class="texto-aprobacion">Aprobación</span>
+                    <span class="porcentaje">98%</span>
                     <span class="puesto-numero">1</span>
                 </div>
                 <div class="nombre-podio">Valery Suarez</div>
                 <div class="cargo-podio">Delegada General</div>
                 <div class="acciones">
-                    <button class="btn-accion">🪨</button> <button class="btn-accion">⭐</button>
+                    <button class="btn-accion btn-piedra">🪨</button> 
+                    <button class="btn-accion btn-estrella">⭐</button>
                 </div>
             </div>
 
             <!-- 3er Lugar (Derecha) - Delegado de Chow -->
             <div class="candidato-podio">
                 <div class="barra-podio puesto-3">
-                    <img src="foto_alexander.jpg" alt="Alexander" class="foto-podio" onerror="this.src='https://via.placeholder.com/100'">
+                    <img src="FOTOS/COA.jpg" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'">
+                    <span class="texto-aprobacion">Aprobación</span>
+                    <span class="porcentaje">99%</span>
                     <span class="puesto-numero">🤡</span>
                 </div>
                 <div class="nombre-podio">Alexander H.</div>
                 <div class="cargo-podio">Delegado de Chow</div>
                 <div class="acciones">
-                    <button class="btn-accion">🪨</button> <button class="btn-accion">⭐</button>
+                    <button class="btn-accion btn-piedra">🪨</button> 
+                    <button class="btn-accion btn-estrella">⭐</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ================= PARLAMENTO ANDINO (Cursos) ================= -->
+    <!-- ================= DELEGADOS DE CURSOS (CARRUSEL) ================= -->
     <section class="parlamento-section">
-        <h3 class="parlamento-titulo">Representantes del Parlamento E5</h3>
+        <h3 class="parlamento-titulo">DELEGADOS DE CURSOS</h3>
         
-        <!-- Track del carrusel -->
         <div class="carrusel-track">
             
-            <!-- LISTA DE DELEGADOS (Se repite 2 veces para el efecto infinito) -->
             <!-- GRUPO 1 -->
-            <div class="parlamentario"><img src="f1.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jordan Percy</div><div class="curso-parlamento">Mat. Básicas 2</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f2.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Dan Barzola</div><div class="curso-parlamento">Ecología</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f3.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Noemi</div><div class="curso-parlamento">Filosofía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f4.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Fernando J.</div><div class="curso-parlamento">Ed. Artística</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f5.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Marvin Ricse</div><div class="curso-parlamento">Comunicación</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f6.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Ramiro Perez</div><div class="curso-parlamento">Cálculo B</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f7.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jhon Chagua</div><div class="curso-parlamento">Cálculo A</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f8.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Grecia Ochoa</div><div class="curso-parlamento">Geografía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f9.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Beatriz Banzer</div><div class="curso-parlamento">Inglés</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f10.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Cesar Coa</div><div class="curso-parlamento">Alimentaria</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">70%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Jordan Percy</div><div class="curso-parlamento">Mat. Básicas 2</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">82%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Dan Barzola</div><div class="curso-parlamento">Ecología</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">65%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Noemi</div><div class="curso-parlamento">Filosofía</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">78%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Fernando J.</div><div class="curso-parlamento">Ed. Artística</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">91%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Marvin Ricse</div><div class="curso-parlamento">Comunicación</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">55%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Ramiro Perez</div><div class="curso-parlamento">Cálculo B</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">68%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Jhon Chagua</div><div class="curso-parlamento">Cálculo A</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">88%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Grecia Ochoa</div><div class="curso-parlamento">Geografía</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">95%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Beatriz Banzer</div><div class="curso-parlamento">Inglés</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
+            <div class="parlamentario">
+                <div class="aprobacion-curso">85%</div>
+                <img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'">
+                <div class="nombre-parlamento">Cesar Coa</div><div class="curso-parlamento">Alimentaria</div>
+                <div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div>
+            </div>
             
-            <!-- GRUPO 2 (Es una copia exacta del Grupo 1 para que el bucle no se corte de golpe) -->
-            <div class="parlamentario"><img src="f1.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jordan Percy</div><div class="curso-parlamento">Mat. Básicas 2</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f2.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Dan Barzola</div><div class="curso-parlamento">Ecología</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f3.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Noemi</div><div class="curso-parlamento">Filosofía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f4.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Fernando J.</div><div class="curso-parlamento">Ed. Artística</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f5.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Marvin Ricse</div><div class="curso-parlamento">Comunicación</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f6.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Ramiro Perez</div><div class="curso-parlamento">Cálculo B</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f7.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jhon Chagua</div><div class="curso-parlamento">Cálculo A</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f8.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Grecia Ochoa</div><div class="curso-parlamento">Geografía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f9.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Beatriz Banzer</div><div class="curso-parlamento">Inglés</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
-            <div class="parlamentario"><img src="f10.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Cesar Coa</div><div class="curso-parlamento">Alimentaria</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <!-- GRUPO 2 (Duplicado para el bucle infinito) -->
+            <div class="parlamentario"><div class="aprobacion-curso">70%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jordan Percy</div><div class="curso-parlamento">Mat. Básicas 2</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">82%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Dan Barzola</div><div class="curso-parlamento">Ecología</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">65%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Noemi</div><div class="curso-parlamento">Filosofía</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">78%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Fernando J.</div><div class="curso-parlamento">Ed. Artística</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">91%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Marvin Ricse</div><div class="curso-parlamento">Comunicación</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">55%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Ramiro Perez</div><div class="curso-parlamento">Cálculo B</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">68%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jhon Chagua</div><div class="curso-parlamento">Cálculo A</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">88%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Grecia Ochoa</div><div class="curso-parlamento">Geografía</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">95%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Beatriz Banzer</div><div class="curso-parlamento">Inglés</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
+            <div class="parlamentario"><div class="aprobacion-curso">85%</div><img src="FOTOS/COA.jpg" class="foto-curso" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Cesar Coa</div><div class="curso-parlamento">Alimentaria</div><div class="acciones"><button class="btn-accion btn-piedra">🪨</button><button class="btn-accion btn-estrella">⭐</button></div></div>
             
         </div>
     </section>
 
-    <!-- SCRIPT DE LA CUENTA REGRESIVA -->
+    <!-- SCRIPT DE LA CUENTA REGRESIVA Y ANIMACIONES -->
     <script>
-        // Fecha objetivo: 7 de Septiembre de 2026, a las 08:00:00. 
-        // Si quieres cambiar el mes o el día, modifícalo justo en la línea de abajo:
+        // --- 1. RELOJ ---
         const fechaObjetivo = new Date("Sep 7, 2026 08:00:00").getTime();
 
         const x = setInterval(function() {
             const ahora = new Date().getTime();
             const distancia = fechaObjetivo - ahora;
 
-            // Cálculos para días, horas, minutos y segundos
             const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
             const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
             const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
 
-            // Mostrar el resultado en el elemento con id="reloj"
             document.getElementById("reloj").innerHTML = 
                 dias + "d " + horas + "h " + minutos + "m " + segundos + "s ";
 
-            // Si la cuenta regresiva termina
             if (distancia < 0) {
                 clearInterval(x);
                 document.getElementById("reloj").innerHTML = "¡LAS URNAS ESTÁN ABIERTAS!";
             }
         }, 1000);
+
+        // --- 2. ANIMACIONES DE PIEDRAS Y ESTRELLAS ---
+        function crearAnimacion(boton, emoji, animacionDestino) {
+            // Encontrar la foto más cercana al botón clickeado
+            const contenedor = boton.closest('.candidato-podio, .parlamentario');
+            const foto = contenedor.querySelector('img');
+            
+            // Crear el elemento visual (piedra o estrella)
+            const particula = document.createElement('div');
+            particula.innerText = emoji;
+            particula.className = 'particula';
+            document.body.appendChild(particula);
+
+            // Obtener coordenadas de inicio (botón) y fin (foto)
+            const rectBtn = boton.getBoundingClientRect();
+            const rectFoto = foto.getBoundingClientRect();
+
+            // Posicionar la partícula en el botón
+            particula.style.left = (rectBtn.left + rectBtn.width / 2 - 12) + 'px';
+            particula.style.top = (rectBtn.top) + 'px';
+
+            // Calcular cuánto debe moverse hacia la foto
+            const moverX = (rectFoto.left + rectFoto.width / 2) - (rectBtn.left + rectBtn.width / 2);
+            const moverY = (rectFoto.top + rectFoto.height / 2) - rectBtn.top;
+
+            // Disparar la animación
+            setTimeout(() => {
+                // Si es piedra, gira; si es estrella, sube de frente
+                const giro = emoji === '🪨' ? 'rotate(360deg)' : 'scale(1.5)';
+                particula.style.transform = `translate(${moverX}px, ${moverY}px) ${giro}`;
+                particula.style.opacity = '0';
+            }, 10);
+
+            // Efecto al impactar la foto
+            setTimeout(() => {
+                foto.classList.add(animacionDestino);
+                setTimeout(() => {
+                    foto.classList.remove(animacionDestino);
+                }, 600); // Quita la clase después de que termine la animación CSS
+                
+                // Limpiar el HTML borrando el emoji
+                particula.remove();
+            }, 500); // Tiempo que tarda en volar
+        }
+
+        // Asignar eventos a todos los botones de Piedra
+        document.querySelectorAll('.btn-piedra').forEach(btn => {
+            btn.addEventListener('click', function() {
+                crearAnimacion(this, '🪨', 'shake');
+            });
+        });
+
+        // Asignar eventos a todos los botones de Estrella
+        document.querySelectorAll('.btn-estrella').forEach(btn => {
+            btn.addEventListener('click', function() {
+                crearAnimacion(this, '⭐', 'glow');
+            });
+        });
     </script>
 </body>
 </html>
