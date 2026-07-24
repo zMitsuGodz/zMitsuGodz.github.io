@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elecciones E5 - La Cantuta</title>
+</head>
+<body>
+
+    <!-- Título Principal -->
+    <header>
+        <h1>Elecciones Generales Salón E5</h1>
+        <p>Bienvenidos a las elecciones oficiales. ¡Elige sabiamente!</p>
+    </header>
+
+    <!-- Sección de la Temporada 4 (El Pasado) -->
+    <section id="temporada-4">
+        <h2>El Muro del Pueblo (Temporada 4)</h2>
+        <p>Aquí pondremos a Valery, André, Alexander (Chow) y los demás delegados de los cursos para tirarles piedras 🪨 o darles estrellas ⭐.</p>
+    </section>
+
+    <hr>
+
+    <!-- Sección de la Temporada 5 (El Futuro) -->
+    <section id="temporada-5">
+        <h2>Nuevos Candidatos (Temporada 5)</h2>
+        <p>Aquí pondremos las tarjetas para votar por los nuevos postulantes.</p>
+    </section>
+
+</body>
+</html>
