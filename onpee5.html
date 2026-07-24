@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elecciones E5 - La Cantuta</title>
+    <title>ONPEE5 - La Cantuta</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -11,35 +11,44 @@
             color: #333;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
 
-        /* Banner estilo noticiero */
+        /* Banner estilo ONPE */
         header {
             background-color: #fff;
             text-align: center;
             padding: 20px 10px;
-            border-bottom: 4px solid #e3000f; /* Rojo ONPE */
+            border-bottom: 4px solid #e3000f;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         header h1 {
             margin: 0;
             color: #e3000f;
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            font-weight: 900;
-        }
-        header h2 {
-            margin: 5px 0 0;
             font-size: 3rem;
-            color: #000;
-            letter-spacing: 2px;
             font-weight: 900;
         }
-        header .subtitulo {
-            font-size: 1.2rem;
+        
+        /* Cuenta Regresiva */
+        .contador-caja {
+            background: #222;
+            color: white;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.5rem;
             font-weight: bold;
-            margin-top: 10px;
-            color: #555;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .contador-etiqueta {
+            display: block;
+            font-family: Arial, sans-serif;
+            font-size: 0.8rem;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 5px;
         }
 
         .container {
@@ -48,318 +57,246 @@
             padding: 0 1rem;
         }
 
-        /* Contenedor del Gráfico de Barras */
-        .grafico-onpe {
+        /* ================= PODIO PRINCIPAL ================= */
+        .podio-container {
             display: flex;
+            justify-content: center;
             align-items: flex-end;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 40px 20px 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-            /* Para que funcione bien el scroll en celulares */
-            scroll-snap-type: x mandatory; 
+            gap: 20px;
+            margin: 40px 0 60px 0;
+            height: 350px; /* Altura para que las barras quepan */
         }
 
-        /* Columna individual de cada candidato */
-        .candidato-col {
+        .candidato-podio {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 130px;
-            flex-shrink: 0;
-            scroll-snap-align: center;
+            width: 160px;
+            text-align: center;
         }
 
-        /* La barra de porcentaje */
-        .barra {
-            width: 60px;
+        .barra-podio {
+            width: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
             color: white;
             font-weight: bold;
-            font-size: 1.2rem;
-            padding-top: 10px;
-            border-radius: 5px 5px 0 0;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.15);
+            padding-top: 15px;
+            position: relative;
         }
 
-        /* Foto del candidato superpuesta en la barra */
-        .foto-candidato {
-            width: 90px;
-            height: 90px;
+        /* Alturas y colores del podio */
+        .puesto-2 { height: 180px; background-color: #4cd964; } /* Subdelegado */
+        .puesto-1 { height: 260px; background-color: #ff3b30; z-index: 2; } /* General */
+        .puesto-3 { height: 150px; background-color: #ff9500; } /* Chow */
+
+        .foto-podio {
+            width: 100px;
+            height: 100px;
             object-fit: cover;
             border-radius: 50%;
-            margin-top: -30px; /* Hace que la foto suba y monte la barra */
-            border: 4px solid white;
-            background-color: #ddd; /* Color de fondo si no hay foto */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            z-index: 2;
+            border: 5px solid white;
+            background-color: #ddd;
+            margin-top: -60px; /* Sube la foto sobre la barra */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
 
-        /* Logo en la parte inferior estilo partido político */
-        .logo-curso {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid #333;
-            margin-top: -15px;
-            background-color: white;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-            text-align: center;
-            line-height: 1;
-        }
+        .nombre-podio { font-size: 1.1rem; font-weight: bold; margin-top: 10px; color: #333; }
+        .cargo-podio { font-size: 0.85rem; color: #666; margin-bottom: 10px;}
+        .puesto-numero { font-size: 3rem; opacity: 0.3; margin-top: auto; padding-bottom: 10px; }
 
-        /* Textos */
-        .nombre {
-            font-size: 0.95rem;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 10px;
-            line-height: 1.2;
+        /* ================= PARLAMENTO ANDINO (CARRUSEL) ================= */
+        .parlamento-section {
+            background: #fff;
+            padding: 30px 0;
+            border-top: 4px solid #333;
+            border-bottom: 4px solid #333;
+            overflow: hidden; /* Oculta lo que se sale de la pantalla */
+            position: relative;
         }
-        .cargo {
-            font-size: 0.75rem;
-            text-align: center;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        /* Botones de acción (Piedra y Estrella) */
-        .acciones {
-            display: flex;
-            gap: 5px;
-            margin-top: auto;
-        }
-        .btn-accion {
-            border: none;
-            background: #eee;
-            padding: 5px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.1s;
-        }
-        .btn-accion:active {
-            transform: scale(0.9);
-        }
-        .btn-accion:hover {
-            background: #ddd;
-        }
-
-        /* Colores de las barras para cada cargo */
-        .bg-general { background-color: #ff3b30; height: 220px; }
-        .bg-sub { background-color: #4cd964; height: 180px; }
-        .bg-chow { background-color: #ff9500; height: 250px; }
-        .bg-curso1 { background-color: #007aff; height: 140px; }
-        .bg-curso2 { background-color: #5ac8fa; height: 130px; }
-        .bg-curso3 { background-color: #5856d6; height: 150px; }
-        .bg-curso4 { background-color: #ff2d55; height: 120px; }
         
-        /* Título de sección */
-        h3.titulo-seccion {
+        .parlamento-titulo {
             text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
             color: #333;
-            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .carrusel-track {
+            display: flex;
+            gap: 30px;
+            width: max-content;
+            /* La animación hace que se mueva a la izquierda infinitamente */
+            animation: scroll-parlamento 25s linear infinite;
+        }
+
+        /* Pausar el carrusel al pasar el mouse */
+        .carrusel-track:hover {
+            animation-play-state: paused;
+        }
+
+        .parlamentario {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 120px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .foto-parlamento {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007aff;
             margin-bottom: 10px;
         }
+
+        .nombre-parlamento { font-size: 0.85rem; font-weight: bold; text-align: center; }
+        .curso-parlamento { font-size: 0.7rem; color: #666; text-align: center; margin-top: 5px; }
+
+        @keyframes scroll-parlamento {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+            /* Se mueve el 50% porque duplicaremos la lista de delegados para que el bucle sea perfecto */
+        }
+
+        /* Botones de piedra y estrella (generales) */
+        .acciones { display: flex; gap: 5px; margin-top: 10px; }
+        .btn-accion { border: none; background: #eee; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
+        .btn-accion:hover { background: #ddd; }
 
     </style>
 </head>
 <body>
 
     <header>
-        <div class="subtitulo">RESULTADOS AL 100%</div>
-        <h1>ELECCIONES GENERALES E5</h1>
-        <h2>TEMPORADA 4</h2>
+        <h1>ONPEE5</h1>
+        <div class="contador-caja">
+            <span class="contador-etiqueta">Elecciones Temporada 5 en:</span>
+            <span id="reloj">Cargando tiempo...</span>
+        </div>
     </header>
 
     <div class="container">
-        <h3 class="titulo-seccion">EL MURO DEL PUEBLO</h3>
-        <p style="text-align: center; color: #666;">Evalúa la gestión de los delegados salientes. Tira una piedra 🪨 o deja una estrella ⭐.</p>
         
-        <!-- Gráfico estilo ONPE -->
-        <div class="grafico-onpe">
-
-            <!-- 1. Delegada General -->
-            <div class="candidato-col">
-                <div class="barra bg-general">100%</div>
-                <!-- Cambia 'foto_valery.jpg' por el enlace o archivo de su foto -->
-                <img src="foto_valery.jpg" alt="Valery" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">DG</div>
-                <div class="nombre">Valery Suarez (La Pulga)</div>
-                <div class="cargo">Delegada General</div>
+        <!-- ================= PODIO DE GANADORES ================= -->
+        <h2 style="text-align: center; color: #333; margin-bottom: 50px;">LOS REYES DE LA TEMPORADA 4</h2>
+        
+        <div class="podio-container">
+            <!-- 2do Lugar (Izquierda) - Subdelegado -->
+            <div class="candidato-podio">
+                <div class="barra-podio puesto-2">
+                    <img src="foto_andre.jpg" alt="André" class="foto-podio" onerror="this.src='https://via.placeholder.com/100'">
+                    <span class="puesto-numero">2</span>
+                </div>
+                <div class="nombre-podio">André Chocce</div>
+                <div class="cargo-podio">Subdelegado</div>
                 <div class="acciones">
-                    <button class="btn-accion" title="Tirar Piedra">🪨</button>
-                    <button class="btn-accion" title="Dar Estrella">⭐</button>
+                    <button class="btn-accion">🪨</button> <button class="btn-accion">⭐</button>
                 </div>
             </div>
 
-            <!-- 2. Subdelegado -->
-            <div class="candidato-col">
-                <div class="barra bg-sub">85%</div>
-                <img src="foto_andre.jpg" alt="André" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">SUB</div>
-                <div class="nombre">André Chocce</div>
-                <div class="cargo">Subdelegado</div>
+            <!-- 1er Lugar (Centro) - Delegada General -->
+            <div class="candidato-podio">
+                <div class="barra-podio puesto-1">
+                    <img src="foto_valery.jpg" alt="Valery" class="foto-podio" onerror="this.src='https://via.placeholder.com/100'">
+                    <span class="puesto-numero">1</span>
+                </div>
+                <div class="nombre-podio">Valery Suarez</div>
+                <div class="cargo-podio">Delegada General</div>
                 <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
+                    <button class="btn-accion">🪨</button> <button class="btn-accion">⭐</button>
                 </div>
             </div>
 
-            <!-- 3. Delegado de Chow -->
-            <div class="candidato-col">
-                <div class="barra bg-chow">99%</div>
-                <img src="foto_alexander.jpg" alt="Alexander" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">🤡</div>
-                <div class="nombre">Alexander Huamaccto</div>
-                <div class="cargo">Delegado de Chow</div>
+            <!-- 3er Lugar (Derecha) - Delegado de Chow -->
+            <div class="candidato-podio">
+                <div class="barra-podio puesto-3">
+                    <img src="foto_alexander.jpg" alt="Alexander" class="foto-podio" onerror="this.src='https://via.placeholder.com/100'">
+                    <span class="puesto-numero">🤡</span>
+                </div>
+                <div class="nombre-podio">Alexander H.</div>
+                <div class="cargo-podio">Delegado de Chow</div>
                 <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
+                    <button class="btn-accion">🪨</button> <button class="btn-accion">⭐</button>
                 </div>
             </div>
-
-            <!-- 4. Matemática Básica 2 -->
-            <div class="candidato-col">
-                <div class="barra bg-curso1">70%</div>
-                <img src="foto_jordan.jpg" alt="Jordan" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">MB2</div>
-                <div class="nombre">Jordan Percy</div>
-                <div class="cargo">Mat. Básicas 2</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 5. Ecología -->
-            <div class="candidato-col">
-                <div class="barra bg-curso2">65%</div>
-                <img src="foto_dan.jpg" alt="Dan" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">ECO</div>
-                <div class="nombre">Dan Barzola</div>
-                <div class="cargo">Ecología</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 6. Filosofía -->
-            <div class="candidato-col">
-                <div class="barra bg-curso3">75%</div>
-                <img src="foto_noemi.jpg" alt="Noemi" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">FIL</div>
-                <div class="nombre">Noemi De La Cruz</div>
-                <div class="cargo">Filosofía</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 7. Ed. Artística -->
-            <div class="candidato-col">
-                <div class="barra bg-curso4">80%</div>
-                <img src="foto_fernando.jpg" alt="Fernando" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">ART</div>
-                <div class="nombre">Fernando Juica</div>
-                <div class="cargo">Ed. Artística</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 8. Comunicación -->
-            <div class="candidato-col">
-                <div class="barra bg-curso1">82%</div>
-                <img src="foto_marvin.jpg" alt="Marvin" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">COM</div>
-                <div class="nombre">Marvin Ricse</div>
-                <div class="cargo">Comunicación</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 9. Cálculo Grupo B -->
-            <div class="candidato-col">
-                <div class="barra bg-curso2">60%</div>
-                <img src="foto_ramiro.jpg" alt="Ramiro" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">CAB</div>
-                <div class="nombre">Ramiro Perez</div>
-                <div class="cargo">Cálculo Gr. B</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 10. Cálculo Grupo A -->
-            <div class="candidato-col">
-                <div class="barra bg-curso3">68%</div>
-                <img src="foto_jhon.jpg" alt="Jhon" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">CAA</div>
-                <div class="nombre">Jhon Chagua</div>
-                <div class="cargo">Cálculo Gr. A</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 11. Geografía -->
-            <div class="candidato-col">
-                <div class="barra bg-curso4">72%</div>
-                <img src="foto_grecia.jpg" alt="Grecia" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">GEO</div>
-                <div class="nombre">Grecia Ochoa</div>
-                <div class="cargo">Geografía</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 12. Inglés -->
-            <div class="candidato-col">
-                <div class="barra bg-curso1">88%</div>
-                <img src="foto_beatriz.jpg" alt="Beatriz" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">ING</div>
-                <div class="nombre">Beatriz Banzer</div>
-                <div class="cargo">Inglés</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-            <!-- 13. Alimentaria -->
-            <div class="candidato-col">
-                <div class="barra bg-curso2">77%</div>
-                <img src="foto_cesar.jpg" alt="Cesar" class="foto-candidato" onerror="this.src='https://via.placeholder.com/90'">
-                <div class="logo-curso">ALI</div>
-                <div class="nombre">Cesar Coa</div>
-                <div class="cargo">Alimentaria</div>
-                <div class="acciones">
-                    <button class="btn-accion">🪨</button>
-                    <button class="btn-accion">⭐</button>
-                </div>
-            </div>
-
-        </div> <!-- Fin gráfico ONPE -->
-
+        </div>
     </div>
 
+    <!-- ================= PARLAMENTO ANDINO (Cursos) ================= -->
+    <section class="parlamento-section">
+        <h3 class="parlamento-titulo">Representantes del Parlamento E5</h3>
+        
+        <!-- Track del carrusel -->
+        <div class="carrusel-track">
+            
+            <!-- LISTA DE DELEGADOS (Se repite 2 veces para el efecto infinito) -->
+            <!-- GRUPO 1 -->
+            <div class="parlamentario"><img src="f1.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jordan Percy</div><div class="curso-parlamento">Mat. Básicas 2</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f2.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Dan Barzola</div><div class="curso-parlamento">Ecología</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f3.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Noemi</div><div class="curso-parlamento">Filosofía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f4.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Fernando J.</div><div class="curso-parlamento">Ed. Artística</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f5.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Marvin Ricse</div><div class="curso-parlamento">Comunicación</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f6.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Ramiro Perez</div><div class="curso-parlamento">Cálculo B</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f7.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jhon Chagua</div><div class="curso-parlamento">Cálculo A</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f8.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Grecia Ochoa</div><div class="curso-parlamento">Geografía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f9.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Beatriz Banzer</div><div class="curso-parlamento">Inglés</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f10.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Cesar Coa</div><div class="curso-parlamento">Alimentaria</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            
+            <!-- GRUPO 2 (Es una copia exacta del Grupo 1 para que el bucle no se corte de golpe) -->
+            <div class="parlamentario"><img src="f1.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jordan Percy</div><div class="curso-parlamento">Mat. Básicas 2</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f2.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Dan Barzola</div><div class="curso-parlamento">Ecología</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f3.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Noemi</div><div class="curso-parlamento">Filosofía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f4.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Fernando J.</div><div class="curso-parlamento">Ed. Artística</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f5.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Marvin Ricse</div><div class="curso-parlamento">Comunicación</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f6.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Ramiro Perez</div><div class="curso-parlamento">Cálculo B</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f7.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Jhon Chagua</div><div class="curso-parlamento">Cálculo A</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f8.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Grecia Ochoa</div><div class="curso-parlamento">Geografía</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f9.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Beatriz Banzer</div><div class="curso-parlamento">Inglés</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            <div class="parlamentario"><img src="f10.jpg" class="foto-parlamento" onerror="this.src='https://via.placeholder.com/70'"><div class="nombre-parlamento">Cesar Coa</div><div class="curso-parlamento">Alimentaria</div><div class="acciones"><button class="btn-accion">🪨</button><button class="btn-accion">⭐</button></div></div>
+            
+        </div>
+    </section>
+
+    <!-- SCRIPT DE LA CUENTA REGRESIVA -->
+    <script>
+        // Fecha objetivo: 7 de Septiembre de 2026, a las 08:00:00. 
+        // Si quieres cambiar el mes o el día, modifícalo justo en la línea de abajo:
+        const fechaObjetivo = new Date("Sep 7, 2026 08:00:00").getTime();
+
+        const x = setInterval(function() {
+            const ahora = new Date().getTime();
+            const distancia = fechaObjetivo - ahora;
+
+            // Cálculos para días, horas, minutos y segundos
+            const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+            // Mostrar el resultado en el elemento con id="reloj"
+            document.getElementById("reloj").innerHTML = 
+                dias + "d " + horas + "h " + minutos + "m " + segundos + "s ";
+
+            // Si la cuenta regresiva termina
+            if (distancia < 0) {
+                clearInterval(x);
+                document.getElementById("reloj").innerHTML = "¡LAS URNAS ESTÁN ABIERTAS!";
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
