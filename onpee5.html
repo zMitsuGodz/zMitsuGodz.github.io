@@ -4,28 +4,209 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elecciones E5 - La Cantuta</title>
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5; /* Un gris muy claro y moderno */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Cabecera / Banner */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            letter-spacing: 1px;
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1100px;
+            margin: -2rem auto 2rem;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        /* Secciones (Temporadas) */
+        section {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        section h2 {
+            color: #1e3c72;
+            border-bottom: 3px solid #f0f2f5;
+            padding-bottom: 1rem;
+            margin-top: 0;
+        }
+
+        /* Cuadrícula de Tarjetas */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Tarjetas de los Delegados */
+        .card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            border-color: #2a5298;
+        }
+        
+        .card h3 {
+            margin: 0.5rem 0;
+            color: #222;
+        }
+        .card .cargo {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Tarjeta Especial para el Delegado de Chow */
+        .card.chow {
+            border: 2px solid #ff9800;
+            background: linear-gradient(to bottom, #fffdfa, #fff3e0);
+        }
+        .card.chow h3 {
+            color: #e65100;
+        }
+
+        /* Botones Interactivos */
+        .botones-accion {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn-piedra { background-color: #e0e0e0; color: #333; }
+        .btn-piedra:hover { background-color: #d5d5d5; }
+        
+        .btn-estrella { background-color: #fff9c4; color: #f57f17; }
+        .btn-estrella:hover { background-color: #fff59d; }
+
+        .btn-votar { background-color: #4CAF50; color: white; width: 100%; margin-top: 1rem;}
+        .btn-votar:hover { background-color: #45a049; }
+    </style>
 </head>
 <body>
 
-    <!-- Título Principal -->
     <header>
         <h1>Elecciones Generales Salón E5</h1>
-        <p>Bienvenidos a las elecciones oficiales. ¡Elige sabiamente!</p>
+        <p>Temporada 4 vs Temporada 5. ¡Que empiece el juego!</p>
     </header>
 
-    <!-- Sección de la Temporada 4 (El Pasado) -->
-    <section id="temporada-4">
-        <h2>El Muro del Pueblo (Temporada 4)</h2>
-        <p>Aquí pondremos a Valery, André, Alexander (Chow) y los demás delegados de los cursos para tirarles piedras 🪨 o darles estrellas ⭐.</p>
-    </section>
+    <div class="container">
+        
+        <!-- ================= TEMPORADA 4 ================= -->
+        <section id="temporada-4">
+            <h2>El Muro del Pueblo (Temporada 4)</h2>
+            <p>Es hora del balance. Califica la gestión pasada con una estrella ⭐ o tira una piedra 🪨 si la situación lo amerita.</p>
+            
+            <div class="grid">
+                <!-- Tarjeta Valery -->
+                <div class="card">
+                    <h3>Valery "La Pulga"</h3>
+                    <div class="cargo">Delegada General</div>
+                    <div class="botones-accion">
+                        <button class="btn btn-piedra">🪨 Piedra</button>
+                        <button class="btn btn-estrella">⭐ Estrella</button>
+                    </div>
+                </div>
 
-    <hr>
+                <!-- Tarjeta André -->
+                <div class="card">
+                    <h3>André Chocce</h3>
+                    <div class="cargo">Subdelegado</div>
+                    <div class="botones-accion">
+                        <button class="btn btn-piedra">🪨 Piedra</button>
+                        <button class="btn btn-estrella">⭐ Estrella</button>
+                    </div>
+                </div>
 
-    <!-- Sección de la Temporada 5 (El Futuro) -->
-    <section id="temporada-5">
-        <h2>Nuevos Candidatos (Temporada 5)</h2>
-        <p>Aquí pondremos las tarjetas para votar por los nuevos postulantes ALEXANDER CACHUDO.</p>
-    </section>
+                <!-- Tarjeta Alexander (CHOW) -->
+                <div class="card chow">
+                    <h3>Alexander</h3>
+                    <div class="cargo">Delegado de Chow 🤡</div>
+                    <div class="botones-accion">
+                        <button class="btn btn-piedra">🪨 Piedra</button>
+                        <button class="btn btn-estrella">⭐ Estrella</button>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta Ejemplo Curso -->
+                <div class="card">
+                    <h3>Jordan Percy</h3>
+                    <div class="cargo">Matemáticas Básicas 2</div>
+                    <div class="botones-accion">
+                        <button class="btn btn-piedra">🪨 Piedra</button>
+                        <button class="btn btn-estrella">⭐ Estrella</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TEMPORADA 5 ================= -->
+        <section id="temporada-5">
+            <h2>Nuevos Candidatos (Temporada 5)</h2>
+            <p>Las urnas están abiertas. Revisa las propuestas y elige a tus nuevos representantes de la Facultad de Tecnología.</p>
+            
+            <div class="grid">
+                <!-- Tarjeta Candidato Nuevo -->
+                <div class="card">
+                    <h3>ALEXANDER CACHUDO</h3>
+                    <div class="cargo">Candidato a Delegado General</div>
+                    <button class="btn btn-votar">🗳️ Votar</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
 
 </body>
 </html>
