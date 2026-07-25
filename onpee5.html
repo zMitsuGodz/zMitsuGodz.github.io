@@ -25,11 +25,9 @@
         .candidato-vertical { width: 32%; display: flex; flex-direction: column; align-items: center; background: #fff; border-radius: 12px; padding: 0 8px 12px 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); box-sizing: border-box; position: relative; }
         .zona-barra { width: 100%; position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; margin-bottom: 10px; }
         .foto-top { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 75px; height: 75px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); background: #eee; object-fit: cover; z-index: 5; transition: filter 0.2s; }
-        
         .nube-hot { position: absolute; top: -95px; left: 50%; transform: translateX(-50%) scale(0); background: #fff; border: 2px solid #ff2d55; color: #ff2d55; padding: 8px 12px; border-radius: 12px; font-weight: 900; font-size: 0.95rem; text-align: center; max-width: 140px; white-space: normal; line-height: 1.2; z-index: 999; opacity: 0; transition: all 0.25s cubic-bezier(0.2, 1.5, 0.4, 1.5); }
         .nube-hot.activa { transform: translateX(-50%) scale(1); opacity: 1; }
         .nube-hot::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: #ff2d55 transparent transparent transparent; }
-
         .barra-grafico { width: 100%; border-radius: 8px 8px 0 0; display: flex; flex-direction: column; align-items: center; padding-top: 45px; box-shadow: inset 0 2px 10px rgba(255,255,255,0.3); transition: height 0.6s ease-out; }
         .fondo-verde { background: linear-gradient(180deg, #00c853, #00e676); }
         .fondo-rojo { background: linear-gradient(180deg, #d50000, #ff1744); }
@@ -66,9 +64,13 @@
         .grieta-3 { border: 6px double #212121; filter: grayscale(100%) contrast(200%); }
         @keyframes caidaLibre { 0% { transform: translateX(-50%) translateY(0) rotate(0) scale(1); opacity: 1; } 20% { transform: translateX(-50%) translateY(-30px) rotate(-20deg) scale(1.1); } 100% { transform: translateX(-50%) translateY(1500px) rotate(720deg) scale(0); opacity: 0; } }
         .destruido .foto-top { animation: caidaLibre 1s forwards; pointer-events: none; }
-        
-        .proyectil { position: fixed; font-size: 35px; pointer-events: none; z-index: 99999; transition: transform 0.3s linear; }
-        .fragmento { position: fixed; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.6s; }
+        .proyectil { position: fixed; font-size: 35px; pointer-events: none; z-index: 99999; transition: transform 0.2s linear, opacity 0.2s; }
+        .fragmento { position: fixed; border-radius: 4px; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.6s; }
+        .frag-tom { border-radius: 50%; filter: blur(1px); width: 14px; height: 14px; }
+        .frag-hue { border-radius: 50%; width: 10px; height: 10px; }
+        .frag-popo { border-radius: 50%; width: 16px; height: 16px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.3)); }
+        .frag-agua { border-radius: 50%; width: 8px; height: 8px; filter: drop-shadow(0 0 2px #00e5ff); }
+        .frag-hueso { width: 12px; height: 14px; border-radius: 3px; background-color: #f5f5f5; }
         
         .seccion-chatbot { background: #fff; padding: 30px 20px; margin: 40px auto; max-width: 700px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-caja { height: 350px; overflow-y: auto; background: #f4f6f8; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
@@ -94,13 +96,6 @@
         .resena-objetivo { font-size: 0.75rem; color: #757575; font-weight: 800; text-transform: uppercase; display: block; }
         .resena-estrellas { color: #ffab00; font-size: 1.1rem; }
         .resena-texto { font-size: 0.95rem; color: #222; font-weight: 500; }
-
-        .seccion-estadisticas { background: #fff; padding: 40px 15px; max-width: 1000px; margin: 20px auto; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
-        .stat-card { background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; display: flex; flex-direction: column; }
-        .stat-card h4 { margin: 0 0 10px 0; color: #0d47a1; font-family: 'Oswald', sans-serif; font-size: 1.1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 5px; }
-        .stat-emojis { display: flex; flex-wrap: wrap; gap: 8px; }
-        .stat-badge { background: #fff; padding: 5px 10px; border-radius: 20px; font-weight: 900; font-size: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #ddd; }
         
         .seccion-propuestas { background: #0d47a1; color: #fff; padding: 50px 15px; text-align: center; margin-top: 40px; }
         .bloqueo-identidad { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 12px; max-width: 600px; margin: 0 auto 30px auto; border: 2px dashed rgba(255,255,255,0.3); }
@@ -108,7 +103,7 @@
         .item-propuesta { display: flex; flex-direction: column; text-align: left; }
         .item-propuesta label { font-size: 0.85rem; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; color: #bbdefb; }
         .item-propuesta input { padding: 12px; border-radius: 6px; border: none; font-family: inherit; font-weight: 700; font-size: 1rem; outline: none; }
-        .item-propuesta input:disabled { background: #bbdefb; color: #0d47a1; cursor: not-allowed; opacity: 0.8; }
+        .item-propuesta input:disabled { background: #e0e0e0; color: #666; cursor: not-allowed; }
         .btn-proponer { background: #ffea00; color: #111; font-family: 'Oswald', sans-serif; font-size: 1.2rem; padding: 15px 40px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.1s; }
         .btn-proponer:active { transform: scale(0.95); }
 
@@ -120,23 +115,19 @@
         .tarjeta-resultado li { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem; padding: 5px 0; border-bottom: 1px solid #eee; }
         .tarjeta-resultado li span { color: #0d47a1; font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
 
-        .seccion-confesiones { background: linear-gradient(135deg, #111, #1a1a2e); color: #fff; padding: 60px 10px; margin-top: 40px; border-top: 6px solid #d32f2f; }
-        .crear-confesion { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); max-width: 600px; margin: 0 auto 30px auto; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .crear-confesion textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #444; font-family: inherit; font-size: 1.1rem; box-sizing: border-box; resize: vertical; margin-bottom: 15px; background: rgba(0,0,0,0.4); color: #fff; transition: all 0.3s; }
-        .crear-confesion textarea:focus { outline: none; border-color: #ff2d55; box-shadow: 0 0 15px rgba(255,45,85,0.4); }
-        .controles-confesion { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .upload-btn-wrapper { position: relative; overflow: hidden; display: inline-block; cursor: pointer; }
-        .upload-btn { border: 2px solid #00ffcc; color: #00ffcc; background-color: transparent; padding: 8px 20px; border-radius: 8px; font-weight: 900; cursor: pointer; }
-        .upload-btn-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; }
-        .btn-confesar { background: #ff2d55; color: #fff; font-weight: 900; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-family: 'Oswald', sans-serif; font-size: 1.2rem; letter-spacing: 1px; }
+        .seccion-confesiones { background: #111; color: #fff; padding: 40px 10px; margin-top: 40px; }
+        .crear-confesion { background: #222; max-width: 600px; margin: 0 auto 30px auto; padding: 20px; border-radius: 12px; border: 1px solid #444; }
+        .crear-confesion textarea { width: 100%; padding: 12px; border-radius: 8px; border: none; font-family: inherit; font-size: 1rem; box-sizing: border-box; resize: vertical; margin-bottom: 10px; background: #333; color: #fff; }
+        .crear-confesion textarea:focus { outline: 2px solid #ffea00; }
+        .controles-confesion { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .controles-confesion input[type="file"] { font-size: 0.85rem; color: #ccc; }
+        .btn-confesar { background: #ffea00; color: #111; font-weight: 900; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
         .btn-confesar:active { transform: scale(0.95); }
-        
-        .feed-confesiones { max-width: 600px; margin: auto; display: flex; flex-direction: column; gap: 25px; }
-        .confesion-card { background: #fff; color: #111; border-radius: 16px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
-        .confesion-card::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: #d32f2f; }
-        .confesion-header { font-family: 'Oswald', sans-serif; color: #111; font-size: 1.3rem; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .confesion-texto { font-size: 1.1rem; font-weight: 700; line-height: 1.6; margin-bottom: 15px; white-space: pre-wrap; color: #333; }
-        .confesion-card img { width: 100%; border-radius: 10px; object-fit: cover; max-height: 500px; border: 1px solid #ddd; }
+        .feed-confesiones { max-width: 600px; margin: auto; display: flex; flex-direction: column; gap: 20px; }
+        .confesion-card { background: #fff; color: #111; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .confesion-header { font-family: 'Oswald', sans-serif; color: #d32f2f; font-size: 1.2rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .confesion-texto { font-size: 1.05rem; font-weight: 700; line-height: 1.5; margin-bottom: 15px; white-space: pre-wrap; }
+        .confesion-card img { width: 100%; border-radius: 8px; object-fit: cover; max-height: 500px; }
 
         .modal-fondo { display: none; position: fixed; z-index: 999999; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
         .modal-contenido { background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 380px; position: relative; }
@@ -145,12 +136,6 @@
         .grupo-input label { font-weight: 900; display: block; margin-bottom: 4px; font-size: 0.9rem;}
         .grupo-input input, .grupo-input textarea, .grupo-input select { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 6px; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; }
         .btn-enviar { background: #0d47a1; color: #fff; border: none; padding: 12px; border-radius: 6px; font-family: 'Oswald', sans-serif; font-size: 1.1rem; width: 100%; cursor: pointer; }
-        @media (max-width: 500px) {
-            .foto-top { width: 55px; height: 55px; top: -30px; }
-            .barra-grafico { padding-top: 30px; }
-            .texto-porcentaje { font-size: 1.1rem; }
-            .nube-hot { top: -75px; font-size: 0.8rem; padding: 5px 8px; }
-        }
     </style>
 </head>
 <body>
@@ -172,13 +157,6 @@
             <button class="nav-carrusel izq" onclick="scrollArea('carruselTrack', -200)">◄</button>
             <div class="carrusel-track" id="carruselTrack"></div>
             <button class="nav-carrusel der" onclick="scrollArea('carruselTrack', 200)">►</button>
-        </div>
-    </section>
-
-    <section class="seccion-estadisticas">
-        <h2 class="titulo-seccion">RÁNKING DE ATAQUES Y AMOR</h2>
-        <div class="grid-stats" id="gridStats">
-            <p style="text-align:center; width:100%; font-weight:900; color:#888;">Cargando estadísticas en vivo...</p>
         </div>
     </section>
 
@@ -247,14 +225,11 @@
     </section>
 
     <section class="seccion-confesiones">
-        <h2 class="titulo-seccion" style="color:#fff; text-shadow: 0 0 10px #ff2d55;">CONFESIONES E5</h2>
+        <h2 class="titulo-seccion" style="color:#fff;">CONFESIONES E5</h2>
         <div class="crear-confesion">
-            <textarea id="confesionTxt" rows="4" placeholder="Suelta tu veneno anónimamente, declara tu amor, o expón a alguien. Nadie sabrá quién fuiste..."></textarea>
+            <textarea id="confesionTxt" rows="4" placeholder="Suelta tu veneno anónimamente, o declara tu amor. Nadie sabrá quién fuiste..."></textarea>
             <div class="controles-confesion">
-                <div class="upload-btn-wrapper">
-                    <button class="upload-btn" id="lblImg">📷 SUBIR FOTO</button>
-                    <input type="file" id="confesionImg" accept="image/*" onchange="procesarImagen(event)">
-                </div>
+                <input type="file" id="confesionImg" accept="image/*" onchange="procesarImagen(event)">
                 <button class="btn-confesar" id="btnConfesar" onclick="enviarConfesion()">PUBLICAR ANÓNIMO</button>
             </div>
         </div>
@@ -286,15 +261,24 @@
     </div>
 
     <script>
-        const URL_GOOGLE_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbw1rzvz0PB55WYrDtj957rpaNQ8sPJUZrDVfw1NyX5GuB-fEXBmfEsHvN5AEu4YQk_VEQ/exec"; 
+        const URL_GOOGLE_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzklnsFUwRLd13aL43Wr_jnztAkhRdk1vT2rrSMyBow3HdU0YL3quoBm1Q1-K-4XjhsPA/exec"; 
         
         const fObj = new Date("Sep 7, 2026 08:00:00").getTime();
         setInterval(() => {
             const d = fObj - new Date().getTime();
             if(d < 0) return document.getElementById("reloj").innerHTML = "<div class='t-num' style='color:#d32f2f;'>¡URNAS ABIERTAS!</div>";
+            
             let td = Math.floor(d / 86400000), mo = Math.floor(td / 30), w = Math.floor((td % 30) / 7), da = (td % 30) % 7;
             let h = Math.floor((d % 86400000) / 3600000), m = Math.floor((d % 3600000) / 60000), s = Math.floor((d % 60000) / 1000);
-            document.getElementById("reloj").innerHTML = `<div class="t-caja"><span class="t-num">${mo}</span><span class="t-txt">Meses</span></div><div class="t-caja"><span class="t-num">${w}</span><span class="t-txt">Semanas</span></div><div class="t-caja"><span class="t-num">${da}</span><span class="t-txt">Días</span></div><div class="t-caja"><span class="t-num">${h}</span><span class="t-txt">Horas</span></div><div class="t-caja"><span class="t-num">${m}</span><span class="t-txt">Min</span></div><div class="t-caja"><span class="t-num">${s}</span><span class="t-txt">Seg</span></div>`;
+            
+            document.getElementById("reloj").innerHTML = `
+                <div class="t-caja"><span class="t-num">${mo}</span><span class="t-txt">Meses</span></div>
+                <div class="t-caja"><span class="t-num">${w}</span><span class="t-txt">Semanas</span></div>
+                <div class="t-caja"><span class="t-num">${da}</span><span class="t-txt">Días</span></div>
+                <div class="t-caja"><span class="t-num">${h}</span><span class="t-txt">Horas</span></div>
+                <div class="t-caja"><span class="t-num">${m}</span><span class="t-txt">Min</span></div>
+                <div class="t-caja"><span class="t-num">${s}</span><span class="t-txt">Seg</span></div>
+            `;
         }, 1000);
 
         const delegadosPodio = [
@@ -325,10 +309,8 @@
         const crearTarjetaVertical = (d, isPodio) => {
             if(!document.querySelector(`option[value="${d.nombre}"]`)) filtro.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`;
             let esAprob = d.aprob >= 50, val = esAprob ? d.aprob : (100 - d.aprob), colorCls = esAprob ? 'fondo-verde' : 'fondo-rojo', label = esAprob ? 'APROB.' : 'DESAPROB.', altura = isPodio ? (80 + (val * 1.5)) : (60 + val);
-            
-            let btns = `<button class="btn-emoji" onclick="fuego(this,'💖','${d.id}')">💖</button><button class="btn-emoji" onclick="fuego(this,'🩷','${d.id}')">🩷</button><button class="btn-emoji" onclick="fuego(this,'🔫','${d.id}')">🔫</button><button class="btn-emoji" onclick="fuego(this,'🥚','${d.id}')">🥚</button><button class="btn-emoji" onclick="fuego(this,'💩','${d.id}')">💩</button><button class="btn-emoji" onclick="fuego(this,'🍅','${d.id}')">🍅</button><button class="btn-emoji" onclick="fuego(this,'🪨','${d.id}')">🪨</button><button class="btn-emoji" onclick="fuego(this,'💀','${d.id}')">💀</button>`;
+            let btns = `<button class="btn-emoji" onclick="fuego(this,'🥚','${d.id}')">🥚</button><button class="btn-emoji" onclick="fuego(this,'💩','${d.id}')">💩</button><button class="btn-emoji" onclick="fuego(this,'🍅','${d.id}')">🍅</button><button class="btn-emoji" onclick="fuego(this,'🪨','${d.id}')">🪨</button><button class="btn-emoji" onclick="fuego(this,'💖','${d.id}')">💖</button><button class="btn-emoji" onclick="fuego(this,'🩷','${d.id}')">🩷</button><button class="btn-emoji" onclick="fuego(this,'🔫','${d.id}')">🔫</button><button class="btn-emoji" onclick="fuego(this,'💀','${d.id}')">💀</button>`;
             if(d.id === 'MarvinRicse') btns += `<button class="btn-emoji btn-marvin" onclick="fuego(this,'🏳️‍🌈','${d.id}')">🏳️‍🌈</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🥒','${d.id}')">🥒</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🍆','${d.id}')">🍆</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🖕','${d.id}')">🖕</button>`;
-            
             let randId = 'scroll_' + Math.random().toString(36).substr(2, 9);
             return `
             <div class="${isPodio ? 'candidato-vertical' : 'tarjeta-curso'}" id="card-${d.id}">
@@ -353,37 +335,17 @@
         function renderizarTodo() {
             document.getElementById('contenedorPodio').innerHTML = delegadosPodio.map(d => crearTarjetaVertical(d, true)).join('');
             document.getElementById('carruselTrack').innerHTML = delegadosCursos.map(d => crearTarjetaVertical(d, false)).join('');
-            renderStats();
         }
         renderizarTodo();
 
         let db = [];
-        let globalEmojiStats = {};
-
-        function renderStats() {
-            let html = "";
-            let todos = [...delegadosPodio, ...delegadosCursos];
-            todos.forEach(d => {
-                let stats = globalEmojiStats[d.id];
-                if(stats && Object.keys(stats).length > 0) {
-                    let items = Object.entries(stats).sort((a,b)=>b[1]-a[1]).map(e => `<span class="stat-badge">${e[0]} ${e[1]}</span>`).join('');
-                    html += `<div class="stat-card"><h4>${d.nombre}</h4><div class="stat-emojis">${items}</div></div>`;
-                }
-            });
-            document.getElementById("gridStats").innerHTML = html || "<p style='text-align:center; width:100%; font-weight:900; color:#888;'>Aún nadie ha recibido ataques o amor.</p>";
-        }
-
         function actualizarDatosReales() {
             if(URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") return;
             fetch(URL_GOOGLE_APPS_SCRIPT)
             .then(res => res.json())
             .then(data => {
                 let act = (lista) => { lista.forEach(d => { if(data.aprobacion[d.nombre] !== undefined) d.aprob = data.aprobacion[d.nombre]; }); };
-                act(delegadosPodio); act(delegadosCursos);
-                
-                if(data.emojis) globalEmojiStats = data.emojis;
-                renderizarTodo();
-                
+                act(delegadosPodio); act(delegadosCursos); renderizarTodo();
                 db = data.comentarios; renderizarReseñas();
                 
                 let resHTML = "";
@@ -398,81 +360,43 @@
                 let confHTML = "";
                 if(data.confesiones) {
                     data.confesiones.reverse().forEach(c => {
-                        confHTML += `<div class="confesion-card"><div class="confesion-header">🕵️‍♂️ Alguien del E5 dice:</div><div class="confesion-texto">${c.txt}</div>${c.img ? `<img src="${c.img}">` : ''}</div>`;
+                        confHTML += `<div class="confesion-card"><div class="confesion-header">🕵️‍♂️ Anónimo dice:</div><div class="confesion-texto">${c.txt}</div>${c.img ? `<img src="${c.img}">` : ''}</div>`;
                     });
                 }
-                document.getElementById("feedConfesiones").innerHTML = confHTML || "<p style='color:#888; font-weight:700;'>Nadie ha soltado el chisme aún. Sé el primero.</p>";
+                document.getElementById("feedConfesiones").innerHTML = confHTML || "<p style='color:#888; font-weight:700;'>Nadie ha confesado nada aún. Sé el primero.</p>";
             }).catch(e => console.log("Error al cargar datos remotos."));
         }
         actualizarDatosReales();
 
         const regDaños = {}; 
-        let emojiQueue = {};
         const frasesMarvin = ["¡QUÉ RICO! 🥵", "¡NO PARES! 🥵", "¡DAME MÁS! 🍆", "¡MÁS RÁPIDO! 🥵", "¡TODO TU COA! 🥒", "¡SÍ PAPI! 🥵", "¡DAME TODO EL TAMBILLO! 🍆"];
 
         function explota(x, y, t) {
-            for(let i=0; i<12; i++) {
-                let f = document.createElement('div');
-                f.innerText = t;
-                f.className = 'fragmento';
-                f.style.position = 'fixed';
-                f.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                f.style.left = x + 'px';
-                f.style.top = y + 'px';
-                document.body.appendChild(f);
-                
-                let ang = Math.random() * Math.PI * 2;
-                let fue = Math.random() * 80 + 30;
-                let vX = Math.cos(ang) * fue;
-                let vY = Math.sin(ang) * fue - 50;
-                
-                setTimeout(() => {
-                    f.style.transform = `translate(${vX}px, ${vY}px) rotate(${Math.random() * 360}deg) scale(0.5)`;
-                    f.style.opacity = '0';
-                }, 10);
+            const pal = { '🪨': ['#757575', '#424242', '#212121'], '🥚': ['#fff', '#ffd700', '#ffb300'], '🍅': ['#d50000', '#b71c1c', '#f44336'], '💩': ['#5d4037', '#3e2723', '#4e342e', '#795548'], '💖': ['#ff4081', '#f50057', '#c51162'], '🩷': ['#ff80ab', '#ff4081', '#ffb2ff'], '🔫': ['#00e5ff', '#18ffff', '#00bcd4'], '💀': ['#f5f5f5', '#eeeeee', '#e0e0e0', '#bdbdbd'] };
+            if(!pal[t]) return; 
+            for(let i=0; i<15; i++) {
+                let f = document.createElement('div'), extraCls = '';
+                if(t==='🍅') extraCls = 'frag-tom'; else if(t==='🥚' || t==='💖' || t==='🩷') extraCls = 'frag-hue'; else if(t==='💩') extraCls = 'frag-popo'; else if(t==='🔫') extraCls = 'frag-agua'; else if(t==='💀') extraCls = 'frag-hueso';
+                f.className = 'fragmento ' + extraCls; f.style.background = pal[t][Math.floor(Math.random()*pal[t].length)]; f.style.left = x+'px'; f.style.top = y+'px'; document.body.appendChild(f);
+                let ang = Math.random()*Math.PI*2, fue = Math.random()*100+50, vX = Math.cos(ang)*fue, vY = Math.sin(ang)*fue+100; 
+                setTimeout(() => { f.style.transform = `translate(${vX}px, ${vY}px) rotate(${Math.random()*720}deg) scale(${Math.random()+0.5})`; f.style.opacity = '0'; }, 10);
                 setTimeout(() => f.remove(), 600);
             }
         }
 
         function fuego(btn, t, id) {
             if(!regDaños[id]) regDaños[id] = 0;
-            if(!globalEmojiStats[id]) globalEmojiStats[id] = {};
-            if(!globalEmojiStats[id][t]) globalEmojiStats[id][t] = 0;
-            globalEmojiStats[id][t]++;
-            
-            if(!emojiQueue[id]) emojiQueue[id] = {};
-            if(!emojiQueue[id][t]) emojiQueue[id][t] = 0;
-            emojiQueue[id][t]++;
-            renderStats();
-
             const card = btn.closest('.candidato-vertical, .tarjeta-curso'), foto = card.querySelector('.foto-top'), recF = foto.getBoundingClientRect(), recB = btn.getBoundingClientRect(), pro = document.createElement('div');
             pro.innerText = t; pro.className = 'proyectil'; document.body.appendChild(pro); pro.style.left = recB.left+'px'; pro.style.top = recB.top+'px';
-            const dX = (recF.left+recF.width/2)-recB.left, dY = (recF.top+recF.height/2)-recB.top; 
-            
-            setTimeout(() => { 
-                pro.style.transform = `translate(${dX}px, ${dY}px) scale(1.2)`; 
-            }, 10);
-
+            const dX = (recF.left+recF.width/2)-recB.left, dY = (recF.top+recF.height/2)-recB.top; setTimeout(() => { pro.style.transform = `translate(${dX}px, ${dY}px) rotate(720deg)`; }, 10);
             setTimeout(() => {
                 pro.remove();
-                if(id === 'MarvinRicse' && ['🏳️‍🌈','🥒','🍆','🖕'].includes(t)) { 
-                    let n = card.querySelector('.nube-hot'); 
-                    n.innerText = frasesMarvin[Math.floor(Math.random()*frasesMarvin.length)]; 
-                    n.classList.add('activa'); 
-                    setTimeout(() => n.classList.remove('activa'), 1500); 
-                }
+                if(id === 'MarvinRicse' && ['🏳️‍🌈','🥒','🍆','🖕'].includes(t)) { let n = card.querySelector('.nube-hot'); n.innerText = frasesMarvin[Math.floor(Math.random()*frasesMarvin.length)]; n.classList.add('activa'); setTimeout(() => n.classList.remove('activa'), 1500); }
                 foto.classList.remove('foto-impacto'); void foto.offsetWidth; foto.classList.add('foto-impacto');
                 explota(recF.left+recF.width/2, recF.top+recF.height/2, t);
                 if(t === '🪨') { regDaños[id]++; let c = regDaños[id]; if(c==1) foto.classList.add('grieta-1'); if(c==3) { foto.classList.remove('grieta-1'); foto.classList.add('grieta-2'); } if(c==5) { foto.classList.remove('grieta-2'); foto.classList.add('grieta-3'); } if(c>=7) card.classList.add('destruido'); }
-            }, 300);
+            }, 180);
         }
-
-        setInterval(() => {
-            if(Object.keys(emojiQueue).length === 0 || URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") return;
-            let payload = { tipoAccion: "EMOJI_BATCH", data: emojiQueue };
-            emojiQueue = {}; 
-            fetch(URL_GOOGLE_APPS_SCRIPT, { method:'POST', mode:'no-cors', body:JSON.stringify(payload) });
-        }, 5000);
 
         function renderizarReseñas() {
             const c = document.getElementById('contenedorResenas'), fD = document.getElementById('filtroDelegado').value, fT = document.getElementById('filtroTipo').value; c.innerHTML = "";
@@ -524,10 +448,8 @@
         function procesarImagen(event) {
             let file = event.target.files[0];
             if(!file) return;
-            let lbl = document.getElementById("lblImg");
-            lbl.innerText = "⏳ CARGANDO FOTO...";
             let reader = new FileReader();
-            reader.onload = function(e) { base64Confesion = e.target.result; lbl.innerText = "✅ FOTO LISTA"; lbl.style.color = "#fff"; lbl.style.backgroundColor = "#00c853"; lbl.style.borderColor = "#00c853"; };
+            reader.onload = function(e) { base64Confesion = e.target.result; };
             reader.readAsDataURL(file);
         }
 
@@ -539,25 +461,17 @@
             
             let payload = { tipoAccion: "CONFESION", texto: txt, imagen: base64Confesion };
             if(URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") {
-                alert("Simulación: Confesión guardada."); document.getElementById("confesionTxt").value = ""; document.getElementById("confesionImg").value = ""; base64Confesion = ""; let lbl = document.getElementById("lblImg"); lbl.innerText = "📷 SUBIR FOTO"; lbl.style.backgroundColor = "transparent"; lbl.style.color = "#00ffcc"; lbl.style.borderColor = "#00ffcc"; btn.innerText = "PUBLICAR ANÓNIMO"; btn.disabled = false; return;
+                alert("Simulación: Confesión guardada."); document.getElementById("confesionTxt").value = ""; document.getElementById("confesionImg").value = ""; base64Confesion = ""; btn.innerText = "PUBLICAR ANÓNIMO"; btn.disabled = false; return;
             }
             fetch(URL_GOOGLE_APPS_SCRIPT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
-            .then(() => { 
-                alert("¡Confesión soltada!"); 
-                document.getElementById("confesionTxt").value = ""; 
-                document.getElementById("confesionImg").value = ""; 
-                base64Confesion = ""; 
-                let lbl = document.getElementById("lblImg"); lbl.innerText = "📷 SUBIR FOTO"; lbl.style.backgroundColor = "transparent"; lbl.style.color = "#00ffcc"; lbl.style.borderColor = "#00ffcc";
-                btn.innerText = "PUBLICAR ANÓNIMO"; btn.disabled = false; 
-                actualizarDatosReales(); 
-            })
+            .then(() => { alert("¡Confesión soltada!"); document.getElementById("confesionTxt").value = ""; document.getElementById("confesionImg").value = ""; base64Confesion = ""; btn.innerText = "PUBLICAR ANÓNIMO"; btn.disabled = false; actualizarDatosReales(); })
             .catch(() => { alert("Error de red."); btn.innerText = "PUBLICAR ANÓNIMO"; btn.disabled = false; });
         }
 
         function desbloquearUrna() {
             let n = document.getElementById("idNombre").value.trim(), a = document.getElementById("idApellido").value.trim(), c = document.getElementById("idCodigo").value.trim();
             if(!n || !a || !c) return alert("⚠️ ¡ERROR! DEBES INGRESAR TU NOMBRE, APELLIDO Y CÓDIGO DE ESTUDIANTE.");
-            if(!codigosValidos.includes(c)) return alert("⚠️ ¡ERROR! ESE CÓDIGO NO EXISTE O NO PERTENECE AL E5.");
+            if(!codigosValidos.includes(c)) return alert("⚠️ ¡ERROR! ESE CÓDIGO NO EXISTE O NO PERTENECE AL E5. NO TE HAGAS EL VIVO.");
             
             let historial = JSON.parse(localStorage.getItem("votos_historial_" + c)) || {};
             let todoLleno = true;
@@ -566,7 +480,7 @@
                 if(historial["p"+i]) { inp.value = ""; inp.placeholder = "Ya votaste aquí"; inp.disabled = true; } 
                 else { todoLleno = false; }
             }
-            if(todoLleno) return alert("⚠️ ¡YA VOTASTE POR TODOS LOS CARGOS CON ESTE CÓDIGO!");
+            if(todoLleno) return alert("⚠️ ¡YA VOTASTE POR TODOS LOS CARGOS CON ESTE CÓDIGO! YA FUISTE.");
             
             document.getElementById("bloqueo-identidad").style.display = "none";
             document.getElementById("urna-propuestas").style.display = "block";
@@ -579,7 +493,7 @@
             let btn = document.querySelector(".btn-proponer"); btn.innerText = "ENVIANDO..."; btn.disabled = true;
 
             let historial = JSON.parse(localStorage.getItem("votos_historial_" + c)) || {};
-            for(let i=1; i<=10; i++) { if(payload["p"+i] && payload["p"+i].trim() !== "") historial["p"+i] = true; }
+            for(let i=1; i<=10; i++) { if(payload["p"+i].trim()) historial["p"+i] = true; }
 
             if(URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") {
                  localStorage.setItem("votos_historial_" + c, JSON.stringify(historial));
