@@ -4,104 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONPEE5 - La Cantuta</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 0; overflow-x: hidden; }
 
-        /* ================= BANNER Y RELOJ ================= */
-        header { background-color: #fff; text-align: center; padding: 20px 10px; border-bottom: 5px solid #e3000f; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        header h1 { margin: 0; color: #e3000f; font-size: 3.5rem; font-weight: 900; letter-spacing: -1px; }
-        .contador-caja { background: #111; color: #00ffcc; display: inline-block; padding: 12px 25px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 1.8rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #333; }
-        .contador-etiqueta { display: block; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
+        header { background-color: #fff; text-align: center; padding: 25px 10px; border-bottom: 6px solid #e3000f; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+        header h1 { margin: 0; color: #e3000f; font-family: 'Oswald', sans-serif; font-size: 4rem; letter-spacing: -2px; line-height: 1; }
+        .contador-caja { background: #111; color: #00ffcc; display: inline-block; padding: 12px 30px; border-radius: 8px; margin-top: 15px; font-family: 'Oswald', sans-serif; font-size: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 3px solid #333; }
+        .contador-etiqueta { display: block; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: #aaa; text-transform: uppercase; margin-bottom: 2px; }
 
         .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
-        h2.titulo-seccion { text-align: center; color: #1e3c72; margin-bottom: 20px; font-weight: 900; font-size: 2rem;}
+        h2.titulo-seccion { text-align: center; color: #1e3c72; font-family: 'Oswald', sans-serif; margin-bottom: 20px; font-size: 2.5rem; letter-spacing: 1px; }
 
-        /* ================= GRÁFICOS DE BARRAS 3D (NUEVO DISEÑO) ================= */
-        .zona-grafico { width: 110px; margin: auto auto 15px auto; position: relative; perspective: 1000px; display: flex; justify-content: center; }
-        .barra-3d { width: 100%; height: 100%; position: absolute; bottom: 0; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); cursor: pointer; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.15); }
-        .barra-3d.volteado { transform: rotateY(180deg); }
+        .zona-grafico { width: 110px; margin: auto auto 15px auto; position: relative; display: flex; justify-content: center; }
+        .barra-unica { width: 100%; height: 100%; position: absolute; bottom: 0; border-radius: 12px 12px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; padding-top: 55px; }
         
-        .cara { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px 12px 0 0; display: flex; flex-direction: column; align-items: center; padding-top: 55px; }
-        .cara.frente { /* El color se inyecta por JS o clase */ }
-        .cara.atras { transform: rotateY(180deg); background: linear-gradient(180deg, #ff3b30, #8b0000); }
-        
-        .texto-porcentaje { color: white; font-size: 1.8rem; font-weight: 900; line-height: 1; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-        .texto-etiqueta { color: rgba(255,255,255,0.9); font-size: 0.75rem; text-transform: uppercase; font-weight: bold; margin-top: 4px; }
-        .instruccion-clic { position: absolute; bottom: -20px; font-size: 0.65rem; color: #888; text-transform: uppercase; font-weight: bold; width: 100%; text-align: center; }
+        .texto-porcentaje { color: white; font-family: 'Oswald', sans-serif; font-size: 2.2rem; line-height: 1; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .texto-etiqueta { color: rgba(255,255,255,0.9); font-size: 0.8rem; text-transform: uppercase; font-weight: 900; margin-top: 4px; }
 
-        /* FOTOS SUPERPUESTAS */
-        .foto-wrapper { position: absolute; top: -45px; left: 50%; transform: translateX(-50%); width: 90px; height: 90px; z-index: 10; pointer-events: none; }
-        .foto-candidato { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid white; background: #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s; }
+        .foto-wrapper { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 100px; height: 100px; z-index: 10; pointer-events: none; }
+        .foto-candidato { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 5px solid white; background: #ddd; box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: transform 0.1s; }
 
-        /* ================= PODIO PRINCIPAL ================= */
         .podio-container { display: flex; justify-content: center; align-items: flex-end; gap: 25px; margin: 70px 0 40px 0; height: 420px; }
-        .candidato-card { display: flex; flex-direction: column; align-items: center; width: 170px; text-align: center; background: white; padding: 20px 10px 15px 10px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .candidato-card { display: flex; flex-direction: column; align-items: center; width: 170px; text-align: center; background: white; padding: 20px 10px 15px 10px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
         
-        /* ================= CARRUSEL DE CURSOS ================= */
-        .parlamento-section { background: #fff; padding: 60px 0 40px 0; border-top: 5px solid #1e3c72; border-bottom: 5px solid #1e3c72; overflow: hidden; position: relative; }
+        .parlamento-section { background: #fff; padding: 60px 0 40px 0; border-top: 6px solid #1e3c72; border-bottom: 6px solid #1e3c72; overflow: hidden; position: relative; }
         .carrusel-track { display: flex; gap: 30px; width: max-content; animation: scroll-parlamento 25s linear infinite; align-items: flex-end; }
         .carrusel-track:hover { animation-play-state: paused; }
         @keyframes scroll-parlamento { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .parlamentario { display: flex; flex-direction: column; justify-content: flex-end; width: 160px; height: 440px; background: #f9f9f9; padding: 15px 10px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; text-align: center; }
+        .parlamentario { display: flex; flex-direction: column; justify-content: flex-end; width: 160px; height: 440px; background: #f9f9f9; padding: 15px 10px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #eee; text-align: center; }
         .info-texto { margin-bottom: 10px; }
-        .nombre-delegado { font-size: 1.05rem; font-weight: 900; color: #333; line-height: 1.1; }
-        .curso-delegado { font-size: 0.75rem; color: #666; font-weight: 700; margin-top: 5px; }
+        .nombre-delegado { font-size: 1.1rem; font-weight: 900; color: #111; line-height: 1.1; }
+        .curso-delegado { font-size: 0.8rem; color: #555; font-weight: 700; margin-top: 5px; }
 
-        /* ================= NUBE DE TEXTO (MARVIN) ================= */
-        .burbuja-texto { position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%) scale(0); background: #fff; padding: 8px 14px; border-radius: 15px; font-weight: 900; color: #ff2d55; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 20; border: 3px solid #ff2d55; white-space: nowrap; font-size: 1.1rem; opacity: 0; pointer-events: none; }
+        .burbuja-texto { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%) scale(0); background: #fff; padding: 10px 16px; border-radius: 20px; font-weight: 900; color: #ff2d55; box-shadow: 0 5px 20px rgba(0,0,0,0.5); transition: transform 0.15s cubic-bezier(0.2, 1.5, 0.4, 1.5); z-index: 20; border: 4px solid #ff2d55; white-space: nowrap; font-size: 1.3rem; opacity: 0; pointer-events: none; }
         .burbuja-texto.activa { transform: translateX(-50%) scale(1); opacity: 1; }
-        .burbuja-texto::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); border-width: 10px 10px 0; border-style: solid; border-color: #ff2d55 transparent transparent transparent; }
+        .burbuja-texto::after { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); border-width: 12px 12px 0; border-style: solid; border-color: #ff2d55 transparent transparent transparent; }
 
-        /* ================= ARSENAL Y BOTONES ================= */
-        .acciones-contenedor { display: flex; flex-direction: column; gap: 5px; width: 100%; z-index: 10; margin-top: 10px;}
-        .arsenal { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px; background: #e0e0e0; border-radius: 8px; padding: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .acciones-contenedor { display: flex; flex-direction: column; gap: 8px; width: 100%; z-index: 10; margin-top: 10px;}
+        
+        .arsenal-wrapper { width: 100%; overflow: hidden; border-radius: 8px; background: #e0e0e0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
+        .arsenal { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 5px; padding: 6px; box-sizing: border-box; }
+        .arsenal::-webkit-scrollbar { display: none; }
+        
         .fila-inferior { display: flex; justify-content: center; gap: 5px; }
         
-        .btn-accion { border: none; background: transparent; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 1.2rem; transition: transform 0.1s, background 0.2s; }
-        .btn-accion:active { transform: scale(0.8); }
-        .btn-accion:hover { background: #c8c8c8; }
-        .btn-comentar { background: #1e3c72; color: white; flex-grow: 1; font-weight: bold; font-size: 0.9rem; }
-        .btn-comentar:hover { background: #152a52; }
-        .btn-marvin { background: #ffeb3b; border: 1px solid #fbc02d; margin-top: 2px; }
-        .btn-marvin:hover { background: #fbc02d; }
+        .btn-accion { flex: 0 0 auto; scroll-snap-align: center; border: none; background: #f4f4f4; padding: 8px; border-radius: 8px; cursor: pointer; font-size: 1.5rem; transition: transform 0.1s, background 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-accion:active { transform: scale(0.7); }
+        .btn-accion:hover { background: #fff; }
+        .btn-comentar { background: #1e3c72; color: white; flex-grow: 1; font-weight: 900; font-size: 1rem; padding: 10px; box-shadow: 0 4px 10px rgba(30,60,114,0.3); }
+        .btn-comentar:hover { background: #112240; }
 
-        /* ================= ANIMACIONES DE DESTRUCCIÓN ================= */
-        .proyectil { position: fixed; font-size: 28px; pointer-events: none; z-index: 99999; transition: transform 0.35s cubic-bezier(0.3, 1.05, 0.4, 1.05), opacity 0.35s ease-out; }
-        .fragmento { position: fixed; width: 8px; height: 8px; border-radius: 2px; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.6s ease-out; }
-        .fragmento-tomate { border-radius: 50%; filter: blur(1px); }
-        .fragmento-huevo { border-radius: 50%; }
+        .proyectil { position: fixed; font-size: 40px; pointer-events: none; z-index: 99999; transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-out; }
+        .fragmento { position: fixed; width: 12px; height: 12px; border-radius: 3px; z-index: 99998; pointer-events: none; transition: transform 0.8s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.8s ease-out; }
+        .fragmento-tomate { border-radius: 50%; filter: blur(2px); width: 15px; height: 15px; }
+        .fragmento-huevo { border-radius: 50%; width: 10px; height: 10px; }
 
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-5deg); } 75% { transform: translateX(5px) rotate(5deg); } }
-        .impacto { animation: shake 0.3s; }
+        @keyframes shakeExtremo { 
+            0%, 100% { transform: translateX(0) rotate(0) scale(1); } 
+            20% { transform: translateX(-15px) rotate(-15deg) scale(1.1); } 
+            40% { transform: translateX(15px) rotate(15deg) scale(1.1); } 
+            60% { transform: translateX(-15px) rotate(-15deg) scale(1.1); } 
+            80% { transform: translateX(15px) rotate(15deg) scale(1.1); } 
+        }
+        .impacto { animation: shakeExtremo 0.4s ease-in-out; }
         
-        .grieta-1 { border-color: #999 !important; border-width: 6px !important; border-style: dashed !important; }
-        .grieta-2 { border-color: #666 !important; border-width: 8px !important; border-style: dotted !important; filter: grayscale(50%); }
-        .grieta-3 { border-color: #333 !important; border-width: 10px !important; border-style: double !important; filter: grayscale(100%); }
-        @keyframes caidaLibre { 0% { transform: translateY(0) rotate(0); opacity: 1; } 20% { transform: translateY(-30px) rotate(-15deg); } 100% { transform: translateY(2000px) rotate(180deg); opacity: 0; } }
-        .roto-destruido { animation: caidaLibre 1.5s forwards cubic-bezier(0.55, 0.085, 0.68, 0.53); pointer-events: none; }
+        .grieta-1 { border-color: #555 !important; border-width: 8px !important; border-style: dashed !important; filter: contrast(120%); }
+        .grieta-2 { border-color: #222 !important; border-width: 12px !important; border-style: dotted !important; filter: grayscale(60%) contrast(150%); }
+        .grieta-3 { border-color: #000 !important; border-width: 15px !important; border-style: double !important; filter: grayscale(100%) contrast(200%); }
+        @keyframes caidaLibreExtrema { 0% { transform: translateY(0) rotate(0) scale(1); opacity: 1; } 15% { transform: translateY(-50px) rotate(-25deg) scale(1.2); } 100% { transform: translateY(3000px) rotate(720deg) scale(0); opacity: 0; } }
+        .roto-destruido { animation: caidaLibreExtrema 1.2s forwards cubic-bezier(0.55, 0.085, 0.68, 0.53); pointer-events: none; }
 
-        /* ================= MURO Y MODAL ================= */
-        .seccion-muro { padding: 40px 15px; max-width: 900px; margin: auto; }
-        .controles-muro { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;}
-        .controles-muro select { padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit; font-weight: bold; }
-        .lista-resenas { display: flex; flex-direction: column; gap: 15px; }
-        .resena-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #ccc; display: flex; flex-direction: column; gap: 8px; }
+        .seccion-muro { padding: 50px 15px; max-width: 900px; margin: auto; }
+        .controles-muro { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center;}
+        .controles-muro select { padding: 12px 20px; border-radius: 10px; border: 2px solid #1e3c72; font-family: inherit; font-weight: 900; font-size: 1rem; outline: none; }
+        .lista-resenas { display: flex; flex-direction: column; gap: 20px; }
+        .resena-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border-left: 8px solid #ccc; display: flex; flex-direction: column; gap: 10px; }
         .resena-positiva { border-left-color: #4cd964; }
         .resena-negativa { border-left-color: #ff3b30; }
-        .resena-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;}
-        .resena-autor { font-weight: 900; color: #1e3c72; }
-        .resena-objetivo { font-size: 0.8rem; color: #888; text-transform: uppercase; }
-        .resena-estrellas { color: #ff9500; font-size: 1.1rem; }
+        .resena-header { display: flex; justify-content: space-between; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;}
+        .resena-autor { font-family: 'Oswald', sans-serif; font-size: 1.3rem; color: #1e3c72; letter-spacing: 0.5px; }
+        .resena-objetivo { font-size: 0.85rem; color: #777; text-transform: uppercase; font-weight: 700; }
+        .resena-estrellas { color: #ff9500; font-size: 1.3rem; letter-spacing: 2px; }
+        .resena-texto { font-size: 1.1rem; color: #333; line-height: 1.6; font-weight: 500; }
 
-        .modal-fondo { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
-        .modal-contenido { background-color: #fff; padding: 30px; border-radius: 15px; width: 90%; max-width: 450px; text-align: center; position: relative; }
-        .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #888; line-height: 1;}
-        .grupo-input { text-align: left; margin-bottom: 15px; }
-        .grupo-input label { font-size: 0.9rem; font-weight: 900; display: block; margin-bottom: 5px;}
-        .grupo-input input, .grupo-input textarea, .grupo-input select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
-        .btn-enviar { background-color: #1e3c72; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 900; width: 100%; font-size: 1.1rem; text-transform: uppercase;}
+        .modal-fondo { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
+        .modal-contenido { background-color: #fff; padding: 35px; border-radius: 20px; width: 90%; max-width: 450px; text-align: center; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 2.5rem; cursor: pointer; color: #aaa; line-height: 1; transition: color 0.2s; }
+        .cerrar-modal:hover { color: #ff3b30; }
+        .grupo-input { text-align: left; margin-bottom: 20px; }
+        .grupo-input label { font-size: 1rem; font-weight: 900; display: block; margin-bottom: 8px; color: #111; }
+        .grupo-input input, .grupo-input textarea, .grupo-input select { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; font-family: inherit; font-size: 1rem; transition: border-color 0.2s; }
+        .grupo-input input:focus, .grupo-input textarea:focus, .grupo-input select:focus { border-color: #1e3c72; outline: none; }
+        .btn-enviar { background-color: #1e3c72; color: white; border: none; padding: 18px; border-radius: 10px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 1.3rem; width: 100%; letter-spacing: 1px; transition: transform 0.1s, background 0.2s; }
+        .btn-enviar:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -115,104 +112,15 @@
     </header>
 
     <div class="container">
-        <!-- ================= PODIO ================= -->
         <h2 class="titulo-seccion">LOS REYES DE LA TEMPORADA 4</h2>
-        <div class="podio-container">
-            
-            <!-- SUBDELEGADO (85%) -->
-            <div class="candidato-card" style="height: 380px; justify-content: flex-end;" id="card-AndreChocce">
-                <div class="zona-grafico" style="height: 180px;">
-                    <div class="barra-3d" onclick="this.classList.toggle('volteado')">
-                        <div class="cara frente" style="background: linear-gradient(180deg, #007aff, #005bb5);">
-                            <div class="texto-porcentaje">85%</div><div class="texto-etiqueta">APROB.</div>
-                        </div>
-                        <div class="cara atras">
-                            <div class="texto-porcentaje">15%</div><div class="texto-etiqueta">RECHAZO</div>
-                        </div>
-                    </div>
-                    <div class="foto-wrapper"><img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'"></div>
-                </div>
-                <div class="info-texto">
-                    <div class="nombre-delegado">André Chocce</div>
-                    <div class="curso-delegado">Subdelegado</div>
-                </div>
-                <div class="acciones-contenedor">
-                    <div class="arsenal">
-                        <button class="btn-accion" onclick="disparar(this, '🥚', 'AndreChocce')">🥚</button>
-                        <button class="btn-accion" onclick="disparar(this, '💩', 'AndreChocce')">💩</button>
-                        <button class="btn-accion" onclick="disparar(this, '🍅', 'AndreChocce')">🍅</button>
-                        <button class="btn-accion" onclick="disparar(this, '🪨', 'AndreChocce')">🪨</button>
-                    </div>
-                    <div class="fila-inferior"><button class="btn-accion btn-comentar" onclick="abrirReseña('André Chocce')">Calificar</button></div>
-                </div>
-            </div>
-
-            <!-- DELEGADA GENERAL (98%) -->
-            <div class="candidato-card" style="height: 420px; justify-content: flex-end;" id="card-ValerySuarez">
-                <div class="zona-grafico" style="height: 240px;">
-                    <div class="barra-3d" onclick="this.classList.toggle('volteado')">
-                        <div class="cara frente" style="background: linear-gradient(180deg, #4cd964, #28a745);">
-                            <div class="texto-porcentaje">98%</div><div class="texto-etiqueta">APROB.</div>
-                        </div>
-                        <div class="cara atras">
-                            <div class="texto-porcentaje">2%</div><div class="texto-etiqueta">RECHAZO</div>
-                        </div>
-                    </div>
-                    <div class="foto-wrapper"><img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'"></div>
-                </div>
-                <div class="info-texto">
-                    <div class="nombre-delegado">Valery Suarez</div>
-                    <div class="curso-delegado">Delegada General</div>
-                </div>
-                <div class="acciones-contenedor">
-                    <div class="arsenal">
-                        <button class="btn-accion" onclick="disparar(this, '🥚', 'ValerySuarez')">🥚</button>
-                        <button class="btn-accion" onclick="disparar(this, '💩', 'ValerySuarez')">💩</button>
-                        <button class="btn-accion" onclick="disparar(this, '🍅', 'ValerySuarez')">🍅</button>
-                        <button class="btn-accion" onclick="disparar(this, '🪨', 'ValerySuarez')">🪨</button>
-                    </div>
-                    <div class="fila-inferior"><button class="btn-accion btn-comentar" onclick="abrirReseña('Valery Suarez')">Calificar</button></div>
-                </div>
-            </div>
-
-            <!-- ALEXANDER (12% - Desaprobación) -->
-            <div class="candidato-card" style="height: 330px; justify-content: flex-end;" id="card-AlexanderH">
-                <div class="zona-grafico" style="height: 90px;">
-                    <div class="barra-3d" onclick="this.classList.toggle('volteado')">
-                        <div class="cara frente" style="background: linear-gradient(180deg, #ff3b30, #8b0000);">
-                            <div class="texto-porcentaje">12%</div><div class="texto-etiqueta">APROB.</div>
-                        </div>
-                        <div class="cara atras" style="background: #333;">
-                            <div class="texto-porcentaje" style="color:#ff3b30;">88%</div><div class="texto-etiqueta">RECHAZO</div>
-                        </div>
-                    </div>
-                    <div class="foto-wrapper"><img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'"></div>
-                </div>
-                <div class="info-texto">
-                    <div class="nombre-delegado">Alexander H.</div>
-                    <div class="curso-delegado">Delegado de Chow</div>
-                </div>
-                <div class="acciones-contenedor">
-                    <div class="arsenal">
-                        <button class="btn-accion" onclick="disparar(this, '🥚', 'AlexanderH')">🥚</button>
-                        <button class="btn-accion" onclick="disparar(this, '💩', 'AlexanderH')">💩</button>
-                        <button class="btn-accion" onclick="disparar(this, '🍅', 'AlexanderH')">🍅</button>
-                        <button class="btn-accion" onclick="disparar(this, '🪨', 'AlexanderH')">🪨</button>
-                    </div>
-                    <div class="fila-inferior"><button class="btn-accion btn-comentar" onclick="abrirReseña('Alexander H.')">Calificar</button></div>
-                </div>
-            </div>
-        </div>
+        <div class="podio-container" id="contenedorPodio"></div>
     </div>
 
-    <!-- ================= DELEGADOS DE CURSOS (GRÁFICO INTERACTIVO) ================= -->
     <section class="parlamento-section">
-        <h2 class="titulo-seccion">DELEGADOS DE CURSOS</h2>
-        <p style="text-align:center; color:#888; font-weight:bold; margin-top:-10px; margin-bottom: 40px; font-size:0.8rem;">HAZ CLIC EN LAS BARRAS PARA VER EL RECHAZO</p>
+        <h2 class="titulo-seccion" style="margin-bottom: 30px;">DELEGADOS DE CURSOS</h2>
         <div class="carrusel-track" id="carruselTrack"></div>
     </section>
 
-    <!-- ================= MURO ================= -->
     <section class="seccion-muro">
         <h2 class="titulo-seccion">EL MURO DEL PUEBLO</h2>
         <div class="controles-muro">
@@ -227,18 +135,17 @@
         <div class="lista-resenas" id="contenedorResenas"></div>
     </section>
 
-    <!-- ================= MODAL ================= -->
     <div id="modalMuro" class="modal-fondo">
         <div class="modal-contenido">
             <span class="cerrar-modal" onclick="cerrarReseña()">&times;</span>
-            <h3 style="margin-top:0; color:#1e3c72; font-size:1.8rem">Calificar</h3>
-            <p style="color:#666; margin-top:-10px;">Para: <strong id="nombreDelegadoModal">---</strong></p>
+            <h3 style="margin-top:0; color:#1e3c72; font-family: 'Oswald', sans-serif; font-size:2.5rem; letter-spacing: 1px;">CALIFICAR</h3>
+            <p style="color:#666; margin-top:-15px; font-weight: 700;">Para: <strong id="nombreDelegadoModal" style="color:#111;">---</strong></p>
             <div class="grupo-input">
                 <label>Tu Nombre:</label>
                 <input type="text" id="inputNombre" placeholder="Ej. Juan Pérez">
-                <div style="margin-top: 8px; display:flex; gap:8px; align-items:center;">
-                    <input type="checkbox" id="checkAnonimo" onchange="toggleAnonimo()" style="width:auto;">
-                    <label style="margin:0; font-weight:normal;">Soy Anónimo 🕵️‍♂️</label>
+                <div style="margin-top: 10px; display:flex; gap:10px; align-items:center;">
+                    <input type="checkbox" id="checkAnonimo" onchange="toggleAnonimo()" style="width:20px; height:20px;">
+                    <label style="margin:0; font-weight:700; color:#555;">Soy Anónimo 🕵️‍♂️</label>
                 </div>
             </div>
             <div class="grupo-input">
@@ -254,16 +161,13 @@
             </div>
             <div class="grupo-input">
                 <label>Tu Comentario:</label>
-                <textarea id="inputComentario" rows="3" placeholder="Escribe tu descargo..."></textarea>
+                <textarea id="inputComentario" rows="3" placeholder="Escribe tu descargo aquí..."></textarea>
             </div>
-            <!-- BOTÓN CONECTADO A GOOGLE SHEETS -->
-            <button class="btn-enviar" id="btnEnviarResena" onclick="enviarASheets()">Publicar en el Muro</button>
+            <button class="btn-enviar" id="btnEnviarResena" onclick="enviarASheets()">PUBLICAR EN EL MURO</button>
         </div>
     </div>
 
-    <!-- ================= SCRIPT ================= -->
     <script>
-        // 1. RELOJ
         const fechaObjetivo = new Date("Sep 7, 2026 08:00:00").getTime();
         setInterval(() => {
             const distancia = fechaObjetivo - new Date().getTime();
@@ -271,107 +175,106 @@
             document.getElementById("reloj").innerHTML = Math.floor(distancia / 86400000) + "d " + Math.floor((distancia % 86400000) / 3600000) + "h " + Math.floor((distancia % 3600000) / 60000) + "m " + Math.floor((distancia % 60000) / 1000) + "s";
         }, 1000);
 
-        // 2. BASE DE DATOS CURSOS
+        const delegadosPodio = [
+            { id: "AndreChocce", nombre: "André Chocce", curso: "Subdelegado", aprob: 85, hMax: 180, cCard: 380 },
+            { id: "ValerySuarez", nombre: "Valery Suarez", curso: "Delegada General", aprob: 98, hMax: 240, cCard: 420 },
+            { id: "AlexanderH", nombre: "Alexander H.", curso: "Delegado de Chow", aprob: 12, hMax: 110, cCard: 330 }
+        ];
+
         const delegadosCursos = [
             { id: "JordanPercy", nombre: "Jordan Percy", curso: "Mat. Básicas 2", aprob: 70 },
             { id: "DanBarzola", nombre: "Dan Barzola", curso: "Ecología", aprob: 82 },
             { id: "Noemi", nombre: "Noemi", curso: "Filosofía", aprob: 65 },
             { id: "FernandoJ", nombre: "Fernando J.", curso: "Ed. Artística", aprob: 78 },
             { id: "MarvinRicse", nombre: "Marvin Ricse", curso: "Comunicación", aprob: 91 },
-            { id: "RamiroPerez", nombre: "Ramiro Perez", curso: "Cálculo B", aprob: 45 }, // Se le bajó a 45 para mostrar barra roja
+            { id: "RamiroPerez", nombre: "Ramiro Perez", curso: "Cálculo B", aprob: 45 },
             { id: "JhonChagua", nombre: "Jhon Chagua", curso: "Cálculo A", aprob: 68 },
             { id: "GreciaOchoa", nombre: "Grecia Ochoa", curso: "Geografía", aprob: 88 },
             { id: "BeatrizBanzer", nombre: "Beatriz Banzer", curso: "Inglés", aprob: 95 },
             { id: "CesarCoa", nombre: "Cesar Coa", curso: "Alimentaria", aprob: 85 }
         ];
 
-        const track = document.getElementById('carruselTrack');
         const filtro = document.getElementById('filtroDelegado');
-        ['Valery Suarez', 'André Chocce', 'Alexander H.'].forEach(n => filtro.innerHTML += `<option value="${n}">${n}</option>`);
-
-        function generarTarjetas() {
-            let html = "";
-            delegadosCursos.forEach(d => {
+        const renderHtmlTarjeta = (d, isPodio) => {
+            if(!document.querySelector(`option[value="${d.nombre}"]`)) {
                 filtro.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`;
-                
-                // Color Frontal: Verde (>75), Naranja (>50), Rojo (<50)
-                let colorFrente = d.aprob >= 75 ? 'linear-gradient(180deg, #4cd964, #28a745)' : (d.aprob >= 50 ? 'linear-gradient(180deg, #ff9500, #d07000)' : 'linear-gradient(180deg, #ff3b30, #8b0000)');
-                let rechazo = 100 - d.aprob;
-                
-                // Altura de la barra calculada dinámicamente según la aprobación
-                let alturaPx = 60 + (d.aprob * 1.5); 
-                
-                // Arsenal Especial Marvin
-                let extraArsenal = '';
-                if(d.id === 'MarvinRicse') {
-                    extraArsenal = `
-                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🏳️‍🌈', '${d.id}')">🏳️‍🌈</button>
-                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🥒', '${d.id}')">🥒</button>
-                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🍆', '${d.id}')">🍆</button>
-                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🖕', '${d.id}')">🖕</button>
-                    `;
-                }
+            }
 
-                html += `
-                <div class="parlamentario" id="card-${d.id}">
-                    <div class="zona-grafico" style="height: ${alturaPx}px;">
-                        <div class="barra-3d" onclick="this.classList.toggle('volteado')">
-                            <div class="cara frente" style="background: ${colorFrente};">
-                                <div class="texto-porcentaje">${d.aprob}%</div>
-                                <div class="texto-etiqueta">APROB.</div>
-                            </div>
-                            <div class="cara atras">
-                                <div class="texto-porcentaje">${rechazo}%</div>
-                                <div class="texto-etiqueta">RECHAZO</div>
-                            </div>
-                        </div>
-                        <div class="foto-wrapper">
-                            <div class="burbuja-texto" id="nube-${d.id}"></div>
-                            <img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/70'">
-                        </div>
-                    </div>
-                    
-                    <div class="info-texto">
-                        <div class="nombre-delegado">${d.nombre}</div>
-                        <div class="curso-delegado">${d.curso}</div>
-                    </div>
+            let esAprobado = d.aprob >= 50;
+            let valorMostrar = esAprobado ? d.aprob : (d.aprob - 100);
+            let etiqueta = esAprobado ? 'APROB.' : 'DESAPROB.';
+            let colorFondo = esAprobado ? (d.aprob >= 75 ? 'linear-gradient(180deg, #4cd964, #28a745)' : 'linear-gradient(180deg, #ff9500, #d07000)') : 'linear-gradient(180deg, #ff3b30, #8b0000)';
+            
+            let alturaPx = isPodio ? d.hMax : (60 + (d.aprob > 50 ? d.aprob : (100 - d.aprob)) * 1.5);
+            let estiloCard = isPodio ? `height: ${d.cCard}px; justify-content: flex-end;` : '';
 
-                    <div class="acciones-contenedor">
-                        <div class="arsenal">
-                            <button class="btn-accion" onclick="disparar(this, '🥚', '${d.id}')">🥚</button>
-                            <button class="btn-accion" onclick="disparar(this, '💩', '${d.id}')">💩</button>
-                            <button class="btn-accion" onclick="disparar(this, '🍅', '${d.id}')">🍅</button>
-                            <button class="btn-accion" onclick="disparar(this, '🪨', '${d.id}')">🪨</button>
-                            ${extraArsenal}
-                        </div>
-                        <div class="fila-inferior">
-                            <button class="btn-accion btn-comentar" onclick="abrirReseña('${d.nombre}')">Calificar a ${d.nombre.split(' ')[0]}</button>
-                        </div>
-                    </div>
-                </div>`;
-            });
-            track.innerHTML = html + html; 
-        }
-        generarTarjetas();
+            let emojisBase = `
+                <button class="btn-accion" onclick="disparar(this, '🥚', '${d.id}')">🥚</button>
+                <button class="btn-accion" onclick="disparar(this, '💩', '${d.id}')">💩</button>
+                <button class="btn-accion" onclick="disparar(this, '🍅', '${d.id}')">🍅</button>
+                <button class="btn-accion" onclick="disparar(this, '🪨', '${d.id}')">🪨</button>
+            `;
+            
+            if(d.id === 'MarvinRicse') {
+                emojisBase += `
+                    <button class="btn-accion" onclick="disparar(this, '🏳️‍🌈', '${d.id}')">🏳️‍🌈</button>
+                    <button class="btn-accion" onclick="disparar(this, '🥒', '${d.id}')">🥒</button>
+                    <button class="btn-accion" onclick="disparar(this, '🍆', '${d.id}')">🍆</button>
+                    <button class="btn-accion" onclick="disparar(this, '🖕', '${d.id}')">🖕</button>
+                `;
+            }
 
-        // 3. FÍSICAS Y ANIMACIONES DE PARTÍCULAS
+            return `
+            <div class="${isPodio ? 'candidato-card' : 'parlamentario'}" id="card-${d.id}" style="${estiloCard}">
+                <div class="zona-grafico" style="height: ${alturaPx}px;">
+                    <div class="barra-unica" style="background: ${colorFondo};">
+                        <div class="texto-porcentaje">${valorMostrar}%</div>
+                        <div class="texto-etiqueta">${etiqueta}</div>
+                    </div>
+                    <div class="foto-wrapper">
+                        <div class="burbuja-texto" id="nube-${d.id}"></div>
+                        <img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/70'">
+                    </div>
+                </div>
+                
+                <div class="info-texto">
+                    <div class="nombre-delegado">${d.nombre}</div>
+                    <div class="curso-delegado">${d.curso}</div>
+                </div>
+
+                <div class="acciones-contenedor">
+                    <div class="arsenal-wrapper">
+                        <div class="arsenal">${emojisBase}</div>
+                    </div>
+                    <div class="fila-inferior" style="margin-top:5px;">
+                        <button class="btn-comentar" onclick="abrirReseña('${d.nombre}')">CALIFICAR</button>
+                    </div>
+                </div>
+            </div>`;
+        };
+
+        document.getElementById('contenedorPodio').innerHTML = delegadosPodio.map(d => renderHtmlTarjeta(d, true)).join('');
+        
+        let htmlCursos = delegadosCursos.map(d => renderHtmlTarjeta(d, false)).join('');
+        document.getElementById('carruselTrack').innerHTML = htmlCursos + htmlCursos; 
+
         const registroDaños = {}; 
-        const frasesMarvin = ["¡Qué rico! 🥵🤤", "¡No pares! 🥵", "¡Dame más!", "¡Más rápido! 🥵", "¡Todo tu Coa! 🥒", "¡Sí papi! 🥵", "¡DAME TODO EL TAMBILLO! 🍆"];
+        const frasesMarvin = ["¡QUÉ RICO! 🥵", "¡NO PARES! 🥵", "¡DAME MÁS! 🍆", "¡MÁS RÁPIDO! 🥵", "¡TODO TU COA! 🥒", "¡SÍ PAPI! 🥵", "¡DAME TODO EL TAMBILLO! 🍆"];
 
         function crearFragmentos(x, y, tipo) {
-            const paletas = { '🪨': ['#888', '#555', '#333', '#666'], '🥚': ['#fff', '#fff', '#ffd700', '#ffeb3b'], '🍅': ['#ff3b30', '#c41e15', '#a01810', '#ff4d4d'] };
+            const paletas = { '🪨': ['#888', '#555', '#333', '#111'], '🥚': ['#fff', '#fff', '#ffd700', '#ffb300'], '🍅': ['#ff3b30', '#900', '#c00', '#f00'] };
             if(!paletas[tipo]) return; 
-            for(let i=0; i<8; i++) {
+            for(let i=0; i<20; i++) {
                 let frag = document.createElement('div');
                 frag.className = 'fragmento ' + (tipo === '🍅' ? 'fragmento-tomate' : (tipo === '🥚' ? 'fragmento-huevo' : ''));
                 frag.style.background = paletas[tipo][Math.floor(Math.random() * paletas[tipo].length)];
                 frag.style.left = x + 'px'; frag.style.top = y + 'px';
                 document.body.appendChild(frag);
                 
-                let angulo = Math.random() * Math.PI * 2; let fuerza = Math.random() * 60 + 30;
-                let velX = Math.cos(angulo) * fuerza; let velY = Math.sin(angulo) * fuerza + 60; 
-                setTimeout(() => { frag.style.transform = `translate(${velX}px, ${velY}px) rotate(${Math.random()*360}deg)`; frag.style.opacity = '0'; }, 10);
-                setTimeout(() => frag.remove(), 600);
+                let angulo = Math.random() * Math.PI * 2; let fuerza = Math.random() * 120 + 50;
+                let velX = Math.cos(angulo) * fuerza; let velY = Math.sin(angulo) * fuerza + 80; 
+                setTimeout(() => { frag.style.transform = `translate(${velX}px, ${velY}px) rotate(${Math.random()*720}deg) scale(${Math.random() + 0.5})`; frag.style.opacity = '0'; }, 10);
+                setTimeout(() => frag.remove(), 800);
             }
         }
 
@@ -388,7 +291,7 @@
             proyectil.style.left = rBtn.left + 'px'; proyectil.style.top = rBtn.top + 'px';
             const dX = (rFoto.left + rFoto.width/2) - rBtn.left; const dY = (rFoto.top + rFoto.height/2) - rBtn.top;
 
-            setTimeout(() => { proyectil.style.transform = `translate(${dX}px, ${dY}px) rotate(360deg)`; proyectil.style.opacity = '0'; }, 10);
+            setTimeout(() => { proyectil.style.transform = `translate(${dX}px, ${dY}px) rotate(720deg) scale(1.5)`; proyectil.style.opacity = '0'; }, 10);
 
             setTimeout(() => {
                 proyectil.remove();
@@ -397,27 +300,26 @@
                     if(nube) {
                         nube.innerText = frasesMarvin[Math.floor(Math.random() * frasesMarvin.length)];
                         nube.classList.add('activa');
-                        setTimeout(() => nube.classList.remove('activa'), 2500);
+                        setTimeout(() => nube.classList.remove('activa'), 2000);
                     }
                 }
                 
-                img.classList.add('impacto'); setTimeout(() => img.classList.remove('impacto'), 300);
+                img.classList.add('impacto'); setTimeout(() => img.classList.remove('impacto'), 400);
                 crearFragmentos(rFoto.left + rFoto.width/2, rFoto.top + rFoto.height/2, tipo);
 
                 if(tipo === '🪨') {
                     registroDaños[idDelegado].piedras++;
                     let cantPiedras = registroDaños[idDelegado].piedras;
                     if(cantPiedras === 1) img.classList.add('grieta-1');
-                    if(cantPiedras === 4) { img.classList.remove('grieta-1'); img.classList.add('grieta-2'); }
-                    if(cantPiedras === 7) { img.classList.remove('grieta-2'); img.classList.add('grieta-3'); }
-                    if(cantPiedras >= 10) tarjeta.classList.add('roto-destruido');
+                    if(cantPiedras === 3) { img.classList.remove('grieta-1'); img.classList.add('grieta-2'); }
+                    if(cantPiedras === 5) { img.classList.remove('grieta-2'); img.classList.add('grieta-3'); }
+                    if(cantPiedras >= 8) tarjeta.classList.add('roto-destruido');
                 }
-            }, 350);
+            }, 250);
         }
 
-        // 4. RESEÑAS, MODAL Y GOOGLE SHEETS
         let resenasDB = [];
-        const URL_GOOGLE_APPS_SCRIPT = "PON_TU_URL_AQUI"; // <--- Reemplaza esto luego
+        const URL_GOOGLE_APPS_SCRIPT = "PON_TU_URL_AQUI"; 
 
         function renderizarReseñas() {
             const cont = document.getElementById('contenedorResenas');
@@ -425,7 +327,7 @@
             const fTipo = document.getElementById('filtroTipo').value;
             cont.innerHTML = "";
             let filtradas = resenasDB.filter(r => (fDelegado === "Todos" || r.delegado === fDelegado) && (fTipo === "Todos" || r.tipo === fTipo));
-            if(filtradas.length === 0) return cont.innerHTML = "<p style='text-align:center; color:#888;'>No hay reseñas aún. ¡Sé el primero!</p>";
+            if(filtradas.length === 0) return cont.innerHTML = "<p style='text-align:center; color:#888; font-weight:900; font-size:1.2rem; padding: 40px;'>NO HAY RESEÑAS AÚN. ¡SÉ EL PRIMERO!</p>";
             filtradas.reverse().forEach(r => {
                 let colorClass = r.estrellas >= 3 ? "resena-positiva" : (r.estrellas > 0 ? "resena-negativa" : "");
                 let estrellasHTML = r.estrellas > 0 ? "⭐".repeat(r.estrellas) : "";
@@ -451,23 +353,23 @@
             let stars = parseInt(document.getElementById("inputEstrellas").value);
             let btn = document.getElementById("btnEnviarResena");
 
-            if(coment.trim() === "") return alert("¡Debes escribir un comentario!");
+            if(coment.trim() === "") return alert("¡DEBES ESCRIBIR UN COMENTARIO!");
             let tipoC = stars >= 3 ? "Positivas" : (stars > 0 ? "Negativas" : "SinCalificar");
             
             if(URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") {
                 resenasDB.push({ autor: nombre, delegado: delegadoActualModal, estrellas: stars, texto: coment, tipo: tipoC });
-                renderizarReseñas(); cerrarReseña(); alert("Simulación de guardado exitosa. (Aún falta conectar tu URL de Sheets)"); return;
+                renderizarReseñas(); cerrarReseña(); alert("Simulación de guardado exitosa."); return;
             }
 
-            btn.innerText = "Enviando..."; btn.disabled = true;
+            btn.innerText = "ENVIANDO..."; btn.disabled = true;
             let datos = { autor: nombre, delegado: delegadoActualModal, estrellas: stars, texto: coment, tipo: tipoC };
 
             fetch(URL_GOOGLE_APPS_SCRIPT, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(datos) })
             .then(() => {
-                resenasDB.push(datos); renderizarReseñas(); cerrarReseña(); alert("¡Tu reseña se ha guardado en la base de datos!");
-                btn.innerText = "Publicar en el Muro"; btn.disabled = false;
+                resenasDB.push(datos); renderizarReseñas(); cerrarReseña(); alert("¡TU RESEÑA SE HA GUARDADO!");
+                btn.innerText = "PUBLICAR EN EL MURO"; btn.disabled = false;
             })
-            .catch(error => { alert("Hubo un error de conexión."); btn.innerText = "Publicar en el Muro"; btn.disabled = false; });
+            .catch(error => { alert("Hubo un error de conexión."); btn.innerText = "PUBLICAR EN EL MURO"; btn.disabled = false; });
         }
     </script>
 </body>
