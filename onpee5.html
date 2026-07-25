@@ -288,7 +288,7 @@
     </div>
 
     <script>
-        const URL_GOOGLE_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbxE7Ba2eXoVz0vkHjYwHv7GN8b7HcUFP9Uf20-jfiWtgoeO_z1UbsGP0Ijog-KbTG4h6Q/exec"; 
+        const URL_GOOGLE_APPS_SCRIPT = "PON_TU_URL_AQUI"; 
         
         const fObj = new Date("Sep 7, 2026 08:00:00").getTime();
         setInterval(() => {
@@ -327,8 +327,11 @@
         const crearTarjetaVertical = (d, isPodio) => {
             if(!document.querySelector(`option[value="${d.nombre}"]`)) filtro.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`;
             let esAprob = d.aprob >= 50, val = esAprob ? d.aprob : (100 - d.aprob), colorCls = esAprob ? 'fondo-verde' : 'fondo-rojo', label = esAprob ? 'APROB.' : 'DESAPROB.', altura = isPodio ? (80 + (val * 1.5)) : (60 + val);
+            
+            // EMOJIS ORDENADOS CON CORAZONES Y PISTOLA PRIMERO
             let btns = `<button class="btn-emoji" onclick="fuego(this,'💖','${d.id}')">💖</button><button class="btn-emoji" onclick="fuego(this,'🩷','${d.id}')">🩷</button><button class="btn-emoji" onclick="fuego(this,'🔫','${d.id}')">🔫</button><button class="btn-emoji" onclick="fuego(this,'🥚','${d.id}')">🥚</button><button class="btn-emoji" onclick="fuego(this,'💩','${d.id}')">💩</button><button class="btn-emoji" onclick="fuego(this,'🍅','${d.id}')">🍅</button><button class="btn-emoji" onclick="fuego(this,'🪨','${d.id}')">🪨</button><button class="btn-emoji" onclick="fuego(this,'💀','${d.id}')">💀</button>`;
             if(d.id === 'MarvinRicse') btns += `<button class="btn-emoji btn-marvin" onclick="fuego(this,'🏳️‍🌈','${d.id}')">🏳️‍🌈</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🥒','${d.id}')">🥒</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🍆','${d.id}')">🍆</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🖕','${d.id}')">🖕</button>`;
+            
             let randId = 'scroll_' + Math.random().toString(36).substr(2, 9);
             return `
             <div class="${isPodio ? 'candidato-vertical' : 'tarjeta-curso'}" id="card-${d.id}">
@@ -418,12 +421,34 @@
         }, 5000);
 
         function explota(x, y, t) {
-            const pal = { '🪨': ['#757575', '#424242', '#212121'], '🥚': ['#fff', '#ffd700', '#ffb300'], '🍅': ['#d50000', '#b71c1c', '#f44336'], '💩': ['#5d4037', '#3e2723', '#4e342e', '#795548'], '💖': ['#ff4081', '#f50057', '#c51162'], '🩷': ['#ff80ab', '#ff4081', '#ffb2ff'], '🔫': ['#00e5ff', '#18ffff', '#00bcd4'], '💀': ['#f5f5f5', '#eeeeee', '#e0e0e0', '#bdbdbd'] };
+            const pal = { 
+                '🪨': ['#757575', '#424242', '#212121'], 
+                '🥚': ['#fff', '#ffd700', '#ffb300'], 
+                '🍅': ['#d50000', '#b71c1c', '#f44336'], 
+                '💩': ['#5d4037', '#3e2723', '#4e342e', '#795548'],
+                '💖': ['#ff4081', '#f50057', '#c51162'],
+                '🩷': ['#ff80ab', '#ff4081', '#ffb2ff'],
+                '🔫': ['#00e5ff', '#18ffff', '#00bcd4'],
+                '💀': ['#f5f5f5', '#eeeeee', '#e0e0e0', '#bdbdbd'],
+                '🏳️‍🌈': ['#ff1744', '#ffea00', '#00e676', '#2979ff', '#aa00ff'],
+                '🥒': ['#00c853', '#64dd17', '#1b5e20'],
+                '🍆': ['#7b1fa2', '#4a148c', '#9c27b0'],
+                '🖕': ['#ffb300', '#ff8f00', '#e65100']
+            };
             if(!pal[t]) return; 
             for(let i=0; i<15; i++) {
                 let f = document.createElement('div'), extraCls = '';
-                if(t==='🍅') extraCls = 'frag-tom'; else if(t==='🥚' || t==='💖' || t==='🩷') extraCls = 'frag-hue'; else if(t==='💩') extraCls = 'frag-popo'; else if(t==='🔫') extraCls = 'frag-agua'; else if(t==='💀') extraCls = 'frag-hueso';
-                f.className = 'fragmento ' + extraCls; f.style.background = pal[t][Math.floor(Math.random()*pal[t].length)]; f.style.left = x+'px'; f.style.top = y+'px'; document.body.appendChild(f);
+                if(t==='🍅') extraCls = 'frag-tom'; 
+                else if(t==='🥚' || t==='💖' || t==='🩷') extraCls = 'frag-hue'; 
+                else if(t==='💩') extraCls = 'frag-popo'; 
+                else if(t==='🔫') extraCls = 'frag-agua'; 
+                else if(t==='💀') extraCls = 'frag-hueso';
+                
+                f.className = 'fragmento ' + extraCls; 
+                f.style.background = pal[t][Math.floor(Math.random()*pal[t].length)]; 
+                f.style.left = x+'px'; f.style.top = y+'px'; 
+                document.body.appendChild(f);
+                
                 let ang = Math.random()*Math.PI*2, fue = Math.random()*100+50, vX = Math.cos(ang)*fue, vY = Math.sin(ang)*fue+100; 
                 setTimeout(() => { f.style.transform = `translate(${vX}px, ${vY}px) rotate(${Math.random()*720}deg) scale(${Math.random()+0.5})`; f.style.opacity = '0'; }, 10);
                 setTimeout(() => f.remove(), 600);
@@ -435,6 +460,7 @@
             if(!globalEmojiStats[id]) globalEmojiStats[id] = {};
             if(!globalEmojiStats[id][t]) globalEmojiStats[id][t] = 0;
             globalEmojiStats[id][t]++;
+            
             if(!emojiQueue[id]) emojiQueue[id] = {};
             if(!emojiQueue[id][t]) emojiQueue[id][t] = 0;
             emojiQueue[id][t]++;
@@ -517,12 +543,7 @@
             
             let payload = { tipoAccion: "CONFESION", texto: txt, imagen: base64Confesion };
             if(URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") {
-                alert("Simulación: Confesión guardada."); 
-                document.getElementById("confesionTxt").value = ""; 
-                document.getElementById("confesionImg").value = ""; 
-                base64Confesion = ""; 
-                let lbl = document.getElementById("lblImg"); lbl.innerText = "📷 SUBIR FOTO"; lbl.style.backgroundColor = "transparent"; lbl.style.color = "#00ffcc"; lbl.style.borderColor = "#00ffcc";
-                btn.innerText = "PUBLICAR ANÓNIMO"; btn.disabled = false; return;
+                alert("Simulación: Confesión guardada."); document.getElementById("confesionTxt").value = ""; document.getElementById("confesionImg").value = ""; base64Confesion = ""; let lbl = document.getElementById("lblImg"); lbl.innerText = "📷 SUBIR FOTO"; lbl.style.backgroundColor = "transparent"; lbl.style.color = "#00ffcc"; lbl.style.borderColor = "#00ffcc"; btn.innerText = "PUBLICAR ANÓNIMO"; btn.disabled = false; return;
             }
             fetch(URL_GOOGLE_APPS_SCRIPT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) })
             .then(() => { 
@@ -540,7 +561,7 @@
         function desbloquearUrna() {
             let n = document.getElementById("idNombre").value.trim(), a = document.getElementById("idApellido").value.trim(), c = document.getElementById("idCodigo").value.trim();
             if(!n || !a || !c) return alert("⚠️ ¡ERROR! DEBES INGRESAR TU NOMBRE, APELLIDO Y CÓDIGO DE ESTUDIANTE.");
-            if(!codigosValidos.includes(c)) return alert("⚠️ ¡ERROR! ESE CÓDIGO NO EXISTE O NO PERTENECE AL E5. NO TE HAGAS EL VIVO.");
+            if(!codigosValidos.includes(c)) return alert("⚠️ ¡ERROR! ESE CÓDIGO NO EXISTE O NO PERTENECE AL E5.");
             
             let historial = JSON.parse(localStorage.getItem("votos_historial_" + c)) || {};
             let todoLleno = true;
@@ -549,7 +570,7 @@
                 if(historial["p"+i]) { inp.value = ""; inp.placeholder = "Ya votaste aquí"; inp.disabled = true; } 
                 else { todoLleno = false; }
             }
-            if(todoLleno) return alert("⚠️ ¡YA VOTASTE POR TODOS LOS CARGOS CON ESTE CÓDIGO! YA FUISTE.");
+            if(todoLleno) return alert("⚠️ ¡YA VOTASTE POR TODOS LOS CARGOS CON ESTE CÓDIGO!");
             
             document.getElementById("bloqueo-identidad").style.display = "none";
             document.getElementById("urna-propuestas").style.display = "block";
