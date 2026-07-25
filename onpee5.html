@@ -71,6 +71,8 @@
         .frag-tom { border-radius: 50%; filter: blur(1px); width: 14px; height: 14px; }
         .frag-hue { border-radius: 50%; width: 10px; height: 10px; }
         .frag-popo { border-radius: 50%; width: 16px; height: 16px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.3)); }
+        .frag-agua { border-radius: 50%; width: 8px; height: 8px; filter: drop-shadow(0 0 2px #00e5ff); }
+        .frag-hueso { width: 12px; height: 14px; border-radius: 3px; background-color: #f5f5f5; }
         
         .seccion-chatbot { background: #fff; padding: 30px 20px; margin: 40px auto; max-width: 700px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-caja { height: 350px; overflow-y: auto; background: #f4f6f8; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
@@ -125,13 +127,13 @@
 <body>
 
     <header>
-        <img src="FOTOS/ONPEE5LOGO.jpg" alt="Logo ONPEE5" class="logo-imagen">
+        <img src="FOTOS/ONPEE5.jpg" alt="Logo ONPEE5" class="logo-imagen">
         <div class="aviso-temp5">¡SE VIENEN LAS ELECCIONES PARA LA TEMPORADA 5!</div>
         <div class="reloj-container" id="reloj"></div>
     </header>
 
     <div class="container">
-        <h2 class="titulo-seccion">LOS ELEGIDOS DE LA TEMPORADA 4</h2>
+        <h2 class="titulo-seccion">LOS REYES DE LA TEMPORADA 4</h2>
         <div class="contenedor-podio" id="contenedorPodio"></div>
     </div>
 
@@ -284,7 +286,7 @@
             let label = esAprob ? 'APROB.' : 'DESAPROB.';
             let altura = isPodio ? d.hPx : (60 + (esAprob ? d.aprob : (100 - d.aprob)));
 
-            let btns = `<button class="btn-emoji" onclick="fuego(this,'🥚','${d.id}')">🥚</button><button class="btn-emoji" onclick="fuego(this,'💩','${d.id}')">💩</button><button class="btn-emoji" onclick="fuego(this,'🍅','${d.id}')">🍅</button><button class="btn-emoji" onclick="fuego(this,'🪨','${d.id}')">🪨</button>`;
+            let btns = `<button class="btn-emoji" onclick="fuego(this,'🥚','${d.id}')">🥚</button><button class="btn-emoji" onclick="fuego(this,'💩','${d.id}')">💩</button><button class="btn-emoji" onclick="fuego(this,'🍅','${d.id}')">🍅</button><button class="btn-emoji" onclick="fuego(this,'🪨','${d.id}')">🪨</button><button class="btn-emoji" onclick="fuego(this,'💖','${d.id}')">💖</button><button class="btn-emoji" onclick="fuego(this,'🩷','${d.id}')">🩷</button><button class="btn-emoji" onclick="fuego(this,'🔫','${d.id}')">🔫</button><button class="btn-emoji" onclick="fuego(this,'💀','${d.id}')">💀</button>`;
             if(d.id === 'MarvinRicse') btns += `<button class="btn-emoji btn-marvin" onclick="fuego(this,'🏳️‍🌈','${d.id}')">🏳️‍🌈</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🥒','${d.id}')">🥒</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🍆','${d.id}')">🍆</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🖕','${d.id}')">🖕</button>`;
 
             let randId = 'scroll_' + Math.random().toString(36).substr(2, 9);
@@ -319,11 +321,26 @@
         const frasesMarvin = ["¡QUÉ RICO! 🥵", "¡NO PARES! 🥵", "¡DAME MÁS! 🍆", "¡MÁS RÁPIDO! 🥵", "¡TODO TU COA! 🥒", "¡SÍ PAPI! 🥵", "¡DAME TODO EL TAMBILLO! 🍆"];
 
         function explota(x, y, t) {
-            const pal = { '🪨': ['#757575', '#424242', '#212121'], '🥚': ['#fff', '#ffd700', '#ffb300'], '🍅': ['#d50000', '#b71c1c', '#f44336'], '💩': ['#5d4037', '#3e2723', '#4e342e', '#795548'] };
+            const pal = { 
+                '🪨': ['#757575', '#424242', '#212121'], 
+                '🥚': ['#fff', '#ffd700', '#ffb300'], 
+                '🍅': ['#d50000', '#b71c1c', '#f44336'], 
+                '💩': ['#5d4037', '#3e2723', '#4e342e', '#795548'],
+                '💖': ['#ff4081', '#f50057', '#c51162'],
+                '🩷': ['#ff80ab', '#ff4081', '#ffb2ff'],
+                '🔫': ['#00e5ff', '#18ffff', '#00bcd4'],
+                '💀': ['#f5f5f5', '#eeeeee', '#e0e0e0', '#bdbdbd']
+            };
             if(!pal[t]) return; 
             for(let i=0; i<15; i++) {
                 let f = document.createElement('div');
-                f.className = 'fragmento ' + (t==='🍅'?'frag-tom':(t==='🥚'?'frag-hue':(t==='💩'?'frag-popo':'')));
+                let extraCls = '';
+                if(t==='🍅') extraCls = 'frag-tom';
+                else if(t==='🥚' || t==='💖' || t==='🩷') extraCls = 'frag-hue';
+                else if(t==='💩') extraCls = 'frag-popo';
+                else if(t==='🔫') extraCls = 'frag-agua';
+                else if(t==='💀') extraCls = 'frag-hueso';
+                f.className = 'fragmento ' + extraCls;
                 f.style.background = pal[t][Math.floor(Math.random()*pal[t].length)];
                 f.style.left = x+'px'; f.style.top = y+'px';
                 document.body.appendChild(f);
