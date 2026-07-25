@@ -4,35 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONPEE5 - La Cantuta</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800;900&family=Oswald:wght@600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f4f6f8; color: #111; margin: 0; padding: 0; overflow-x: hidden; }
-        header { background-color: #fff; text-align: center; padding: 25px 10px; border-bottom: 6px solid #d32f2f; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; }
         
-        .nuevo-logo-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap; }
-        .logo-bloque { background: #d32f2f; color: #fff; font-family: 'Oswald', sans-serif; font-size: clamp(3rem, 6vw, 4.5rem); padding: 5px 20px; border-radius: 12px; letter-spacing: 2px; line-height: 1.1; box-shadow: 0 4px 10px rgba(211,47,47,0.3); }
-        .logo-letras { font-family: 'Montserrat', sans-serif; font-size: clamp(0.7rem, 2.5vw, 1rem); font-weight: 900; color: #111; text-align: left; line-height: 1.2; text-transform: uppercase; max-width: 250px; }
+        /* ================= HEADER Y NUEVO LOGO ================= */
+        header { background-color: #fff; text-align: center; padding: 30px 10px 25px 10px; border-bottom: 8px solid #d32f2f; box-shadow: 0 5px 25px rgba(0,0,0,0.08); display: flex; flex-direction: column; align-items: center; }
+        .nuevo-logo-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .logo-letras-grandes { font-family: 'Oswald', sans-serif; font-size: clamp(4rem, 10vw, 6.5rem); font-weight: 900; color: #111; letter-spacing: -3px; line-height: 1; text-shadow: 2px 2px 0px #eee; }
+        .logo-letras-grandes span { color: #d32f2f; }
+        .logo-texto-inferior { background: #111; color: #fff; font-family: 'Montserrat', sans-serif; font-size: clamp(0.7rem, 2.5vw, 1rem); font-weight: 900; padding: 6px 15px; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; border-radius: 4px; }
         
-        .aviso-temp5 { background: #111; color: #00ffcc; display: inline-block; padding: 8px 20px; border-radius: 8px; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: clamp(0.9rem, 3vw, 1.2rem); margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; animation: pulse 2s infinite; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        .contador-caja { background: #f4f6f8; color: #d32f2f; display: inline-block; padding: 5px 15px; border-radius: 6px; margin-top: 10px; font-family: 'Oswald', sans-serif; font-size: clamp(1.2rem, 4vw, 2rem); border: 2px solid #e0e0e0; }
+        .aviso-temp5 { background: #d32f2f; color: #fff; display: inline-block; padding: 8px 20px; border-radius: 25px; font-weight: 900; font-size: clamp(0.75rem, 2.5vw, 1rem); margin-top: 25px; text-transform: uppercase; letter-spacing: 1px; animation: pulse 2s infinite; box-shadow: 0 4px 15px rgba(211,47,47,0.4); }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .contador-caja { background: #f4f6f8; color: #111; display: inline-block; padding: 5px 20px; border-radius: 6px; margin-top: 15px; font-family: 'Oswald', sans-serif; font-size: clamp(1.2rem, 4vw, 2rem); border: 2px solid #ccc; }
+        
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 10px; }
         h2.titulo-seccion { text-align: center; color: #0d47a1; font-family: 'Oswald', sans-serif; margin-bottom: 25px; font-size: clamp(1.8rem, 5vw, 2.8rem); letter-spacing: 1px; text-transform: uppercase; line-height: 1.1;}
+        
+        /* ================= TARJETAS Y PODIO ================= */
         .contenedor-podio { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; gap: 2%; margin-top: 20px; padding-top: 60px; margin-bottom: 40px; }
         .candidato-vertical { width: 32%; display: flex; flex-direction: column; align-items: center; background: #fff; border-radius: 12px; padding: 0 8px 12px 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); box-sizing: border-box; position: relative; }
         .zona-barra { width: 100%; position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; margin-bottom: 10px; }
         .foto-top { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 75px; height: 75px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.2); background: #eee; object-fit: cover; z-index: 5; transition: filter 0.2s; }
+        
         .nube-hot { position: absolute; top: -95px; left: 50%; transform: translateX(-50%) scale(0); background: #fff; border: 2px solid #ff2d55; color: #ff2d55; padding: 8px 12px; border-radius: 12px; font-weight: 900; font-size: 0.95rem; text-align: center; max-width: 140px; white-space: normal; line-height: 1.2; z-index: 999; opacity: 0; transition: all 0.25s cubic-bezier(0.2, 1.5, 0.4, 1.5); }
         .nube-hot.activa { transform: translateX(-50%) scale(1); opacity: 1; }
         .nube-hot::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: #ff2d55 transparent transparent transparent; }
+
         .barra-grafico { width: 100%; border-radius: 8px 8px 0 0; display: flex; flex-direction: column; align-items: center; padding-top: 45px; box-shadow: inset 0 2px 10px rgba(255,255,255,0.3); }
         .fondo-verde { background: linear-gradient(180deg, #00c853, #00e676); }
         .fondo-rojo { background: linear-gradient(180deg, #d50000, #ff1744); }
         .texto-porcentaje { color: #fff; font-family: 'Oswald', sans-serif; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1; text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
         .texto-etiqueta { background: rgba(0,0,0,0.3); color: #fff; font-size: 0.6rem; text-transform: uppercase; font-weight: 900; margin-top: 4px; padding: 2px 5px; border-radius: 4px; letter-spacing: 0.5px;}
+        
         .info-basica { text-align: center; width: 100%; margin-bottom: 8px; }
         .nombre-candidato { font-size: clamp(0.85rem, 2.5vw, 1.1rem); font-weight: 900; color: #111; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .cargo-candidato { font-size: clamp(0.65rem, 2vw, 0.8rem); color: #666; font-weight: 800; text-transform: uppercase; margin-top: 2px; }
+        
+        /* ================= ARSENAL ================= */
         .arsenal-contenedor { display: flex; align-items: center; width: 100%; margin-bottom: 8px; background: #f0f0f0; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         .nav-emoji { background: #e0e0e0; border: none; font-size: 1rem; color: #333; cursor: pointer; padding: 8px 2px; border-radius: 6px; font-weight: 900; }
         .nav-emoji:active { background: #ccc; }
@@ -43,6 +53,8 @@
         .btn-marvin { background: #fffde7; border: 1px solid #ffea00; }
         .btn-calificar { width: 100%; background: #0d47a1; color: #fff; font-family: 'Oswald', sans-serif; font-size: clamp(0.8rem, 2.5vw, 1rem); padding: 8px 4px; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 3px 8px rgba(13,71,161,0.3); transition: transform 0.1s; }
         .btn-calificar:active { transform: scale(0.95); }
+        
+        /* ================= CARRUSEL DE CURSOS ================= */
         .parlamento-section { background: #fff; border-top: 4px solid #0d47a1; border-bottom: 4px solid #0d47a1; margin-top: 20px; position: relative;}
         .carrusel-wrapper { display: flex; align-items: center; width: 100%; position: relative;}
         .nav-carrusel { background: #0d47a1; color: #fff; border: none; font-size: 1.5rem; padding: 15px 10px; cursor: pointer; z-index: 20; position: absolute; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
@@ -52,6 +64,8 @@
         .carrusel-track { display: flex; gap: 15px; padding: 80px 45px 20px 45px; overflow-x: auto; scroll-snap-type: x mandatory; align-items: flex-end; scroll-behavior: smooth; width: 100%; scrollbar-width: none;}
         .carrusel-track::-webkit-scrollbar { display: none; }
         .tarjeta-curso { flex: 0 0 auto; width: 150px; display: flex; flex-direction: column; align-items: center; background: #fafafa; border-radius: 12px; padding: 0 8px 12px 8px; border: 1px solid #eee; scroll-snap-align: center; position: relative; }
+        
+        /* ================= FÍSICAS ================= */
         @keyframes temblorFoto { 0%, 100% { transform: translateX(-50%) rotate(0); } 25% { transform: translateX(calc(-50% - 6px)) rotate(-12deg); } 75% { transform: translateX(calc(-50% + 6px)) rotate(12deg); } }
         .foto-impacto { animation: temblorFoto 0.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; filter: brightness(1.2); }
         .grieta-1 { border: 4px dashed #757575; filter: contrast(120%); }
@@ -63,7 +77,9 @@
         .fragmento { position: fixed; border-radius: 4px; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.6s; }
         .frag-tom { border-radius: 50%; filter: blur(1px); width: 14px; height: 14px; }
         .frag-hue { border-radius: 50%; width: 10px; height: 10px; }
+        .frag-popo { border-radius: 50%; width: 16px; height: 16px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.3)); }
         
+        /* ================= CHATBOT SARCÁSTICO ================= */
         .seccion-chatbot { background: #fff; padding: 30px 20px; margin: 40px auto; max-width: 700px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-caja { height: 350px; overflow-y: auto; background: #f4f6f8; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
         .msg { padding: 12px 18px; border-radius: 18px; font-weight: 700; font-size: 0.95rem; max-width: 85%; line-height: 1.4; animation: popIn 0.3s ease-out; }
@@ -76,6 +92,7 @@
         .chat-input-area button { background: #d32f2f; color: #fff; font-weight: 900; border: none; border-radius: 8px; padding: 0 25px; cursor: pointer; transition: 0.2s; font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
         .chat-input-area button:active { transform: scale(0.95); }
 
+        /* ================= MURO ================= */
         .seccion-muro { padding: 40px 10px; max-width: 800px; margin: auto; }
         .controles-muro { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center;}
         .controles-muro select { padding: 10px; border-radius: 8px; border: 2px solid #0d47a1; font-family: inherit; font-weight: 900; background: #fff; outline: none; font-size: 0.9rem;}
@@ -89,6 +106,7 @@
         .resena-estrellas { color: #ffab00; font-size: 1.1rem; }
         .resena-texto { font-size: 0.95rem; color: #222; font-weight: 500; }
         
+        /* ================= PROPUESTAS ================= */
         .seccion-propuestas { background: #0d47a1; color: #fff; padding: 50px 15px; text-align: center; margin-top: 40px; }
         .bloqueo-identidad { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 12px; max-width: 600px; margin: 0 auto 30px auto; border: 2px dashed rgba(255,255,255,0.3); }
         .grid-propuestas { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; max-width: 1000px; margin: 0 auto 25px auto; }
@@ -98,6 +116,7 @@
         .btn-proponer { background: #ffea00; color: #111; font-family: 'Oswald', sans-serif; font-size: 1.2rem; padding: 15px 40px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.1s; }
         .btn-proponer:active { transform: scale(0.95); }
         
+        /* ================= MODAL ================= */
         .modal-fondo { display: none; position: fixed; z-index: 999999; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
         .modal-contenido { background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 380px; position: relative; }
         .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #999; line-height: 1; }
@@ -117,12 +136,8 @@
 
     <header>
         <div class="nuevo-logo-container">
-            <div class="logo-bloque">ONPEE5</div>
-            <div class="logo-letras">
-                Organización Nacional<br>
-                De Payasos Estudiantes<br>
-                Del E5
-            </div>
+            <div class="logo-letras-grandes">ONPE<span>E5</span></div>
+            <div class="logo-texto-inferior">Org. Nacional de Payasos Estudiantes</div>
         </div>
         <div class="aviso-temp5">¡SE VIENEN LAS ELECCIONES - TEMPORADA 5!</div>
         <div class="contador-caja"><span id="reloj">Cargando...</span></div>
@@ -143,12 +158,12 @@
     </section>
 
     <section class="seccion-chatbot">
-        <h2 class="titulo-seccion">TE ENSEÑO A VOTAR</h2>
+        <h2 class="titulo-seccion" style="font-size: clamp(1.4rem, 4vw, 2.2rem);">¿TIENES DUDAS? PREGUNTA RÁPIDO QUE NO TENGO TU TIEMPO</h2>
         <div class="chat-caja" id="chatCaja">
-            <div class="msg bot">Habla. Soy el Bot de la ONPEE5 🤖. A mí no me pagan lo suficiente para estar respondiendo tonterías, así que sé directo. ¿Qué no entiendes de la página?</div>
+            <div class="msg bot">Habla. Soy el Bot de la ONPEE5 🤖. A mí no me pagan lo suficiente para estar respondiendo tonterías. Si eres nuevo, pregunta rápido: "¿Cómo voto?", "¿Qué son las barras?", "¿Para qué sirven los emojis?" o "¿Qué es el muro?". Y no me hagas perder el tiempo.</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Escribe tu pregunta o queja aquí..." onkeypress="if(event.key==='Enter') enviarChat()">
+            <input type="text" id="chatInput" placeholder="Pregunta algo coherente..." onkeypress="if(event.key==='Enter') enviarChat()">
             <button onclick="enviarChat()">ENVIAR</button>
         </div>
     </section>
@@ -301,11 +316,16 @@
         const frasesMarvin = ["¡QUÉ RICO! 🥵", "¡NO PARES! 🥵", "¡DAME MÁS! 🍆", "¡MÁS RÁPIDO! 🥵", "¡TODO TU COA! 🥒", "¡SÍ PAPI! 🥵", "¡EL TAMBILLO! 🍆"];
 
         function explota(x, y, t) {
-            const pal = { '🪨': ['#757575', '#424242', '#212121'], '🥚': ['#fff', '#ffd700', '#ffb300'], '🍅': ['#d50000', '#b71c1c', '#f44336'] };
+            const pal = { 
+                '🪨': ['#757575', '#424242', '#212121'], 
+                '🥚': ['#fff', '#ffd700', '#ffb300'], 
+                '🍅': ['#d50000', '#b71c1c', '#f44336'],
+                '💩': ['#5d4037', '#3e2723', '#4e342e', '#795548']
+            };
             if(!pal[t]) return; 
             for(let i=0; i<15; i++) {
                 let f = document.createElement('div');
-                f.className = 'fragmento ' + (t==='🍅'?'frag-tom':(t==='🥚'?'frag-hue':''));
+                f.className = 'fragmento ' + (t==='🍅'?'frag-tom':(t==='🥚'?'frag-hue':(t==='💩'?'frag-popo':'')));
                 f.style.background = pal[t][Math.floor(Math.random()*pal[t].length)];
                 f.style.left = x+'px'; f.style.top = y+'px';
                 document.body.appendChild(f);
@@ -392,12 +412,15 @@
                     "Flaco, mira la pantalla. Está todo ahí, no seas ciego.",
                     "¿En serio me preguntas esa sonsera? A mí no me pagan lo suficiente para aguantar tus tonterías.",
                     "No me rompas, estoy en mi hora de almuerzo. Pregúntale a otro.",
-                    "Mejor pregúntale al Delegado de Chow, él seguro te hace un chiste monse en vez de ayudarte.",
+                    "Ay señor, dame paciencia... a ver, usa tu cerebro un ratito y averígualo solo.",
                     "Mano, soy un bot de la ONPEE5, no Chat GPT. Usa los ojos.",
                     "Uy, qué difícil. Tan difícil como leer lo que dice literal arriba de esto.",
                     "Puf... ya, sigue hablando solo. Qué palta.",
                     "Por qué no vas a estudiar Análisis de Circuitos en vez de estar acá fastidiando al bot.",
-                    "Esa pregunta es más fácil que jalar Pedagogía General. Abre los ojos."
+                    "Esa pregunta es más fácil que jalar Pedagogía General. Abre los ojos.",
+                    "Mi paciencia es más corta que la aprobación de algunos delegados. No molestes.",
+                    "¿Tú crees que yo nací ayer? Lee la pantalla, causa.",
+                    "No seas espeso. Dale clic a las cosas y averígualo tú mismo, no muerden."
                 ];
 
                 if(text.includes("votar") || text.includes("voto") || text.includes("proponer") || text.includes("urna")) {
