@@ -64,13 +64,9 @@
         .grieta-3 { border: 6px double #212121; filter: grayscale(100%) contrast(200%); }
         @keyframes caidaLibre { 0% { transform: translateX(-50%) translateY(0) rotate(0) scale(1); opacity: 1; } 20% { transform: translateX(-50%) translateY(-30px) rotate(-20deg) scale(1.1); } 100% { transform: translateX(-50%) translateY(1500px) rotate(720deg) scale(0); opacity: 0; } }
         .destruido .foto-top { animation: caidaLibre 1s forwards; pointer-events: none; }
-        .proyectil { position: fixed; font-size: 35px; pointer-events: none; z-index: 99999; transition: transform 0.2s linear, opacity 0.2s; }
-        .fragmento { position: fixed; border-radius: 4px; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.6s; }
-        .frag-tom { border-radius: 50%; filter: blur(1px); width: 14px; height: 14px; }
-        .frag-hue { border-radius: 50%; width: 10px; height: 10px; }
-        .frag-popo { border-radius: 50%; width: 16px; height: 16px; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.3)); }
-        .frag-agua { border-radius: 50%; width: 8px; height: 8px; filter: drop-shadow(0 0 2px #00e5ff); }
-        .frag-hueso { width: 12px; height: 14px; border-radius: 3px; background-color: #f5f5f5; }
+        
+        .proyectil { position: fixed; font-size: 35px; pointer-events: none; z-index: 99999; transition: transform 0.3s linear, opacity 0.3s; }
+        .fragmento { position: fixed; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.6s; }
         
         .seccion-chatbot { background: #fff; padding: 30px 20px; margin: 40px auto; max-width: 700px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .chat-caja { height: 350px; overflow-y: auto; background: #f4f6f8; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
@@ -328,7 +324,6 @@
             if(!document.querySelector(`option[value="${d.nombre}"]`)) filtro.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`;
             let esAprob = d.aprob >= 50, val = esAprob ? d.aprob : (100 - d.aprob), colorCls = esAprob ? 'fondo-verde' : 'fondo-rojo', label = esAprob ? 'APROB.' : 'DESAPROB.', altura = isPodio ? (80 + (val * 1.5)) : (60 + val);
             
-            // EMOJIS ORDENADOS CON CORAZONES Y PISTOLA PRIMERO
             let btns = `<button class="btn-emoji" onclick="fuego(this,'💖','${d.id}')">💖</button><button class="btn-emoji" onclick="fuego(this,'🩷','${d.id}')">🩷</button><button class="btn-emoji" onclick="fuego(this,'🔫','${d.id}')">🔫</button><button class="btn-emoji" onclick="fuego(this,'🥚','${d.id}')">🥚</button><button class="btn-emoji" onclick="fuego(this,'💩','${d.id}')">💩</button><button class="btn-emoji" onclick="fuego(this,'🍅','${d.id}')">🍅</button><button class="btn-emoji" onclick="fuego(this,'🪨','${d.id}')">🪨</button><button class="btn-emoji" onclick="fuego(this,'💀','${d.id}')">💀</button>`;
             if(d.id === 'MarvinRicse') btns += `<button class="btn-emoji btn-marvin" onclick="fuego(this,'🏳️‍🌈','${d.id}')">🏳️‍🌈</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🥒','${d.id}')">🥒</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🍆','${d.id}')">🍆</button><button class="btn-emoji btn-marvin" onclick="fuego(this,'🖕','${d.id}')">🖕</button>`;
             
@@ -421,36 +416,25 @@
         }, 5000);
 
         function explota(x, y, t) {
-            const pal = { 
-                '🪨': ['#757575', '#424242', '#212121'], 
-                '🥚': ['#fff', '#ffd700', '#ffb300'], 
-                '🍅': ['#d50000', '#b71c1c', '#f44336'], 
-                '💩': ['#5d4037', '#3e2723', '#4e342e', '#795548'],
-                '💖': ['#ff4081', '#f50057', '#c51162'],
-                '🩷': ['#ff80ab', '#ff4081', '#ffb2ff'],
-                '🔫': ['#00e5ff', '#18ffff', '#00bcd4'],
-                '💀': ['#f5f5f5', '#eeeeee', '#e0e0e0', '#bdbdbd'],
-                '🏳️‍🌈': ['#ff1744', '#ffea00', '#00e676', '#2979ff', '#aa00ff'],
-                '🥒': ['#00c853', '#64dd17', '#1b5e20'],
-                '🍆': ['#7b1fa2', '#4a148c', '#9c27b0'],
-                '🖕': ['#ffb300', '#ff8f00', '#e65100']
-            };
-            if(!pal[t]) return; 
-            for(let i=0; i<15; i++) {
-                let f = document.createElement('div'), extraCls = '';
-                if(t==='🍅') extraCls = 'frag-tom'; 
-                else if(t==='🥚' || t==='💖' || t==='🩷') extraCls = 'frag-hue'; 
-                else if(t==='💩') extraCls = 'frag-popo'; 
-                else if(t==='🔫') extraCls = 'frag-agua'; 
-                else if(t==='💀') extraCls = 'frag-hueso';
-                
-                f.className = 'fragmento ' + extraCls; 
-                f.style.background = pal[t][Math.floor(Math.random()*pal[t].length)]; 
-                f.style.left = x+'px'; f.style.top = y+'px'; 
+            for(let i=0; i<12; i++) {
+                let f = document.createElement('div');
+                f.innerText = t;
+                f.className = 'fragmento';
+                f.style.position = 'fixed';
+                f.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                f.style.left = x + 'px';
+                f.style.top = y + 'px';
                 document.body.appendChild(f);
                 
-                let ang = Math.random()*Math.PI*2, fue = Math.random()*100+50, vX = Math.cos(ang)*fue, vY = Math.sin(ang)*fue+100; 
-                setTimeout(() => { f.style.transform = `translate(${vX}px, ${vY}px) rotate(${Math.random()*720}deg) scale(${Math.random()+0.5})`; f.style.opacity = '0'; }, 10);
+                let ang = Math.random() * Math.PI * 2;
+                let fue = Math.random() * 80 + 30;
+                let vX = Math.cos(ang) * fue;
+                let vY = Math.sin(ang) * fue - 50;
+                
+                setTimeout(() => {
+                    f.style.transform = `translate(${vX}px, ${vY}px) rotate(${Math.random() * 360}deg) scale(0.5)`;
+                    f.style.opacity = '0';
+                }, 10);
                 setTimeout(() => f.remove(), 600);
             }
         }
@@ -468,14 +452,19 @@
 
             const card = btn.closest('.candidato-vertical, .tarjeta-curso'), foto = card.querySelector('.foto-top'), recF = foto.getBoundingClientRect(), recB = btn.getBoundingClientRect(), pro = document.createElement('div');
             pro.innerText = t; pro.className = 'proyectil'; document.body.appendChild(pro); pro.style.left = recB.left+'px'; pro.style.top = recB.top+'px';
-            const dX = (recF.left+recF.width/2)-recB.left, dY = (recF.top+recF.height/2)-recB.top; setTimeout(() => { pro.style.transform = `translate(${dX}px, ${dY}px) rotate(720deg)`; }, 10);
+            const dX = (recF.left+recF.width/2)-recB.left, dY = (recF.top+recF.height/2)-recB.top; 
+            
+            setTimeout(() => { 
+                pro.style.transform = `translate(${dX}px, ${dY}px) scale(1.2)`; 
+            }, 10);
+
             setTimeout(() => {
                 pro.remove();
                 if(id === 'MarvinRicse' && ['🏳️‍🌈','🥒','🍆','🖕'].includes(t)) { let n = card.querySelector('.nube-hot'); n.innerText = frasesMarvin[Math.floor(Math.random()*frasesMarvin.length)]; n.classList.add('activa'); setTimeout(() => n.classList.remove('activa'), 1500); }
                 foto.classList.remove('foto-impacto'); void foto.offsetWidth; foto.classList.add('foto-impacto');
                 explota(recF.left+recF.width/2, recF.top+recF.height/2, t);
                 if(t === '🪨') { regDaños[id]++; let c = regDaños[id]; if(c==1) foto.classList.add('grieta-1'); if(c==3) { foto.classList.remove('grieta-1'); foto.classList.add('grieta-2'); } if(c==5) { foto.classList.remove('grieta-2'); foto.classList.add('grieta-3'); } if(c>=7) card.classList.add('destruido'); }
-            }, 180);
+            }, 300);
         }
 
         function renderizarReseñas() {
