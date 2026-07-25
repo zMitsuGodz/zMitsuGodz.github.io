@@ -7,14 +7,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f4f6f8; color: #111; margin: 0; padding: 0; overflow-x: hidden; }
-        header { background-color: #fff; text-align: center; padding: 20px 10px; border-bottom: 6px solid #d32f2f; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        header h1 { margin: 0; color: #d32f2f; font-family: 'Oswald', sans-serif; font-size: clamp(3rem, 7vw, 5rem); letter-spacing: -2px; line-height: 1; }
-        .sub-onpee5 { font-size: clamp(0.75rem, 3vw, 1.1rem); color: #555; font-weight: 900; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
-        .aviso-temp5 { background: #d32f2f; color: #fff; display: inline-block; padding: 6px 15px; border-radius: 20px; font-weight: 900; font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; animation: pulse 2s infinite; }
+        
+        /* ================= HEADER Y LOGO ONPEE5 ================= */
+        header { background-color: #fff; text-align: center; padding: 30px 10px 20px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; }
+        .logo-onpee5-container { display: flex; flex-direction: column; align-items: center; max-width: 600px; width: 100%; }
+        .icono-onpe { font-size: clamp(3rem, 6vw, 4rem); line-height: 1; margin-bottom: -15px; z-index: 10; }
+        .texto-onpee5 { color: #111; font-family: 'Oswald', sans-serif; font-size: clamp(4rem, 10vw, 6rem); letter-spacing: -2px; line-height: 1; margin: 0; font-weight: 900; }
+        .sub-onpee5 { font-family: 'Montserrat', sans-serif; font-size: clamp(0.6rem, 2vw, 0.95rem); color: #111; font-weight: 900; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px; }
+        .linea-roja { width: 100%; height: 6px; background-color: #d32f2f; margin-top: 8px; }
+
+        .aviso-temp5 { background: #d32f2f; color: #fff; display: inline-block; padding: 6px 15px; border-radius: 20px; font-weight: 900; font-size: clamp(0.7rem, 2.5vw, 0.9rem); margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         .contador-caja { background: #111; color: #00ffcc; display: inline-block; padding: 8px 20px; border-radius: 6px; margin-top: 15px; font-family: 'Oswald', sans-serif; font-size: clamp(1.2rem, 4vw, 2rem); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 10px; }
         h2.titulo-seccion { text-align: center; color: #0d47a1; font-family: 'Oswald', sans-serif; margin-bottom: 25px; font-size: clamp(1.8rem, 5vw, 2.8rem); letter-spacing: 1px; text-transform: uppercase; line-height: 1.1;}
+        
+        /* ================= TARJETAS Y PODIO ================= */
         .contenedor-podio { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; gap: 2%; margin-top: 20px; padding-top: 60px; margin-bottom: 40px; }
         .candidato-vertical { width: 32%; display: flex; flex-direction: column; align-items: center; background: #fff; border-radius: 12px; padding: 0 8px 12px 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); box-sizing: border-box; position: relative; }
         .zona-barra { width: 100%; position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; margin-bottom: 10px; }
@@ -29,9 +38,12 @@
         .fondo-rojo { background: linear-gradient(180deg, #d50000, #ff1744); }
         .texto-porcentaje { color: #fff; font-family: 'Oswald', sans-serif; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1; text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
         .texto-etiqueta { background: rgba(0,0,0,0.3); color: #fff; font-size: 0.6rem; text-transform: uppercase; font-weight: 900; margin-top: 4px; padding: 2px 5px; border-radius: 4px; letter-spacing: 0.5px;}
+        
         .info-basica { text-align: center; width: 100%; margin-bottom: 8px; }
         .nombre-candidato { font-size: clamp(0.85rem, 2.5vw, 1.1rem); font-weight: 900; color: #111; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .cargo-candidato { font-size: clamp(0.65rem, 2vw, 0.8rem); color: #666; font-weight: 800; text-transform: uppercase; margin-top: 2px; }
+        
+        /* ================= ARSENAL ================= */
         .arsenal-contenedor { display: flex; align-items: center; width: 100%; margin-bottom: 8px; background: #f0f0f0; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         .nav-emoji { background: #e0e0e0; border: none; font-size: 1rem; color: #333; cursor: pointer; padding: 8px 2px; border-radius: 6px; font-weight: 900; }
         .nav-emoji:active { background: #ccc; }
@@ -42,6 +54,8 @@
         .btn-marvin { background: #fffde7; border: 1px solid #ffea00; }
         .btn-calificar { width: 100%; background: #0d47a1; color: #fff; font-family: 'Oswald', sans-serif; font-size: clamp(0.8rem, 2.5vw, 1rem); padding: 8px 4px; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 3px 8px rgba(13,71,161,0.3); transition: transform 0.1s; }
         .btn-calificar:active { transform: scale(0.95); }
+        
+        /* ================= CARRUSEL DE CURSOS ================= */
         .parlamento-section { background: #fff; border-top: 4px solid #0d47a1; border-bottom: 4px solid #0d47a1; margin-top: 20px; position: relative;}
         .carrusel-wrapper { display: flex; align-items: center; width: 100%; position: relative;}
         .nav-carrusel { background: #0d47a1; color: #fff; border: none; font-size: 1.5rem; padding: 15px 10px; cursor: pointer; z-index: 20; position: absolute; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
@@ -51,6 +65,8 @@
         .carrusel-track { display: flex; gap: 15px; padding: 80px 45px 20px 45px; overflow-x: auto; scroll-snap-type: x mandatory; align-items: flex-end; scroll-behavior: smooth; width: 100%; scrollbar-width: none;}
         .carrusel-track::-webkit-scrollbar { display: none; }
         .tarjeta-curso { flex: 0 0 auto; width: 150px; display: flex; flex-direction: column; align-items: center; background: #fafafa; border-radius: 12px; padding: 0 8px 12px 8px; border: 1px solid #eee; scroll-snap-align: center; position: relative; }
+        
+        /* ================= FÍSICAS ================= */
         @keyframes temblorFoto { 0%, 100% { transform: translateX(-50%) rotate(0); } 25% { transform: translateX(calc(-50% - 6px)) rotate(-12deg); } 75% { transform: translateX(calc(-50% + 6px)) rotate(12deg); } }
         .foto-impacto { animation: temblorFoto 0.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; filter: brightness(1.2); }
         .grieta-1 { border: 4px dashed #757575; filter: contrast(120%); }
@@ -63,8 +79,9 @@
         .frag-tom { border-radius: 50%; filter: blur(1px); width: 14px; height: 14px; }
         .frag-hue { border-radius: 50%; width: 10px; height: 10px; }
         
+        /* ================= CHATBOT SARCÁSTICO ================= */
         .seccion-chatbot { background: #fff; padding: 30px 20px; margin: 40px auto; max-width: 700px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .chat-caja { height: 280px; overflow-y: auto; background: #f4f6f8; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
+        .chat-caja { height: 300px; overflow-y: auto; background: #f4f6f8; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 12px; }
         .msg { padding: 12px 18px; border-radius: 18px; font-weight: 700; font-size: 0.95rem; max-width: 85%; line-height: 1.4; animation: popIn 0.3s ease-out; }
         @keyframes popIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
         .msg.bot { background: #e3f2fd; color: #0d47a1; align-self: flex-start; border-bottom-left-radius: 4px; }
@@ -75,6 +92,7 @@
         .chat-input-area button { background: #d32f2f; color: #fff; font-weight: 900; border: none; border-radius: 8px; padding: 0 25px; cursor: pointer; transition: 0.2s; font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
         .chat-input-area button:active { transform: scale(0.95); }
 
+        /* ================= MURO ================= */
         .seccion-muro { padding: 40px 10px; max-width: 800px; margin: auto; }
         .controles-muro { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center;}
         .controles-muro select { padding: 10px; border-radius: 8px; border: 2px solid #0d47a1; font-family: inherit; font-weight: 900; background: #fff; outline: none; font-size: 0.9rem;}
@@ -88,6 +106,7 @@
         .resena-estrellas { color: #ffab00; font-size: 1.1rem; }
         .resena-texto { font-size: 0.95rem; color: #222; font-weight: 500; }
         
+        /* ================= PROPUESTAS ================= */
         .seccion-propuestas { background: #0d47a1; color: #fff; padding: 50px 15px; text-align: center; margin-top: 40px; }
         .bloqueo-identidad { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 12px; max-width: 600px; margin: 0 auto 30px auto; border: 2px dashed rgba(255,255,255,0.3); }
         .grid-propuestas { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; max-width: 1000px; margin: 0 auto 25px auto; }
@@ -97,6 +116,7 @@
         .btn-proponer { background: #ffea00; color: #111; font-family: 'Oswald', sans-serif; font-size: 1.2rem; padding: 15px 40px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.1s; }
         .btn-proponer:active { transform: scale(0.95); }
         
+        /* ================= MODAL ================= */
         .modal-fondo { display: none; position: fixed; z-index: 999999; inset: 0; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
         .modal-contenido { background: #fff; padding: 25px; border-radius: 12px; width: 90%; max-width: 380px; position: relative; }
         .cerrar-modal { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #999; line-height: 1; }
@@ -104,6 +124,7 @@
         .grupo-input label { font-weight: 900; display: block; margin-bottom: 4px; font-size: 0.9rem;}
         .grupo-input input, .grupo-input textarea, .grupo-input select { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 6px; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; }
         .btn-enviar { background: #0d47a1; color: #fff; border: none; padding: 12px; border-radius: 6px; font-family: 'Oswald', sans-serif; font-size: 1.1rem; width: 100%; cursor: pointer; }
+        
         @media (max-width: 500px) {
             .foto-top { width: 55px; height: 55px; top: -30px; }
             .barra-grafico { padding-top: 30px; }
@@ -115,10 +136,13 @@
 <body>
 
     <header>
-        <h1>ONPEE5</h1>
-        <div class="sub-onpee5">Organización Nacional de Payasos Estudiantes del E5</div>
+        <div class="logo-onpee5-container">
+            <div class="icono-onpe">🗳️</div>
+            <h1 class="texto-onpee5">ONPEE5</h1>
+            <div class="sub-onpee5">Organización Nacional de Payasos Estudiantes del E5</div>
+            <div class="linea-roja"></div>
+        </div>
         <div class="aviso-temp5">¡SE VIENEN LAS ELECCIONES PARA LA TEMPORADA 5!</div>
-        <br>
         <div class="contador-caja"><span id="reloj">Cargando...</span></div>
     </header>
 
@@ -139,7 +163,7 @@
     <section class="seccion-chatbot">
         <h2 class="titulo-seccion">TE ENSEÑO A VOTAR</h2>
         <div class="chat-caja" id="chatCaja">
-            <div class="msg bot">¡Hola! Soy el Bot de la ONPEE5 🤖. Hazme preguntas como: "¿Cómo voto?", "¿Qué son las barras?", "¿Cómo lanzo cosas?" o "¿Qué es el muro?".</div>
+            <div class="msg bot">Habla. Soy el Bot de la ONPEE5 🤖. A mí no me pagan lo suficiente para estar respondiendo tonterías, así que sé directo. ¿Qué no entiendes de la página?</div>
         </div>
         <div class="chat-input-area">
             <input type="text" id="chatInput" placeholder="Escribe tu pregunta aquí..." onkeypress="if(event.key==='Enter') enviarChat()">
@@ -292,7 +316,7 @@
         document.getElementById('carruselTrack').innerHTML = delegadosCursos.map(d => crearTarjetaVertical(d, false)).join('');
 
         const regDaños = {}; 
-        const frasesMarvin = ["¡QUÉ RICO! 🥵", "¡NO PARES! 🥵", "¡DAME MÁS! 🍆", "¡MÁS RÁPIDO! 🥵", "¡TODO TU COA! 🥒", "¡SÍ PAPI! 🥵", "¡TODO TU TAMBILLO! 🍆"];
+        const frasesMarvin = ["¡QUÉ RICO! 🥵", "¡NO PARES! 🥵", "¡DAME MÁS! 🍆", "¡MÁS RÁPIDO! 🥵", "¡TODO TU COA! 🥒", "¡SÍ PAPI! 🥵", "¡EL TAMBILLO! 🍆"];
 
         function explota(x, y, t) {
             const pal = { '🪨': ['#757575', '#424242', '#212121'], '🥚': ['#fff', '#ffd700', '#ffb300'], '🍅': ['#d50000', '#b71c1c', '#f44336'] };
@@ -370,29 +394,58 @@
             fetch(URL_GOOGLE_APPS_SCRIPT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(obj) }).then(() => { db.push(obj); renderizarReseñas(); cerrarReseña(); alert("¡GUARDADO!"); btn.innerText = "PUBLICAR"; btn.disabled = false; }).catch(() => { alert("Error de conexión."); btn.innerText = "PUBLICAR"; btn.disabled = false; });
         }
 
+        // ================= LOGICA DEL CHATBOT SARCÁSTICO =================
         function enviarChat() {
             let input = document.getElementById("chatInput");
             let text = input.value.trim().toLowerCase();
             if(!text) return;
             let caja = document.getElementById("chatCaja");
+            
             caja.innerHTML += `<div class="msg user">${input.value}</div>`;
             input.value = "";
+            caja.scrollTop = caja.scrollHeight;
+
             setTimeout(() => {
-                let r = "No entendí muy bien. 😅 Pregunta cosas como: 'votar', 'barras', 'emojis' o 'muro'.";
-                if(text.includes("votar") || text.includes("voto") || text.includes("funciona") || text.includes("proponer")) r = "Para votar, primero califica a los delegados en sus tarjetas y luego baja a la sección 'PROPÓN TUS DELEGADOS'. Desbloquea la urna con tu código y escribe tus candidatos.";
-                else if(text.includes("barra")) r = "Las barras suben o bajan según la aprobación. Verde es aprobado, rojo es desaprobado y muestra el número en negativo.";
-                else if(text.includes("emoji") || text.includes("lanzar") || text.includes("piedra") || text.includes("huevo")) r = "Debajo de la foto de cada delegado hay botones. Usa las flechitas ◄ ► al costado de los emojis para ver más y hazles clic para lanzarlos.";
-                else if(text.includes("muro") || text.includes("calificar") || text.includes("reseña")) r = "El Muro es donde están todos los chismes. Haz clic en 'CALIFICAR' en cualquier delegado para dejar tu comentario público o anónimo.";
+                let r = "";
+                // Base de datos de sarcasmo y quejas
+                const respuestasRandom = [
+                    "Flaco, mira la pantalla. Está todo ahí, no seas flojo.",
+                    "¿En serio me preguntas eso? A mí no me pagan lo suficiente para aguantar estas preguntas.",
+                    "No me rompas, estoy en mi hora de almuerzo. Pregúntale a otro.",
+                    "Mejor pregúntale al Delegado de Chow, él seguro te hace un chiste en vez de ayudarte.",
+                    "Mano, soy un bot de la ONPEE5, no Chat GPT. Usa los ojos.",
+                    "Uy, qué difícil. Tan difícil como leer lo que dice literal arriba de esto.",
+                    "Puf... ya, sigue hablando solo."
+                ];
+
+                if(text.includes("votar") || text.includes("voto") || text.includes("proponer") || text.includes("urna")) {
+                    r = "Para proponer a la Temporada 5, baja a la sección azul. Vas a tener que poner tu nombre y código. Si no te sabes ni tu código, ya es tu problema.";
+                } else if(text.includes("barra") || text.includes("grafico") || text.includes("porcentaje")) {
+                    r = "Las barras suben si la gente los aprueba. Si está rojo y en negativo es porque nadie los pasa. Lógica básica, mano.";
+                } else if(text.includes("emoji") || text.includes("lanzar") || text.includes("piedra") || text.includes("huevo")) {
+                    r = "Debajo de las fotos hay botones. Usa las flechitas ◄ y ►. Haces clic y le tiras cosas. Si le tiras muchas piedras, le rompes el cuadro. Más intuitivo no puede ser.";
+                } else if(text.includes("muro") || text.includes("calificar") || text.includes("reseña") || text.includes("comentar")) {
+                    r = "El Muro del Pueblo es para rajar o felicitar. Dale clic a 'CALIFICAR' en cualquier delegado. Puedes hacerlo anónimo si tienes miedo de dar la cara.";
+                } else if(text.includes("pago") || text.includes("salario") || text.includes("trabajo") || text.includes("quien eres")) {
+                    r = "Soy el bot explotado de este salón. Trabajo 24/7 de gratis. Así que pregunta rápido que tengo sueño.";
+                } else if(text.includes("hola") || text.includes("oe") || text.includes("causa")) {
+                    r = "Habla. Pregunta rápido que me quiero desconectar.";
+                } else {
+                    r = respuestasRandom[Math.floor(Math.random() * respuestasRandom.length)];
+                }
+
                 caja.innerHTML += `<div class="msg bot">${r}</div>`;
                 caja.scrollTop = caja.scrollHeight;
             }, 600);
         }
 
+        // ================= LOGICA DE DESBLOQUEO =================
         function desbloquearUrna() {
             let n = document.getElementById("idNombre").value.trim();
             let a = document.getElementById("idApellido").value.trim();
             let c = document.getElementById("idCodigo").value.trim();
-            if(!n || !a || !c) return alert("¡DEBES INGRESAR TU NOMBRE, APELLIDO Y CÓDIGO DE ESTUDIANTE!");
+            if(!n || !a || !c) return alert("⚠️ ¡ERROR! DEBES INGRESAR TU NOMBRE, APELLIDO Y CÓDIGO. NO TE HAGAS EL VIVO.");
+            
             document.getElementById("bloqueo-identidad").style.display = "none";
             let u = document.getElementById("urna-propuestas");
             u.style.display = "block";
@@ -400,7 +453,8 @@
         }
 
         function enviarPropuestas() {
-            alert("¡Tus propuestas se han enviado para la Temporada 5!");
+            alert("¡Tus propuestas se han enviado para la Temporada 5! El sistema ha registrado tu voto.");
+            // Aquí puedes vaciar los campos si lo deseas
         }
     </script>
 </body>
