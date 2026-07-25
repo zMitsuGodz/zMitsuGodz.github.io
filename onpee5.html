@@ -67,7 +67,7 @@
         @keyframes caidaLibre { 0% { transform: translateX(-50%) translateY(0) rotate(0) scale(1); opacity: 1; } 20% { transform: translateX(-50%) translateY(-30px) rotate(-20deg) scale(1.1); } 100% { transform: translateX(-50%) translateY(1500px) rotate(720deg) scale(0); opacity: 0; } }
         .destruido .foto-top { animation: caidaLibre 1s forwards; pointer-events: none; }
         
-        .proyectil { position: fixed; font-size: 35px; pointer-events: none; z-index: 99999; transition: transform 0.3s linear, opacity 0.3s; }
+        .proyectil { position: fixed; font-size: 35px; pointer-events: none; z-index: 99999; transition: transform 0.3s linear; }
         .fragmento { position: fixed; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.6s; }
         
         .seccion-chatbot { background: #fff; padding: 30px 20px; margin: 40px auto; max-width: 700px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
@@ -410,13 +410,6 @@
         let emojiQueue = {};
         const frasesMarvin = ["¡QUÉ RICO! 🥵", "¡NO PARES! 🥵", "¡DAME MÁS! 🍆", "¡MÁS RÁPIDO! 🥵", "¡TODO TU COA! 🥒", "¡SÍ PAPI! 🥵", "¡DAME TODO EL TAMBILLO! 🍆"];
 
-        setInterval(() => {
-            if(Object.keys(emojiQueue).length === 0 || URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") return;
-            let payload = { tipoAccion: "EMOJI_BATCH", data: emojiQueue };
-            emojiQueue = {}; 
-            fetch(URL_GOOGLE_APPS_SCRIPT, { method:'POST', mode:'no-cors', body:JSON.stringify(payload) });
-        }, 5000);
-
         function explota(x, y, t) {
             for(let i=0; i<12; i++) {
                 let f = document.createElement('div');
@@ -473,6 +466,13 @@
                 if(t === '🪨') { regDaños[id]++; let c = regDaños[id]; if(c==1) foto.classList.add('grieta-1'); if(c==3) { foto.classList.remove('grieta-1'); foto.classList.add('grieta-2'); } if(c==5) { foto.classList.remove('grieta-2'); foto.classList.add('grieta-3'); } if(c>=7) card.classList.add('destruido'); }
             }, 300);
         }
+
+        setInterval(() => {
+            if(Object.keys(emojiQueue).length === 0 || URL_GOOGLE_APPS_SCRIPT === "PON_TU_URL_AQUI") return;
+            let payload = { tipoAccion: "EMOJI_BATCH", data: emojiQueue };
+            emojiQueue = {}; 
+            fetch(URL_GOOGLE_APPS_SCRIPT, { method:'POST', mode:'no-cors', body:JSON.stringify(payload) });
+        }, 5000);
 
         function renderizarReseñas() {
             const c = document.getElementById('contenedorResenas'), fD = document.getElementById('filtroDelegado').value, fT = document.getElementById('filtroTipo').value; c.innerHTML = "";
