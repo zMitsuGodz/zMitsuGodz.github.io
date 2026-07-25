@@ -4,144 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONPEE5 - La Cantuta</title>
-    <!-- Importando fuente moderna -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 0; overflow-x: hidden; }
 
         /* ================= BANNER Y RELOJ ================= */
-        header {
-            background-color: #fff;
-            text-align: center;
-            padding: 20px 10px;
-            border-bottom: 5px solid #e3000f;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        header h1 {
-            margin: 0; color: #e3000f; font-size: 3.5rem; font-weight: 900; letter-spacing: -1px;
-        }
-        .contador-caja {
-            background: #111; color: #00ffcc; display: inline-block; padding: 12px 25px;
-            border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 1.8rem; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #333;
-        }
-        .contador-etiqueta {
-            display: block; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #aaa; text-transform: uppercase; margin-bottom: 5px;
-        }
+        header { background-color: #fff; text-align: center; padding: 20px 10px; border-bottom: 5px solid #e3000f; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        header h1 { margin: 0; color: #e3000f; font-size: 3.5rem; font-weight: 900; letter-spacing: -1px; }
+        .contador-caja { background: #111; color: #00ffcc; display: inline-block; padding: 12px 25px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 1.8rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #333; }
+        .contador-etiqueta { display: block; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #aaa; text-transform: uppercase; margin-bottom: 5px; }
 
         .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
         h2.titulo-seccion { text-align: center; color: #1e3c72; margin-bottom: 40px; font-weight: 900; font-size: 2rem;}
 
-        /* ================= ESTRUCTURA TARJETAS ================= */
+        /* ================= BARRAS DE APROBACIÓN (GENERALES) ================= */
+        .contenedor-aprobacion { width: 90%; margin: 5px auto 10px; background: #e0e0e0; border-radius: 10px; height: 16px; position: relative; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .relleno-aprobacion { height: 100%; border-radius: 10px; transition: width 1s ease-in-out; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; font-size: 0.65rem; color: white; font-weight: 900; }
+        .texto-aprobacion-global { font-size: 0.7rem; color: #666; font-weight: 700; margin-top: 5px; text-transform: uppercase; }
+
+        /* ================= ESTRUCTURA TARJETAS (PODIO) ================= */
         .podio-container { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin: 60px 0; height: 380px; }
-        .candidato-card { display: flex; flex-direction: column; align-items: center; width: 170px; text-align: center; position: relative; transition: all 0.3s; }
+        .candidato-card { display: flex; flex-direction: column; align-items: center; width: 180px; text-align: center; position: relative; transition: all 0.3s; }
         
-        .barra-podio {
-            width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            color: white; font-weight: bold; border-radius: 12px 12px 0 0; padding-top: 15px; position: relative;
-        }
+        .barra-podio { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; color: white; font-weight: bold; border-radius: 12px 12px 0 0; padding-top: 15px; position: relative; }
         .puesto-2 { height: 180px; background: linear-gradient(180deg, #4cd964, #34a045); } 
-        .puesto-1 { height: 260px; background: linear-gradient(180deg, #ff3b30, #c41e15); z-index: 2; } 
-        .puesto-3 { height: 150px; background: linear-gradient(180deg, #ff9500, #c77500); } 
+        .puesto-1 { height: 260px; background: linear-gradient(180deg, #007aff, #005bb5); z-index: 2; } 
+        /* Barra de Alexander (Desaprobación Roja) */
+        .puesto-3-rojo { height: 130px; background: linear-gradient(180deg, #ff3b30, #8b0000); border: 2px solid #fff; } 
         
-        .foto-wrapper {
-            position: relative; width: 100px; height: 100px; margin-top: -60px; z-index: 5;
-        }
-        .foto-candidato {
-            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
-            border: 5px solid white; background-color: #ddd; box-shadow: 0 6px 12px rgba(0,0,0,0.3); transition: all 0.3s;
-        }
+        .foto-wrapper { position: relative; width: 100px; height: 100px; margin-top: -60px; z-index: 5; }
+        .foto-candidato { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 5px solid white; background-color: #ddd; box-shadow: 0 6px 12px rgba(0,0,0,0.3); transition: all 0.3s; }
 
-        /* Contenedor de manchas (huevos, tomate, etc) */
-        .manchas-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; pointer-events: none; z-index: 6;
-        }
-        .mancha { position: absolute; font-size: 1.5rem; }
-        .mancha-tomate { width: 40px; height: 40px; background: rgba(220, 20, 60, 0.8); border-radius: 50%; filter: blur(4px); }
+        /* Nube de Marvin */
+        .burbuja-texto { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%) scale(0); background: #fff; padding: 6px 12px; border-radius: 12px; font-weight: 900; color: #ff2d55; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 20; border: 2px solid #ff2d55; white-space: nowrap; font-size: 1rem; opacity: 0; pointer-events: none; }
+        .burbuja-texto.activa { transform: translateX(-50%) scale(1); opacity: 1; }
+        .burbuja-texto::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-width: 8px 8px 0; border-style: solid; border-color: #ff2d55 transparent transparent transparent; }
 
-        .nombre-podio { font-size: 1.1rem; font-weight: 900; margin-top: 15px; color: #333; }
-        .cargo-podio { font-size: 0.85rem; color: #666; margin-bottom: 10px; font-weight: 700;}
+        .nombre-podio { font-size: 1.1rem; font-weight: 900; margin-top: 15px; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .cargo-podio { font-size: 0.85rem; color: #eee; margin-bottom: 5px; font-weight: 700;}
+        .porcentaje-podio { font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
 
         /* ================= CARRUSEL DE CURSOS ================= */
         .parlamento-section { background: #fff; padding: 40px 0; border-top: 5px solid #1e3c72; border-bottom: 5px solid #1e3c72; overflow: hidden; position: relative; }
-        
-        .carrusel-track { display: flex; gap: 30px; width: max-content; animation: scroll-parlamento 20s linear infinite; }
+        .carrusel-track { display: flex; gap: 30px; width: max-content; animation: scroll-parlamento 25s linear infinite; }
         .carrusel-track:hover { animation-play-state: paused; }
-        
         @keyframes scroll-parlamento { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .parlamentario {
-            display: flex; flex-direction: column; align-items: center; width: 150px; background: #f9f9f9;
-            padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; position: relative;
-        }
+        .parlamentario { display: flex; flex-direction: column; align-items: center; width: 170px; background: #f9f9f9; padding: 15px 10px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; position: relative; }
 
         /* ================= ARSENAL Y BOTONES ================= */
         .acciones-contenedor { display: flex; flex-direction: column; gap: 5px; width: 100%; z-index: 10; margin-top: auto;}
-        .arsenal { display: flex; justify-content: center; gap: 2px; background: #e0e0e0; border-radius: 8px; padding: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .arsenal { display: flex; justify-content: center; flex-wrap: wrap; gap: 2px; background: #e0e0e0; border-radius: 8px; padding: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         .fila-inferior { display: flex; justify-content: center; gap: 5px; }
         
-        .btn-accion { 
-            border: none; background: transparent; padding: 6px; border-radius: 6px; cursor: pointer; 
-            font-size: 1.2rem; transition: transform 0.1s, background 0.2s;
-        }
+        .btn-accion { border: none; background: transparent; padding: 6px; border-radius: 6px; cursor: pointer; font-size: 1.2rem; transition: transform 0.1s, background 0.2s; }
         .btn-accion:active { transform: scale(0.8); }
-        .btn-accion:hover { background: #d5d5d5; }
+        .btn-accion:hover { background: #c8c8c8; }
         .btn-comentar { background: #1e3c72; color: white; flex-grow: 1; font-weight: bold; font-size: 0.9rem; }
         .btn-comentar:hover { background: #152a52; }
 
-        /* ================= ANIMACIONES DE IMPACTO Y DESTRUCCIÓN ================= */
-        .proyectil {
-            position: fixed; font-size: 28px; pointer-events: none; z-index: 99999;
-            transition: transform 0.4s cubic-bezier(0.3, 1.05, 0.4, 1.05), opacity 0.4s ease-out;
-        }
+        /* Arsenal especial LGTB Marvin */
+        .btn-marvin { background: #ffeb3b; border: 1px solid #fbc02d; margin-top: 2px; }
+        .btn-marvin:hover { background: #fbc02d; }
+
+        /* ================= ANIMACIONES DE DESTRUCCIÓN (PARTÍCULAS) ================= */
+        .proyectil { position: fixed; font-size: 28px; pointer-events: none; z-index: 99999; transition: transform 0.35s cubic-bezier(0.3, 1.05, 0.4, 1.05), opacity 0.35s ease-out; }
+        
+        .fragmento { position: fixed; width: 8px; height: 8px; border-radius: 2px; z-index: 99998; pointer-events: none; transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.6s ease-out; }
+        .fragmento-tomate { border-radius: 50%; filter: blur(1px); }
+        .fragmento-huevo { border-radius: 50%; }
 
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-5deg); } 75% { transform: translateX(5px) rotate(5deg); } }
         .impacto { animation: shake 0.3s; }
 
-        @keyframes brillo { 0%, 100% { filter: drop-shadow(0 0 0px #ffd700); transform: scale(1); } 50% { filter: drop-shadow(0 0 20px #ffd700); transform: scale(1.1); border-color: #ffd700 !important; } }
-        .glow { animation: brillo 0.6s ease-in-out; border-color: #ffd700 !important; }
-
-        /* Efecto de Rotura de Piedras */
+        /* Destrucción Final del Cuadro */
         .grieta-1 { border-color: #999 !important; border-width: 6px !important; border-style: dashed !important; }
         .grieta-2 { border-color: #666 !important; border-width: 8px !important; border-style: dotted !important; filter: grayscale(50%); }
         .grieta-3 { border-color: #333 !important; border-width: 10px !important; border-style: double !important; filter: grayscale(100%); }
-
-        @keyframes caidaLibre {
-            0% { transform: translateY(0) rotate(0); opacity: 1; }
-            20% { transform: translateY(-30px) rotate(-15deg); }
-            100% { transform: translateY(2000px) rotate(180deg); opacity: 0; }
-        }
-        .roto-destruido {
-            animation: caidaLibre 1.5s forwards cubic-bezier(0.55, 0.085, 0.68, 0.53); pointer-events: none;
-        }
+        
+        @keyframes caidaLibre { 0% { transform: translateY(0) rotate(0); opacity: 1; } 20% { transform: translateY(-30px) rotate(-15deg); } 100% { transform: translateY(2000px) rotate(180deg); opacity: 0; } }
+        .roto-destruido { animation: caidaLibre 1.5s forwards cubic-bezier(0.55, 0.085, 0.68, 0.53); pointer-events: none; }
 
         /* ================= MURO DE RESEÑAS ================= */
         .seccion-muro { padding: 40px 15px; max-width: 900px; margin: auto; }
         .controles-muro { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;}
         .controles-muro select { padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit; font-weight: bold; }
-        
         .lista-resenas { display: flex; flex-direction: column; gap: 15px; }
-        .resena-card {
-            background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-left: 5px solid #ccc; display: flex; flex-direction: column; gap: 8px;
-        }
+        .resena-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #ccc; display: flex; flex-direction: column; gap: 8px; }
         .resena-positiva { border-left-color: #4cd964; }
         .resena-negativa { border-left-color: #ff3b30; }
-        
         .resena-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 8px;}
         .resena-autor { font-weight: 900; color: #1e3c72; }
         .resena-objetivo { font-size: 0.8rem; color: #888; text-transform: uppercase; }
         .resena-estrellas { color: #ff9500; font-size: 1.1rem; }
-        .resena-texto { font-size: 1rem; color: #444; line-height: 1.5; }
 
-        /* ================= MODAL ================= */
+        /* MODAL */
         .modal-fondo { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
         .modal-contenido { background-color: #fff; padding: 30px; border-radius: 15px; width: 90%; max-width: 450px; text-align: center; position: relative; }
         .cerrar-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #888; line-height: 1;}
@@ -149,8 +106,6 @@
         .grupo-input label { font-size: 0.9rem; font-weight: 900; display: block; margin-bottom: 5px;}
         .grupo-input input, .grupo-input textarea, .grupo-input select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
         .btn-enviar { background-color: #1e3c72; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: 900; width: 100%; font-size: 1.1rem; text-transform: uppercase;}
-        .btn-enviar:hover { background-color: #112240; }
-
     </style>
 </head>
 <body>
@@ -164,19 +119,19 @@
     </header>
 
     <div class="container">
-        <!-- ================= PODIO PRINCIPAL ================= -->
+        <!-- ================= PODIO ================= -->
         <h2 class="titulo-seccion">LOS REYES DE LA TEMPORADA 4</h2>
-        
         <div class="podio-container">
-            <!-- 2do Lugar -->
+            
+            <!-- SUBDELEGADO -->
             <div class="candidato-card" id="card-AndreChocce">
                 <div class="barra-podio puesto-2">
                     <div class="foto-wrapper">
                         <img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'">
-                        <div class="manchas-container"></div>
                     </div>
-                    <span class="nombre-podio" style="color:white">André Chocce</span>
-                    <span class="cargo-podio" style="color:#e0e0e0">Subdelegado</span>
+                    <span class="nombre-podio">André Chocce</span>
+                    <span class="cargo-podio">Subdelegado</span>
+                    <span class="porcentaje-podio">85%</span>
                 </div>
                 <div class="acciones-contenedor">
                     <div class="arsenal">
@@ -186,21 +141,20 @@
                         <button class="btn-accion" onclick="disparar(this, '🪨', 'AndreChocce')">🪨</button>
                     </div>
                     <div class="fila-inferior">
-                        <button class="btn-accion" onclick="disparar(this, '⭐', 'AndreChocce')" style="background:#fff9c4">⭐</button>
                         <button class="btn-accion btn-comentar" onclick="abrirReseña('André Chocce')">Calificar</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 1er Lugar -->
+            <!-- DELEGADA GENERAL -->
             <div class="candidato-card" id="card-ValerySuarez">
                 <div class="barra-podio puesto-1">
                     <div class="foto-wrapper">
                         <img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'">
-                        <div class="manchas-container"></div>
                     </div>
-                    <span class="nombre-podio" style="color:white">Valery Suarez</span>
-                    <span class="cargo-podio" style="color:#ffcccc">Delegada General</span>
+                    <span class="nombre-podio">Valery Suarez</span>
+                    <span class="cargo-podio">Delegada General</span>
+                    <span class="porcentaje-podio">98%</span>
                 </div>
                 <div class="acciones-contenedor">
                     <div class="arsenal">
@@ -210,21 +164,20 @@
                         <button class="btn-accion" onclick="disparar(this, '🪨', 'ValerySuarez')">🪨</button>
                     </div>
                     <div class="fila-inferior">
-                        <button class="btn-accion" onclick="disparar(this, '⭐', 'ValerySuarez')" style="background:#fff9c4">⭐</button>
                         <button class="btn-accion btn-comentar" onclick="abrirReseña('Valery Suarez')">Calificar</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 3er Lugar -->
+            <!-- ALEXANDER (DESAPROBACIÓN ROJA) -->
             <div class="candidato-card" id="card-AlexanderH">
-                <div class="barra-podio puesto-3">
+                <div class="barra-podio puesto-3-rojo">
                     <div class="foto-wrapper">
                         <img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/100'">
-                        <div class="manchas-container"></div>
                     </div>
-                    <span class="nombre-podio" style="color:white">Alexander H.</span>
-                    <span class="cargo-podio" style="color:#ffe0b2">Delegado de Chow</span>
+                    <span class="nombre-podio">Alexander H.</span>
+                    <span class="cargo-podio">Delegado de Chow</span>
+                    <span class="porcentaje-podio" style="color:#ffcccc; font-size:1.1rem; margin-top:5px;">12% Aprob.</span>
                 </div>
                 <div class="acciones-contenedor">
                     <div class="arsenal">
@@ -234,7 +187,6 @@
                         <button class="btn-accion" onclick="disparar(this, '🪨', 'AlexanderH')">🪨</button>
                     </div>
                     <div class="fila-inferior">
-                        <button class="btn-accion" onclick="disparar(this, '⭐', 'AlexanderH')" style="background:#fff9c4">⭐</button>
                         <button class="btn-accion btn-comentar" onclick="abrirReseña('Alexander H.')">Calificar</button>
                     </div>
                 </div>
@@ -242,34 +194,27 @@
         </div>
     </div>
 
-    <!-- ================= DELEGADOS DE CURSOS (GENERADO POR JS) ================= -->
+    <!-- ================= DELEGADOS DE CURSOS (INYECCIÓN JS) ================= -->
     <section class="parlamento-section">
         <h2 class="titulo-seccion" style="margin-bottom: 20px;">DELEGADOS DE CURSOS</h2>
-        <div class="carrusel-track" id="carruselTrack">
-            <!-- El contenido se inyectará aquí mágicamente con JS -->
-        </div>
+        <div class="carrusel-track" id="carruselTrack"></div>
     </section>
 
-    <!-- ================= SECCIÓN DE RESEÑAS ================= -->
+    <!-- ================= MURO ================= -->
     <section class="seccion-muro">
         <h2 class="titulo-seccion">EL MURO DEL PUEBLO</h2>
-        
         <div class="controles-muro">
             <select id="filtroDelegado" onchange="renderizarReseñas()">
                 <option value="Todos">Todos los Delegados</option>
-                <!-- Opciones generadas por JS -->
             </select>
             <select id="filtroTipo" onchange="renderizarReseñas()">
                 <option value="Todos">Todos los Comentarios</option>
-                <option value="Positivas">Solo Positivas (⭐⭐⭐+)</option>
-                <option value="Negativas">Solo Negativas (⭐⭐-)</option>
-                <option value="SinCalificar">Solo Comentarios (Sin ⭐)</option>
+                <option value="Positivas">Positivas (⭐⭐⭐+)</option>
+                <option value="Negativas">Negativas (⭐⭐-)</option>
+                <option value="SinCalificar">Sin Calificación</option>
             </select>
         </div>
-
-        <div class="lista-resenas" id="contenedorResenas">
-            <!-- Las reseñas irán aquí -->
-        </div>
+        <div class="lista-resenas" id="contenedorResenas"></div>
     </section>
 
     <!-- ================= MODAL ================= -->
@@ -278,7 +223,6 @@
             <span class="cerrar-modal" onclick="cerrarReseña()">&times;</span>
             <h3 style="margin-top:0; color:#1e3c72; font-size:1.8rem">Calificar</h3>
             <p style="color:#666; margin-top:-10px;">Para: <strong id="nombreDelegadoModal">---</strong></p>
-            
             <div class="grupo-input">
                 <label>Tu Nombre:</label>
                 <input type="text" id="inputNombre" placeholder="Ej. Juan Pérez">
@@ -287,7 +231,6 @@
                     <label style="margin:0; font-weight:normal;">Soy Anónimo 🕵️‍♂️</label>
                 </div>
             </div>
-            
             <div class="grupo-input">
                 <label>Calificación (Opcional):</label>
                 <select id="inputEstrellas">
@@ -299,107 +242,141 @@
                     <option value="1">⭐ - Pésimo</option>
                 </select>
             </div>
-
             <div class="grupo-input">
                 <label>Tu Comentario:</label>
-                <textarea id="inputComentario" rows="3" placeholder="Escribe lo que piensas de su gestión..."></textarea>
+                <textarea id="inputComentario" rows="3" placeholder="Escribe tu descargo..."></textarea>
             </div>
-
             <button class="btn-enviar" onclick="guardarReseña()">Publicar en el Muro</button>
         </div>
     </div>
 
-    <!-- ================= SCRIPT MÁGICO ================= -->
+    <!-- ================= SCRIPT ================= -->
     <script>
-        // 1. RELOJ DE REGRESO A CLASES
+        // 1. RELOJ
         const fechaObjetivo = new Date("Sep 7, 2026 08:00:00").getTime();
         setInterval(() => {
             const distancia = fechaObjetivo - new Date().getTime();
             if (distancia < 0) return document.getElementById("reloj").innerHTML = "¡URNAS ABIERTAS!";
-            document.getElementById("reloj").innerHTML = 
-                Math.floor(distancia / 86400000) + "d " + 
-                Math.floor((distancia % 86400000) / 3600000) + "h " + 
-                Math.floor((distancia % 3600000) / 60000) + "m " + 
-                Math.floor((distancia % 60000) / 1000) + "s";
+            document.getElementById("reloj").innerHTML = Math.floor(distancia / 86400000) + "d " + Math.floor((distancia % 86400000) / 3600000) + "h " + Math.floor((distancia % 3600000) / 60000) + "m " + Math.floor((distancia % 60000) / 1000) + "s";
         }, 1000);
 
-        // 2. BASE DE DATOS DE CURSOS
+        // 2. BASE DE DATOS CURSOS Y APROBACIÓN
         const delegadosCursos = [
-            { id: "JordanPercy", nombre: "Jordan Percy", curso: "Mat. Básicas 2" },
-            { id: "DanBarzola", nombre: "Dan Barzola", curso: "Ecología" },
-            { id: "Noemi", nombre: "Noemi", curso: "Filosofía" },
-            { id: "FernandoJ", nombre: "Fernando J.", curso: "Ed. Artística" },
-            { id: "MarvinRicse", nombre: "Marvin Ricse", curso: "Comunicación" },
-            { id: "RamiroPerez", nombre: "Ramiro Perez", curso: "Cálculo B" },
-            { id: "JhonChagua", nombre: "Jhon Chagua", curso: "Cálculo A" },
-            { id: "GreciaOchoa", nombre: "Grecia Ochoa", curso: "Geografía" },
-            { id: "BeatrizBanzer", nombre: "Beatriz Banzer", curso: "Inglés" },
-            { id: "CesarCoa", nombre: "Cesar Coa", curso: "Alimentaria" }
+            { id: "JordanPercy", nombre: "Jordan Percy", curso: "Mat. Básicas 2", aprob: 70 },
+            { id: "DanBarzola", nombre: "Dan Barzola", curso: "Ecología", aprob: 82 },
+            { id: "Noemi", nombre: "Noemi", curso: "Filosofía", aprob: 65 },
+            { id: "FernandoJ", nombre: "Fernando J.", curso: "Ed. Artística", aprob: 78 },
+            { id: "MarvinRicse", nombre: "Marvin Ricse", curso: "Comunicación", aprob: 91 },
+            { id: "RamiroPerez", nombre: "Ramiro Perez", curso: "Cálculo B", aprob: 55 },
+            { id: "JhonChagua", nombre: "Jhon Chagua", curso: "Cálculo A", aprob: 68 },
+            { id: "GreciaOchoa", nombre: "Grecia Ochoa", curso: "Geografía", aprob: 88 },
+            { id: "BeatrizBanzer", nombre: "Beatriz Banzer", curso: "Inglés", aprob: 95 },
+            { id: "CesarCoa", nombre: "Cesar Coa", curso: "Alimentaria", aprob: 85 }
         ];
 
-        // Generar Carrusel Infinito (Se imprime 2 veces para que el bucle no se corte)
         const track = document.getElementById('carruselTrack');
         const filtro = document.getElementById('filtroDelegado');
-        
-        // Agregar los del podio al filtro
         ['Valery Suarez', 'André Chocce', 'Alexander H.'].forEach(n => filtro.innerHTML += `<option value="${n}">${n}</option>`);
 
-        function generarTarjetasCursos() {
+        function generarTarjetas() {
             let html = "";
             delegadosCursos.forEach(d => {
-                // Llenar el filtro de reseñas
                 filtro.innerHTML += `<option value="${d.nombre}">${d.nombre}</option>`;
                 
-                // HTML de la tarjeta
+                // Color de barra dependiendo de la aprobación
+                let colorBarra = d.aprob >= 75 ? '#4cd964' : (d.aprob >= 60 ? '#ff9500' : '#ff3b30');
+                
+                // Botones especiales solo para Marvin
+                let extraArsenal = '';
+                if(d.id === 'MarvinRicse') {
+                    extraArsenal = `
+                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🏳️‍🌈', '${d.id}')">🏳️‍🌈</button>
+                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🥒', '${d.id}')">🥒</button>
+                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🍆', '${d.id}')">🍆</button>
+                        <button class="btn-accion btn-marvin" onclick="disparar(this, '🖕', '${d.id}')">🖕</button>
+                    `;
+                }
+
                 html += `
                 <div class="parlamentario" id="card-${d.id}">
                     <div class="foto-wrapper" style="margin-top:0">
+                        <div class="burbuja-texto" id="nube-${d.id}">¡Qué rico! 🥵🤤</div>
                         <img src="FOTOS/COA.png" class="foto-candidato" onerror="this.src='https://via.placeholder.com/70'">
-                        <div class="manchas-container"></div>
                     </div>
                     <div style="font-weight:900; margin-top:10px;">${d.nombre}</div>
-                    <div style="font-size:0.75rem; color:#666; margin-bottom:10px; font-weight:bold;">${d.curso}</div>
+                    <div style="font-size:0.75rem; color:#666; font-weight:bold;">${d.curso}</div>
                     
+                    <div class="texto-aprobacion-global">Aprobación</div>
+                    <div class="contenedor-aprobacion">
+                        <div class="relleno-aprobacion" style="width: ${d.aprob}%; background: ${colorBarra};">${d.aprob}%</div>
+                    </div>
+
                     <div class="acciones-contenedor">
                         <div class="arsenal">
                             <button class="btn-accion" onclick="disparar(this, '🥚', '${d.id}')">🥚</button>
                             <button class="btn-accion" onclick="disparar(this, '💩', '${d.id}')">💩</button>
                             <button class="btn-accion" onclick="disparar(this, '🍅', '${d.id}')">🍅</button>
                             <button class="btn-accion" onclick="disparar(this, '🪨', '${d.id}')">🪨</button>
+                            ${extraArsenal}
                         </div>
-                        <div class="fila-inferior">
-                            <button class="btn-accion" onclick="disparar(this, '⭐', '${d.id}')" style="background:#fff9c4">⭐</button>
-                            <button class="btn-accion btn-comentar" onclick="abrirReseña('${d.nombre}')">💬</button>
+                        <div class="fila-inferior" style="margin-top:5px;">
+                            <button class="btn-accion btn-comentar" onclick="abrirReseña('${d.nombre}')">Calificar a ${d.nombre.split(' ')[0]}</button>
                         </div>
                     </div>
                 </div>`;
             });
-            // Multiplicar por 2 para el scroll infinito
-            track.innerHTML = html + html; 
+            track.innerHTML = html + html; // Doble para el scroll infinito
         }
-        generarTarjetasCursos();
+        generarTarjetas();
 
-        // 3. SISTEMA DE DAÑOS Y ANIMACIONES
-        // Registro de cuánto daño ha recibido cada ID
+        // 3. FÍSICAS Y ANIMACIONES DE PARTÍCULAS
         const registroDaños = {}; 
 
+        function crearFragmentos(x, y, tipo) {
+            const paletas = {
+                '🪨': ['#888', '#555', '#333', '#666'],
+                '🥚': ['#fff', '#fff', '#ffd700', '#ffeb3b'], // Blanco y yema
+                '🍅': ['#ff3b30', '#c41e15', '#a01810', '#ff4d4d'] // Rojos
+            };
+            
+            if(!paletas[tipo]) return; // Si no es piedra, huevo o tomate, no explota en pedazos
+
+            for(let i=0; i<8; i++) {
+                let frag = document.createElement('div');
+                frag.className = 'fragmento ' + (tipo === '🍅' ? 'fragmento-tomate' : (tipo === '🥚' ? 'fragmento-huevo' : ''));
+                frag.style.background = paletas[tipo][Math.floor(Math.random() * paletas[tipo].length)];
+                frag.style.left = x + 'px';
+                frag.style.top = y + 'px';
+                document.body.appendChild(frag);
+                
+                // Física de explosión (Dirección aleatoria y gravedad)
+                let angulo = Math.random() * Math.PI * 2;
+                let fuerza = Math.random() * 60 + 30;
+                let velX = Math.cos(angulo) * fuerza;
+                let velY = Math.sin(angulo) * fuerza + 60; // Gravedad hacia abajo
+                
+                setTimeout(() => {
+                    frag.style.transform = `translate(${velX}px, ${velY}px) rotate(${Math.random()*360}deg)`;
+                    frag.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => frag.remove(), 600);
+            }
+        }
+
         function disparar(btn, tipo, idDelegado) {
-            // Inicializar registro si no existe
             if(!registroDaños[idDelegado]) registroDaños[idDelegado] = { piedras: 0 };
             
-            // Buscar la tarjeta clickeada (como hay duplicados en el carrusel, afecta al que clickeaste)
             const tarjeta = btn.closest('.candidato-card, .parlamentario');
             const fotoWrapper = tarjeta.querySelector('.foto-wrapper');
             const img = tarjeta.querySelector('.foto-candidato');
-            const containerManchas = tarjeta.querySelector('.manchas-container');
 
-            // Crear el proyectil volador
+            // Proyectil
             const proyectil = document.createElement('div');
             proyectil.innerText = tipo;
             proyectil.className = 'proyectil';
             document.body.appendChild(proyectil);
 
-            // Coordenadas
             const rBtn = btn.getBoundingClientRect();
             const rFoto = fotoWrapper.getBoundingClientRect();
             proyectil.style.left = rBtn.left + 'px';
@@ -409,58 +386,45 @@
             const dY = (rFoto.top + rFoto.height/2) - rBtn.top;
 
             setTimeout(() => {
-                const giro = (tipo === '⭐') ? 'scale(1.5)' : 'rotate(360deg)';
-                proyectil.style.transform = `translate(${dX}px, ${dY}px) ${giro}`;
+                proyectil.style.transform = `translate(${dX}px, ${dY}px) rotate(360deg)`;
                 proyectil.style.opacity = '0';
             }, 10);
 
-            // Impacto
+            // IMPACTO
             setTimeout(() => {
                 proyectil.remove();
                 
-                if(tipo === '⭐') {
-                    img.classList.add('glow');
-                    setTimeout(() => img.classList.remove('glow'), 600);
-                } else if(tipo === '🪨') {
+                // Si es Marvin y le tiran cosas LGTB/Hot
+                if(idDelegado === 'MarvinRicse' && ['🏳️‍🌈', '🥒', '🍆', '🖕'].includes(tipo)) {
+                    let nube = tarjeta.querySelector('.burbuja-texto');
+                    if(nube) {
+                        nube.classList.add('activa');
+                        setTimeout(() => nube.classList.remove('activa'), 2000);
+                    }
+                }
+                
+                // Estallar en pedazos y temblar
+                img.classList.add('impacto');
+                setTimeout(() => img.classList.remove('impacto'), 300);
+                
+                crearFragmentos(rFoto.left + rFoto.width/2, rFoto.top + rFoto.height/2, tipo);
+
+                // Lógica de destrucción por piedras
+                if(tipo === '🪨') {
                     registroDaños[idDelegado].piedras++;
                     let cantPiedras = registroDaños[idDelegado].piedras;
                     
-                    img.classList.add('impacto');
-                    setTimeout(() => img.classList.remove('impacto'), 300);
-
-                    // Sistema de rotura
                     if(cantPiedras === 1) img.classList.add('grieta-1');
-                    if(cantPiedras === 3) { img.classList.remove('grieta-1'); img.classList.add('grieta-2'); }
-                    if(cantPiedras === 5) { img.classList.remove('grieta-2'); img.classList.add('grieta-3'); }
-                    
-                    // CAIDA LIBRE DESTRUCCIÓN TOTAL (Al 7mo piedrazo)
-                    if(cantPiedras >= 7) {
-                        tarjeta.classList.add('roto-destruido');
-                        // Limpiar daño para que si refresca empiece de cero
-                    }
-                } else {
-                    // Manchas (Huevo, Popo, Tomate)
-                    img.classList.add('impacto');
-                    setTimeout(() => img.classList.remove('impacto'), 300);
-                    
-                    const mancha = document.createElement('div');
-                    mancha.className = 'mancha ' + (tipo === '🍅' ? 'mancha-tomate' : '');
-                    if(tipo !== '🍅') mancha.innerText = tipo === '🥚' ? '🍳' : '💩'; 
-                    
-                    // Posición aleatoria dentro de la foto
-                    mancha.style.left = Math.random() * 60 + 10 + '%';
-                    mancha.style.top = Math.random() * 60 + 10 + '%';
-                    containerManchas.appendChild(mancha);
+                    if(cantPiedras === 4) { img.classList.remove('grieta-1'); img.classList.add('grieta-2'); }
+                    if(cantPiedras === 7) { img.classList.remove('grieta-2'); img.classList.add('grieta-3'); }
+                    if(cantPiedras >= 10) tarjeta.classList.add('roto-destruido');
                 }
-            }, 400); // Tiempo de vuelo
+
+            }, 350);
         }
 
-        // 4. SISTEMA DE RESEÑAS
-        const resenasDB = [
-            // Reseñas de ejemplo pre-cargadas
-            { autor: "Anónimo", delegado: "Valery Suarez", estrellas: 5, texto: "¡La mejor delegada, súper responsable!", tipo: "Positivas" },
-            { autor: "Jean", delegado: "Alexander H.", estrellas: 0, texto: "El mejor delegado de show, nos hizo reír todo el ciclo jajaja.", tipo: "SinCalificar" }
-        ];
+        // 4. RESEÑAS Y MODAL
+        const resenasDB = [ { autor: "Anónimo", delegado: "Valery Suarez", estrellas: 5, texto: "¡La mejor delegada, súper responsable!", tipo: "Positivas" } ];
 
         function renderizarReseñas() {
             const cont = document.getElementById('contenedorResenas');
@@ -468,34 +432,17 @@
             const fTipo = document.getElementById('filtroTipo').value;
             
             cont.innerHTML = "";
-            let filtradas = resenasDB.filter(r => {
-                let pasaDelegado = (fDelegado === "Todos") || (r.delegado === fDelegado);
-                let pasaTipo = (fTipo === "Todos") || (r.tipo === fTipo);
-                return pasaDelegado && pasaTipo;
-            });
+            let filtradas = resenasDB.filter(r => (fDelegado === "Todos" || r.delegado === fDelegado) && (fTipo === "Todos" || r.tipo === fTipo));
+            if(filtradas.length === 0) return cont.innerHTML = "<p style='text-align:center; color:#888;'>No hay reseñas.</p>";
 
-            if(filtradas.length === 0) {
-                cont.innerHTML = "<p style='text-align:center; color:#888;'>No hay reseñas que coincidan con la búsqueda.</p>";
-                return;
-            }
-
-            // Invertir para ver las más nuevas arriba
             filtradas.reverse().forEach(r => {
-                let colorClass = "";
-                let estrellasHTML = "";
+                let colorClass = r.estrellas >= 3 ? "resena-positiva" : (r.estrellas > 0 ? "resena-negativa" : "");
+                let estrellasHTML = r.estrellas > 0 ? "⭐".repeat(r.estrellas) : "";
                 
-                if(r.estrellas > 0) {
-                    colorClass = r.estrellas >= 3 ? "resena-positiva" : "resena-negativa";
-                    estrellasHTML = "⭐".repeat(r.estrellas);
-                }
-
                 cont.innerHTML += `
                 <div class="resena-card ${colorClass}">
                     <div class="resena-header">
-                        <div>
-                            <span class="resena-autor">${r.autor}</span>
-                            <span class="resena-objetivo"> opinó sobre ${r.delegado}</span>
-                        </div>
+                        <div><span class="resena-autor">${r.autor}</span><span class="resena-objetivo"> opinó sobre ${r.delegado}</span></div>
                         <div class="resena-estrellas">${estrellasHTML}</div>
                     </div>
                     <div class="resena-texto">"${r.texto}"</div>
@@ -504,46 +451,34 @@
         }
         renderizarReseñas();
 
-        // 5. LÓGICA DEL MODAL
-        const modal = document.getElementById("modalMuro");
         let delegadoActualModal = "";
-        
         function abrirReseña(nombre) {
             delegadoActualModal = nombre;
             document.getElementById("nombreDelegadoModal").innerText = nombre;
-            modal.style.display = "flex";
+            document.getElementById("modalMuro").style.display = "flex";
         }
-
         function cerrarReseña() {
-            modal.style.display = "none";
+            document.getElementById("modalMuro").style.display = "none";
             document.getElementById("inputComentario").value = "";
             document.getElementById("checkAnonimo").checked = false;
             document.getElementById("inputEstrellas").value = "0";
             document.getElementById("inputNombre").disabled = false;
             document.getElementById("inputNombre").value = "";
         }
-
         function toggleAnonimo() {
             const chk = document.getElementById("checkAnonimo").checked;
             document.getElementById("inputNombre").value = chk ? "Anónimo" : "";
             document.getElementById("inputNombre").disabled = chk;
         }
-
         function guardarReseña() {
             let nombre = document.getElementById("inputNombre").value || "Anónimo";
             let coment = document.getElementById("inputComentario").value;
             let stars = parseInt(document.getElementById("inputEstrellas").value);
 
             if(coment.trim() === "") return alert("¡Debes escribir un comentario!");
+            let tipoC = stars >= 3 ? "Positivas" : (stars > 0 ? "Negativas" : "SinCalificar");
 
-            let tipoC = "SinCalificar";
-            if(stars >= 3) tipoC = "Positivas";
-            else if (stars > 0) tipoC = "Negativas";
-
-            resenasDB.push({
-                autor: nombre, delegado: delegadoActualModal, estrellas: stars, texto: coment, tipo: tipoC
-            });
-
+            resenasDB.push({ autor: nombre, delegado: delegadoActualModal, estrellas: stars, texto: coment, tipo: tipoC });
             renderizarReseñas();
             cerrarReseña();
         }
