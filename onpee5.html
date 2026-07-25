@@ -253,22 +253,22 @@
         }, 1000);
 
         const delegadosPodio = [
-            { id: "AndreChocce", nombre: "André Chocce", curso: "Subdelegado", aprob: 50, hPx: 160 },
-            { id: "ValerySuarez", nombre: "Valery Suarez", curso: "Delegada General", aprob: 50, hPx: 160 },
-            { id: "AlexanderH", nombre: "Alexander H.", curso: "Delegado de Chow", aprob: 50, hPx: 160 }
+            { id: "AndreChocce", nombre: "André Chocce", curso: "Subdelegado", aprob: 50, hPx: 160, foto: "CHOCCE.png" },
+            { id: "ValerySuarez", nombre: "Valery Suarez", curso: "Delegada General", aprob: 50, hPx: 160, foto: "PULGA.png" },
+            { id: "AlexanderH", nombre: "Alexander H.", curso: "Delegado de Chow", aprob: 50, hPx: 160, foto: "ALEXANDER.png" }
         ];
 
         const delegadosCursos = [
-            { id: "JordanPercy", nombre: "Jordan Percy", curso: "Mat. Básicas 2", aprob: 50 },
-            { id: "DanBarzola", nombre: "Dan Barzola", curso: "Ecología", aprob: 50 },
-            { id: "Noemi", nombre: "Noemi", curso: "Filosofía", aprob: 50 },
-            { id: "FernandoJ", nombre: "Fernando J.", curso: "Ed. Artística", aprob: 50 },
-            { id: "MarvinRicse", nombre: "Marvin Ricse", curso: "Comunicación", aprob: 50 },
-            { id: "RamiroPerez", nombre: "Ramiro Perez", curso: "Cálculo B", aprob: 50 },
-            { id: "JhonChagua", nombre: "Jhon Chagua", curso: "Cálculo A", aprob: 50 },
-            { id: "GreciaOchoa", nombre: "Grecia Ochoa", curso: "Geografía", aprob: 50 },
-            { id: "BeatrizBanzer", nombre: "Beatriz Banzer", curso: "Inglés", aprob: 50 },
-            { id: "CesarCoa", nombre: "Cesar Coa", curso: "Alimentaria", aprob: 50 }
+            { id: "JordanPercy", nombre: "Jordan Percy", curso: "Mat. Básicas 2", aprob: 50, foto: "PULGA.png" },
+            { id: "DanBarzola", nombre: "Dan Barzola", curso: "Ecología", aprob: 50, foto: "DAN.png" },
+            { id: "Noemi", nombre: "Noemi", curso: "Filosofía", aprob: 50, foto: "NOEMI.png" },
+            { id: "FernandoJ", nombre: "Fernando J.", curso: "Ed. Artística", aprob: 50, foto: "COA.png" },
+            { id: "MarvinRicse", nombre: "Marvin Ricse", curso: "Comunicación", aprob: 50, foto: "MARVINA.png" },
+            { id: "RamiroPerez", nombre: "Ramiro Perez", curso: "Cálculo B", aprob: 50, foto: "RAMIRO.png" },
+            { id: "JhonChagua", nombre: "Jhon Chagua", curso: "Cálculo A", aprob: 50, foto: "CHAGUA.png" },
+            { id: "GreciaOchoa", nombre: "Grecia Ochoa", curso: "Geografía", aprob: 50, foto: "GRECIA.png" },
+            { id: "BeatrizBanzer", nombre: "Beatriz Banzer", curso: "Inglés", aprob: 50, foto: "BANZER.png" },
+            { id: "CesarCoa", nombre: "Cesar Coa", curso: "Alimentaria", aprob: 50, foto: "COA.png" }
         ];
 
         const filtro = document.getElementById('filtroDelegado');
@@ -295,7 +295,7 @@
             <div class="${isPodio ? 'candidato-vertical' : 'tarjeta-curso'}" id="card-${d.id}">
                 <div class="zona-barra" style="height: ${altura}px;">
                     <div class="nube-hot" id="nube-${d.id}"></div>
-                    <img src="FOTOS/COA.png" class="foto-top" onerror="this.src='https://via.placeholder.com/75'">
+                    <img src="FOTOS/${d.foto || 'COA.png'}" class="foto-top" onerror="this.src='https://via.placeholder.com/75'">
                     <div class="barra-grafico ${colorCls}" style="height: 100%;">
                         <div class="texto-porcentaje">${val}%</div>
                         <div class="texto-etiqueta">${label}</div>
