@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Conoce tu Salón UNE - Tour Virtual</title>
+    <title>Navegador UNE - Tour Virtual</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
@@ -22,12 +22,12 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        @keyframes bg-pan { 0% { background-position: 0% 50%; filter: hue-rotate(0deg); } 50% { background-position: 100% 50%; filter: hue-rotate(15deg); } 100% { background-position: 0% 50%; filter: hue-rotate(0deg); } }
+        @keyframes bg-pan { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.9) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); } 70% { box-shadow: 0 0 0 calc(15px * var(--zoom-factor)) rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+        @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.8); } 70% { box-shadow: 0 0 0 calc(20px * var(--zoom-factor)) rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
         @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8); } 70% { box-shadow: 0 0 0 calc(20px * var(--zoom-factor)) rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(calc(-6px * var(--zoom-factor))); } }
-        @keyframes dash { to { stroke-dashoffset: -40; } }
+        @keyframes radar-ping { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
 
         body { 
             background: linear-gradient(-45deg, #020617, #1e1b4b, #172554, #0f172a);
@@ -52,8 +52,11 @@
         .ruta-selector label { font-size: 12px; font-weight: 900; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
         .ruta-box select { padding: 14px 15px; border: 2px solid #cbd5e1; border-radius: 12px; font-size: 14px; outline: none; transition: 0.3s; background: white; font-weight: 800; color: var(--primary); width: 100%; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .ruta-box select:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); transform: translateY(-2px); }
-        .btn-trazar { padding: 14px 30px; background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 15px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 15px rgba(245, 158, 11, 0.4); white-space: nowrap; height: 50px; }
-        .btn-trazar:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 12px 20px rgba(234, 88, 12, 0.5); }
+        
+        .btn-trazar { padding: 14px 20px; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 14px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4); white-space: nowrap; height: 50px; }
+        .btn-trazar:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 12px 20px rgba(59, 130, 246, 0.5); }
+        .btn-guardar { padding: 14px 20px; background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 14px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 15px rgba(245, 158, 11, 0.4); white-space: nowrap; height: 50px; }
+        .btn-guardar:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 12px 20px rgba(245, 158, 11, 0.5); }
         .mensaje-ruta { font-weight: 800; font-size: 13px; min-height: 20px; transition: 0.3s; }
 
         .main-wrapper { display: flex; max-width: 1400px; margin: 0 auto 30px; padding: 0 15px; gap: 20px; width: 100%; animation: popIn 0.6s ease-out forwards; animation-delay: 0.1s; }
@@ -75,13 +78,12 @@
         .map-wrapper img { width: 100%; height: auto; display: block; pointer-events: none; }
 
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
-        .ruta-animada { stroke-dasharray: calc(15px * var(--zoom-factor)); animation: dash 1s linear infinite; filter: drop-shadow(0px calc(4px * var(--zoom-factor)) calc(6px * var(--zoom-factor)) rgba(0,0,0,0.6)); }
 
         .map-pin { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; z-index: 10; cursor: pointer; transition: z-index 0.2s; }
-        .pin-marker { width: calc(40px * var(--zoom-factor)); height: calc(40px * var(--zoom-factor)); background: white; border-radius: 50%; padding: calc(3px * var(--zoom-factor)); box-shadow: 0 calc(8px * var(--zoom-factor)) calc(15px * var(--zoom-factor)) rgba(0,0,0,0.5); position: relative; animation: float 3s ease-in-out infinite; border: calc(2px * var(--zoom-factor)) solid var(--blue); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .pin-marker { width: calc(35px * var(--zoom-factor)); height: calc(35px * var(--zoom-factor)); background: white; border-radius: 50%; padding: calc(2px * var(--zoom-factor)); box-shadow: 0 calc(8px * var(--zoom-factor)) calc(15px * var(--zoom-factor)) rgba(0,0,0,0.5); position: relative; animation: float 3s ease-in-out infinite; border: calc(2px * var(--zoom-factor)) solid var(--blue); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .pin-foto { width: 100%; height: 100%; border-radius: 50%; background-size: cover; background-position: center; }
         .pin-marker::after { content: ''; position: absolute; bottom: calc(-8px * var(--zoom-factor)); left: 50%; transform: translateX(-50%); border-width: calc(8px * var(--zoom-factor)) calc(6px * var(--zoom-factor)) 0; border-style: solid; border-color: var(--blue) transparent transparent transparent; transition: 0.3s; }
-        .pin-label { background: rgba(255,255,255,0.95); color: var(--primary); padding: calc(3px * var(--zoom-factor)) calc(8px * var(--zoom-factor)); border-radius: calc(8px * var(--zoom-factor)); font-size: calc(12px * var(--zoom-factor)); font-weight: 900; margin-top: calc(5px * var(--zoom-factor)); box-shadow: 0 calc(4px * var(--zoom-factor)) calc(10px * var(--zoom-factor)) rgba(0,0,0,0.3); border: calc(1px * var(--zoom-factor)) solid rgba(0,0,0,0.1); white-space: nowrap; transition: 0.3s; }
+        .pin-label { background: rgba(255,255,255,0.95); color: var(--primary); padding: calc(3px * var(--zoom-factor)) calc(8px * var(--zoom-factor)); border-radius: calc(8px * var(--zoom-factor)); font-size: calc(11px * var(--zoom-factor)); font-weight: 900; margin-top: calc(5px * var(--zoom-factor)); box-shadow: 0 calc(4px * var(--zoom-factor)) calc(10px * var(--zoom-factor)) rgba(0,0,0,0.3); border: calc(1px * var(--zoom-factor)) solid rgba(0,0,0,0.1); white-space: nowrap; transition: 0.3s; }
 
         .map-pin:hover { z-index: 30; }
         .map-pin:hover .pin-marker { transform: scale(1.15); border-color: var(--accent); animation: none; }
@@ -93,18 +95,14 @@
         .map-pin.active .pin-marker::after { border-color: var(--blue) transparent transparent transparent; }
         .map-pin.active .pin-label { background: var(--blue); color: white; border-color: var(--blue); }
 
-        .map-pin.user-location { z-index: 28; }
-        .map-pin.user-location .pin-marker { transform: scale(1.25); border-color: var(--green); animation: pulse-green 2s infinite; }
-        .map-pin.user-location .pin-marker::after { border-color: var(--green) transparent transparent transparent; }
-        .map-pin.user-location .pin-label { background: var(--green); color: white; border-color: var(--green); }
-
-        .player-avatar { position: absolute; transform: translate(-50%, -100%); z-index: 35; display: none; flex-direction: column; align-items: center; transition: all 0.3s ease; pointer-events: none; }
-        .avatar-icon { font-size: calc(30px * var(--zoom-factor)); filter: drop-shadow(0 calc(5px * var(--zoom-factor)) calc(5px * var(--zoom-factor)) rgba(0,0,0,0.5)); animation: float 2s ease-in-out infinite; }
-        .avatar-label { background: var(--green); color: white; padding: calc(3px * var(--zoom-factor)) calc(8px * var(--zoom-factor)); border-radius: calc(8px * var(--zoom-factor)); font-size: calc(11px * var(--zoom-factor)); font-weight: 900; margin-top: calc(2px * var(--zoom-factor)); box-shadow: 0 calc(4px * var(--zoom-factor)) calc(10px * var(--zoom-factor)) rgba(0,0,0,0.4); white-space: nowrap; border: calc(1px * var(--zoom-factor)) solid white; }
+        .gps-avatar { position: absolute; transform: translate(-50%, -50%); z-index: 35; display: none; flex-direction: column; align-items: center; transition: top 0.4s linear, left 0.4s linear; pointer-events: none; }
+        .gps-dot { width: calc(22px * var(--zoom-factor)); height: calc(22px * var(--zoom-factor)); background: var(--blue); border: calc(3px * var(--zoom-factor)) solid white; border-radius: 50%; box-shadow: 0 0 calc(15px * var(--zoom-factor)) rgba(59, 130, 246, 0.8); position: relative; }
+        .gps-dot::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: calc(50px * var(--zoom-factor)); height: calc(50px * var(--zoom-factor)); background: rgba(59, 130, 246, 0.4); border-radius: 50%; animation: radar-ping 2s infinite; }
+        .gps-label { background: var(--blue); color: white; padding: calc(3px * var(--zoom-factor)) calc(8px * var(--zoom-factor)); border-radius: calc(8px * var(--zoom-factor)); font-size: calc(11px * var(--zoom-factor)); font-weight: 900; margin-bottom: calc(5px * var(--zoom-factor)); box-shadow: 0 calc(4px * var(--zoom-factor)) calc(10px * var(--zoom-factor)) rgba(0,0,0,0.4); white-space: nowrap; border: calc(1px * var(--zoom-factor)) solid white; }
 
         .viewer-container { width: 100%; height: 60vh; min-height: 400px; border-radius: 16px; overflow: hidden; position: relative; display: none; background: #000; box-shadow: inset 0 0 50px rgba(0,0,0,0.9); opacity: 0; transition: opacity 0.4s; border: 4px solid white; }
         #panorama { width: 100%; height: 100%; }
-        .btn-volver-mapa { position: absolute; top: 15px; left: 15px; z-index: 999; background: rgba(239, 68, 68, 0.9); backdrop-filter: blur(10px); color: white; border: 2px solid white; padding: 10px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-volver-mapa { position: absolute; top: 20px; left: 20px; z-index: 999; background: rgba(239, 68, 68, 0.9); backdrop-filter: blur(10px); color: white; border: 2px solid white; padding: 12px 20px; border-radius: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.6); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
         .btn-volver-mapa:hover { background: #dc2626; transform: scale(1.05); }
 
         .sidebar { flex: 1; min-width: 340px; background: var(--surface); backdrop-filter: blur(25px); border-radius: 24px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); display: flex; flex-direction: column; gap: 10px; overflow-y: auto; height: 60vh; min-height: 400px; border: 1px solid rgba(255,255,255,0.3); }
@@ -143,7 +141,7 @@
             .viewer-container { height: 50vh; }
             .gps-grid { grid-template-columns: 1fr; }
             .ruta-box { flex-direction: column; align-items: stretch; }
-            .btn-trazar { width: 100%; height: 55px; }
+            .btn-trazar, .btn-guardar { width: 100%; height: 50px; }
             
             .sidebar { 
                 height: auto; min-height: auto; flex-direction: row; overflow-x: auto; overflow-y: hidden; 
@@ -175,19 +173,31 @@
                     <select id="select-origen">
                         <option value="gps" style="font-weight: 900; color: #10b981;">📍 MI UBICACIÓN ACTUAL (GPS)</option>
                         <option value="entrada" selected>Entrada Principal</option>
+                        <option value="garita">Garita de Seguridad</option>
                         <option value="biblioteca">Biblioteca Central</option>
-                        <option value="admision">Oficina de Admisión</option>
-                        <option value="comedor">Comedor Universitario</option>
-                        <option value="tecnologia">Facultad de Tecnología</option>
-                        <option value="agropecuaria">F. Agropecuaria y Nutrición</option>
-                        <option value="ciencias">Facultad de Ciencias</option>
-                        <option value="empresariales">F. Ciencias Empresariales</option>
-                        <option value="sociales">F. Ciencias Sociales</option>
-                        <option value="inicial">F. Educación Inicial</option>
-                        <option value="pedagogia">F. Pedagogía y C. Física</option>
-                        <option value="enfermeria">Enfermería de la UNE</option>
-                        <option value="estadio">Estadio de grass UNE</option>
+                        <option value="fac_inicial">Facultad Inicial</option>
+                        <option value="estadio">Estadio</option>
+                        <option value="comedor_b">Comedor Univ. Entrada B</option>
+                        <option value="comedor_a">Comedor Univ. Entrada A</option>
+                        <option value="auditorio_prin">Auditorio Principal</option>
+                        <option value="auditorio_fatec">Auditorio FATEC</option>
+                        <option value="fac_telematica">Facultad de Telemática</option>
+                        <option value="fac_ciencias">Facultad de Ciencias</option>
+                        <option value="bano_1">Baño 1</option>
+                        <option value="fac_artistica">Facultad Educación Artística</option>
+                        <option value="fac_civil">Facultad Construcción Civil</option>
+                        <option value="fac_tecnologia">Facultad de Tecnología</option>
+                        <option value="losa">Losa Deportiva</option>
+                        <option value="electricidad">Programa de Electricidad</option>
+                        <option value="fac_vestido">Facultad Tecnología del Vestido</option>
+                        <option value="capilla">Capilla de la UNE</option>
+                        <option value="fac_fisica">Facultad Educación Física</option>
+                        <option value="topico">Tópico</option>
+                        <option value="piscina">Piscina</option>
                         <option value="gimnasio">Gimnasio</option>
+                        <option value="recreacion">Centro de Recreación</option>
+                        <option value="tuna">Tuna</option>
+                        <option value="of_servicios">Oficina Servicios Generales</option>
                     </select>
                 </div>
                 <div class="ruta-selector">
@@ -195,22 +205,35 @@
                     <select id="select-destino">
                         <option value="" disabled selected>¿A dónde quieres ir?</option>
                         <option value="entrada">Entrada Principal</option>
+                        <option value="garita">Garita de Seguridad</option>
                         <option value="biblioteca">Biblioteca Central</option>
-                        <option value="admision">Oficina de Admisión</option>
-                        <option value="comedor">Comedor Universitario</option>
-                        <option value="tecnologia">Facultad de Tecnología</option>
-                        <option value="agropecuaria">F. Agropecuaria y Nutrición</option>
-                        <option value="ciencias">Facultad de Ciencias</option>
-                        <option value="empresariales">F. Ciencias Empresariales</option>
-                        <option value="sociales">F. Ciencias Sociales</option>
-                        <option value="inicial">F. Educación Inicial</option>
-                        <option value="pedagogia">F. Pedagogía y C. Física</option>
-                        <option value="enfermeria">Enfermería de la UNE</option>
-                        <option value="estadio">Estadio de grass UNE</option>
+                        <option value="fac_inicial">Facultad Inicial</option>
+                        <option value="estadio">Estadio</option>
+                        <option value="comedor_b">Comedor Univ. Entrada B</option>
+                        <option value="comedor_a">Comedor Univ. Entrada A</option>
+                        <option value="auditorio_prin">Auditorio Principal</option>
+                        <option value="auditorio_fatec">Auditorio FATEC</option>
+                        <option value="fac_telematica">Facultad de Telemática</option>
+                        <option value="fac_ciencias">Facultad de Ciencias</option>
+                        <option value="bano_1">Baño 1</option>
+                        <option value="fac_artistica">Facultad Educación Artística</option>
+                        <option value="fac_civil">Facultad Construcción Civil</option>
+                        <option value="fac_tecnologia">Facultad de Tecnología</option>
+                        <option value="losa">Losa Deportiva</option>
+                        <option value="electricidad">Programa de Electricidad</option>
+                        <option value="fac_vestido">Facultad Tecnología del Vestido</option>
+                        <option value="capilla">Capilla de la UNE</option>
+                        <option value="fac_fisica">Facultad Educación Física</option>
+                        <option value="topico">Tópico</option>
+                        <option value="piscina">Piscina</option>
                         <option value="gimnasio">Gimnasio</option>
+                        <option value="recreacion">Centro de Recreación</option>
+                        <option value="tuna">Tuna</option>
+                        <option value="of_servicios">Oficina Servicios Generales</option>
                     </select>
                 </div>
-                <button class="btn-trazar" onclick="trazarRutaVisual()">🚀 TRAZAR RUTA</button>
+                <button class="btn-trazar" onclick="trazarRutaVisual()">🚀 TRAZAR</button>
+                <button class="btn-guardar" onclick="guardarRuta()">💾 GUARDAR</button>
             </div>
             <div id="dan-texto" class="mensaje-ruta"></div>
         </div>
@@ -228,6 +251,7 @@
                             <option value="principal">🏛️ Principales</option>
                             <option value="facultad">📚 Facultades</option>
                             <option value="bienestar">🏃 Bienestar</option>
+                            <option value="servicios">🚻 Servicios</option>
                         </select>
                     </div>
                     <div class="zoom-btns">
@@ -242,79 +266,169 @@
                     <img id="img-mapa" src="https://i.ibb.co/SX9cBTVH/bbcadf1a-e262-4a43-a6bf-88d44366a4d6.jpg" alt="Mapa Ilustrado UNE">
                     <svg id="svg-rutas" class="route-svg"></svg>
                     
-                    <div id="avatar-estudiante" class="player-avatar">
-                        <div class="avatar-icon">🚶‍♂️</div>
-                        <div class="avatar-label">Tú estás aquí</div>
+                    <div id="avatar-estudiante" class="gps-avatar">
+                        <div class="gps-label">Tú estás aquí</div>
+                        <div class="gps-dot"></div>
                     </div>
 
-                    <div class="map-pin" data-categoria="principal" data-label="Entrada" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-entrada" style="top: 15%; left: 45%;" onclick="abrir360('entrada')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Entrada</div>
                     </div>
                     
-                    <div class="map-pin" data-categoria="principal" data-label="Biblioteca" id="pin-mapa-biblioteca" style="top: 38%; left: 52%;" onclick="abrir360('biblioteca')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-garita" style="top: 15.6%; left: 42.4%;" onclick="abrir360('garita')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Biblioteca</div>
+                        <div class="pin-label">Garita</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-biblioteca" style="top: 30.8%; left: 60.7%;" onclick="abrir360('biblioteca')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Biblioteca Central</div>
                     </div>
                     
-                    <div class="map-pin" data-categoria="principal" data-label="Admisión" id="pin-mapa-admision" style="top: 30%; left: 50%;" onclick="abrir360('admision')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-admision" style="top: 25%; left: 55%;" onclick="abrir360('admision')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Admisión</div>
                     </div>
 
-                    <div class="map-pin" data-categoria="principal" data-label="Comedor" id="pin-mapa-comedor" style="top: 42%; left: 70%;" onclick="abrir360('comedor')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-comedor_b" style="top: 41.4%; left: 75%;" onclick="abrir360('comedor_b')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Comedor</div>
+                        <div class="pin-label">Comedor B</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-comedor_a" style="top: 29%; left: 70%;" onclick="abrir360('comedor_a')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Comedor A</div>
                     </div>
                     
-                    <div class="map-pin" data-categoria="facultad" data-label="F. Tecnología" id="pin-mapa-tecnologia" style="top: 85%; left: 45%;" onclick="abrir360('tecnologia')">
+                    <div class="map-pin" data-categoria="principal" id="pin-mapa-auditorio_prin" style="top: 9.5%; left: 72%;" onclick="abrir360('auditorio_prin')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Tecnología</div>
+                        <div class="pin-label">Audi. Principal</div>
                     </div>
 
-                    <div class="map-pin" data-categoria="facultad" data-label="F. Agropecuaria" id="pin-mapa-agropecuaria" style="top: 80%; left: 55%;" onclick="abrir360('agropecuaria')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-auditorio_fatec" style="top: 22.2%; left: 88%;" onclick="abrir360('auditorio_fatec')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Agropecuaria</div>
+                        <div class="pin-label">Audi. FATEC</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_telematica" style="top: 30.7%; left: 86.6%;" onclick="abrir360('fac_telematica')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Telemática</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_tecnologia" style="top: 78.6%; left: 88.6%;" onclick="abrir360('fac_tecnologia')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Tecnología</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-agropecuaria" style="top: 80%; left: 55%;" onclick="abrir360('agropecuaria')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Agropecuaria</div>
                     </div>
                     
-                    <div class="map-pin" data-categoria="facultad" data-label="F. Ciencias" id="pin-mapa-ciencias" style="top: 55%; left: 65%;" onclick="abrir360('ciencias')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_ciencias" style="top: 51.5%; left: 82.5%;" onclick="abrir360('fac_ciencias')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Ciencias</div>
+                        <div class="pin-label">F. Ciencias</div>
                     </div>
 
-                    <div class="map-pin" data-categoria="facultad" data-label="F. Empresariales" id="pin-mapa-empresariales" style="top: 70%; left: 60%;" onclick="abrir360('empresariales')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-empresariales" style="top: 70%; left: 60%;" onclick="abrir360('empresariales')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Empresariales</div>
+                        <div class="pin-label">F. Empresariales</div>
                     </div>
 
-                    <div class="map-pin" data-categoria="facultad" data-label="F. Sociales" id="pin-mapa-sociales" style="top: 60%; left: 70%;" onclick="abrir360('sociales')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-sociales" style="top: 60%; left: 70%;" onclick="abrir360('sociales')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Sociales</div>
+                        <div class="pin-label">F. Sociales</div>
                     </div>
 
-                    <div class="map-pin" data-categoria="facultad" data-label="F. Inicial" id="pin-mapa-inicial" style="top: 40%; left: 40%;" onclick="abrir360('inicial')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_inicial" style="top: 43.3%; left: 52%;" onclick="abrir360('fac_inicial')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Inicial</div>
+                        <div class="pin-label">F. Inicial</div>
                     </div>
 
-                    <div class="map-pin" data-categoria="facultad" data-label="F. Pedagogía" id="pin-mapa-pedagogia" style="top: 50%; left: 80%;" onclick="abrir360('pedagogia')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_artistica" style="top: 72.7%; left: 80.5%;" onclick="abrir360('fac_artistica')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
-                        <div class="pin-label">Pedagogía</div>
+                        <div class="pin-label">F. Artística</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_civil" style="top: 73.8%; left: 71.5%;" onclick="abrir360('fac_civil')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Civil</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-pedagogia" style="top: 50%; left: 80%;" onclick="abrir360('pedagogia')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Pedagogía</div>
                     </div>
                     
-                    <div class="map-pin" data-categoria="bienestar" data-label="Estadio" id="pin-mapa-estadio" style="top: 55%; left: 25%;" onclick="abrir360('estadio')">
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-estadio" style="top: 59.6%; left: 14%;" onclick="abrir360('estadio')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Estadio</div>
                     </div>
                     
-                    <div class="map-pin" data-categoria="bienestar" data-label="Enfermería" id="pin-mapa-enfermeria" style="top: 80%; left: 15%;" onclick="abrir360('enfermeria')">
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-enfermeria" style="top: 80%; left: 15%;" onclick="abrir360('enfermeria')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Enfermería</div>
                     </div>
                     
-                    <div class="map-pin" data-categoria="bienestar" data-label="Gimnasio" id="pin-mapa-gimnasio" style="top: 65%; left: 30%;" onclick="abrir360('gimnasio')">
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-gimnasio" style="top: 66.7%; left: 47%;" onclick="abrir360('gimnasio')">
                         <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
                         <div class="pin-label">Gimnasio</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-losa" style="top: 73.6%; left: 74%;" onclick="abrir360('losa')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Losa Deportiva</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-piscina" style="top: 84.8%; left: 51.7%;" onclick="abrir360('piscina')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Piscina</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-recreacion" style="top: 35.6%; left: 68.6%;" onclick="abrir360('recreacion')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Recreación</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-electricidad" style="top: 84.3%; left: 77.1%;" onclick="abrir360('electricidad')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Electricidad</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_vestido" style="top: 90%; left: 64.5%;" onclick="abrir360('fac_vestido')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Vestido</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-capilla" style="top: 90%; left: 47.9%;" onclick="abrir360('capilla')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Capilla</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_fisica" style="top: 93%; left: 32.9%;" onclick="abrir360('fac_fisica')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">F. Física</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-topico" style="top: 90%; left: 14.6%;" onclick="abrir360('topico')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Tópico</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-tuna" style="top: 30.3%; left: 74.4%;" onclick="abrir360('tuna')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Tuna</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-of_servicios" style="top: 37.5%; left: 63.4%;" onclick="abrir360('of_servicios')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Servicios G.</div>
+                    </div>
+
+                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-bano_1" style="top: 53.9%; left: 72.3%;" onclick="abrir360('bano_1')">
+                        <div class="pin-marker"><div class="pin-foto" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div></div>
+                        <div class="pin-label">Baño 1</div>
                     </div>
                 </div>
             </div>
@@ -336,13 +450,13 @@
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Biblioteca Central</span></div>
             </button>
-            <button class="btn-destino" onclick="abrir360('admision')">
+            <button class="btn-destino" onclick="abrir360('comedor_b')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
-                <div class="btn-info"><span class="btn-title">Oficina de Admisión</span></div>
+                <div class="btn-info"><span class="btn-title">Comedor Univ.</span></div>
             </button>
-            <button class="btn-destino" onclick="abrir360('comedor')">
+            <button class="btn-destino" onclick="abrir360('auditorio_prin')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
-                <div class="btn-info"><span class="btn-title">Comedor Universitario</span></div>
+                <div class="btn-info"><span class="btn-title">Auditorio Principal</span></div>
             </button>
 
             <h3>Facultades</h3>
@@ -352,37 +466,37 @@
             </button>
             <button class="btn-destino" onclick="abrir360('agropecuaria')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
-                <div class="btn-info"><span class="btn-title">F. Agropecuaria y Nutrición</span></div>
+                <div class="btn-info"><span class="btn-title">F. Agropecuaria</span></div>
             </button>
-            <button class="btn-destino" onclick="abrir360('ciencias')">
+            <button class="btn-destino" onclick="abrir360('fac_ciencias')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">Facultad de Ciencias</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('empresariales')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
-                <div class="btn-info"><span class="btn-title">F. Ciencias Empresariales</span></div>
+                <div class="btn-info"><span class="btn-title">F. Empresariales</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('sociales')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">F. Ciencias Sociales</span></div>
             </button>
-            <button class="btn-destino" onclick="abrir360('inicial')">
+            <button class="btn-destino" onclick="abrir360('fac_inicial')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
                 <div class="btn-info"><span class="btn-title">F. Educación Inicial</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('pedagogia')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
-                <div class="btn-info"><span class="btn-title">F. Pedagogía y C. Física</span></div>
+                <div class="btn-info"><span class="btn-title">F. Pedagogía</span></div>
             </button>
 
             <h3>Bienestar y Deporte</h3>
             <button class="btn-destino" onclick="abrir360('enfermeria')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
-                <div class="btn-info"><span class="btn-title">Enfermería de la UNE</span></div>
+                <div class="btn-info"><span class="btn-title">Enfermería UNE</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('estadio')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
-                <div class="btn-info"><span class="btn-title">Estadio de grass UNE</span></div>
+                <div class="btn-info"><span class="btn-title">Estadio de grass</span></div>
             </button>
             <button class="btn-destino" onclick="abrir360('gimnasio')">
                 <div class="img-thumb" style="background-image: url('fotos-360-une/BIBLIOTECA.png');"></div>
@@ -401,7 +515,7 @@
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button class="btn-action bg-green" onclick="iniciarNavegacion()">🚶 Activar GPS</button>
                         <button class="btn-action bg-red" onclick="detenerNavegacion()">🛑 Detener</button>
-                        <button class="btn-action bg-indigo" onclick="toggleModoEdicion()">✏️ Modo Creador</button>
+                        <button class="btn-action bg-indigo" onclick="toggleModoEdicion()">✏️ Modo Dev (Capturar Punto)</button>
                     </div>
                     <div id="panel-instrucciones" style="margin-top: 20px; font-weight: 900; color: #1e3a8a; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border: 2px dashed #cbd5e1;">Sistema en espera...</div>
                     <div id="resultado-gps" style="font-family: monospace; font-size: 13px; color: #1e293b; margin-top: 15px; background: #f1f5f9; padding: 10px; border-radius: 8px; word-break: break-all; display: none;"></div>
@@ -434,6 +548,16 @@
 
         let miXActual = baseMapa.x;
         let miYActual = baseMapa.y;
+
+        window.onload = function() {
+            const rutaGuardada = localStorage.getItem('rutaUNE');
+            if(rutaGuardada) {
+                const data = JSON.parse(rutaGuardada);
+                document.getElementById('select-origen').value = data.origen;
+                document.getElementById('select-destino').value = data.destino;
+                trazarRutaVisual(true);
+            }
+        };
 
         const viewport = document.getElementById('vista-mapa');
         viewport.addEventListener('mousedown', (e) => {
@@ -482,7 +606,7 @@
             
             if (modoEdicionActivo) {
                 res.style.display = 'block';
-                res.innerHTML = "<span style='color:#10b981'>✅ MODO CREADOR ACTIVO:</span> Haz clic en cualquier parte de la imagen del mapa arriba. Aparecerá un punto rosado y te daré los números exactos aquí.";
+                res.innerHTML = "<span style='color:#10b981'>✅ MODO CREADOR ACTIVO:</span> Haz clic en la imagen del mapa arriba para obtener porcentajes y lat/lon.";
                 img.style.cursor = "crosshair";
                 wrapper.style.cursor = "crosshair";
             } else {
@@ -501,7 +625,7 @@
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
             
-            let calcLat = baseReal.lat + ((baseMapa.y - y) * 0.000030);
+            let calcLat = baseReal.lat - ((y - baseMapa.y) * 0.000030);
             let calcLon = baseReal.lon + ((x - baseMapa.x) * 0.000030);
 
             let puntero = document.getElementById('puntero-prueba');
@@ -537,19 +661,66 @@
 
         const coordenadasMapa = {
             "entrada": { x: 45, y: 15 },
-            "biblioteca": { x: 52, y: 38 },
-            "admision": { x: 50, y: 30 },
-            "comedor": { x: 70, y: 42 },
-            "tecnologia": { x: 45, y: 85 },
-            "agropecuaria": { x: 55, y: 80 },
-            "ciencias": { x: 65, y: 55 },
-            "empresariales": { x: 60, y: 70 },
-            "sociales": { x: 70, y: 60 },
-            "inicial": { x: 40, y: 40 },
+            "garita": { x: 42.4, y: 15.6 },
+            "biblioteca": { x: 60.7, y: 30.8 },
+            "admision": { x: 55, y: 25 },
+            "comedor_b": { x: 75, y: 41.4 },
+            "comedor_a": { x: 70, y: 29 },
+            "auditorio_prin": { x: 72, y: 9.5 },
+            "auditorio_fatec": { x: 88, y: 22.2 },
+            "fac_telematica": { x: 86.6, y: 30.7 },
+            "fac_ciencias": { x: 82.5, y: 51.5 },
+            "bano_1": { x: 72.3, y: 53.9 },
+            "fac_artistica": { x: 80.5, y: 72.7 },
+            "fac_civil": { x: 71.5, y: 73.8 },
+            "fac_tecnologia": { x: 88.6, y: 78.6 },
+            "losa": { x: 74, y: 73.6 },
+            "electricidad": { x: 77.1, y: 84.3 },
+            "fac_vestido": { x: 64.5, y: 90 },
+            "capilla": { x: 47.9, y: 90 },
+            "fac_fisica": { x: 32.9, y: 93 },
+            "topico": { x: 14.6, y: 90 },
+            "piscina": { x: 51.7, y: 84.8 },
+            "gimnasio": { x: 47, y: 66.7 },
+            "recreacion": { x: 68.6, y: 35.6 },
+            "tuna": { x: 74.4, y: 30.3 },
+            "of_servicios": { x: 63.4, y: 37.5 },
+            "fac_inicial": { x: 52, y: 43.3 },
             "pedagogia": { x: 80, y: 50 },
-            "estadio": { x: 25, y: 55 },
+            "estadio": { x: 14, y: 59.6 },
             "enfermeria": { x: 15, y: 80 },
-            "gimnasio": { x: 30, y: 65 }
+            "agropecuaria": { x: 55, y: 80 },
+            "empresariales": { x: 60, y: 70 },
+            "sociales": { x: 70, y: 60 }
+        };
+
+        const puntosCampus = {
+            entrada: { lat: -11.945461, lon: -76.701921 },
+            garita: { lat: -11.945479, lon: -76.701997 },
+            biblioteca: { lat: -11.945937, lon: -76.701450 },
+            fac_inicial: { lat: -11.946312, lon: -76.701711 },
+            estadio: { lat: -11.946800, lon: -76.702850 },
+            comedor_b: { lat: -11.946253, lon: -76.699763 },
+            comedor_a: { lat: -11.945881, lon: -76.700066 },
+            auditorio_prin: { lat: -11.945296, lon: -76.699878 },
+            auditorio_fatec: { lat: -11.945678, lon: -76.699045 },
+            fac_telematica: { lat: -11.945933, lon: -76.699051 },
+            fac_ciencias: { lat: -11.946557, lon: -76.699334 },
+            bano_1: { lat: -11.946629, lon: -76.699792 },
+            fac_artistica: { lat: -11.947194, lon: -76.699400 },
+            fac_civil: { lat: -11.947227, lon: -76.699833 },
+            fac_tecnologia: { lat: -11.947370, lon: -76.700345 },
+            losa: { lat: -11.947220, lon: -76.701052 },
+            electricidad: { lat: -11.947541, lon: -76.700958 },
+            fac_vestido: { lat: -11.948398, lon: -76.701336 },
+            capilla: { lat: -11.948316, lon: -76.701835 },
+            fac_fisica: { lat: -11.947798, lon: -76.702285 },
+            topico: { lat: -11.948184, lon: -76.702832 },
+            piscina: { lat: -11.947555, lon: -76.701720 },
+            gimnasio: { lat: -11.947014, lon: -76.701860 },
+            recreacion: { lat: -11.946080, lon: -76.699418 },
+            tuna: { lat: -11.945920, lon: -76.699425 },
+            of_servicios: { lat: -11.946137, lon: -76.699603 }
         };
 
         function inicializarPannellum(sceneId) {
@@ -561,19 +732,38 @@
                 "default": { "firstScene": sceneId, "sceneFadeDuration": 1000, "autoLoad": true, "crossOrigin": "anonymous" },
                 "scenes": {
                     "entrada": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "garita": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "biblioteca": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "admision": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "comedor": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "tecnologia": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "agropecuaria": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "ciencias": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "empresariales": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "sociales": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "inicial": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "comedor_b": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "comedor_a": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "auditorio_prin": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "auditorio_fatec": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_telematica": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_ciencias": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "bano_1": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_artistica": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_civil": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_tecnologia": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "losa": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "electricidad": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_vestido": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "capilla": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_fisica": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "topico": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "piscina": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "gimnasio": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "recreacion": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "tuna": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "of_servicios": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "fac_inicial": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "pedagogia": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "estadio": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "enfermeria": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "gimnasio": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" }
+                    "agropecuaria": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "empresariales": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
+                    "sociales": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" }
                 }
             });
         }
@@ -611,24 +801,47 @@
             }, 400);
         }
 
-        function trazarRutaVisual() {
+        function guardarRuta() {
+            const origenId = document.getElementById('select-origen').value;
+            const destinoId = document.getElementById('select-destino').value;
+            const mensajeBox = document.getElementById('dan-texto');
+
+            if (!destinoId) {
+                mensajeBox.style.color = "#dc2626";
+                mensajeBox.innerHTML = "❌ Selecciona origen y destino para guardar.";
+                return;
+            }
+
+            const rutaData = { origen: origenId, destino: destinoId };
+            localStorage.setItem('rutaUNE', JSON.stringify(rutaData));
+            
+            mensajeBox.style.color = "#f59e0b";
+            mensajeBox.innerHTML = "💾 Ruta guardada. Se cargará automáticamente tu próxima visita.";
+        }
+
+        function trazarRutaVisual(silencioso = false) {
             document.getElementById('filtro-categoria').value = 'todos';
             filtrarMarcadores('todos');
 
-            const origenId = document.getElementById('select-origen').value;
+            let origenId = document.getElementById('select-origen').value;
             const destinoId = document.getElementById('select-destino').value;
             const mensajeBox = document.getElementById('dan-texto');
             const svgLayer = document.getElementById('svg-rutas');
 
-            if (origenId === 'gps' && !gpsActivado) {
-                mensajeBox.style.color = "#dc2626";
-                mensajeBox.innerHTML = "❌ Activa tu GPS o el Simulador primero desde el panel inferior.";
-                return;
+            if (origenId === 'gps') {
+                if (!gpsActivado) {
+                    mensajeBox.style.color = "#dc2626";
+                    mensajeBox.innerHTML = "❌ Activa tu GPS o el Simulador primero desde el panel inferior.";
+                    return;
+                }
+                origenId = 'usuario_actual'; 
             }
 
             if (!destinoId) {
-                mensajeBox.style.color = "#dc2626";
-                mensajeBox.innerHTML = "❌ Selecciona un destino.";
+                if(!silencioso) {
+                    mensajeBox.style.color = "#dc2626";
+                    mensajeBox.innerHTML = "❌ Selecciona un destino.";
+                }
                 return;
             }
 
@@ -645,7 +858,7 @@
             svgLayer.innerHTML = '';
 
             let origen = null;
-            if (origenId === 'gps') {
+            if (origenId === 'usuario_actual') {
                 origen = { x: miXActual, y: miYActual };
             } else {
                 origen = coordenadasMapa[origenId];
@@ -665,12 +878,13 @@
                 linea.classList.add('ruta-animada');
                 svgLayer.appendChild(linea);
 
-                mensajeBox.style.color = "#10b981";
-                mensajeBox.innerHTML = `✅ Ruta generada con éxito en el mapa.`;
-                
-                setTimeout(() => {
-                    document.getElementById('vista-mapa').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
+                if(!silencioso) {
+                    mensajeBox.style.color = "#10b981";
+                    mensajeBox.innerHTML = `✅ Ruta generada con éxito en el mapa.`;
+                    setTimeout(() => {
+                        document.getElementById('vista-mapa').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
             }
         }
 
@@ -678,6 +892,16 @@
         let simLat = baseReal.lat; 
         let simLon = baseReal.lon; 
         let modoSimulador = false;
+
+        function calcularDistanciaMetros(lat1, lon1, lat2, lon2) {
+            const R = 6371e3;
+            const f1 = lat1 * Math.PI/180;
+            const f2 = lat2 * Math.PI/180;
+            const df = (lat2-lat1) * Math.PI/180;
+            const dl = (lon2-lon1) * Math.PI/180;
+            const a = Math.sin(df/2) * Math.sin(df/2) + Math.cos(f1) * Math.cos(f2) * Math.sin(dl/2) * Math.sin(dl/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        }
 
         function iniciarNavegacion() {
             modoSimulador = false;
@@ -746,8 +970,8 @@
             panel.innerHTML = `${prefijo}🚶 Caminando por el campus...`;
             panel.style.background = "#dcfce7";
             
-            if (document.getElementById('svg-rutas').innerHTML !== '') {
-                trazarRutaVisual();
+            if (document.getElementById('svg-rutas').innerHTML !== '' && document.getElementById('select-origen').value === 'gps') {
+                trazarRutaVisual(true);
             }
         }
     </script>
