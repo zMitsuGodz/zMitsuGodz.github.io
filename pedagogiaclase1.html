@@ -68,7 +68,7 @@
         .slider-container {
             position: relative;
             width: 100%;
-            height: calc(100% - 100px); /* Deja espacio para las miniaturas */
+            height: calc(100% - 100px);
             z-index: 5;
         }
 
@@ -89,7 +89,7 @@
             visibility: visible;
         }
 
-        /* Diseño de Cuadrícula (Texto izq, Imagen der) */
+        /* Diseño de Cuadrícula */
         .content-grid {
             display: flex;
             width: 85%;
@@ -126,16 +126,10 @@
             clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* Animaciones Continuas para la Pantalla Interactiva */
-        .auto-float {
-            animation: floatUpDown 5s ease-in-out infinite;
-        }
-        .auto-float-delayed {
-            animation: floatUpDown 6s ease-in-out infinite 1s;
-        }
-        .auto-pulse {
-            animation: pulseSubtle 4s infinite alternate;
-        }
+        /* Animaciones Continuas */
+        .auto-float { animation: floatUpDown 5s ease-in-out infinite; }
+        .auto-float-delayed { animation: floatUpDown 6s ease-in-out infinite 1s; }
+        .auto-pulse { animation: pulseSubtle 4s infinite alternate; }
 
         @keyframes floatUpDown {
             0%, 100% { transform: translateY(0); }
@@ -165,7 +159,7 @@
             margin-bottom: 20px;
         }
 
-        /* Etiquetas y Badges al estilo de la imagen */
+        /* Etiquetas y Badges */
         .logo-box {
             position: absolute;
             top: 20px; left: 40px;
@@ -176,13 +170,15 @@
             font-family: 'Oswald', sans-serif;
             font-size: 1.5rem;
             z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         
         .logo-box img {
-            height: 60px;
+            height: 70px;
             background: white;
-            border-radius: 50%;
+            border-radius: 10px;
             padding: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .badge-row {
@@ -193,8 +189,7 @@
             flex-wrap: wrap;
         }
 
-        .badge-dark {
-            background: var(--black);
+        .badge-dark, .badge-red {
             color: var(--white);
             padding: 10px 25px;
             font-weight: bold;
@@ -202,54 +197,53 @@
             font-size: 1rem;
             clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
         }
+        .badge-dark { background: var(--black); }
+        .badge-red { background: var(--red-brand); }
 
-        .badge-red {
-            background: var(--red-brand);
-            color: var(--white);
-            padding: 10px 25px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 1rem;
-            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-        }
-
-        /* Miniaturas de Navegación Inferior */
+        /* Navegación Inferior Estilizada (Thumbnails) */
         .thumbnails {
             position: absolute;
             bottom: 0; left: 0;
             width: 100%;
             height: 100px;
-            background: var(--black);
+            background: linear-gradient(to top, rgba(17, 17, 17, 1), rgba(17, 17, 17, 0.8));
+            border-top: 3px solid var(--red-brand);
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             z-index: 20;
             padding: 0 20px;
             box-sizing: border-box;
+            backdrop-filter: blur(10px);
         }
 
         .thumb {
-            height: 70px;
-            width: 120px;
-            background: var(--white);
-            border: 3px solid transparent;
-            border-radius: 5px;
+            height: 45px;
+            min-width: 140px;
+            padding: 0 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Oswald', sans-serif;
-            font-size: 0.9rem;
-            text-align: center;
-            color: var(--black);
-            padding: 5px;
-            transition: all 0.3s;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .thumb:hover, .thumb.active-thumb {
+            background: var(--red-brand);
             border-color: var(--red-brand);
-            transform: scale(1.1);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(189, 0, 0, 0.6);
+            color: var(--white);
         }
 
         /* Tabla de Matriz */
@@ -261,28 +255,22 @@
         .styled-table th { background: var(--black); color: var(--white); padding: 12px; text-align: left; text-transform: uppercase;}
         .styled-table td { padding: 12px; border-bottom: 1px solid #ccc; }
         .styled-table tr:nth-child(even) { background-color: #f9f9f9; }
-        
-        .cite { font-size: 0.75rem; color: #7f8c8d; vertical-align: super; }
     </style>
 </head>
 <body>
 
-    <!-- Decoraciones fijas -->
     <div class="shape-top-left"></div>
     <div class="shape-bottom-right"></div>
     <div class="dots-pattern dots-top-right"></div>
     <div class="dots-pattern dots-bottom-center"></div>
 
     <div class="logo-box">
-        <!-- Logo de la Universidad (Placeholder oficial) -->
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Logo_de_la_UNE.png/800px-Logo_de_la_UNE.png" alt="Logo UNE">
+        <img src="https://www.une.edu.pe/test/images/logoune.gif" alt="Logo UNE">
         <span>UNIVERSIDAD NACIONAL<br>ENRIQUE GUZMÁN Y VALLE</span>
     </div>
 
-    <!-- Contenedor de Slides -->
     <div class="slider-container">
         
-        <!-- SLIDE 1: PORTADA -->
         <div class="slide active" id="slide-0">
             <div class="content-grid">
                 <div class="text-section auto-float">
@@ -304,7 +292,6 @@
             </div>
         </div>
 
-        <!-- SLIDE 2: MATRIZ GENERAL -->
         <div class="slide" id="slide-1">
             <div class="content-grid" style="flex-direction: column; padding: 40px; align-items: center; width: 90%;">
                 <h2 class="auto-float">Matriz de Lectura Grupal</h2>
@@ -319,27 +306,27 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Estilos de Aprendizaje</strong><span class="cite">[cite: 1]</span></td>
+                            <td><strong>Estilos de Aprendizaje</strong></td>
                             <td>Enseñar según estilo visual o auditivo.</td>
-                            <td>No hay diferencias en el aprendizaje al usar el estilo de preferencia<span class="cite">[cite: 1]</span>.</td>
-                            <td>Etiquetar al alumno y limitar su desarrollo<span class="cite">[cite: 1]</span>.</td>
+                            <td>No hay diferencias en el aprendizaje al usar el estilo de preferencia.</td>
+                            <td>Etiquetar al alumno y limitar su desarrollo.</td>
                         </tr>
                         <tr>
-                            <td><strong>Entornos Estimulantes</strong><span class="cite">[cite: 1]</span></td>
+                            <td><strong>Entornos Estimulantes</strong></td>
                             <td>Estímulos mejoran el cerebro infantil.</td>
-                            <td>Estudio en ratas (1973), sin evidencia en humanos<span class="cite">[cite: 1]</span>.</td>
+                            <td>Estudio en ratas (1973), sin evidencia en humanos.</td>
                             <td>Saturar el aula sin base científica real.</td>
                         </tr>
                         <tr>
-                            <td><strong>Lengua Materna Primero</strong><span class="cite">[cite: 1]</span></td>
+                            <td><strong>Lengua Materna Primero</strong></td>
                             <td>Aprender un 2do idioma retrasa el materno.</td>
-                            <td>El cerebro aprende dos idiomas de forma simultánea<span class="cite">[cite: 1]</span>.</td>
+                            <td>El cerebro aprende dos idiomas de forma simultánea.</td>
                             <td>Perder la etapa de sensibilidad fonética infantil.</td>
                         </tr>
                         <tr>
-                            <td><strong>El 10% del Cerebro</strong><span class="cite">[cite: 1]</span></td>
+                            <td><strong>El 10% del Cerebro</strong></td>
                             <td>Solo usamos una fracción del cerebro.</td>
-                            <td>La neuroimagen prueba que trabaja coordinado al 100%<span class="cite">[cite: 1]</span>.</td>
+                            <td>La neuroimagen prueba que trabaja coordinado al 100%.</td>
                             <td>Gastar recursos en metodologías inefectivas.</td>
                         </tr>
                     </tbody>
@@ -347,14 +334,13 @@
             </div>
         </div>
 
-        <!-- SLIDE 3: JEAN POOL -->
         <div class="slide" id="slide-2">
             <div class="content-grid">
                 <div class="text-section auto-float">
                     <div class="badge-dark" style="width: max-content; margin-bottom: 20px;">EXPOSITOR: JEAN POOL</div>
                     <h2>Epistemología y Neuromitos</h2>
-                    <p>La pedagogía es el estudio reflexivo y científico de la educación. La epistemología nos exige preguntar cómo sabemos que lo que enseñamos es válido<span class="cite">[cite: 2]</span>.</p>
-                    <p>Los neuromitos son creencias erróneas sobre el cerebro que surgen por interpretaciones distorsionadas de la evidencia empírica<span class="cite">[cite: 1]</span>.</p>
+                    <p>La pedagogía es el estudio reflexivo y científico de la educación. La epistemología nos exige preguntar cómo sabemos que lo que enseñamos es válido.</p>
+                    <p>Los neuromitos son creencias erróneas sobre el cerebro que surgen por interpretaciones distorsionadas de la evidencia empírica.</p>
                 </div>
                 <div class="image-section auto-pulse">
                     <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Libro y cerebro">
@@ -362,7 +348,6 @@
             </div>
         </div>
 
-        <!-- SLIDE 4: GABI -->
         <div class="slide" id="slide-3">
             <div class="content-grid">
                 <div class="image-section auto-pulse" style="clip-path: polygon(0 0, 85% 0, 100% 100%, 0 100%);">
@@ -371,22 +356,21 @@
                 <div class="text-section auto-float-delayed">
                     <div class="badge-red" style="width: max-content; margin-bottom: 20px;">EXPOSITORA: GABI</div>
                     <h2>Mito 1: Estilos de Aprendizaje</h2>
-                    <p><strong>El Mito:</strong> Si un estudiante es "visual" o "auditivo", se le debe enseñar solo de esa forma<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>La Verdad:</strong> No existe evidencia científica de que adecuar la instrucción al estilo mejore los resultados<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>Consecuencia:</strong> Esta práctica es inefectiva y puede dañar el proceso al etiquetar al estudiante<span class="cite">[cite: 1]</span>.</p>
+                    <p><strong>El Mito:</strong> Si un estudiante es "visual" o "auditivo", se le debe enseñar solo de esa forma.</p>
+                    <p><strong>La Verdad:</strong> No existe evidencia científica de que adecuar la instrucción al estilo mejore los resultados.</p>
+                    <p><strong>Consecuencia:</strong> Esta práctica es inefectiva y puede dañar el proceso al etiquetar al estudiante.</p>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 5: DAYRON -->
         <div class="slide" id="slide-4">
             <div class="content-grid">
                 <div class="text-section auto-float">
                     <div class="badge-dark" style="width: max-content; margin-bottom: 20px;">EXPOSITOR: DAYRON</div>
                     <h2>Mito 2: Entornos Estimulantes</h2>
-                    <p><strong>El Mito:</strong> Espacios recargados de estímulos automáticamente desarrollan el cerebro infantil<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>La Verdad:</strong> Surge de una malinterpretación de estudios con ratas en 1973. No hay evidencia directa en humanos sanos<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>Consecuencia:</strong> El docente puede perder el foco del aprendizaje al saturar de colores o juguetes sin propósito<span class="cite">[cite: 2]</span>.</p>
+                    <p><strong>El Mito:</strong> Espacios recargados de estímulos automáticamente desarrollan el cerebro infantil.</p>
+                    <p><strong>La Verdad:</strong> Surge de una malinterpretación de estudios con ratas en 1973. No hay evidencia directa en humanos sanos.</p>
+                    <p><strong>Consecuencia:</strong> El docente puede perder el foco del aprendizaje al saturar de colores o juguetes sin propósito.</p>
                 </div>
                 <div class="image-section auto-pulse">
                     <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Entorno preescolar">
@@ -394,31 +378,29 @@
             </div>
         </div>
 
-        <!-- SLIDE 6: ANGEL -->
         <div class="slide" id="slide-5">
             <div class="content-grid">
                 <div class="image-section auto-pulse" style="clip-path: polygon(0 0, 85% 0, 100% 100%, 0 100%);">
-                    <img src="https://images.unsplash.com/photo-1577563908411-50cb98976cfe?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Idiomas">
+                    <img src="https://desinformemonos.org/wp-content/uploads/2019/09/codice-florentino.jpeg" alt="Imagen Códice Poves">
                 </div>
                 <div class="text-section auto-float-delayed">
                     <div class="badge-red" style="width: max-content; margin-bottom: 20px;">EXPOSITOR: ANGEL</div>
                     <h2>Mito 3: La Lengua Materna</h2>
-                    <p><strong>El Mito:</strong> Se debe dominar la lengua nativa antes de introducir un nuevo idioma<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>La Verdad:</strong> El cerebro infantil es igualmente capaz de aprenderlos de manera simultánea, logrando vocabulario igual o superior<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>Consecuencia:</strong> Negar idiomas temprano desaprovecha la sensibilidad auditiva natural de la niñez<span class="cite">[cite: 1]</span>.</p>
+                    <p><strong>El Mito:</strong> Se debe dominar la lengua nativa antes de introducir un nuevo idioma.</p>
+                    <p><strong>La Verdad:</strong> El cerebro infantil es igualmente capaz de aprenderlos de manera simultánea, logrando vocabulario igual o superior.</p>
+                    <p><strong>Consecuencia:</strong> Negar idiomas temprano desaprovecha la sensibilidad auditiva natural de la niñez.</p>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 7: ANTHONY -->
         <div class="slide" id="slide-6">
             <div class="content-grid">
                 <div class="text-section auto-float">
                     <div class="badge-dark" style="width: max-content; margin-bottom: 20px;">EXPOSITOR: ANTHONY</div>
                     <h2>Mito 4: El 10% del Cerebro</h2>
-                    <p><strong>El Mito:</strong> El ser humano desperdicia gran parte de su cerebro y solo usa una pequeña fracción<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>La Verdad:</strong> Los avances en neuroimagen muestran que el cerebro trabaja de manera coordinada al 100% de su capacidad<span class="cite">[cite: 1]</span>.</p>
-                    <p><strong>Consecuencia:</strong> Docentes aplicando metodologías pseudocientíficas inútiles en lugar de orientar la enseñanza con evidencia científica real<span class="cite">[cite: 2]</span>.</p>
+                    <p><strong>El Mito:</strong> El ser humano desperdicia gran parte de su cerebro y solo usa una pequeña fracción.</p>
+                    <p><strong>La Verdad:</strong> Los avances en neuroimagen muestran que el cerebro trabaja de manera coordinada al 100% de su capacidad.</p>
+                    <p><strong>Consecuencia:</strong> Docentes aplicando metodologías pseudocientíficas inútiles en lugar de orientar la enseñanza con evidencia científica real.</p>
                 </div>
                 <div class="image-section auto-pulse">
                     <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cerebro">
@@ -428,7 +410,6 @@
 
     </div>
 
-    <!-- Navegación Inferior (Thumbnails) -->
     <div class="thumbnails">
         <div class="thumb active-thumb" onclick="goToSlide(0)">Portada</div>
         <div class="thumb" onclick="goToSlide(1)">Matriz</div>
