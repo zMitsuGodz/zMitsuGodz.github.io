@@ -3,206 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matriz de Neuromitos Educativos</title>
+    <title>Presentación Interactiva - Neuromitos</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --bg-color: #f5f7fa;
-            --text-color: #333;
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --bubble-color: rgba(255, 255, 255, 0.1);
+            --bubble-hover: rgba(52, 152, 219, 0.8);
+            --text-main: #ffffff;
+            --accent: #3498db;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+        body, html {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            overflow: hidden; /* Evita el scroll para que parezca una app */
+        }
+
+        /* Contenedor principal de pantallas */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: scale(0.8);
         }
 
-        h1 {
-            color: var(--primary-color);
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        /* --- PANTALLA 1: INICIO --- */
+        #intro-screen h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #bdc3c7;
             text-align: center;
             margin-bottom: 40px;
-            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .team-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .team-container h3 {
+            margin-top: 0;
+            color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            width: 100%;
+        .team-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
 
-        .card {
-            background-color: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .start-btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 30px;
             cursor: pointer;
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(52, 152, 219, 0.5);
+        }
+
+        /* --- PANTALLA 2: BURBUJAS (HUB) --- */
+        .bubbles-container {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 900px;
         }
 
-        /* EFECTO DE SOBRESALIR (POP OUT) */
-        .card:hover {
-            transform: translateY(-15px) scale(1.05);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-
-        .card:hover .card-img {
-            transform: scale(1.1);
-        }
-
-        .img-container {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .card-content {
+        .bubble {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--bubble-color);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
             padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .card-title {
-            color: var(--secondary-color);
-            font-size: 1.4rem;
+        .bubble:hover {
+            background: var(--bubble-hover);
+            transform: scale(1.15) translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        /* Desfase de la animación para que floten distinto */
+        .bubble:nth-child(1) { animation-delay: 0s; }
+        .bubble:nth-child(2) { animation-delay: 1.5s; }
+        .bubble:nth-child(3) { animation-delay: 3s; }
+        .bubble:nth-child(4) { animation-delay: 4.5s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- PANTALLA 3: DETALLES DEL MITO --- */
+        .detail-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .detail-card h2 {
+            color: var(--accent);
+            font-size: 2.2rem;
             margin-top: 0;
-            margin-bottom: 15px;
             border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
         }
 
         .section-title {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+            color: #2c3e50;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 25px;
             text-transform: uppercase;
         }
 
-        .card-text {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin: 0;
+        .detail-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
             color: #555;
+            margin-top: 5px;
         }
 
-        .badge {
-            background-color: var(--secondary-color);
+        .back-btn {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e74c3c;
             color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            align-self: flex-start;
-            margin-bottom: 10px;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: #c0392b;
         }
     </style>
 </head>
 <body>
 
-    <h1>Matriz de Neuromitos Educativos</h1>
-
-    <div class="container">
-        <!-- Tarjeta 1 -->
-        <div class="card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Estilos de aprendizaje" class="card-img">
-            </div>
-            <div class="card-content">
-                <span class="badge">Mito 1</span>
-                <h2 class="card-title">Estilos de Aprendizaje</h2>
-                
-                <div class="section-title">Explicación del mito</div>
-                <p class="card-text">Se cree que los estudiantes aprenden mejor si reciben la información según su estilo preferido (visual, auditivo o kinestésico)[cite: 1].</p>
-                
-                <div class="section-title">Evidencia Científica</div>
-                <p class="card-text">Estudios controlados demuestran que no existen diferencias en el nivel de aprendizaje cuando la información es presentada o no en el estilo de preferencia[cite: 1].</p>
-                
-                <div class="section-title">Consecuencia Pedagógica</div>
-                <p class="card-text">El docente corre el riesgo de etiquetar al estudiante y desmotivarlo a estudiar ciertas materias por hacerle creer que no encajan con su "estilo"[cite: 1].</p>
-            </div>
+    <!-- PANTALLA 1: PRESENTACIÓN -->
+    <div id="intro-screen" class="screen active">
+        <h1>Matriz sobre Neuromitos</h1>
+        <div class="subtitle">
+            Universidad Nacional de Educación Enrique Guzmán y Valle (La Cantuta)<br>
+            Facultad de Tecnología - Telecomunicaciones e Informática
+        </div>
+        
+        <div class="team-container">
+            <h3>Integrantes del Equipo</h3>
+            <ul class="team-list">
+                <li>Jean Pool Rodríguez Méndez</li>
+                <li>Gabi Huaman</li>
+                <li>Dayron Padilla</li>
+                <li>Angel Poves</li>
+                <li>Anthony Llanos</li>
+            </ul>
         </div>
 
-        <!-- Tarjeta 2 -->
-        <div class="card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Entornos estimulantes" class="card-img">
-            </div>
-            <div class="card-content">
-                <span class="badge">Mito 2</span>
-                <h2 class="card-title">Entornos Ricos en Estímulos</h2>
-                
-                <div class="section-title">Explicación del mito</div>
-                <p class="card-text">Existe la idea de que los entornos llenos de estímulos mejoran el cerebro de los niños en edad preescolar[cite: 1].</p>
-                
-                <div class="section-title">Evidencia Científica</div>
-                <p class="card-text">Esta creencia surge de malinterpretar un estudio de 1973 hecho con ratas, el cual nunca fue extrapolado a humanos. Hay falta de evidencia científica sobre su efecto en niños[cite: 1].</p>
-                
-                <div class="section-title">Consecuencia Pedagógica</div>
-                <p class="card-text">Un profesor podría saturar su salón con demasiados materiales creyendo que es beneficioso, sin considerar si esos estímulos son pertinentes para educar[cite: 1].</p>
-            </div>
-        </div>
+        <button class="start-btn" onclick="goToScreen('hub-screen')">Comenzar Presentación</button>
+    </div>
 
-        <!-- Tarjeta 3 -->
-        <div class="card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bilingüismo" class="card-img">
-            </div>
-            <div class="card-content">
-                <span class="badge">Mito 3</span>
-                <h2 class="card-title">La Lengua Materna Primero</h2>
-                
-                <div class="section-title">Explicación del mito</div>
-                <p class="card-text">Se cree que un niño debe adquirir su lengua materna completamente antes de aprender un segundo idioma, o fracasará en ambos[cite: 1].</p>
-                
-                <div class="section-title">Evidencia Científica</div>
-                <p class="card-text">El cerebro infantil es capaz de aprender dos idiomas simultáneamente. Los niños bilingües desarrollan un vocabulario igual o superior al de los monolingües[cite: 1].</p>
-                
-                <div class="section-title">Consecuencia Pedagógica</div>
-                <p class="card-text">Un docente podría negarle a los niños la oportunidad de aprender idiomas desde temprana edad, desaprovechando la sensibilidad fonética de la infancia[cite: 1].</p>
-            </div>
-        </div>
-
-        <!-- Tarjeta 4 -->
-        <div class="card">
-            <div class="img-container">
-                <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cerebro 10 porciento" class="card-img">
-            </div>
-            <div class="card-content">
-                <span class="badge">Mito 4</span>
-                <h2 class="card-title">El 10% del Cerebro</h2>
-                
-                <div class="section-title">Explicación del mito</div>
-                <p class="card-text">Es la creencia popular de que las personas solo utilizan el 10% de su capacidad cerebral total[cite: 1].</p>
-                
-                <div class="section-title">Evidencia Científica</div>
-                <p class="card-text">Los avances científicos en neuroimagen han demostrado que el cerebro trabaja de manera coordinada al 100% de su capacidad[cite: 1].</p>
-                
-                <div class="section-title">Consecuencia Pedagógica</div>
-                <p class="card-text">El profesorado podría perder tiempo implementando metodologías pseudocientíficas que prometen "desbloquear" el resto del cerebro, ignorando prácticas basadas en evidencia[cite: 1].</p>
-            </div>
+    <!-- PANTALLA 2: BURBUJAS (MENÚ) -->
+    <div id="hub-screen" class="screen">
+        <h2 style="font-size: 2.5rem; margin-bottom: 50px;">Selecciona un Neuromito</h2>
+        <div class="bubbles-container">
+            <div class="bubble" onclick="showDetail(0)">Mito 1:<br>Estilos de Aprendizaje</div>
+            <div class="bubble" onclick="showDetail(1)">Mito 2:<br>Entornos Estimulantes</div>
+            <div class="bubble" onclick="showDetail(2)">Mito 3:<br>Lengua Materna</div>
+            <div class="bubble" onclick="showDetail(3)">Mito 4:<br>10% del Cerebro</div>
         </div>
     </div>
 
+    <!-- PANTALLA 3: DETALLE DEL MITO -->
+    <div id="detail-screen" class="screen">
+        <div class="detail-card">
+            <button class="back-btn" onclick="goToScreen('hub-screen')">X</button>
+            <h2 id="myth-title">Título del Mito</h2>
+            
+            <div class="section-title">Explicación del mito</div>
+            <div class="detail-text" id="myth-explanation">Explicación...</div>
+            
+            <div class="section-title">Evidencia Científica</div>
+            <div class="detail-text" id="myth-evidence">Evidencia...</div>
+            
+            <div class="section-title">Consecuencia Pedagógica</div>
+            <div class="detail-text" id="myth-consequence">Consecuencia...</div>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE INTERACTIVIDAD -->
+    <script>
+        // Base de datos de los mitos
+        const mythsData = [
+            {
+                title: "1. Estilos de aprendizaje",
+                explanation: "Se cree que los estudiantes aprenden mejor si reciben la información según su estilo preferido, ya sea visual, auditivo o kinestésico[cite: 1].",
+                evidence: "Estudios en condiciones controladas demuestran que no existen diferencias en el nivel de aprendizaje cuando la información es presentada o no en el estilo de preferencia[cite: 1].",
+                consequence: "Aplicar este mito es inefectivo y puede dañar el aprendizaje[cite: 1]. El docente corre el riesgo de etiquetar al estudiante y desmotivarlo a estudiar ciertas materias por hacerle creer que no encajan con su 'estilo'[cite: 1]."
+            },
+            {
+                title: "2. Entornos ricos en estímulos",
+                explanation: "Existe la idea de que los entornos llenos de estímulos mejoran el cerebro de los niños en edad preescolar[cite: 1].",
+                evidence: "Esta creencia surge de malinterpretar un estudio de 1973 hecho con ratas, el cual nunca fue extrapolado a humanos. Hay falta de evidencia científica sobre el efecto de estos entornos enriquecidos en los niños[cite: 1].",
+                consequence: "Un profesor podría saturar su salón de clases con demasiados materiales o colores creyendo que es beneficioso, sin considerar si esos estímulos son realmente pertinentes o útiles para el proceso educativo[cite: 1]."
+            },
+            {
+                title: "3. La lengua materna primero",
+                explanation: "Se cree que un niño debe adquirir su lengua materna completamente antes de aprender un segundo idioma, o de lo contrario fracasará en ambos[cite: 1].",
+                evidence: "El cerebro infantil expuesto a dos idiomas es igualmente capaz de aprenderlos de manera simultánea[cite: 1]. Los niños bilingües desarrollan un vocabulario igual o superior al de los monolingües[cite: 1].",
+                consequence: "Un docente que cree esto podría negarle a los niños la oportunidad de aprender idiomas desde temprana edad, desaprovechando la facilidad y sensibilidad que tienen en la infancia para la fonética[cite: 1]."
+            },
+            {
+                title: "4. El 10% del cerebro",
+                explanation: "Es la creencia muy popular de que las personas solo utilizan el 10% de su capacidad cerebral total[cite: 1].",
+                evidence: "Los avances científicos en neuroimagen han demostrado que el cerebro trabaja de manera coordinada al 100% de su capacidad[cite: 1].",
+                consequence: "El profesorado podría perder tiempo y recursos implementando metodologías o ejercicios pseudocientíficos que prometen 'desbloquear' el resto del cerebro, en lugar de utilizar prácticas basadas en evidencia empírica real[cite: 1]."
+            }
+        ];
+
+        // Función para cambiar de pantalla
+        function goToScreen(screenId) {
+            // Quitar clase 'active' de todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            // Agregar clase 'active' a la pantalla objetivo
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Función para cargar datos y mostrar la pantalla de detalles
+        function showDetail(index) {
+            const data = mythsData[index];
+            document.getElementById('myth-title').innerText = data.title;
+            document.getElementById('myth-explanation').innerText = data.explanation;
+            document.getElementById('myth-evidence').innerText = data.evidence;
+            document.getElementById('myth-consequence').innerText = data.consequence;
+            
+            goToScreen('detail-screen');
+        }
+    </script>
 </body>
 </html>
