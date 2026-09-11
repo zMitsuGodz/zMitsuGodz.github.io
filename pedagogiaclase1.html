@@ -3,318 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presentación Interactiva - Neuromitos</title>
+    <title>Presentación Interactiva - Matriz de Neuromitos</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
-
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            --bubble-color: rgba(255, 255, 255, 0.1);
-            --bubble-hover: rgba(52, 152, 219, 0.8);
-            --text-main: #ffffff;
-            --accent: #3498db;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            overflow: hidden; /* Evita el scroll para que parezca una app */
+            overflow: hidden;
+            background: radial-gradient(circle at center, #a8edea 0%, #fed6e3 100%);
+            font-family: 'Nunito', sans-serif;
         }
 
-        /* Contenedor principal de pantallas */
-        .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform: scale(0.8);
-        }
-
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1);
-            z-index: 10;
-        }
-
-        /* --- PANTALLA 1: INICIO --- */
-        #intro-screen h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            text-align: center;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #bdc3c7;
-            text-align: center;
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-
-        .team-container {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .team-container h3 {
-            margin-top: 0;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .team-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .start-btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
-            transition: all 0.3s;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px rgba(52, 152, 219, 0.5);
-        }
-
-        /* --- PANTALLA 2: BURBUJAS (HUB) --- */
-        .bubbles-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
-            max-width: 900px;
-        }
-
-        .bubble {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: var(--bubble-color);
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(255,255,255,0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-            padding: 20px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: all 0.5s ease;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .bubble:hover {
-            background: var(--bubble-hover);
-            transform: scale(1.15) translateY(-10px);
-            border-color: var(--accent);
-        }
-
-        /* Desfase de la animación para que floten distinto */
-        .bubble:nth-child(1) { animation-delay: 0s; }
-        .bubble:nth-child(2) { animation-delay: 1.5s; }
-        .bubble:nth-child(3) { animation-delay: 3s; }
-        .bubble:nth-child(4) { animation-delay: 4.5s; }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* --- PANTALLA 3: DETALLES DEL MITO --- */
-        .detail-card {
-            background: rgba(255, 255, 255, 0.95);
-            color: #333;
-            width: 80%;
-            max-width: 800px;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        /* El contenedor de la cámara (Viewport) */
+        #viewport {
+            width: 100vw;
+            height: 100vh;
             position: relative;
         }
 
-        .detail-card h2 {
-            color: var(--accent);
-            font-size: 2.2rem;
-            margin-top: 0;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 15px;
-        }
-
-        .section-title {
-            color: #2c3e50;
-            font-weight: 800;
-            font-size: 1.1rem;
-            margin-top: 25px;
-            text-transform: uppercase;
-        }
-
-        .detail-text {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            color: #555;
-            margin-top: 5px;
-        }
-
-        .back-btn {
+        /* El lienzo gigante donde flotan los temas (Canvas) */
+        #canvas {
             position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #e74c3c;
+            top: 0;
+            left: 0;
+            width: 3000px;
+            height: 3000px;
+            /* La magia del estilo Prezi: transiciones suaves de movimiento y escala */
+            transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+            transform-origin: 0 0;
+        }
+
+        /* Estilo base para cada tarjeta/nodo */
+        .node {
+            position: absolute;
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.3s;
+            text-align: center;
+            border: 5px solid transparent;
+        }
+
+        .node:hover {
+            box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+            /* Pequeño rebote al pasar el mouse */
+            transform: translate(-50%, -50%) scale(1.05);
+            z-index: 10;
+        }
+
+        /* Colores divertidos para cada tema */
+        #node-intro { border-color: #6c5ce7; top: 1500px; left: 1500px; width: 600px; }
+        #node-1 { border-color: #00b894; top: 900px; left: 900px; }
+        #node-2 { border-color: #fdcb6e; top: 900px; left: 2100px; }
+        #node-3 { border-color: #e84393; top: 2100px; left: 900px; }
+        #node-4 { border-color: #0984e3; top: 2100px; left: 2100px; }
+
+        .node img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .node h2 {
+            font-size: 2rem;
+            margin: 0 0 15px 0;
+            color: #2d3436;
+        }
+
+        .node h3 {
+            font-size: 1.2rem;
+            color: #636e72;
+            margin: 0 0 20px 0;
+        }
+
+        /* Puntos clave para exponer (No para leer) */
+        .key-points {
+            text-align: left;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2d3436;
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-points li {
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid #ccc;
+        }
+
+        /* Colores de las viñetas según la sección */
+        #node-1 .key-points li { border-left-color: #00b894; }
+        #node-2 .key-points li { border-left-color: #fdcb6e; }
+        #node-3 .key-points li { border-left-color: #e84393; }
+        #node-4 .key-points li { border-left-color: #0984e3; }
+
+        .speaker-badge {
+            display: inline-block;
+            background: #2d3436;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Botón para regresar a la vista general */
+        #back-btn {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3436;
             color: white;
             border: none;
-            font-size: 1.5rem;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-family: 'Nunito', sans-serif;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             transition: all 0.3s;
+            display: none; /* Oculto al inicio */
+            z-index: 1000;
         }
 
-        .back-btn:hover {
-            transform: scale(1.1) rotate(90deg);
-            background: #c0392b;
+        #back-btn:hover {
+            background: #d63031;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        /* Título de fondo */
+        .bg-title {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: rgba(45, 52, 54, 0.8);
+            z-index: 100;
+            pointer-events: none;
         }
     </style>
 </head>
-<body>
+<body onload="zoomOut()">
 
-    <!-- PANTALLA 1: PRESENTACIÓN -->
-    <div id="intro-screen" class="screen active">
-        <h1>Matriz sobre Neuromitos</h1>
-        <div class="subtitle">
-            Universidad Nacional de Educación Enrique Guzmán y Valle (La Cantuta)<br>
-            Facultad de Tecnología - Telecomunicaciones e Informática
-        </div>
-        
-        <div class="team-container">
-            <h3>Integrantes del Equipo</h3>
-            <ul class="team-list">
-                <li>Jean Pool Rodríguez Méndez</li>
-                <li>Gabi Huaman</li>
-                <li>Dayron Padilla</li>
-                <li>Angel Poves</li>
-                <li>Anthony Llanos</li>
-            </ul>
-        </div>
+    <div class="bg-title">Exposición Grupal: Neuromitos Educativos</div>
 
-        <button class="start-btn" onclick="goToScreen('hub-screen')">Comenzar Presentación</button>
+    <div id="viewport">
+        <div id="canvas">
+
+            <!-- NODO CENTRAL: INTRODUCCIÓN (Expositor 1) -->
+            <div class="node" id="node-intro" onclick="zoomTo(1500, 1500)">
+                <span class="speaker-badge">🎤 Expositor 1: Jean Pool</span>
+                <h2>¿Qué son los Neuromitos?</h2>
+                <h3>Introducción y Presentación del Equipo</h3>
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Equipo">
+                <ul class="key-points" style="border-left-color:#6c5ce7;">
+                    <li><strong>El Problema:</strong> Son creencias falsas sobre el cerebro basadas en mala ciencia o malentendidos.</li>
+                    <li><strong>Impacto:</strong> Afectan cómo los docentes enseñan, guiándolos a usar métodos que no funcionan[cite: 1].</li>
+                    <li><strong>Nuestro Equipo:</strong><br>
+                        - Jean Pool Rodríguez Méndez<br>
+                        - Gabi Huaman<br>
+                        - Dayron Padilla<br>
+                        - Angel Poves<br>
+                        - Anthony Llanos
+                    </li>
+                </ul>
+            </div>
+
+            <!-- NODO 1: ESTILOS DE APRENDIZAJE (Expositor 2) -->
+            <div class="node" id="node-1" onclick="zoomTo(900, 900)">
+                <span class="speaker-badge">🎤 Expositor 2: Gabi</span>
+                <h2>Mito 1: Estilos de Aprendizaje</h2>
+                <img src="https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Estilos">
+                <ul class="key-points">
+                    <li><strong>El Mito:</strong> "Enseñar según si el niño es visual o auditivo mejora sus notas"[cite: 1].</li>
+                    <li><strong>La Ciencia:</strong> Los estudios demuestran que NO hay diferencia en el aprendizaje al usar estos estilos[cite: 1].</li>
+                    <li><strong>Consecuencia Pedagógica:</strong> Etiquetamos al estudiante, limitamos sus capacidades y le hacemos creer que no es bueno para ciertas materias[cite: 1].</li>
+                </ul>
+            </div>
+
+            <!-- NODO 2: ENTORNOS ESTIMULANTES (Expositor 3) -->
+            <div class="node" id="node-2" onclick="zoomTo(2100, 900)">
+                <span class="speaker-badge">🎤 Expositor 3: Dayron</span>
+                <h2>Mito 2: Entornos Ricos</h2>
+                <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Entorno">
+                <ul class="key-points">
+                    <li><strong>El Mito:</strong> "Llenar el salón de estímulos visuales mejora el cerebro preescolar"[cite: 1].</li>
+                    <li><strong>La Ciencia:</strong> Viene de un experimento con ratas en 1973 que nunca se aplicó a niños. No hay evidencia real[cite: 1].</li>
+                    <li><strong>Consecuencia Pedagógica:</strong> Saturar el aula de juguetes o colores distrae al niño en lugar de educarlo con pertinencia[cite: 1].</li>
+                </ul>
+            </div>
+
+            <!-- NODO 3: LENGUA MATERNA (Expositor 4) -->
+            <div class="node" id="node-3" onclick="zoomTo(900, 2100)">
+                <span class="speaker-badge">🎤 Expositor 4: Angel</span>
+                <h2>Mito 3: La Lengua Materna</h2>
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Lenguaje">
+                <ul class="key-points">
+                    <li><strong>El Mito:</strong> "Deben dominar su idioma nativo antes de aprender inglés, o fracasarán en ambos"[cite: 1].</li>
+                    <li><strong>La Ciencia:</strong> El cerebro infantil es perfectamente capaz de aprender dos idiomas a la vez sin retrasos[cite: 1].</li>
+                    <li><strong>Consecuencia Pedagógica:</strong> Se le niega al niño la oportunidad de aprender otro idioma en su etapa de mayor sensibilidad fonética[cite: 1].</li>
+                </ul>
+            </div>
+
+            <!-- NODO 4: 10% DEL CEREBRO (Expositor 5) -->
+            <div class="node" id="node-4" onclick="zoomTo(2100, 2100)">
+                <span class="speaker-badge">🎤 Expositor 5: Anthony</span>
+                <h2>Mito 4: El 10% del Cerebro</h2>
+                <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cerebro">
+                <ul class="key-points">
+                    <li><strong>El Mito:</strong> "El ser humano desperdicia el 90% de su capacidad cerebral"[cite: 1].</li>
+                    <li><strong>La Ciencia:</strong> La neuroimagen actual prueba que usamos el cerebro de manera coordinada al 100%[cite: 1].</li>
+                    <li><strong>Consecuencia Pedagógica:</strong> Los profesores pierden tiempo aplicando ejercicios falsos para "desbloquear" el cerebro en vez de usar métodos comprobados[cite: 1].</li>
+                </ul>
+            </div>
+
+        </div>
     </div>
 
-    <!-- PANTALLA 2: BURBUJAS (MENÚ) -->
-    <div id="hub-screen" class="screen">
-        <h2 style="font-size: 2.5rem; margin-bottom: 50px;">Selecciona un Neuromito</h2>
-        <div class="bubbles-container">
-            <div class="bubble" onclick="showDetail(0)">Mito 1:<br>Estilos de Aprendizaje</div>
-            <div class="bubble" onclick="showDetail(1)">Mito 2:<br>Entornos Estimulantes</div>
-            <div class="bubble" onclick="showDetail(2)">Mito 3:<br>Lengua Materna</div>
-            <div class="bubble" onclick="showDetail(3)">Mito 4:<br>10% del Cerebro</div>
-        </div>
-    </div>
+    <button id="back-btn" onclick="zoomOut()">🔍 Ver Mapa Completo</button>
 
-    <!-- PANTALLA 3: DETALLE DEL MITO -->
-    <div id="detail-screen" class="screen">
-        <div class="detail-card">
-            <button class="back-btn" onclick="goToScreen('hub-screen')">X</button>
-            <h2 id="myth-title">Título del Mito</h2>
-            
-            <div class="section-title">Explicación del mito</div>
-            <div class="detail-text" id="myth-explanation">Explicación...</div>
-            
-            <div class="section-title">Evidencia Científica</div>
-            <div class="detail-text" id="myth-evidence">Evidencia...</div>
-            
-            <div class="section-title">Consecuencia Pedagógica</div>
-            <div class="detail-text" id="myth-consequence">Consecuencia...</div>
-        </div>
-    </div>
-
-    <!-- SCRIPT DE INTERACTIVIDAD -->
     <script>
-        // Base de datos de los mitos
-        const mythsData = [
-            {
-                title: "1. Estilos de aprendizaje",
-                explanation: "Se cree que los estudiantes aprenden mejor si reciben la información según su estilo preferido, ya sea visual, auditivo o kinestésico[cite: 1].",
-                evidence: "Estudios en condiciones controladas demuestran que no existen diferencias en el nivel de aprendizaje cuando la información es presentada o no en el estilo de preferencia[cite: 1].",
-                consequence: "Aplicar este mito es inefectivo y puede dañar el aprendizaje[cite: 1]. El docente corre el riesgo de etiquetar al estudiante y desmotivarlo a estudiar ciertas materias por hacerle creer que no encajan con su 'estilo'[cite: 1]."
-            },
-            {
-                title: "2. Entornos ricos en estímulos",
-                explanation: "Existe la idea de que los entornos llenos de estímulos mejoran el cerebro de los niños en edad preescolar[cite: 1].",
-                evidence: "Esta creencia surge de malinterpretar un estudio de 1973 hecho con ratas, el cual nunca fue extrapolado a humanos. Hay falta de evidencia científica sobre el efecto de estos entornos enriquecidos en los niños[cite: 1].",
-                consequence: "Un profesor podría saturar su salón de clases con demasiados materiales o colores creyendo que es beneficioso, sin considerar si esos estímulos son realmente pertinentes o útiles para el proceso educativo[cite: 1]."
-            },
-            {
-                title: "3. La lengua materna primero",
-                explanation: "Se cree que un niño debe adquirir su lengua materna completamente antes de aprender un segundo idioma, o de lo contrario fracasará en ambos[cite: 1].",
-                evidence: "El cerebro infantil expuesto a dos idiomas es igualmente capaz de aprenderlos de manera simultánea[cite: 1]. Los niños bilingües desarrollan un vocabulario igual o superior al de los monolingües[cite: 1].",
-                consequence: "Un docente que cree esto podría negarle a los niños la oportunidad de aprender idiomas desde temprana edad, desaprovechando la facilidad y sensibilidad que tienen en la infancia para la fonética[cite: 1]."
-            },
-            {
-                title: "4. El 10% del cerebro",
-                explanation: "Es la creencia muy popular de que las personas solo utilizan el 10% de su capacidad cerebral total[cite: 1].",
-                evidence: "Los avances científicos en neuroimagen han demostrado que el cerebro trabaja de manera coordinada al 100% de su capacidad[cite: 1].",
-                consequence: "El profesorado podría perder tiempo y recursos implementando metodologías o ejercicios pseudocientíficos que prometen 'desbloquear' el resto del cerebro, en lugar de utilizar prácticas basadas en evidencia empírica real[cite: 1]."
-            }
-        ];
-
-        // Función para cambiar de pantalla
-        function goToScreen(screenId) {
-            // Quitar clase 'active' de todas las pantallas
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.classList.remove('active');
-            });
-            // Agregar clase 'active' a la pantalla objetivo
-            document.getElementById(screenId).classList.add('active');
+        // Función para acercarse a una coordenada específica
+        function zoomTo(x, y) {
+            const canvas = document.getElementById('canvas');
+            // Mueve el canvas para que las coordenadas (x,y) queden en el centro de la pantalla y hace un poco de zoom (scale 1.15)
+            canvas.style.transform = `translate(calc(50vw - ${x}px), calc(50vh - ${y}px)) scale(1.15)`;
+            
+            // Muestra el botón para retroceder
+            document.getElementById('back-btn').style.display = 'block';
+            
+            // Evitar que el clic se propague al fondo (si lo hubiera)
+            event.stopPropagation();
         }
 
-        // Función para cargar datos y mostrar la pantalla de detalles
-        function showDetail(index) {
-            const data = mythsData[index];
-            document.getElementById('myth-title').innerText = data.title;
-            document.getElementById('myth-explanation').innerText = data.explanation;
-            document.getElementById('myth-evidence').innerText = data.evidence;
-            document.getElementById('myth-consequence').innerText = data.consequence;
+        // Función para alejarse y ver todo el panorama
+        function zoomOut() {
+            const canvas = document.getElementById('canvas');
+            // Centra el canvas en 1500,1500 (el medio) y reduce la escala para que se vean todos los nodos
+            canvas.style.transform = `translate(calc(50vw - 1500px), calc(50vh - 1500px)) scale(0.35)`;
             
-            goToScreen('detail-screen');
+            // Oculta el botón
+            document.getElementById('back-btn').style.display = 'none';
         }
     </script>
 </body>
