@@ -126,7 +126,6 @@
             border-radius: 10px;
         }
         
-        /* Ajuste especial para que la imagen de Poves no se recorte */
         .img-contain {
             object-fit: contain !important;
             background-color: var(--white);
@@ -148,7 +147,27 @@
             100% { transform: scale(1.03); }
         }
 
-        /* Tipografía AUMENTADA */
+        /* Animación Confeti/Serpentina */
+        #confetti-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            top: -50px;
+            opacity: 0.9;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(120vh) rotate(720deg); }
+        }
+
+        /* Tipografía */
         h1, h2 {
             font-family: 'Oswald', sans-serif;
             color: var(--black);
@@ -160,7 +179,7 @@
         h2 { font-size: 3.2rem; color: var(--red-brand); }
         
         p {
-            font-size: 1.45rem; /* Texto mucho más grande */
+            font-size: 1.45rem;
             color: var(--text-dark);
             line-height: 1.6;
             margin-bottom: 25px;
@@ -201,7 +220,7 @@
             padding: 12px 25px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 1.2rem; /* Badges más grandes */
+            font-size: 1.2rem;
             clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
         }
         .badge-dark { background: var(--black); }
@@ -227,8 +246,8 @@
 
         .thumb {
             height: 50px;
-            min-width: 150px;
-            padding: 0 20px;
+            min-width: 130px;
+            padding: 0 15px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 30px;
@@ -237,7 +256,7 @@
             align-items: center;
             justify-content: center;
             font-family: 'Oswald', sans-serif;
-            font-size: 1.3rem; /* Botones más legibles */
+            font-size: 1.2rem;
             letter-spacing: 1px;
             text-transform: uppercase;
             color: var(--white);
@@ -257,7 +276,7 @@
         .styled-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 1.25rem; /* Texto de tabla aumentado */
+            font-size: 1.25rem;
         }
         .styled-table th { background: var(--black); color: var(--white); padding: 18px; text-align: left; text-transform: uppercase;}
         .styled-table td { padding: 18px; border-bottom: 1px solid #ccc; line-height: 1.5; }
@@ -273,7 +292,7 @@
 
     <div class="logo-box">
         <img src="https://www.une.edu.pe/test/images/logoune.gif" alt="Logo UNE">
-        <span>UNIVERSIDAD NACIONAL<br>ENRIQUE GUZMÁN Y VALLE</span>
+        <span>UNIVERSIDAD NACIONAL DE EDUCACIÓN<br>ENRIQUE GUZMÁN Y VALLE</span>
     </div>
 
     <div class="slider-container">
@@ -284,10 +303,9 @@
                 <div class="text-section auto-float">
                     <h2 style="color: var(--black); font-size: 2rem;">Trabajo Número 1</h2>
                     <h1>ANÁLISIS DE NEUROMITOS EN LA EDUCACIÓN</h1>
-                    <p>Facultad de Tecnología - Telecomunicaciones e Informática.<br>Examinando el impacto de creencias erróneas sobre el cerebro en el aprendizaje de los estudiantes.</p>
+                    <p>UNIVERSIDAD NACIONAL DE EDUCACIÓN ENRIQUE GUZMÁN Y VALLE<br>Facultad de Tecnología - Telecomunicaciones e Informática.<br>Examinando el impacto de creencias erróneas sobre el cerebro en el aprendizaje.</p>
                     <div class="badge-row auto-pulse">
                         <div class="badge-dark">PRESENTADO POR</div>
-                        <!-- NOMBRES COMPLETOS EN LA PORTADA -->
                         <div class="badge-red">JEAN RODRIGUEZ</div>
                         <div class="badge-red">GABI HUAMAN</div>
                         <div class="badge-red">DAYRON PADILLA</div>
@@ -395,8 +413,7 @@
         <div class="slide" id="slide-5">
             <div class="content-grid">
                 <div class="image-section auto-pulse" style="clip-path: polygon(0 0, 90% 0, 100% 100%, 0 100%);">
-                    <!-- Ajuste de class para que NO se recorte la imagen de Poves -->
-                    <img src="https://desinformemonos.org/wp-content/uploads/2019/09/codice-florentino.jpeg" alt="Imagen Códice Poves" class="img-contain">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKAdDV1aP4nDZruBJOUzQXw4i1LRdMUZJeVBUrABoQfwmuDaV_PVJDbF2V&s=10" alt="Imagen Poves" class="img-contain">
                 </div>
                 <div class="text-section auto-float-delayed">
                     <div class="badge-red" style="width: max-content; margin-bottom: 25px;">EXPOSITOR: ANGEL</div>
@@ -424,9 +441,20 @@
             </div>
         </div>
 
+        <!-- SLIDE 8: AGRADECIMIENTO CON SERPENTINAS -->
+        <div class="slide" id="slide-7">
+            <div id="confetti-container"></div>
+            <div class="content-grid auto-float" style="flex-direction: column; text-align: center; background: rgba(255,255,255,0.9); padding: 60px; z-index: 10;">
+                <h1 style="font-size: 5.5rem; color: var(--red-brand); text-shadow: 2px 2px 5px rgba(0,0,0,0.2);">¡GRACIAS POR SU ATENCIÓN!</h1>
+                <p style="font-size: 2.2rem; font-weight: bold; color: var(--black); margin-top: 20px;">Esperamos sus preguntas y calificación</p>
+                <div class="badge-row" style="justify-content: center;">
+                    <div class="badge-dark">UNIVERSIDAD NACIONAL DE EDUCACIÓN ENRIQUE GUZMÁN Y VALLE</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- NOMBRES CORTOS EN LA NAVEGACIÓN INFERIOR -->
     <div class="thumbnails">
         <div class="thumb active-thumb" onclick="goToSlide(0)">Portada</div>
         <div class="thumb" onclick="goToSlide(1)">Matriz</div>
@@ -435,6 +463,7 @@
         <div class="thumb" onclick="goToSlide(4)">Dayron</div>
         <div class="thumb" onclick="goToSlide(5)">Angel</div>
         <div class="thumb" onclick="goToSlide(6)">Anthony</div>
+        <div class="thumb" onclick="goToSlide(7)">Gracias</div>
     </div>
 
     <script>
@@ -448,6 +477,38 @@
             slides[index].classList.add('active');
             thumbs[index].classList.add('active-thumb');
         }
+
+        // Sistema de serpentinas/confeti constante
+        function startConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#bd0000', '#111111', '#ffffff', '#ff4757', '#ffa502'];
+            
+            setInterval(() => {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Mezcla entre cuadrados pequeños y serpentinas largas
+                if(Math.random() > 0.5) {
+                    confetti.style.width = '10px';
+                    confetti.style.height = '40px'; 
+                    confetti.style.borderRadius = '2px';
+                } else {
+                    confetti.style.width = '15px';
+                    confetti.style.height = '15px';
+                    confetti.style.borderRadius = '50%';
+                }
+                
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                container.appendChild(confetti);
+                
+                // Limpiar el DOM
+                setTimeout(() => { confetti.remove(); }, 5000);
+            }, 150); // Frecuencia de caída
+        }
+        
+        startConfetti();
     </script>
 </body>
 </html>
