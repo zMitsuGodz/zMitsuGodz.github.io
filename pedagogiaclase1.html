@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Neuromitos Educativos</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --bg-color: #f5f7fa;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* EFECTO DE SOBRESALIR (POP OUT) */
+        .card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.1);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .card-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+            color: #555;
+        }
+
+        .badge {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            align-self: flex-start;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Matriz de Neuromitos Educativos</h1>
+
+    <div class="container">
+        <!-- Tarjeta 1 -->
+        <div class="card">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Estilos de aprendizaje" class="card-img">
+            </div>
+            <div class="card-content">
+                <span class="badge">Mito 1</span>
+                <h2 class="card-title">Estilos de Aprendizaje</h2>
+                
+                <div class="section-title">Explicación del mito</div>
+                <p class="card-text">Se cree que los estudiantes aprenden mejor si reciben la información según su estilo preferido (visual, auditivo o kinestésico)[cite: 1].</p>
+                
+                <div class="section-title">Evidencia Científica</div>
+                <p class="card-text">Estudios controlados demuestran que no existen diferencias en el nivel de aprendizaje cuando la información es presentada o no en el estilo de preferencia[cite: 1].</p>
+                
+                <div class="section-title">Consecuencia Pedagógica</div>
+                <p class="card-text">El docente corre el riesgo de etiquetar al estudiante y desmotivarlo a estudiar ciertas materias por hacerle creer que no encajan con su "estilo"[cite: 1].</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="card">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Entornos estimulantes" class="card-img">
+            </div>
+            <div class="card-content">
+                <span class="badge">Mito 2</span>
+                <h2 class="card-title">Entornos Ricos en Estímulos</h2>
+                
+                <div class="section-title">Explicación del mito</div>
+                <p class="card-text">Existe la idea de que los entornos llenos de estímulos mejoran el cerebro de los niños en edad preescolar[cite: 1].</p>
+                
+                <div class="section-title">Evidencia Científica</div>
+                <p class="card-text">Esta creencia surge de malinterpretar un estudio de 1973 hecho con ratas, el cual nunca fue extrapolado a humanos. Hay falta de evidencia científica sobre su efecto en niños[cite: 1].</p>
+                
+                <div class="section-title">Consecuencia Pedagógica</div>
+                <p class="card-text">Un profesor podría saturar su salón con demasiados materiales creyendo que es beneficioso, sin considerar si esos estímulos son pertinentes para educar[cite: 1].</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="card">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bilingüismo" class="card-img">
+            </div>
+            <div class="card-content">
+                <span class="badge">Mito 3</span>
+                <h2 class="card-title">La Lengua Materna Primero</h2>
+                
+                <div class="section-title">Explicación del mito</div>
+                <p class="card-text">Se cree que un niño debe adquirir su lengua materna completamente antes de aprender un segundo idioma, o fracasará en ambos[cite: 1].</p>
+                
+                <div class="section-title">Evidencia Científica</div>
+                <p class="card-text">El cerebro infantil es capaz de aprender dos idiomas simultáneamente. Los niños bilingües desarrollan un vocabulario igual o superior al de los monolingües[cite: 1].</p>
+                
+                <div class="section-title">Consecuencia Pedagógica</div>
+                <p class="card-text">Un docente podría negarle a los niños la oportunidad de aprender idiomas desde temprana edad, desaprovechando la sensibilidad fonética de la infancia[cite: 1].</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta 4 -->
+        <div class="card">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cerebro 10 porciento" class="card-img">
+            </div>
+            <div class="card-content">
+                <span class="badge">Mito 4</span>
+                <h2 class="card-title">El 10% del Cerebro</h2>
+                
+                <div class="section-title">Explicación del mito</div>
+                <p class="card-text">Es la creencia popular de que las personas solo utilizan el 10% de su capacidad cerebral total[cite: 1].</p>
+                
+                <div class="section-title">Evidencia Científica</div>
+                <p class="card-text">Los avances científicos en neuroimagen han demostrado que el cerebro trabaja de manera coordinada al 100% de su capacidad[cite: 1].</p>
+                
+                <div class="section-title">Consecuencia Pedagógica</div>
+                <p class="card-text">El profesorado podría perder tiempo implementando metodologías pseudocientíficas que prometen "desbloquear" el resto del cerebro, ignorando prácticas basadas en evidencia[cite: 1].</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
