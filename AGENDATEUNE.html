@@ -65,9 +65,19 @@
         .btn-print { background: #334155; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
         .btn-print:hover { background: #475569; transform: translateY(-3px); }
 
+        /* Título Exclusivo para PDF */
+        #titulo-impresion {
+            display: none;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+        #titulo-impresion h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
+        #titulo-impresion p { font-size: 1.1rem; color: #475569; font-weight: 600; }
+
         /* Estructura del Horario */
         .horario-wrapper {
-            max-width: 1300px;
+            max-width: 1350px;
             margin: 2rem auto;
             background: white;
             border-radius: 16px;
@@ -78,16 +88,16 @@
 
         .grid-tabla {
             display: grid;
-            grid-template-columns: 90px repeat(5, 1fr);
-            grid-template-rows: 50px repeat(5, 70px) 45px repeat(7, 70px);
+            grid-template-columns: 100px repeat(5, 1fr);
+            grid-template-rows: 50px repeat(5, 75px) 45px repeat(7, 75px);
             gap: 6px;
-            min-width: 900px;
+            min-width: 950px;
             position: relative;
         }
 
         /* Celdas Estáticas */
-        .header-celda { background: var(--bg-panel); color: white; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 0.95rem; }
-        .hora-celda { background: #e2e8f0; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #475569; text-align: center; }
+        .header-celda { background: var(--bg-panel); color: white; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 1rem; }
+        .hora-celda { background: #e2e8f0; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #475569; text-align: center; }
         
         .refrigerio-fila {
             grid-column: 1 / -1;
@@ -125,8 +135,8 @@
         }
 
         .curso-nombre { font-size: 0.85rem; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
-        .curso-profe { font-size: 0.7rem; opacity: 0.9; }
-        .curso-aula { font-size: 0.65rem; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; align-self: flex-start; margin-top: 4px; }
+        .curso-profe { font-size: 0.75rem; opacity: 0.9; }
+        .curso-aula { font-size: 0.7rem; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; align-self: flex-start; margin-top: 4px; font-weight: 600;}
 
         .bg-general { background: linear-gradient(135deg, var(--general), #0284c7); }
         .bg-grupo-a { background: linear-gradient(135deg, var(--grupo-a), #be185d); }
@@ -137,14 +147,16 @@
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* CONFIGURACIÓN DE IMPRESIÓN (PDF) */
+        /* CONFIGURACIÓN ESTRICTA DE IMPRESIÓN (PDF) */
         @media print {
             body { background: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            header { display: none; } /* Ocultar botones y cabecera al imprimir */
+            header { display: none !important; } /* Oculta la barra superior negra */
+            #titulo-impresion { display: block !important; } /* Muestra el título formal */
             .horario-wrapper { box-shadow: none; margin: 0; padding: 0; width: 100%; max-width: 100%; }
             .grid-tabla { min-width: 100%; gap: 4px; }
             .curso-card { box-shadow: none; border: 1px solid rgba(0,0,0,0.1); page-break-inside: avoid; }
-            @page { size: landscape; margin: 10mm; }
+            /* Configura la página en horizontal y elimina márgenes extraños */
+            @page { size: landscape; margin: 10mm; } 
         }
     </style>
 </head>
@@ -157,87 +169,87 @@
                 <span>Mostrando: GRUPO B</span> 🔄
             </button>
             <button class="btn-print" onclick="window.print()">
-                🖨️ Imprimir PDF
+                🖨️ Descargar PDF
             </button>
         </div>
     </header>
 
     <main class="horario-wrapper">
+        <div id="titulo-impresion">
+            <h2>Horario de Clases - Sección E5</h2>
+            <p>Telecomunicaciones e Informática - Ciclo III (UNE)</p>
+            <p id="subtitulo-grupo" style="color: #3b82f6; font-weight: bold; margin-top: 5px;">GRUPO B</p>
+        </div>
+        
         <div class="grid-tabla" id="grid-horario">
             <!-- El contenido se genera con JavaScript -->
         </div>
     </main>
 
     <script>
-        // Inicia en el Grupo B por defecto
         let grupoActual = 'B'; 
         const grid = document.getElementById('grid-horario');
         const btnToggle = document.getElementById('btn-toggle');
+        const subtituloGrupo = document.getElementById('subtitulo-grupo');
 
-        // BLOQUES DE HORA EXACTOS
+        // BLOQUES DE HORA EXACTOS (1 al 13)
         const horas = [
-            "8.00 - 8.50", "8.50 - 9.40", "9:40 - 10.30", "10.30 - 11.20", "11.20 - 12.10", 
+            "8:00 - 8:50", "8:50 - 9:40", "9:40 - 10:30", "10:30 - 11:20", "11:20 - 12:10", 
             "REFRIGERIO", 
-            "1.10 - 2.00", "2.00 - 2.50", "2.50 - 3.40", "3.40 - 4.30", "4.30 - 5.20", "5.20 - 6.10", "6.10 - 7.00"
+            "1:10 - 2:00", "2:00 - 2:50", "2:50 - 3:40", "3:40 - 4:30", "4:30 - 5:20", "5:20 - 6:10", "6:10 - 7:00"
         ];
         const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
-        // BASE DE DATOS DE CURSOS EXACTOS 
-        // inicio y fin se refieren al bloque de hora (1 al 13)
+        // BASE DE DATOS EXACTA CON CORRECCIONES APLICADAS
         const cursos = [
-            // LUNES (Llevan juntos)
+            // LUNES
             { dia: 1, inicio: 1, fin: 3, nom: "Realidad Regional y Nacional", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general" },
-            { dia: 1, inicio: 4, fin: 5, nom: "Ética, Constit. y DD.HH. (Por confirmar)", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
+            { dia: 1, inicio: 4, fin: 5, nom: "Ética, Constit. y DD.HH. <br><small>(Horario por confirmar)</small>", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
             
             // MARTES
-            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos (A)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" },
-            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos (B)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" },
+            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" }, // 8:00 a 12:10
+            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" }, // 2:00 a 5:20
             
-            // MIÉRCOLES (Comunicación juntos, Prog T juntos, Prog A solo A)
-            { dia: 3, inicio: 1, fin: 2, nom: "Programación (T)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "general" },
-            { dia: 3, inicio: 3, fin: 4, nom: "Programación (A)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { dia: 3, inicio: 7, fin: 7, nom: "Programación (A)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { dia: 3, inicio: 8, fin: 9, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" },
+            // MIÉRCOLES
+            { dia: 3, inicio: 1, fin: 2, nom: "Programación (Teoría)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "general" },
+            { dia: 3, inicio: 3, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
+            { dia: 3, inicio: 7, fin: 7, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
+            { dia: 3, inicio: 8, fin: 10, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" }, // 2:00 a 4:30 para A y B
             
-            // JUEVES (Teoría juntos, Prácticas divididas)
-            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (T)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" },
-            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (GA)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" },
-            { dia: 4, inicio: 9, fin: 11, nom: "Dispositivos Electrónicos (GB)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" },
+            // JUEVES
+            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (Teoría)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" }, // 8:00 a 9:40
+            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" }, // 9:40 a 12:10
+            { dia: 4, inicio: 7, fin: 10, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" }, // 1:10 a 4:30
             
-            // VIERNES (Prog B solo B, Pedagogía dividida)
-            { dia: 5, inicio: 2, fin: 3, nom: "Programación (B)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" },
-            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-a" },
-            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-b" }
+            // VIERNES
+            { dia: 5, inicio: 1, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" }, // 8:00 a 11:20
+            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-a" }, // 10:30 a 12:10
+            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-b" } // 1:10 a 2:00
         ];
 
         function renderizarHorario() {
             grid.innerHTML = ''; 
 
-            // 1. Dibujar Cabecera
             grid.innerHTML += `<div class="header-celda">HORA</div>`;
             dias.forEach(dia => grid.innerHTML += `<div class="header-celda">${dia}</div>`);
 
-            // 2. Dibujar Celdas Base
             let filaGridCSS = 2; 
             
             for (let b = 1; b <= 13; b++) {
                 if (b === 6) {
-                    grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO 🍔</div>`;
+                    grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO (12:10 - 1:10)</div>`;
                     filaGridCSS++;
                     continue;
                 }
 
                 grid.innerHTML += `<div class="hora-celda" style="grid-column: 1; grid-row: ${filaGridCSS};">${horas[b-1]}</div>`;
                 
-                // Fondo de celdas vacías para estética
                 for (let d = 1; d <= 5; d++) {
                     grid.innerHTML += `<div class="celda-vacia" style="grid-column: ${d+1}; grid-row: ${filaGridCSS};"></div>`;
                 }
                 filaGridCSS++;
             }
 
-            // 3. Filtrar e Inyectar Cursos
-            // Solo se muestran los Generales Y los del grupo activo. Los del otro grupo se ocultan automáticamente.
             const cursosFiltrados = cursos.filter(c => c.tipo === 'general' || c.tipo === `grupo-${grupoActual.toLowerCase()}`);
             
             cursosFiltrados.forEach(curso => {
@@ -251,28 +263,32 @@
 
                 div.innerHTML = `
                     <div class="curso-nombre">${curso.nom}</div>
-                    <div class="curso-profe">${curso.profe}</div>
-                    <div class="curso-aula">${curso.aula}</div>
+                    <div class="curso-profe">👨‍🏫 ${curso.profe}</div>
+                    <div class="curso-aula">📍 ${curso.aula}</div>
                 `;
                 grid.appendChild(div);
             });
         }
 
-        // LÓGICA DEL BOTÓN A/B
+        // CONTROLADOR DE CAMBIO DE GRUPO
         btnToggle.addEventListener('click', () => {
             if (grupoActual === 'B') {
                 grupoActual = 'A';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO A</span> 🔄`;
                 btnToggle.className = 'btn-toggle'; 
+                subtituloGrupo.innerText = "GRUPO A";
+                subtituloGrupo.style.color = "#ec4899"; // Rosa en PDF
             } else {
                 grupoActual = 'B';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO B</span> 🔄`;
                 btnToggle.className = 'btn-toggle modo-b'; 
+                subtituloGrupo.innerText = "GRUPO B";
+                subtituloGrupo.style.color = "#8b5cf6"; // Morado en PDF
             }
-            renderizarHorario(); // Refresca el horario ocultando los del otro grupo
+            renderizarHorario(); 
         });
 
-        // INICIAR APLICACIÓN
+        // INICIAR
         renderizarHorario();
     </script>
 </body>
