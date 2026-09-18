@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendateune - Horario Interactivo E5</title>
+    <title>Agendateune - Horario y Tareas E5</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
@@ -14,84 +14,95 @@
             --accent: #3b82f6;
             --grupo-a: #ec4899;
             --grupo-b: #8b5cf6;
-            --general: #0ea5e9;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background-color: #f1f5f9; color: #334155; padding-bottom: 2rem; }
 
-        /* Cabecera y Botones */
+        /* Cabecera y Navegación */
         header {
             background: var(--bg-main);
             color: var(--text-light);
-            padding: 1.2rem 2rem;
+            padding: 1rem 2rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
             gap: 15px;
         }
 
-        h1 { font-size: 1.8rem; font-weight: 800; margin: 0; }
+        h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
         h1 span { color: var(--accent); }
 
-        .controles { 
-            display: flex; 
-            gap: 15px; 
-            align-items: center;
-            flex-wrap: wrap;
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            background: #1e293b;
+            padding: 5px;
+            border-radius: 50px;
         }
+
+        .tab-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active { background: var(--accent); color: white; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
+
+        .controles { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
         .btn-toggle, .btn-print {
             border: none;
-            padding: 0.7rem 1.4rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
             color: white;
-            white-space: nowrap;
         }
 
-        .btn-toggle { background: linear-gradient(135deg, var(--grupo-a), #b91c1c); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); }
-        .btn-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
-        .btn-toggle.modo-b { background: linear-gradient(135deg, var(--grupo-b), #4c1d95); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
-        .btn-toggle.modo-b:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6); }
+        .btn-toggle { background: linear-gradient(135deg, var(--grupo-a), #b91c1c); }
+        .btn-toggle.modo-b { background: linear-gradient(135deg, var(--grupo-b), #4c1d95); }
+        .btn-print { background: #334155; }
+        .btn-print:hover { background: #475569; }
 
-        .btn-print { background: #334155; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
-        .btn-print:hover { background: #475569; transform: translateY(-2px); }
+        /* Contenedores Principales */
+        .seccion { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .seccion.activa { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        #titulo-impresion { display: none; text-align: center; margin-bottom: 20px; color: #0f172a; }
-        #titulo-impresion h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
-        #titulo-impresion p { font-size: 1.1rem; color: #475569; font-weight: 600; }
-
-        /* Estructura del Horario */
-        .horario-wrapper {
+        .wrapper {
             max-width: 1350px;
             margin: 2rem auto;
             background: white;
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
             overflow-x: auto;
         }
 
+        /* ----- ESTILOS DEL HORARIO ----- */
         .grid-tabla {
             display: grid;
             grid-template-columns: 100px repeat(5, 1fr);
-            /* 5 filas tarde en vez de 7 para eliminar el bloque de 5:20 a 7:00 */
             grid-template-rows: 50px repeat(5, 75px) 45px repeat(5, 75px);
             gap: 6px;
             min-width: 950px;
-            position: relative;
         }
 
         .header-celda { background: var(--bg-panel); color: white; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 1rem; }
@@ -109,41 +120,103 @@
             font-weight: 800;
             letter-spacing: 5px;
             font-size: 1.1rem;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .celda-vacia { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 8px; }
 
         .curso-card {
             border-radius: 8px;
-            padding: 8px 12px;
+            padding: 8px 10px;
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             position: relative;
-            z-index: 10;
         }
 
-        .curso-nombre { font-size: 0.85rem; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
-        .curso-profe { font-size: 0.75rem; opacity: 0.9; }
+        .curso-nombre { font-size: 0.8rem; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
+        .curso-profe { font-size: 0.7rem; opacity: 0.9; }
         .curso-aula { font-size: 0.7rem; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; align-self: flex-start; margin-top: 4px; font-weight: 600;}
 
-        .bg-general { background: linear-gradient(135deg, var(--general), #0284c7); }
-        .bg-grupo-a { background: linear-gradient(135deg, var(--grupo-a), #be185d); }
-        .bg-grupo-b { background: linear-gradient(135deg, var(--grupo-b), #6d28d9); }
+        /* Colores por Curso */
+        .color-realidad { background: linear-gradient(135deg, #0284c7, #0369a1); } /* Azul */
+        .color-etica { background: linear-gradient(135deg, #059669, #047857); } /* Verde */
+        .color-circuitos { background: linear-gradient(135deg, #ea580c, #c2410c); } /* Naranja */
+        .color-programacion { background: linear-gradient(135deg, #7c3aed, #6d28d9); } /* Morado */
+        .color-comunicacion { background: linear-gradient(135deg, #db2777, #be185d); } /* Rosa */
+        .color-dispositivos { background: linear-gradient(135deg, #e11d48, #be123c); } /* Rojo */
+        .color-pedagogia { background: linear-gradient(135deg, #0d9488, #0f766e); } /* Teal */
 
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        /* ----- ESTILOS DE TAREAS ----- */
+        .filtro-semanas {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
 
+        .btn-semana {
+            background: #e2e8f0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-semana.activa { background: var(--bg-main); color: white; }
+
+        .grid-tareas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .tarea-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .tarea-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .tarea-curso { font-weight: 800; font-size: 1.1rem; color: #1e293b; }
+        
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+        .badge-si { background: #fee2e2; color: #b91c1c; } /* Rojo para tarea pendiente */
+        .badge-no { background: #dcfce3; color: #15803d; } /* Verde para libre */
+
+        .btn-detalles {
+            margin-top: auto;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-detalles:hover { background: #e2e8f0; }
+        .btn-detalles:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Impresión */
+        #titulo-impresion { display: none; text-align: center; margin-bottom: 20px; color: #0f172a; }
+        #titulo-impresion h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
         @media print {
             body { background: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            header { display: none !important; } 
+            header, .nav-tabs, .filtro-semanas { display: none !important; } 
+            #seccion-horario { display: block !important; }
+            #seccion-tareas { display: none !important; }
             #titulo-impresion { display: block !important; } 
-            .horario-wrapper { box-shadow: none; margin: 0; padding: 0; width: 100%; max-width: 100%; }
-            .grid-tabla { min-width: 100%; gap: 4px; }
-            .curso-card { box-shadow: none; border: 1px solid rgba(0,0,0,0.1); page-break-inside: avoid; }
+            .wrapper { box-shadow: none; margin: 0; padding: 0; width: 100%; }
             @page { size: landscape; margin: 10mm; } 
         }
     </style>
@@ -152,79 +225,94 @@
 
     <header>
         <h1>Agendateune <span>| E5</span></h1>
-        <div class="controles">
+        
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="cambiarSeccion('horario')">📅 Horario</button>
+            <button class="tab-btn" onclick="cambiarSeccion('tareas')">📝 Tareas</button>
+        </div>
+
+        <div class="controles" id="controles-horario">
             <button id="btn-toggle" class="btn-toggle modo-b">
                 <span>Mostrando: GRUPO B</span> 🔄
             </button>
-            <button class="btn-print" onclick="window.print()">
-                🖨️ Descargar Horario
-            </button>
+            <button class="btn-print" onclick="window.print()">🖨️ Descargar Horario</button>
         </div>
     </header>
 
-    <main class="horario-wrapper">
+    <!-- SECCIÓN 1: HORARIO -->
+    <main class="wrapper seccion activa" id="seccion-horario">
         <div id="titulo-impresion">
             <h2>Horario de Clases - Sección E5</h2>
-            <p>Telecomunicaciones e Informática - Ciclo III (UNE)</p>
-            <p id="subtitulo-grupo" style="color: #3b82f6; font-weight: bold; margin-top: 5px;">GRUPO B</p>
+            <p id="subtitulo-grupo">GRUPO B</p>
         </div>
         
-        <div class="grid-tabla" id="grid-horario">
-            <!-- El contenido se genera con JavaScript -->
+        <div class="grid-tabla" id="grid-horario"></div>
+    </main>
+
+    <!-- SECCIÓN 2: TAREAS -->
+    <main class="wrapper seccion" id="seccion-tareas">
+        <h2 style="margin-bottom: 15px; color: #0f172a;">Consulta de Tareas</h2>
+        
+        <div class="filtro-semanas" id="contenedor-semanas">
+            <!-- Botones de semana inyectados por JS -->
+        </div>
+
+        <div class="grid-tareas" id="grid-tareas">
+            <!-- Tarjetas de tareas inyectadas por JS -->
         </div>
     </main>
 
     <script>
         let grupoActual = 'B'; 
-        const grid = document.getElementById('grid-horario');
-        const btnToggle = document.getElementById('btn-toggle');
-        const subtituloGrupo = document.getElementById('subtitulo-grupo');
-
-        // Se eliminaron los dos últimos bloques de hora
-        const horas = [
-            "8:00 - 8:50", "8:50 - 9:40", "9:40 - 10:30", "10:30 - 11:20", "11:20 - 12:10", 
-            "REFRIGERIO", 
-            "1:10 - 2:00", "2:00 - 2:50", "2:50 - 3:40", "3:40 - 4:30", "4:30 - 5:20"
-        ];
+        const horas = ["8:00 - 8:50", "8:50 - 9:40", "9:40 - 10:30", "10:30 - 11:20", "11:20 - 12:10", "REFRIGERIO", "1:10 - 2:00", "2:00 - 2:50", "2:50 - 3:40", "3:40 - 4:30", "4:30 - 5:20"];
         const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
+        // Base de Datos de Cursos (Ahora con propiedad 'colorClass' por curso)
         const cursos = [
-            // LUNES
-            { dia: 1, inicio: 1, fin: 3, nom: "Realidad Regional y Nacional", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general" },
-            { dia: 1, inicio: 4, fin: 5, nom: "Ética, Constit. y DD.HH. <br><small>(Horario por confirmar)</small>", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
-            
-            // MARTES
-            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" },
-            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" },
-            
-            // MIÉRCOLES
-            { dia: 3, inicio: 1, fin: 2, nom: "Programación (Teoría)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { dia: 3, inicio: 3, fin: 5, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { dia: 3, inicio: 8, fin: 10, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" },
-            
-            // JUEVES
-            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (Teoría)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" },
-            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" },
-            { dia: 4, inicio: 7, fin: 10, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" },
-            
-            // VIERNES
-            { dia: 5, inicio: 1, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" },
-            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Mg. Martin Rodriguez Vigo", aula: "Aula 108", tipo: "grupo-a" },
-            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Mg. Martin Rodriguez Vigo", aula: "Aula 108", tipo: "grupo-b" }
+            { dia: 1, inicio: 1, fin: 3, nom: "Realidad Regional y Nac.", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general", color: "color-realidad" },
+            { dia: 1, inicio: 4, fin: 5, nom: "Ética, Const. y DD.HH.", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general", color: "color-etica" },
+            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a", color: "color-circuitos" },
+            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b", color: "color-circuitos" },
+            { dia: 3, inicio: 1, fin: 2, nom: "Programación (Teoría)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a", color: "color-programacion" },
+            { dia: 3, inicio: 3, fin: 5, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a", color: "color-programacion" },
+            { dia: 3, inicio: 8, fin: 10, nom: "Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general", color: "color-comunicacion" },
+            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electr. (T)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general", color: "color-dispositivos" },
+            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electr. (P)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a", color: "color-dispositivos" },
+            { dia: 4, inicio: 7, fin: 10, nom: "Dispositivos Electr. (P)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b", color: "color-dispositivos" },
+            { dia: 5, inicio: 1, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b", color: "color-programacion" },
+            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Mg. Martin Rodriguez", aula: "Aula 108", tipo: "grupo-a", color: "color-pedagogia" },
+            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Mg. Martin Rodriguez", aula: "Aula 108", tipo: "grupo-b", color: "color-pedagogia" }
         ];
 
+        // Base de Datos de Tareas (Ejemplo Estático para mostrar la interfaz)
+        const listaCursosNombres = ["Realidad Regional", "Ética y DD.HH.", "Análisis de Circuitos", "Programación", "Comunicación III", "Dispositivos Electrónicos", "Pedagogía General"];
+        let tareasData = [];
+        // Generar datos falsos para las semanas 1 al 7
+        for(let sem = 1; sem <= 7; sem++) {
+            listaCursosNombres.forEach(curso => {
+                // Aleatoriamente asignar si hay tarea o no para el ejemplo
+                const hayTarea = Math.random() > 0.6; 
+                tareasData.push({
+                    semana: sem,
+                    curso: curso,
+                    hayTarea: hayTarea,
+                    detalle: hayTarea ? "Resolver guía de ejercicios en el campus virtual." : ""
+                });
+            });
+        }
+
+        /* --- LÓGICA DEL HORARIO --- */
         function renderizarHorario() {
+            const grid = document.getElementById('grid-horario');
             grid.innerHTML = ''; 
             grid.innerHTML += `<div class="header-celda">HORA</div>`;
             dias.forEach(dia => grid.innerHTML += `<div class="header-celda">${dia}</div>`);
 
             let filaGridCSS = 2; 
-            // Loop reducido a 11 (5 en la mañana, 1 refrigerio, 5 en la tarde)
             for (let b = 1; b <= 11; b++) {
                 if (b === 6) {
                     grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO (12:10 - 1:10)</div>`;
-                    filaGridCSS++;
-                    continue;
+                    filaGridCSS++; continue;
                 }
                 grid.innerHTML += `<div class="hora-celda" style="grid-column: 1; grid-row: ${filaGridCSS};">${horas[b-1]}</div>`;
                 for (let d = 1; d <= 5; d++) {
@@ -234,16 +322,11 @@
             }
 
             const cursosFiltrados = cursos.filter(c => c.tipo === 'general' || c.tipo === `grupo-${grupoActual.toLowerCase()}`);
-            
             cursosFiltrados.forEach(curso => {
-                const rowStart = curso.inicio + 1; 
-                const rowEnd = curso.fin + 2; 
-
                 const div = document.createElement('div');
-                div.className = `curso-card bg-${curso.tipo}`;
+                div.className = `curso-card ${curso.color}`;
                 div.style.gridColumn = curso.dia + 1;
-                div.style.gridRow = `${rowStart} / ${rowEnd}`;
-
+                div.style.gridRow = `${curso.inicio + 1} / ${curso.fin + 2}`;
                 div.innerHTML = `
                     <div class="curso-nombre">${curso.nom}</div>
                     <div class="curso-profe">👨‍🏫 ${curso.profe}</div>
@@ -253,24 +336,75 @@
             });
         }
 
-        btnToggle.addEventListener('click', () => {
+        /* --- LÓGICA DE TAREAS --- */
+        function renderizarSemanas() {
+            const contenedor = document.getElementById('contenedor-semanas');
+            contenedor.innerHTML = '';
+            for(let i = 1; i <= 7; i++) {
+                const btn = document.createElement('button');
+                btn.className = `btn-semana ${i === 1 ? 'activa' : ''}`;
+                btn.innerText = `Semana ${i}`;
+                btn.onclick = (e) => {
+                    document.querySelectorAll('.btn-semana').forEach(b => b.classList.remove('activa'));
+                    e.target.classList.add('activa');
+                    renderizarTareas(i);
+                };
+                contenedor.appendChild(btn);
+            }
+            renderizarTareas(1);
+        }
+
+        function renderizarTareas(semanaId) {
+            const grid = document.getElementById('grid-tareas');
+            grid.innerHTML = '';
+            const tareasSemana = tareasData.filter(t => t.semana === semanaId);
+            
+            tareasSemana.forEach(t => {
+                const card = document.createElement('div');
+                card.className = 'tarea-card';
+                card.innerHTML = `
+                    <div class="tarea-header">
+                        <span class="tarea-curso">${t.curso}</span>
+                        <span class="badge ${t.hayTarea ? 'badge-si' : 'badge-no'}">
+                            ${t.hayTarea ? '🔴 Hay Tarea' : '🟢 Libre'}
+                        </span>
+                    </div>
+                    <button class="btn-detalles" ${!t.hayTarea ? 'disabled' : ''} onclick="alert('Detalles: ${t.detalle}')">
+                        ${t.hayTarea ? '📄 Ver Detalles' : 'Sin pendientes'}
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        /* --- CONTROLES GENERALES --- */
+        function cambiarSeccion(seccion) {
+            document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`seccion-${seccion}`).classList.add('activa');
+            event.target.classList.add('active');
+
+            // Ocultar botones de imprimir/cambiar grupo si estamos en tareas
+            document.getElementById('controles-horario').style.display = seccion === 'horario' ? 'flex' : 'none';
+        }
+
+        document.getElementById('btn-toggle').addEventListener('click', (e) => {
+            const btnToggle = e.currentTarget;
             if (grupoActual === 'B') {
                 grupoActual = 'A';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO A</span> 🔄`;
                 btnToggle.className = 'btn-toggle'; 
-                subtituloGrupo.innerText = "GRUPO A";
-                subtituloGrupo.style.color = "#ec4899"; 
             } else {
                 grupoActual = 'B';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO B</span> 🔄`;
                 btnToggle.className = 'btn-toggle modo-b'; 
-                subtituloGrupo.innerText = "GRUPO B";
-                subtituloGrupo.style.color = "#8b5cf6"; 
             }
             renderizarHorario(); 
         });
 
+        // Inicializar
         renderizarHorario();
+        renderizarSemanas();
     </script>
 </body>
 </html>
