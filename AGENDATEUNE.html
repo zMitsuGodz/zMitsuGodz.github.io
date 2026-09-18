@@ -20,7 +20,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background-color: #f1f5f9; color: #334155; padding-bottom: 2rem; }
 
-        /* Cabecera y Botones Mejorados */
+        /* Cabecera y Botones */
         header {
             background: var(--bg-main);
             color: var(--text-light);
@@ -87,7 +87,8 @@
         .grid-tabla {
             display: grid;
             grid-template-columns: 100px repeat(5, 1fr);
-            grid-template-rows: 50px repeat(5, 75px) 45px repeat(7, 75px);
+            /* 5 filas tarde en vez de 7 para eliminar el bloque de 5:20 a 7:00 */
+            grid-template-rows: 50px repeat(5, 75px) 45px repeat(5, 75px);
             gap: 6px;
             min-width: 950px;
             position: relative;
@@ -156,7 +157,7 @@
                 <span>Mostrando: GRUPO B</span> 🔄
             </button>
             <button class="btn-print" onclick="window.print()">
-                🖨️ Descargar PDF
+                🖨️ Descargar Horario
             </button>
         </div>
     </header>
@@ -179,37 +180,37 @@
         const btnToggle = document.getElementById('btn-toggle');
         const subtituloGrupo = document.getElementById('subtitulo-grupo');
 
+        // Se eliminaron los dos últimos bloques de hora
         const horas = [
             "8:00 - 8:50", "8:50 - 9:40", "9:40 - 10:30", "10:30 - 11:20", "11:20 - 12:10", 
             "REFRIGERIO", 
-            "1:10 - 2:00", "2:00 - 2:50", "2:50 - 3:40", "3:40 - 4:30", "4:30 - 5:20", "5:20 - 6:10", "6:10 - 7:00"
+            "1:10 - 2:00", "2:00 - 2:50", "2:50 - 3:40", "3:40 - 4:30", "4:30 - 5:20"
         ];
         const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
-        // CORRECCIONES APLICADAS ESTRICTAMENTE
         const cursos = [
             // LUNES
             { dia: 1, inicio: 1, fin: 3, nom: "Realidad Regional y Nacional", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general" },
             { dia: 1, inicio: 4, fin: 5, nom: "Ética, Constit. y DD.HH. <br><small>(Horario por confirmar)</small>", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
             
             // MARTES
-            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" }, // A: 8:00 - 12:10
-            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" }, // B: 2:00 - 5:20
+            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" },
+            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" },
             
-            // MIÉRCOLES (B no tiene mañana. Si seleccionas B, la mañana queda en blanco)
+            // MIÉRCOLES
             { dia: 3, inicio: 1, fin: 2, nom: "Programación (Teoría)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
             { dia: 3, inicio: 3, fin: 5, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { dia: 3, inicio: 8, fin: 10, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" }, // A y B: 2:00 - 4:30
+            { dia: 3, inicio: 8, fin: 10, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" },
             
             // JUEVES
-            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (Teoría)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" }, // A y B: 8:00 - 9:40
-            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" }, // A: 9:40 - 12:10
-            { dia: 4, inicio: 7, fin: 10, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" }, // B: 1:10 - 4:30
+            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (Teoría)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" },
+            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" },
+            { dia: 4, inicio: 7, fin: 10, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" },
             
             // VIERNES
-            { dia: 5, inicio: 1, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" }, // B: 8:00 - 11:20
-            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-a" }, // A: 10:30 - 12:10
-            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-b" } // B: 1:10 - 2:00
+            { dia: 5, inicio: 1, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" },
+            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Mg. Martin Rodriguez Vigo", aula: "Aula 108", tipo: "grupo-a" },
+            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Mg. Martin Rodriguez Vigo", aula: "Aula 108", tipo: "grupo-b" }
         ];
 
         function renderizarHorario() {
@@ -218,7 +219,8 @@
             dias.forEach(dia => grid.innerHTML += `<div class="header-celda">${dia}</div>`);
 
             let filaGridCSS = 2; 
-            for (let b = 1; b <= 13; b++) {
+            // Loop reducido a 11 (5 en la mañana, 1 refrigerio, 5 en la tarde)
+            for (let b = 1; b <= 11; b++) {
                 if (b === 6) {
                     grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO (12:10 - 1:10)</div>`;
                     filaGridCSS++;
@@ -234,7 +236,6 @@
             const cursosFiltrados = cursos.filter(c => c.tipo === 'general' || c.tipo === `grupo-${grupoActual.toLowerCase()}`);
             
             cursosFiltrados.forEach(curso => {
-                // FORMULA CORREGIDA: No más desfases en la tarde.
                 const rowStart = curso.inicio + 1; 
                 const rowEnd = curso.fin + 2; 
 
