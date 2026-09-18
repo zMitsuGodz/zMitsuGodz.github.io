@@ -1,4 +1,4 @@
-¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,6 @@
             --bg-panel: #1e293b;
             --text-light: #f8fafc;
             --accent: #3b82f6;
-            --lunch: #f59e0b;
             --grupo-a: #ec4899;
             --grupo-b: #8b5cf6;
             --general: #0ea5e9;
@@ -38,33 +37,41 @@
         h1 { font-size: 1.8rem; font-weight: 800; }
         h1 span { color: var(--accent); }
 
-        .btn-toggle {
-            background: linear-gradient(135deg, var(--grupo-a), #b91c1c);
-            color: white;
+        .controles { display: flex; gap: 15px; }
+
+        .btn-toggle, .btn-print {
             border: none;
             padding: 0.8rem 1.5rem;
             border-radius: 50px;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 10px;
+            color: white;
         }
 
-        .btn-toggle:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
+        /* Botón Grupo A */
+        .btn-toggle { background: linear-gradient(135deg, var(--grupo-a), #b91c1c); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); }
+        .btn-toggle:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
+        
+        /* Botón Grupo B */
         .btn-toggle.modo-b { background: linear-gradient(135deg, var(--grupo-b), #4c1d95); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
-        .btn-toggle.modo-b:hover { box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6); }
+        .btn-toggle.modo-b:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6); }
 
-        /* Estructura del Horario (Grid Exacto) */
+        /* Botón Imprimir */
+        .btn-print { background: #334155; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+        .btn-print:hover { background: #475569; transform: translateY(-3px); }
+
+        /* Estructura del Horario */
         .horario-wrapper {
             max-width: 1300px;
             margin: 2rem auto;
             background: white;
             border-radius: 16px;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
             overflow-x: auto;
         }
@@ -72,7 +79,6 @@
         .grid-tabla {
             display: grid;
             grid-template-columns: 90px repeat(5, 1fr);
-            /* 1 Fila Cabecera + 5 Mañana + 1 Refri + 7 Tarde = 14 filas */
             grid-template-rows: 50px repeat(5, 70px) 45px repeat(7, 70px);
             gap: 6px;
             min-width: 900px;
@@ -98,33 +104,25 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Zonas Vacías para Drag & Drop */
         .celda-vacia {
             background: #f8fafc;
-            border: 2px dashed #e2e8f0;
+            border: 1px solid #f1f5f9;
             border-radius: 8px;
-            transition: background 0.2s;
         }
-        .celda-vacia.drag-over { background: #dbeafe; border-color: var(--accent); }
 
         /* Tarjetas de Clases */
         .curso-card {
             border-radius: 8px;
             padding: 8px 12px;
             color: white;
-            cursor: grab;
             display: flex;
             flex-direction: column;
             justify-content: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transition: transform 0.2s, filter 0.2s;
             position: relative;
             z-index: 10;
         }
-        
-        .curso-card:hover { transform: scale(1.03); filter: brightness(1.1); z-index: 20; }
-        .curso-card:active { cursor: grabbing; transform: scale(0.95); }
 
         .curso-nombre { font-size: 0.85rem; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
         .curso-profe { font-size: 0.7rem; opacity: 0.9; }
@@ -138,15 +136,30 @@
             0% { opacity: 0; transform: scale(0.8) translateY(10px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
+
+        /* CONFIGURACIÓN DE IMPRESIÓN (PDF) */
+        @media print {
+            body { background: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            header { display: none; } /* Ocultar botones y cabecera al imprimir */
+            .horario-wrapper { box-shadow: none; margin: 0; padding: 0; width: 100%; max-width: 100%; }
+            .grid-tabla { min-width: 100%; gap: 4px; }
+            .curso-card { box-shadow: none; border: 1px solid rgba(0,0,0,0.1); page-break-inside: avoid; }
+            @page { size: landscape; margin: 10mm; }
+        }
     </style>
 </head>
 <body>
 
     <header>
         <h1>Agendateune <span>| E5</span></h1>
-        <button id="btn-toggle" class="btn-toggle modo-b">
-            <span>Mostrando: GRUPO B</span> 🔄
-        </button>
+        <div class="controles">
+            <button id="btn-toggle" class="btn-toggle modo-b">
+                <span>Mostrando: GRUPO B</span> 🔄
+            </button>
+            <button class="btn-print" onclick="window.print()">
+                🖨️ Imprimir PDF
+            </button>
+        </div>
     </header>
 
     <main class="horario-wrapper">
@@ -156,12 +169,12 @@
     </main>
 
     <script>
-        // CONFIGURACIÓN INICIAL
+        // Inicia en el Grupo B por defecto
         let grupoActual = 'B'; 
         const grid = document.getElementById('grid-horario');
         const btnToggle = document.getElementById('btn-toggle');
 
-        // BLOQUES DE HORA EXACTOS (Refrigerio es la fila 7 en el CSS)
+        // BLOQUES DE HORA EXACTOS
         const horas = [
             "8.00 - 8.50", "8.50 - 9.40", "9:40 - 10.30", "10.30 - 11.20", "11.20 - 12.10", 
             "REFRIGERIO", 
@@ -169,83 +182,72 @@
         ];
         const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
-        // BASE DE DATOS DE CURSOS
-        // 'inicio' y 'fin' se refieren al índice del bloque (1 a 13)
-        let cursos = [
-            // LUNES (Todo General)
-            { id: "c1", dia: 1, inicio: 1, fin: 2, nom: "Realidad Regional y Nacional", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general" },
-            { id: "c2", dia: 1, inicio: 5, fin: 5, nom: "Ética, Constit. y DD.HH.", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
-            { id: "c3", dia: 1, inicio: 7, fin: 7, nom: "Ética, Constit. y DD.HH.", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
+        // BASE DE DATOS DE CURSOS EXACTOS 
+        // inicio y fin se refieren al bloque de hora (1 al 13)
+        const cursos = [
+            // LUNES (Llevan juntos)
+            { dia: 1, inicio: 1, fin: 3, nom: "Realidad Regional y Nacional", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general" },
+            { dia: 1, inicio: 4, fin: 5, nom: "Ética, Constit. y DD.HH. (Por confirmar)", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
             
             // MARTES
-            { id: "c4", dia: 2, inicio: 1, fin: 2, nom: "Análisis de Circuitos (T)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "general" },
-            { id: "c5", dia: 2, inicio: 3, fin: 5, nom: "Análisis de Circuitos (A)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" },
-            { id: "c6", dia: 2, inicio: 7, fin: 8, nom: "Análisis de Circuitos (A)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" },
-            { id: "c7", dia: 2, inicio: 9, fin: 12, nom: "Análisis de Circuitos (B)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" },
+            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos (A)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" },
+            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos (B)", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" },
             
-            // MIÉRCOLES
-            { id: "c8", dia: 3, inicio: 1, fin: 2, nom: "Programación (T)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "general" },
-            { id: "c9", dia: 3, inicio: 3, fin: 5, nom: "Programación (A)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { id: "c10", dia: 3, inicio: 7, fin: 7, nom: "Programación (A)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { id: "c11", dia: 3, inicio: 8, fin: 9, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" },
+            // MIÉRCOLES (Comunicación juntos, Prog T juntos, Prog A solo A)
+            { dia: 3, inicio: 1, fin: 2, nom: "Programación (T)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "general" },
+            { dia: 3, inicio: 3, fin: 4, nom: "Programación (A)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
+            { dia: 3, inicio: 7, fin: 7, nom: "Programación (A)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
+            { dia: 3, inicio: 8, fin: 9, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" },
             
-            // JUEVES
-            { id: "c12", dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (T)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" },
-            { id: "c13", dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (GA)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" },
-            { id: "c14", dia: 4, inicio: 7, fin: 7, nom: "Dispositivos Electrónicos (GA)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" },
-            { id: "c15", dia: 4, inicio: 8, fin: 10, nom: "Dispositivos Electrónicos (GB)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" },
+            // JUEVES (Teoría juntos, Prácticas divididas)
+            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (T)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" },
+            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (GA)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" },
+            { dia: 4, inicio: 9, fin: 11, nom: "Dispositivos Electrónicos (GB)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" },
             
-            // VIERNES
-            { id: "c16", dia: 5, inicio: 1, fin: 4, nom: "Programación (B)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" },
-            { id: "c17", dia: 5, inicio: 5, fin: 5, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "general" },
-            { id: "c18", dia: 5, inicio: 7, fin: 8, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "general" }
+            // VIERNES (Prog B solo B, Pedagogía dividida)
+            { dia: 5, inicio: 2, fin: 3, nom: "Programación (B)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" },
+            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-a" },
+            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-b" }
         ];
 
-        // FUNCIÓN PRINCIPAL PARA DIBUJAR LA TABLA
         function renderizarHorario() {
             grid.innerHTML = ''; 
 
-            // 1. Dibujar Cabecera (Hora + Días)
+            // 1. Dibujar Cabecera
             grid.innerHTML += `<div class="header-celda">HORA</div>`;
-            dias.forEach(dia => {
-                grid.innerHTML += `<div class="header-celda">${dia}</div>`;
-            });
+            dias.forEach(dia => grid.innerHTML += `<div class="header-celda">${dia}</div>`);
 
-            // 2. Dibujar Celdas Base (Filas y Columnas)
-            let filaGridCSS = 2; // La fila 1 es la cabecera
+            // 2. Dibujar Celdas Base
+            let filaGridCSS = 2; 
             
             for (let b = 1; b <= 13; b++) {
                 if (b === 6) {
-                    // Bloque de Refrigerio
                     grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO 🍔</div>`;
                     filaGridCSS++;
                     continue;
                 }
 
-                // Etiqueta de la Hora
                 grid.innerHTML += `<div class="hora-celda" style="grid-column: 1; grid-row: ${filaGridCSS};">${horas[b-1]}</div>`;
                 
-                // Celdas vacías para los 5 días (Zonas para soltar)
+                // Fondo de celdas vacías para estética
                 for (let d = 1; d <= 5; d++) {
-                    grid.innerHTML += `<div class="celda-vacia" data-dia="${d}" data-bloque="${b}" style="grid-column: ${d+1}; grid-row: ${filaGridCSS};" ondragover="allowDrop(event)" ondragleave="dragLeave(event)" ondrop="drop(event)"></div>`;
+                    grid.innerHTML += `<div class="celda-vacia" style="grid-column: ${d+1}; grid-row: ${filaGridCSS};"></div>`;
                 }
                 filaGridCSS++;
             }
 
-            // 3. Inyectar los Cursos Filtrados
+            // 3. Filtrar e Inyectar Cursos
+            // Solo se muestran los Generales Y los del grupo activo. Los del otro grupo se ocultan automáticamente.
             const cursosFiltrados = cursos.filter(c => c.tipo === 'general' || c.tipo === `grupo-${grupoActual.toLowerCase()}`);
             
             cursosFiltrados.forEach(curso => {
-                const rowStart = curso.inicio < 6 ? curso.inicio + 1 : curso.inicio + 2; // Ajustar por la fila de cabecera y refri
+                const rowStart = curso.inicio < 6 ? curso.inicio + 1 : curso.inicio + 2; 
                 const rowEnd = curso.fin < 6 ? curso.fin + 2 : curso.fin + 3; 
 
                 const div = document.createElement('div');
                 div.className = `curso-card bg-${curso.tipo}`;
                 div.style.gridColumn = curso.dia + 1;
                 div.style.gridRow = `${rowStart} / ${rowEnd}`;
-                div.draggable = true;
-                div.id = curso.id;
-                div.ondragstart = drag;
 
                 div.innerHTML = `
                     <div class="curso-nombre">${curso.nom}</div>
@@ -261,48 +263,14 @@
             if (grupoActual === 'B') {
                 grupoActual = 'A';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO A</span> 🔄`;
-                btnToggle.className = 'btn-toggle'; // Rosa
+                btnToggle.className = 'btn-toggle'; 
             } else {
                 grupoActual = 'B';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO B</span> 🔄`;
-                btnToggle.className = 'btn-toggle modo-b'; // Morado
+                btnToggle.className = 'btn-toggle modo-b'; 
             }
-            renderizarHorario();
+            renderizarHorario(); // Refresca el horario ocultando los del otro grupo
         });
-
-        // LÓGICA DE DRAG & DROP (Arrastrar y Soltar)
-        function allowDrop(ev) {
-            ev.preventDefault();
-            ev.target.classList.add('drag-over');
-        }
-        function dragLeave(ev) {
-            ev.target.classList.remove('drag-over');
-        }
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-        function drop(ev) {
-            ev.preventDefault();
-            ev.target.classList.remove('drag-over');
-            
-            // Obtener el ID del curso arrastrado y la nueva ubicación
-            const data = ev.dataTransfer.getData("text");
-            const nuevaCelda = ev.target;
-            const nuevoDia = parseInt(nuevaCelda.getAttribute('data-dia'));
-            const nuevoBloque = parseInt(nuevaCelda.getAttribute('data-bloque'));
-
-            if (!nuevoDia) return; // Evitar soltar fuera de celdas válidas
-
-            // Actualizar la base de datos local
-            const cursoIndex = cursos.findIndex(c => c.id === data);
-            if(cursoIndex > -1) {
-                const duracion = cursos[cursoIndex].fin - cursos[cursoIndex].inicio;
-                cursos[cursoIndex].dia = nuevoDia;
-                cursos[cursoIndex].inicio = nuevoBloque;
-                cursos[cursoIndex].fin = nuevoBloque + duracion;
-                renderizarHorario(); // Volver a dibujar con la nueva posición
-            }
-        }
 
         // INICIAR APLICACIÓN
         renderizarHorario();
