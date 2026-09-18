@@ -3,39 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SyncE5 - Horario Interactivo</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Agendateune - Horario E5</title>
+    <style>
+        /* DISEÑO DE LA APLICACIÓN (CSS INCLUIDO AQUÍ PARA EVITAR ERRORES) */
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --grupo-a: #ec4899; /* Rosa para Grupo A */
+            --grupo-b: #8b5cf6; /* Morado para Grupo B */
+            --general: #0ea5e9; /* Celeste para General */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body { background-color: var(--bg-page); color: var(--text-main); }
+
+        /* Barra Superior */
+        header { 
+            background: var(--primary); 
+            color: white; 
+            padding: 1.2rem 2rem; 
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 { font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        h1 span { color: var(--accent); }
+
+        .controles { display: flex; gap: 15px; align-items: center; margin-top: 10px; }
+        
+        select {
+            padding: 0.6rem;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-alarma { 
+            background-color: var(--accent); 
+            color: white;
+            padding: 0.6rem 1.2rem; 
+            border-radius: 8px; 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-alarma:hover { background-color: #2563eb; }
+
+        /* Contenedor del Horario */
+        .horario-container { 
+            max-width: 1300px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; 
+            overflow-x: auto; 
+        }
+
+        .grid-horario { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 15px; 
+            min-width: 1000px; /* Para que en celular se pueda scrollear hacia los lados */
+        }
+
+        /* Días de la semana */
+        .dia-columna {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dia-header {
+            background: #f1f5f9;
+            padding: 15px;
+            text-align: center;
+            font-weight: 800;
+            color: var(--text-main);
+            border-bottom: 2px solid #e2e8f0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .zona-arrastrable {
+            padding: 10px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Tarjetas de Cursos */
+        .curso-card { 
+            padding: 15px; 
+            border-radius: 10px; 
+            cursor: grab; 
+            font-size: 0.9rem; 
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: relative;
+            transition: transform 0.2s;
+        }
+        
+        .curso-card:active { cursor: grabbing; transform: scale(0.98); }
+        .curso-titulo { font-weight: bold; font-size: 1rem; margin-bottom: 5px; line-height: 1.2; }
+        .curso-hora { font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
+        .curso-profe { font-size: 0.8rem; opacity: 0.9; }
+
+        /* Colores dinámicos */
+        .tipo-general { background: linear-gradient(135deg, var(--general), #0284c7); }
+        .tipo-grupo-a { background: linear-gradient(135deg, var(--grupo-a), #db2777); }
+        .tipo-grupo-b { background: linear-gradient(135deg, var(--grupo-b), #7c3aed); }
+        
+        .curso-fantasma { opacity: 0.3; background: #cbd5e1; }
+        
+        /* Mensaje vacío */
+        .dia-vacio { text-align: center; color: #94a3b8; font-size: 0.9rem; margin-top: 20px; font-style: italic; }
+
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>SyncE5</h1>
+        <h1>Agendateune <span>| E5</span></h1>
         <div class="controles">
-            <label for="grupo-select">Tu Grupo de Laboratorio:</label>
             <select id="grupo-select">
-                <option value="A">Grupo A</option>
-                <option value="B">Grupo B</option>
+                <option value="A">Mostrar: GRUPO A</option>
+                <option value="B">Mostrar: GRUPO B</option>
             </select>
-            <button id="btn-recordatorio" class="btn-alarma">+ Añadir Tarea</button>
+            <button id="btn-recordatorio" class="btn-alarma">🔔 Añadir Recordatorio</button>
         </div>
     </header>
 
-    <main>
-        <div class="horario-container">
-            <div class="grid-cabecera">
-                <div class="header-item">Hora</div>
-                <div class="header-item">Lunes</div>
-                <div class="header-item">Martes</div>
-                <div class="header-item">Miércoles</div>
-                <div class="header-item">Jueves</div>
-                <div class="header-item">Viernes</div>
-            </div>
-            <!-- Las celdas y cursos se inyectan con JavaScript -->
-            <div id="grid-cursos" class="grid-cursos"></div>
+    <main class="horario-container">
+        <div class="grid-horario" id="grid-principal">
+            <!-- El contenido se inyecta con JavaScript -->
         </div>
     </main>
 
-    <!-- Librería para el efecto Drag and Drop -->
+    <!-- Librería para Arrastrar y Soltar -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <script src="app.js"></script>
+
+    <script>
+        // LOGICA Y DATOS DE LA APLICACIÓN
+        
+        // Aquí están tus horarios exactos según lo que me explicaste:
+        const cursos = [
+            // LUNES
+            { dia: 1, hora: "8:00 - 10:30", nombre: "Realidad Regional y Nacional", profe: "Dr. Hugo Luis", tipo: "general" },
+            { dia: 1, hora: "10:30 - 12:10", nombre: "Ética, Constit. y DD.HH. (Por confirmar)", profe: "Mg. Juan Luis", tipo: "general" },
+            
+            // MARTES
+            { dia: 2, hora: "8:00 - 12:10", nombre: "Análisis de Circuitos Eléctricos", profe: "Mg. Wilfredo Buleje", tipo: "grupo-a" },
+            { dia: 2, hora: "2:00 - 5:30", nombre: "Análisis de Circuitos Eléctricos", profe: "Mg. Wilfredo Buleje", tipo: "grupo-b" },
+            
+            // MIÉRCOLES
+            { dia: 3, hora: "8:00 - 2:00", nombre: "Programación (Teoría y Práctica)", profe: "Dr. Luis Yacupoma", tipo: "grupo-a" },
+            { dia: 3, hora: "2:50 - 4:30", nombre: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel Muñoz", tipo: "general" },
+            
+            // JUEVES
+            { dia: 4, hora: "8:00 - 9:40", nombre: "Dispositivos Electrónicos (Teoría)", profe: "Mg. Humberto Moreno", tipo: "general" },
+            { dia: 4, hora: "9:40 - 12:10", nombre: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", tipo: "grupo-a" },
+            { dia: 4, hora: "2:00 - 5:20", nombre: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", tipo: "grupo-b" },
+            
+            // VIERNES
+            { dia: 5, hora: "8:50 - 10:30", nombre: "Programación", profe: "Dr. Luis Yacupoma", tipo: "grupo-b" },
+            { dia: 5, hora: "10:30 - 12:10", nombre: "Pedagogía General", profe: "Por Asignar", tipo: "grupo-a" },
+            { dia: 5, hora: "1:10 - 2:00", nombre: "Pedagogía General", profe: "Por Asignar", tipo: "grupo-b" }
+        ];
+
+        const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+        const gridPrincipal = document.getElementById('grid-principal');
+        const selectGrupo = document.getElementById('grupo-select');
+
+        function renderizarHorario(grupoFiltro) {
+            gridPrincipal.innerHTML = ''; // Limpiar
+
+            diasSemana.forEach((nombreDia, index) => {
+                const diaNumero = index + 1;
+                
+                // Crear columna del día
+                const colDia = document.createElement('div');
+                colDia.className = 'dia-columna';
+                
+                // Cabecera del día
+                const headerDia = document.createElement('div');
+                headerDia.className = 'dia-header';
+                headerDia.innerText = nombreDia;
+                colDia.appendChild(headerDia);
+
+                // Zona donde van los cursos (arrastrable)
+                const zonaArrastrable = document.createElement('div');
+                zonaArrastrable.className = 'zona-arrastrable';
+                
+                // Filtrar cursos (Los Generales + Los del grupo seleccionado)
+                const cursosDia = cursos.filter(c => 
+                    c.dia === diaNumero && 
+                    (c.tipo === 'general' || c.tipo === `grupo-${grupoFiltro.toLowerCase()}`)
+                );
+
+                if (cursosDia.length === 0) {
+                    zonaArrastrable.innerHTML = '<div class="dia-vacio">Día libre o de autoestudio 📚</div>';
+                } else {
+                    cursosDia.forEach(curso => {
+                        const card = document.createElement('div');
+                        card.className = `curso-card tipo-${curso.tipo}`;
+                        card.innerHTML = `
+                            <div class="curso-hora">🕒 ${curso.hora}</div>
+                            <div class="curso-titulo">${curso.nombre}</div>
+                            <div class="curso-profe">👨‍🏫 ${curso.profe}</div>
+                        `;
+                        zonaArrastrable.appendChild(card);
+                    });
+                }
+
+                colDia.appendChild(zonaArrastrable);
+                gridPrincipal.appendChild(colDia);
+
+                // Activar arrastre en esta columna
+                new Sortable(zonaArrastrable, {
+                    group: 'compartido', 
+                    animation: 150,
+                    ghostClass: 'curso-fantasma'
+                });
+            });
+        }
+
+        // Inicializar con Grupo A
+        renderizarHorario('A');
+
+        // Escuchar el selector para cambiar dinámicamente
+        selectGrupo.addEventListener('change', (e) => {
+            renderizarHorario(e.target.value);
+        });
+
+        // Botón de recordatorio
+        document.getElementById('btn-recordatorio').addEventListener('click', () => {
+            alert("Has hecho clic en Añadir Recordatorio.\nEn el próximo paso conectaremos esto al Excel de Google (Google Sheets) para que guarde tareas online.");
+        });
+
+    </script>
 </body>
 </html>
