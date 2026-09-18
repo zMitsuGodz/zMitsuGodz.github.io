@@ -14,260 +14,180 @@
             --accent: #3b82f6;
             --grupo-a: #ec4899;
             --grupo-b: #8b5cf6;
+            --hecho: #10b981;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background-color: #f1f5f9; color: #334155; padding-bottom: 2rem; }
 
-        /* Cabecera y Navegación */
-        header {
-            background: var(--bg-main);
-            color: var(--text-light);
-            padding: 1rem 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            gap: 15px;
+        /* Modal de Bienvenida */
+        #login-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.9); z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
         }
+        .modal-content {
+            background: white; padding: 2rem; border-radius: 16px; text-align: center; max-width: 400px; width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .modal-content h3 { color: var(--bg-main); margin-bottom: 10px; font-size: 1.5rem; }
+        .modal-content input {
+            width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; outline: none;
+        }
+        .modal-content input:focus { border-color: var(--accent); }
+        .modal-content button {
+            background: var(--accent); color: white; border: none; padding: 12px 20px; width: 100%;
+            border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: 0.2s;
+        }
+        .modal-content button:hover { background: #2563eb; }
 
+        /* Cabecera y Navegación */
+        header { background: var(--bg-main); color: var(--text-light); padding: 1rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; gap: 15px; }
         h1 { font-size: 1.5rem; font-weight: 800; margin: 0; }
         h1 span { color: var(--accent); }
-
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            background: #1e293b;
-            padding: 5px;
-            border-radius: 50px;
-        }
-
-        .tab-btn {
-            background: transparent;
-            color: #94a3b8;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
+        .nav-tabs { display: flex; gap: 10px; background: #1e293b; padding: 5px; border-radius: 50px; }
+        .tab-btn { background: transparent; color: #94a3b8; border: none; padding: 0.5rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .tab-btn.active { background: var(--accent); color: white; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
-
         .controles { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        
+        #perfil-usuario { background: #334155; padding: 6px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; display: none; align-items: center; gap: 5px;}
 
-        .btn-toggle, .btn-print {
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: white;
-        }
-
+        .btn-toggle, .btn-print { border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; color: white; }
         .btn-toggle { background: linear-gradient(135deg, var(--grupo-a), #b91c1c); }
         .btn-toggle.modo-b { background: linear-gradient(135deg, var(--grupo-b), #4c1d95); }
         .btn-print { background: #334155; }
-        .btn-print:hover { background: #475569; }
 
-        /* Contenedores Principales */
         .seccion { display: none; animation: fadeIn 0.4s ease-in-out; }
         .seccion.activa { display: block; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .wrapper {
-            max-width: 1350px;
-            margin: 2rem auto;
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            overflow-x: auto;
-        }
+        .wrapper { max-width: 1350px; margin: 2rem auto; background: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); overflow-x: auto; }
 
-        /* ----- ESTILOS DEL HORARIO ----- */
-        .grid-tabla {
-            display: grid;
-            grid-template-columns: 100px repeat(5, 1fr);
-            grid-template-rows: 50px repeat(5, 75px) 45px repeat(5, 75px);
-            gap: 6px;
-            min-width: 950px;
-        }
-
-        .header-celda { background: var(--bg-panel); color: white; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 1rem; }
-        .hora-celda { background: #e2e8f0; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #475569; text-align: center; }
-        
-        .refrigerio-fila {
-            grid-column: 1 / -1;
-            grid-row: 7;
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-            color: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            letter-spacing: 5px;
-            font-size: 1.1rem;
-        }
-
+        /* Horario (Estilos simplificados) */
+        .grid-tabla { display: grid; grid-template-columns: 100px repeat(5, 1fr); grid-template-rows: 50px repeat(5, 75px) 45px repeat(5, 75px); gap: 6px; min-width: 950px; }
+        .header-celda { background: var(--bg-panel); color: white; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .hora-celda { background: #e2e8f0; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #475569; }
+        .refrigerio-fila { grid-column: 1 / -1; grid-row: 7; background: linear-gradient(90deg, #f59e0b, #d97706); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; letter-spacing: 5px; }
         .celda-vacia { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 8px; }
+        .curso-card { border-radius: 8px; padding: 8px 10px; color: white; display: flex; flex-direction: column; justify-content: center; }
+        .curso-nombre { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; }
+        .curso-profe, .curso-aula { font-size: 0.7rem; }
+        .curso-aula { background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; align-self: flex-start; margin-top: 4px; }
 
-        .curso-card {
-            border-radius: 8px;
-            padding: 8px 10px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: relative;
-        }
+        .color-realidad { background: linear-gradient(135deg, #0284c7, #0369a1); } 
+        .color-etica { background: linear-gradient(135deg, #059669, #047857); } 
+        .color-circuitos { background: linear-gradient(135deg, #ea580c, #c2410c); } 
+        .color-programacion { background: linear-gradient(135deg, #7c3aed, #6d28d9); } 
+        .color-comunicacion { background: linear-gradient(135deg, #db2777, #be185d); } 
+        .color-dispositivos { background: linear-gradient(135deg, #e11d48, #be123c); } 
+        .color-pedagogia { background: linear-gradient(135deg, #0d9488, #0f766e); } 
 
-        .curso-nombre { font-size: 0.8rem; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
-        .curso-profe { font-size: 0.7rem; opacity: 0.9; }
-        .curso-aula { font-size: 0.7rem; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; align-self: flex-start; margin-top: 4px; font-weight: 600;}
-
-        /* Colores por Curso */
-        .color-realidad { background: linear-gradient(135deg, #0284c7, #0369a1); } /* Azul */
-        .color-etica { background: linear-gradient(135deg, #059669, #047857); } /* Verde */
-        .color-circuitos { background: linear-gradient(135deg, #ea580c, #c2410c); } /* Naranja */
-        .color-programacion { background: linear-gradient(135deg, #7c3aed, #6d28d9); } /* Morado */
-        .color-comunicacion { background: linear-gradient(135deg, #db2777, #be185d); } /* Rosa */
-        .color-dispositivos { background: linear-gradient(135deg, #e11d48, #be123c); } /* Rojo */
-        .color-pedagogia { background: linear-gradient(135deg, #0d9488, #0f766e); } /* Teal */
-
-        /* ----- ESTILOS DE TAREAS ----- */
-        .filtro-semanas {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-        }
-
-        .btn-semana {
-            background: #e2e8f0;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            color: #475569;
-            cursor: pointer;
-            white-space: nowrap;
-        }
+        /* ----- SISTEMA DE TAREAS ----- */
+        .filtro-semanas { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
+        .btn-semana { background: #e2e8f0; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; color: #475569; cursor: pointer; white-space: nowrap; }
         .btn-semana.activa { background: var(--bg-main); color: white; }
 
-        .grid-tareas {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-        }
+        .grid-tareas { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
 
-        .tarea-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
+        .tarea-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: 0.3s; }
+        .tarea-card.completada { background: #f0fdf4; border-color: #86efac; }
+        .tarea-card.completada .tarea-curso { color: var(--hecho); text-decoration: line-through; opacity: 0.7; }
 
         .tarea-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .tarea-curso { font-weight: 800; font-size: 1.1rem; color: #1e293b; }
+        .tarea-curso { font-weight: 800; font-size: 1.1rem; color: #1e293b; transition: 0.3s; }
         
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
-        .badge-si { background: #fee2e2; color: #b91c1c; } /* Rojo para tarea pendiente */
-        .badge-no { background: #dcfce3; color: #15803d; } /* Verde para libre */
+        .badge-si { background: #fee2e2; color: #b91c1c; } 
+        .badge-no { background: #f1f5f9; color: #64748b; } 
 
-        .btn-detalles {
-            margin-top: auto;
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 8px;
-            border-radius: 6px;
-            font-weight: 600;
-            color: #334155;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-detalles:hover { background: #e2e8f0; }
-        .btn-detalles:disabled { opacity: 0.5; cursor: not-allowed; }
+        .tarea-acciones { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
+        
+        /* Checkbox Personalizado */
+        .check-hecho { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #475569; cursor: pointer; }
+        .check-hecho input { width: 18px; height: 18px; accent-color: var(--hecho); cursor: pointer; }
 
-        /* Impresión */
-        #titulo-impresion { display: none; text-align: center; margin-bottom: 20px; color: #0f172a; }
-        #titulo-impresion h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
-        @media print {
-            body { background: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            header, .nav-tabs, .filtro-semanas { display: none !important; } 
-            #seccion-horario { display: block !important; }
-            #seccion-tareas { display: none !important; }
-            #titulo-impresion { display: block !important; } 
-            .wrapper { box-shadow: none; margin: 0; padding: 0; width: 100%; }
-            @page { size: landscape; margin: 10mm; } 
-        }
+        .btn-alarma { background: #fef08a; border: 1px solid #fde047; padding: 6px 12px; border-radius: 6px; font-weight: 600; color: #854d0e; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .btn-alarma:hover { background: #fde047; }
+        .btn-alarma:disabled { opacity: 0.5; cursor: not-allowed; background: #f1f5f9; border-color: #cbd5e1; color: #94a3b8; }
+
+        @media print { body { background: white; margin: 0; } header, .nav-tabs, .filtro-semanas, #login-modal { display: none !important; } #seccion-horario { display: block !important; } #seccion-tareas { display: none !important; } .wrapper { box-shadow: none; margin: 0; width: 100%; } @page { size: landscape; margin: 10mm; } }
     </style>
 </head>
 <body>
+
+    <!-- MODAL DE IDENTIFICACIÓN -->
+    <div id="login-modal">
+        <div class="modal-content">
+            <h3>¡Bienvenido a Agendateune!</h3>
+            <p style="color: #475569; font-size: 0.9rem;">Ingresa tu nombre para guardar el progreso de tus tareas en la Sección E5.</p>
+            <input type="text" id="input-nombre" placeholder="Ej: Jean Rodriguez">
+            <button onclick="iniciarSesion()">Guardar mi perfil</button>
+        </div>
+    </div>
 
     <header>
         <h1>Agendateune <span>| E5</span></h1>
         
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="cambiarSeccion('horario')">📅 Horario</button>
-            <button class="tab-btn" onclick="cambiarSeccion('tareas')">📝 Tareas</button>
+            <button class="tab-btn" onclick="cambiarSeccion('tareas')">📝 Gestor de Tareas</button>
         </div>
 
         <div class="controles" id="controles-horario">
+            <div id="perfil-usuario">👤 <span id="nombre-usuario-display"></span></div>
             <button id="btn-toggle" class="btn-toggle modo-b">
                 <span>Mostrando: GRUPO B</span> 🔄
             </button>
-            <button class="btn-print" onclick="window.print()">🖨️ Descargar Horario</button>
+            <button class="btn-print" onclick="window.print()">🖨️ Descargar</button>
         </div>
     </header>
 
     <!-- SECCIÓN 1: HORARIO -->
     <main class="wrapper seccion activa" id="seccion-horario">
-        <div id="titulo-impresion">
-            <h2>Horario de Clases - Sección E5</h2>
-            <p id="subtitulo-grupo">GRUPO B</p>
-        </div>
-        
         <div class="grid-tabla" id="grid-horario"></div>
     </main>
 
     <!-- SECCIÓN 2: TAREAS -->
     <main class="wrapper seccion" id="seccion-tareas">
-        <h2 style="margin-bottom: 15px; color: #0f172a;">Consulta de Tareas</h2>
+        <h2 style="margin-bottom: 15px; color: #0f172a;">Tu Progreso Personal</h2>
         
-        <div class="filtro-semanas" id="contenedor-semanas">
-            <!-- Botones de semana inyectados por JS -->
-        </div>
-
-        <div class="grid-tareas" id="grid-tareas">
-            <!-- Tarjetas de tareas inyectadas por JS -->
-        </div>
+        <div class="filtro-semanas" id="contenedor-semanas"></div>
+        <div class="grid-tareas" id="grid-tareas"></div>
     </main>
 
     <script>
         let grupoActual = 'B'; 
+        let nombreAlumno = '';
+        // Cargar progreso del alumno desde localStorage
+        let progresoTareas = JSON.parse(localStorage.getItem('progresoE5')) || {};
+
+        // Verificación de Inicio de Sesión
+        window.onload = () => {
+            const guardado = localStorage.getItem('nombreAlumnoE5');
+            if(guardado) {
+                nombreAlumno = guardado;
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('perfil-usuario').style.display = 'flex';
+                document.getElementById('nombre-usuario-display').innerText = nombreAlumno;
+            }
+        };
+
+        function iniciarSesion() {
+            const input = document.getElementById('input-nombre').value.trim();
+            if(input) {
+                nombreAlumno = input;
+                localStorage.setItem('nombreAlumnoE5', nombreAlumno);
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('perfil-usuario').style.display = 'flex';
+                document.getElementById('nombre-usuario-display').innerText = nombreAlumno;
+            } else {
+                alert('Por favor, ingresa tu nombre.');
+            }
+        }
+
+        // Datos del Horario
         const horas = ["8:00 - 8:50", "8:50 - 9:40", "9:40 - 10:30", "10:30 - 11:20", "11:20 - 12:10", "REFRIGERIO", "1:10 - 2:00", "2:00 - 2:50", "2:50 - 3:40", "3:40 - 4:30", "4:30 - 5:20"];
         const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-
-        // Base de Datos de Cursos (Ahora con propiedad 'colorClass' por curso)
         const cursos = [
             { dia: 1, inicio: 1, fin: 3, nom: "Realidad Regional y Nac.", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general", color: "color-realidad" },
             { dia: 1, inicio: 4, fin: 5, nom: "Ética, Const. y DD.HH.", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general", color: "color-etica" },
@@ -284,59 +204,46 @@
             { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Mg. Martin Rodriguez", aula: "Aula 108", tipo: "grupo-b", color: "color-pedagogia" }
         ];
 
-        // Base de Datos de Tareas (Ejemplo Estático para mostrar la interfaz)
+        // Datos de Tareas (Simulados por ahora)
         const listaCursosNombres = ["Realidad Regional", "Ética y DD.HH.", "Análisis de Circuitos", "Programación", "Comunicación III", "Dispositivos Electrónicos", "Pedagogía General"];
         let tareasData = [];
-        // Generar datos falsos para las semanas 1 al 7
         for(let sem = 1; sem <= 7; sem++) {
             listaCursosNombres.forEach(curso => {
-                // Aleatoriamente asignar si hay tarea o no para el ejemplo
-                const hayTarea = Math.random() > 0.6; 
+                const hayTarea = Math.random() > 0.5; 
                 tareasData.push({
+                    id: `sem${sem}-${curso.replace(/\s/g, '')}`, // ID único
                     semana: sem,
                     curso: curso,
                     hayTarea: hayTarea,
-                    detalle: hayTarea ? "Resolver guía de ejercicios en el campus virtual." : ""
+                    detalle: hayTarea ? `Subir trabajo de ${curso} al campus.` : "Sin tareas esta semana."
                 });
             });
         }
 
-        /* --- LÓGICA DEL HORARIO --- */
+        // Lógica Horario
         function renderizarHorario() {
             const grid = document.getElementById('grid-horario');
             grid.innerHTML = ''; 
             grid.innerHTML += `<div class="header-celda">HORA</div>`;
             dias.forEach(dia => grid.innerHTML += `<div class="header-celda">${dia}</div>`);
-
             let filaGridCSS = 2; 
             for (let b = 1; b <= 11; b++) {
-                if (b === 6) {
-                    grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO (12:10 - 1:10)</div>`;
-                    filaGridCSS++; continue;
-                }
+                if (b === 6) { grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO (12:10 - 1:10)</div>`; filaGridCSS++; continue; }
                 grid.innerHTML += `<div class="hora-celda" style="grid-column: 1; grid-row: ${filaGridCSS};">${horas[b-1]}</div>`;
-                for (let d = 1; d <= 5; d++) {
-                    grid.innerHTML += `<div class="celda-vacia" style="grid-column: ${d+1}; grid-row: ${filaGridCSS};"></div>`;
-                }
+                for (let d = 1; d <= 5; d++) { grid.innerHTML += `<div class="celda-vacia" style="grid-column: ${d+1}; grid-row: ${filaGridCSS};"></div>`; }
                 filaGridCSS++;
             }
-
-            const cursosFiltrados = cursos.filter(c => c.tipo === 'general' || c.tipo === `grupo-${grupoActual.toLowerCase()}`);
-            cursosFiltrados.forEach(curso => {
+            cursos.filter(c => c.tipo === 'general' || c.tipo === `grupo-${grupoActual.toLowerCase()}`).forEach(curso => {
                 const div = document.createElement('div');
                 div.className = `curso-card ${curso.color}`;
                 div.style.gridColumn = curso.dia + 1;
                 div.style.gridRow = `${curso.inicio + 1} / ${curso.fin + 2}`;
-                div.innerHTML = `
-                    <div class="curso-nombre">${curso.nom}</div>
-                    <div class="curso-profe">👨‍🏫 ${curso.profe}</div>
-                    <div class="curso-aula">📍 ${curso.aula}</div>
-                `;
+                div.innerHTML = `<div class="curso-nombre">${curso.nom}</div><div class="curso-profe">👨‍🏫 ${curso.profe}</div><div class="curso-aula">📍 ${curso.aula}</div>`;
                 grid.appendChild(div);
             });
         }
 
-        /* --- LÓGICA DE TAREAS --- */
+        // Lógica Tareas y Progreso
         function renderizarSemanas() {
             const contenedor = document.getElementById('contenedor-semanas');
             contenedor.innerHTML = '';
@@ -360,49 +267,104 @@
             const tareasSemana = tareasData.filter(t => t.semana === semanaId);
             
             tareasSemana.forEach(t => {
+                const estaCompletada = progresoTareas[t.id] === true;
                 const card = document.createElement('div');
-                card.className = 'tarea-card';
+                card.className = `tarea-card ${estaCompletada ? 'completada' : ''}`;
+                card.id = `card-${t.id}`;
+                
                 card.innerHTML = `
                     <div class="tarea-header">
                         <span class="tarea-curso">${t.curso}</span>
                         <span class="badge ${t.hayTarea ? 'badge-si' : 'badge-no'}">
-                            ${t.hayTarea ? '🔴 Hay Tarea' : '🟢 Libre'}
+                            ${t.hayTarea ? '🔴 Pendiente' : '🟢 Libre'}
                         </span>
                     </div>
-                    <button class="btn-detalles" ${!t.hayTarea ? 'disabled' : ''} onclick="alert('Detalles: ${t.detalle}')">
-                        ${t.hayTarea ? '📄 Ver Detalles' : 'Sin pendientes'}
-                    </button>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">${t.detalle}</p>
+                    
+                    <div class="tarea-acciones">
+                        <label class="check-hecho">
+                            <input type="checkbox" onchange="marcarHecho('${t.id}')" ${estaCompletada ? 'checked' : ''} ${!t.hayTarea ? 'disabled' : ''}> 
+                            Terminado
+                        </label>
+                        <button class="btn-alarma" onclick="crearAlarma('${t.curso}', 'Semana ${t.semana}')" ${!t.hayTarea || estaCompletada ? 'disabled' : ''}>
+                            ⏰ Recordatorio
+                        </button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        /* --- CONTROLES GENERALES --- */
+        function marcarHecho(tareaId) {
+            const checkbox = document.querySelector(`#card-${tareaId} input[type="checkbox"]`);
+            const card = document.getElementById(`card-${tareaId}`);
+            const botonAlarma = card.querySelector('.btn-alarma');
+            
+            if(checkbox.checked) {
+                progresoTareas[tareaId] = true;
+                card.classList.add('completada');
+                botonAlarma.disabled = true;
+            } else {
+                progresoTareas[tareaId] = false;
+                card.classList.remove('completada');
+                botonAlarma.disabled = false;
+            }
+            
+            // Guardar localmente
+            localStorage.setItem('progresoE5', JSON.stringify(progresoTareas));
+            
+            // Alerta simulando el envío a la base de datos
+            console.log(`Guardando en Excel: Alumno ${nombreAlumno} marcó la tarea ${tareaId} como ${checkbox.checked}`);
+        }
+
+        // Generador de Alarmas (Archivo .ics para Calendario)
+        function crearAlarma(curso, semana) {
+            // Genera una fecha para mañana a las 8 AM como ejemplo de recordatorio
+            const manana = new Date();
+            manana.setDate(manana.getDate() + 1);
+            const fechaStr = manana.toISOString().replace(/-|:|\.\d+/g, '').substring(0, 15) + 'Z';
+
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:📝 Tarea Pendiente: ${curso}
+DESCRIPTION:Recordatorio para la tarea de la ${semana}. Alumno: ${nombreAlumno}
+DTSTART:${fechaStr}
+DTEND:${fechaStr}
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio de Tarea
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', `Recordatorio_${curso.replace(/\s/g, '')}.ics`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Controles UI
         function cambiarSeccion(seccion) {
             document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`seccion-${seccion}`).classList.add('activa');
             event.target.classList.add('active');
-
-            // Ocultar botones de imprimir/cambiar grupo si estamos en tareas
             document.getElementById('controles-horario').style.display = seccion === 'horario' ? 'flex' : 'none';
         }
 
         document.getElementById('btn-toggle').addEventListener('click', (e) => {
             const btnToggle = e.currentTarget;
-            if (grupoActual === 'B') {
-                grupoActual = 'A';
-                btnToggle.innerHTML = `<span>Mostrando: GRUPO A</span> 🔄`;
-                btnToggle.className = 'btn-toggle'; 
-            } else {
-                grupoActual = 'B';
-                btnToggle.innerHTML = `<span>Mostrando: GRUPO B</span> 🔄`;
-                btnToggle.className = 'btn-toggle modo-b'; 
-            }
+            grupoActual = grupoActual === 'B' ? 'A' : 'B';
+            btnToggle.innerHTML = `<span>Mostrando: GRUPO ${grupoActual}</span> 🔄`;
+            btnToggle.className = grupoActual === 'A' ? 'btn-toggle' : 'btn-toggle modo-b';
             renderizarHorario(); 
         });
 
-        // Inicializar
         renderizarHorario();
         renderizarSemanas();
     </script>
