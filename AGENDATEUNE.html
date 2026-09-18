@@ -20,58 +20,56 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background-color: #f1f5f9; color: #334155; padding-bottom: 2rem; }
 
-        /* Cabecera y Botones */
+        /* Cabecera y Botones Mejorados */
         header {
             background: var(--bg-main);
             color: var(--text-light);
-            padding: 1.5rem 2rem;
+            padding: 1.2rem 2rem;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
+            gap: 15px;
         }
 
-        h1 { font-size: 1.8rem; font-weight: 800; }
+        h1 { font-size: 1.8rem; font-weight: 800; margin: 0; }
         h1 span { color: var(--accent); }
 
-        .controles { display: flex; gap: 15px; }
+        .controles { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
         .btn-toggle, .btn-print {
             border: none;
-            padding: 0.8rem 1.5rem;
+            padding: 0.7rem 1.4rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: white;
+            white-space: nowrap;
         }
 
-        /* Botón Grupo A */
         .btn-toggle { background: linear-gradient(135deg, var(--grupo-a), #b91c1c); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); }
-        .btn-toggle:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
-        
-        /* Botón Grupo B */
+        .btn-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
         .btn-toggle.modo-b { background: linear-gradient(135deg, var(--grupo-b), #4c1d95); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
-        .btn-toggle.modo-b:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6); }
+        .btn-toggle.modo-b:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6); }
 
-        /* Botón Imprimir */
         .btn-print { background: #334155; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
-        .btn-print:hover { background: #475569; transform: translateY(-3px); }
+        .btn-print:hover { background: #475569; transform: translateY(-2px); }
 
-        /* Título Exclusivo para PDF */
-        #titulo-impresion {
-            display: none;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #0f172a;
-        }
+        #titulo-impresion { display: none; text-align: center; margin-bottom: 20px; color: #0f172a; }
         #titulo-impresion h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
         #titulo-impresion p { font-size: 1.1rem; color: #475569; font-weight: 600; }
 
@@ -95,7 +93,6 @@
             position: relative;
         }
 
-        /* Celdas Estáticas */
         .header-celda { background: var(--bg-panel); color: white; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 1rem; }
         .hora-celda { background: #e2e8f0; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #475569; text-align: center; }
         
@@ -114,13 +111,8 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .celda-vacia {
-            background: #f8fafc;
-            border: 1px solid #f1f5f9;
-            border-radius: 8px;
-        }
+        .celda-vacia { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 8px; }
 
-        /* Tarjetas de Clases */
         .curso-card {
             border-radius: 8px;
             padding: 8px 12px;
@@ -142,20 +134,15 @@
         .bg-grupo-a { background: linear-gradient(135deg, var(--grupo-a), #be185d); }
         .bg-grupo-b { background: linear-gradient(135deg, var(--grupo-b), #6d28d9); }
 
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.8) translateY(10px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* CONFIGURACIÓN ESTRICTA DE IMPRESIÓN (PDF) */
         @media print {
             body { background: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            header { display: none !important; } /* Oculta la barra superior negra */
-            #titulo-impresion { display: block !important; } /* Muestra el título formal */
+            header { display: none !important; } 
+            #titulo-impresion { display: block !important; } 
             .horario-wrapper { box-shadow: none; margin: 0; padding: 0; width: 100%; max-width: 100%; }
             .grid-tabla { min-width: 100%; gap: 4px; }
             .curso-card { box-shadow: none; border: 1px solid rgba(0,0,0,0.1); page-break-inside: avoid; }
-            /* Configura la página en horizontal y elimina márgenes extraños */
             @page { size: landscape; margin: 10mm; } 
         }
     </style>
@@ -192,7 +179,6 @@
         const btnToggle = document.getElementById('btn-toggle');
         const subtituloGrupo = document.getElementById('subtitulo-grupo');
 
-        // BLOQUES DE HORA EXACTOS (1 al 13)
         const horas = [
             "8:00 - 8:50", "8:50 - 9:40", "9:40 - 10:30", "10:30 - 11:20", "11:20 - 12:10", 
             "REFRIGERIO", 
@@ -200,50 +186,45 @@
         ];
         const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 
-        // BASE DE DATOS EXACTA CON CORRECCIONES APLICADAS
+        // CORRECCIONES APLICADAS ESTRICTAMENTE
         const cursos = [
             // LUNES
             { dia: 1, inicio: 1, fin: 3, nom: "Realidad Regional y Nacional", profe: "Dr. Hugo Luis", aula: "Aula 107", tipo: "general" },
             { dia: 1, inicio: 4, fin: 5, nom: "Ética, Constit. y DD.HH. <br><small>(Horario por confirmar)</small>", profe: "Mg. Juan Luis", aula: "Aula 107", tipo: "general" },
             
             // MARTES
-            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" }, // 8:00 a 12:10
-            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" }, // 2:00 a 5:20
+            { dia: 2, inicio: 1, fin: 5, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-a" }, // A: 8:00 - 12:10
+            { dia: 2, inicio: 8, fin: 11, nom: "Análisis de Circuitos", profe: "Mg. Wilfredo Buleje", aula: "Lab. 102", tipo: "grupo-b" }, // B: 2:00 - 5:20
             
-            // MIÉRCOLES
-            { dia: 3, inicio: 1, fin: 2, nom: "Programación (Teoría)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "general" },
-            { dia: 3, inicio: 3, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { dia: 3, inicio: 7, fin: 7, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
-            { dia: 3, inicio: 8, fin: 10, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" }, // 2:00 a 4:30 para A y B
+            // MIÉRCOLES (B no tiene mañana. Si seleccionas B, la mañana queda en blanco)
+            { dia: 3, inicio: 1, fin: 2, nom: "Programación (Teoría)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
+            { dia: 3, inicio: 3, fin: 5, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-a" },
+            { dia: 3, inicio: 8, fin: 10, nom: "Lenguaje y Comunicación III", profe: "Mg. Flor Angel", aula: "Aula 107", tipo: "general" }, // A y B: 2:00 - 4:30
             
             // JUEVES
-            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (Teoría)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" }, // 8:00 a 9:40
-            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" }, // 9:40 a 12:10
-            { dia: 4, inicio: 7, fin: 10, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" }, // 1:10 a 4:30
+            { dia: 4, inicio: 1, fin: 2, nom: "Dispositivos Electrónicos (Teoría)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "general" }, // A y B: 8:00 - 9:40
+            { dia: 4, inicio: 3, fin: 5, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-a" }, // A: 9:40 - 12:10
+            { dia: 4, inicio: 7, fin: 10, nom: "Dispositivos Electrónicos (Práctica)", profe: "Mg. Humberto Moreno", aula: "Lab. 204", tipo: "grupo-b" }, // B: 1:10 - 4:30
             
             // VIERNES
-            { dia: 5, inicio: 1, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" }, // 8:00 a 11:20
-            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-a" }, // 10:30 a 12:10
-            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-b" } // 1:10 a 2:00
+            { dia: 5, inicio: 1, fin: 4, nom: "Programación (Práctica)", profe: "Dr. Luis Yacupoma", aula: "Lab. 207", tipo: "grupo-b" }, // B: 8:00 - 11:20
+            { dia: 5, inicio: 4, fin: 5, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-a" }, // A: 10:30 - 12:10
+            { dia: 5, inicio: 7, fin: 7, nom: "Pedagogía General", profe: "Por Asignar", aula: "Aula 108", tipo: "grupo-b" } // B: 1:10 - 2:00
         ];
 
         function renderizarHorario() {
             grid.innerHTML = ''; 
-
             grid.innerHTML += `<div class="header-celda">HORA</div>`;
             dias.forEach(dia => grid.innerHTML += `<div class="header-celda">${dia}</div>`);
 
             let filaGridCSS = 2; 
-            
             for (let b = 1; b <= 13; b++) {
                 if (b === 6) {
                     grid.innerHTML += `<div class="refrigerio-fila">REFRIGERIO (12:10 - 1:10)</div>`;
                     filaGridCSS++;
                     continue;
                 }
-
                 grid.innerHTML += `<div class="hora-celda" style="grid-column: 1; grid-row: ${filaGridCSS};">${horas[b-1]}</div>`;
-                
                 for (let d = 1; d <= 5; d++) {
                     grid.innerHTML += `<div class="celda-vacia" style="grid-column: ${d+1}; grid-row: ${filaGridCSS};"></div>`;
                 }
@@ -253,8 +234,9 @@
             const cursosFiltrados = cursos.filter(c => c.tipo === 'general' || c.tipo === `grupo-${grupoActual.toLowerCase()}`);
             
             cursosFiltrados.forEach(curso => {
-                const rowStart = curso.inicio < 6 ? curso.inicio + 1 : curso.inicio + 2; 
-                const rowEnd = curso.fin < 6 ? curso.fin + 2 : curso.fin + 3; 
+                // FORMULA CORREGIDA: No más desfases en la tarde.
+                const rowStart = curso.inicio + 1; 
+                const rowEnd = curso.fin + 2; 
 
                 const div = document.createElement('div');
                 div.className = `curso-card bg-${curso.tipo}`;
@@ -270,25 +252,23 @@
             });
         }
 
-        // CONTROLADOR DE CAMBIO DE GRUPO
         btnToggle.addEventListener('click', () => {
             if (grupoActual === 'B') {
                 grupoActual = 'A';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO A</span> 🔄`;
                 btnToggle.className = 'btn-toggle'; 
                 subtituloGrupo.innerText = "GRUPO A";
-                subtituloGrupo.style.color = "#ec4899"; // Rosa en PDF
+                subtituloGrupo.style.color = "#ec4899"; 
             } else {
                 grupoActual = 'B';
                 btnToggle.innerHTML = `<span>Mostrando: GRUPO B</span> 🔄`;
                 btnToggle.className = 'btn-toggle modo-b'; 
                 subtituloGrupo.innerText = "GRUPO B";
-                subtituloGrupo.style.color = "#8b5cf6"; // Morado en PDF
+                subtituloGrupo.style.color = "#8b5cf6"; 
             }
             renderizarHorario(); 
         });
 
-        // INICIAR
         renderizarHorario();
     </script>
 </body>
