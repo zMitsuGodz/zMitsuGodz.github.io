@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncE5 - Horario Interactivo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>SyncE5</h1>
+        <div class="controles">
+            <label for="grupo-select">Tu Grupo de Laboratorio:</label>
+            <select id="grupo-select">
+                <option value="A">Grupo A</option>
+                <option value="B">Grupo B</option>
+            </select>
+            <button id="btn-recordatorio" class="btn-alarma">+ Añadir Tarea</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="horario-container">
+            <div class="grid-cabecera">
+                <div class="header-item">Hora</div>
+                <div class="header-item">Lunes</div>
+                <div class="header-item">Martes</div>
+                <div class="header-item">Miércoles</div>
+                <div class="header-item">Jueves</div>
+                <div class="header-item">Viernes</div>
+            </div>
+            <!-- Las celdas y cursos se inyectan con JavaScript -->
+            <div id="grid-cursos" class="grid-cursos"></div>
+        </div>
+    </main>
+
+    <!-- Librería para el efecto Drag and Drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
