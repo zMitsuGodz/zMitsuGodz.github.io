@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Control de Actividades y Rendición de Cuentas</title>
+  
+  <!-- html2pdf para generar el PDF directamente -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --green: #15803d;
+      --green-light: #dcfce7;
+      --red: #b91c1c;
+      --red-light: #fee2e2;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Barra Superior de Actividades */
+    .top-bar {
+      background: #1e293b;
+      color: white;
+      padding: 14px 18px;
+      border-radius: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .top-bar select {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-green { background: var(--green); color: white; }
+    .btn-green:hover { background: #166534; }
+    .btn-red { background: var(--red); color: white; }
+    .btn-red:hover { background: #991b1b; }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #ffffff;
+      color: white;
+    }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.1); }
+
+    /* Tarjetas */
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Datos del Evento */
+    .grid-header {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-group label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .field-group input {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .field-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Resumen Financiero */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .summary-card {
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 2px solid transparent;
+    }
+
+    .summary-card.income { border-color: var(--green); background: #f0fdf4; }
+    .summary-card.expense { border-color: var(--red); background: #fef2f2; }
+    .summary-card.balance { border-color: #3b82f6; background: #eff6ff; }
+
+    .summary-card span {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .summary-card.income span { color: var(--green); }
+    .summary-card.expense span { color: var(--red); }
+    .summary-card.balance span { color: #1d4ed8; }
+
+    .summary-card h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    /* Formularios de Agregar */
+    .entry-form {
+      display: grid;
+      grid-template-columns: 2fr 1fr auto auto;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .entry-form {
+        grid-template-columns: 1fr 1fr;
+      }
+      .entry-form .btn-action {
+        grid-column: span 1;
+      }
+    }
+
+    .entry-form input {
+      padding: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    /* Tablas de Gastos / Ingresos */
+    .table-container {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+    }
+
+    th {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    td.amount {
+      font-weight: 700;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    td.actions {
+      text-align: right;
+      width: 90px;
+      white-space: nowrap;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+
+    .btn-icon:hover { background: #e2e8f0; }
+
+    /* Modal de Edición */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-box h3 { margin-bottom: 16px; }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* Área solo para PDF / Impresión */
+    #area-pdf {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .firmas-container {
+      display: none;
+      margin-top: 50px;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      padding-top: 30px;
+    }
+
+    .firma-box {
+      border-top: 1.5px solid #000;
+      width: 200px;
+      padding-top: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Botones de acción flotantes / barra fija inferior en mobile */
+    .actions-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Barra Superior: Selector de Actividades -->
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <label for="actividad-select" style="font-size: 0.9rem; font-weight: 600;">Actividad:</label>
+        <select id="actividad-select" onchange="cambiarActividad(this.value)"></select>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-outline" onclick="crearNuevaActividad()">➕ Nueva</button>
+        <button class="btn btn-red" onclick="eliminarActividadActual()" title="Eliminar esta actividad">🗑️</button>
+      </div>
+    </div>
+
+    <!-- Botones de Acción (PDF / Imprimir) -->
+    <div class="actions-bar">
+      <button class="btn btn-green" onclick="descargarPDF()">📥 Descargar en PDF</button>
+      <button class="btn btn-primary" onclick="imprimirVentana()">🖨️ Imprimir</button>
+    </div>
+
+    <!-- Contenido del Reporte (Esto es lo que captura el PDF) -->
+    <div id="area-pdf">
+      
+      <!-- Datos Generales -->
+      <div class="card" style="box-shadow: none; border: 1px solid var(--border);">
+        <div class="grid-header">
+          <div class="field-group">
+            <label>Nombre de la Actividad</label>
+            <input type="text" id="act-nombre" placeholder="Ej. Pollada Pro-Fondos" oninput="actualizarMetadatos()" />
+          </div>
+          <div class="field-group">
+            <label>Fecha</label>
+            <input type="date" id="act-fecha" oninput="actualizarMetadatos()" />
+          </div>
+          <div class="field-group">
+            <label>Responsable / Tesorero(a)</label>
+            <input type="text" id="act-responsable" placeholder="Ej. Doris Méndez" oninput="actualizarMetadatos()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen de Totales -->
+      <div class="summary-grid">
+        <div class="summary-card income">
+          <span>Total Ingresos</span>
+          <h2 id="total-ingresos">S/ 0.00</h2>
+        </div>
+        <div class="summary-card expense">
+          <span>Total Gastos</span>
+          <h2 id="total-gastos">S/ 0.00</h2>
+        </div>
+        <div class="summary-card balance">
+          <span id="balance-label">Ganancia Neta (Saldo)</span>
+          <h2 id="total-saldo">S/ 0.00</h2>
+        </div>
+      </div>
+
+      <!-- Sección de Ingresos -->
+      <div class="card" style="box-shadow: none; border: 1px solid var(--border);">
+        <h3 style="color: var(--green); display: flex; justify-content: space-between;">
+          <span>🟢 Ingresos (Ventas / Cuotas)</span>
+        </h3>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th style="text-align: right;">Monto (S/)</th>
+                <th class="actions no-pdf">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-ingresos"></tbody>
+          </table>
+        </div>
+
+        <!-- Formulario para agregar ingreso rápido -->
+        <div class="entry-form no-pdf" style="margin-top: 14px;">
+          <input type="text" id="nuevo-ingreso-desc" placeholder="Ej. Venta de platos, ticket..." />
+          <input type="number" id="nuevo-ingreso-monto" placeholder="Monto S/" step="0.10" />
+          <button class="btn btn-green btn-action" onclick="agregarElemento('ingreso')" style="grid-column: span 2;">+ Agregar Ingreso</button>
+        </div>
+      </div>
+
+      <!-- Sección de Gastos -->
+      <div class="card" style="box-shadow: none; border: 1px solid var(--border);">
+        <h3 style="color: var(--red); display: flex; justify-content: space-between;">
+          <span>🔴 Gastos (Compras / Pagos)</span>
+        </h3>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th style="text-align: right;">Monto (S/)</th>
+                <th class="actions no-pdf">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-gastos"></tbody>
+          </table>
+        </div>
+
+        <!-- Formulario para agregar gasto rápido -->
+        <div class="entry-form no-pdf" style="margin-top: 14px;">
+          <input type="text" id="nuevo-gasto-desc" placeholder="Ej. Pollo, Gas, Descartables..." />
+          <input type="number" id="nuevo-gasto-monto" placeholder="Monto S/" step="0.10" />
+          <button class="btn btn-red btn-action" onclick="agregarElemento('gasto')" style="grid-column: span 2;">+ Agregar Gasto</button>
+        </div>
+      </div>
+
+      <!-- Líneas de Firmas en el PDF -->
+      <div class="firmas-container" id="bloque-firmas">
+        <div class="firma-box">
+          <p id="firma-nombre-resp">Responsable</p>
+          <p style="font-weight: 400; color: #555;">Firma y DNI</p>
+        </div>
+        <div class="firma-box">
+          <p>Fiscal / Tesorería</p>
+          <p style="font-weight: 400; color: #555;">V° B° Asociación</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal para Editar Cualquier Registro -->
+  <div class="modal-overlay" id="modal-edicion">
+    <div class="modal-box">
+      <h3>Editar Concepto</h3>
+      <input type="hidden" id="edit-id" />
+      <div class="field-group" style="margin-bottom: 12px;">
+        <label>Tipo</label>
+        <select id="edit-tipo" style="padding: 10px; border-radius: 8px; border: 1.5px solid var(--border);">
+          <option value="gasto">Gasto (Salida)</option>
+          <option value="ingreso">Ingreso (Entrada)</option>
+        </select>
+      </div>
+      <div class="field-group" style="margin-bottom: 12px;">
+        <label>Descripción</label>
+        <input type="text" id="edit-desc" />
+      </div>
+      <div class="field-group" style="margin-bottom: 12px;">
+        <label>Monto en Soles (S/)</label>
+        <input type="number" id="edit-monto" step="0.10" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" style="color: #475569; border-color: #cbd5e1;" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarEdicion()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "cuentas_actividades_app_v1";
+
+    let state = {
+      actividadActualId: "act_1",
+      actividades: [
+        {
+          id: "act_1",
+          nombre: "Primera Actividad",
+          fecha: "2026-09-12",
+          responsable: "Doris",
+          items: [
+            { id: "i1", tipo: "ingreso", desc: "Ingreso General", monto: 726.00 },
+            { id: "g1", tipo: "gasto", desc: "Aceite", monto: 18.90 },
+            { id: "g2", tipo: "gasto", desc: "Palitos", monto: 10.00 },
+            { id: "g3", tipo: "gasto", desc: "Ayudín", monto: 2.00 },
+            { id: "g4", tipo: "gasto", desc: "Limón", monto: 2.00 },
+            { id: "g5", tipo: "gasto", desc: "Pañito y ace", monto: 2.00 },
+            { id: "g6", tipo: "gasto", desc: "Hoja higo", monto: 1.50 },
+            { id: "g7", tipo: "gasto", desc: "Descartables", monto: 37.00 },
+            { id: "g8", tipo: "gasto", desc: "Gas", monto: 50.00 },
+            { id: "g9", tipo: "gasto", desc: "Zapallo y Naranja", monto: 13.00 },
+            { id: "g10", tipo: "gasto", desc: "Gasto diverso", monto: 147.00 },
+            { id: "g11", tipo: "gasto", desc: "Copias Doris", monto: 0.40 },
+            { id: "g12", tipo: "gasto", desc: "Cocinera", monto: 140.00 }
+          ]
+        }
+      ]
+    };
+
+    function cargarDatos() {
+      const guardado = localStorage.getItem(STORAGE_KEY);
+      if (guardado) {
+        try { state = JSON.parse(guardado); } catch(e) { console.error(e); }
+      }
+      poblarSelectorActividades();
+      renderizarTodo();
+    }
+
+    function guardarEnStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function obtenerActividadActual() {
+      return state.actividades.find(a => a.id === state.actividadActualId) || state.actividades[0];
+    }
+
+    function poblarSelectorActividades() {
+      const select = document.getElementById("actividad-select");
+      select.innerHTML = "";
+      state.actividades.forEach(act => {
+        const opt = document.createElement("option");
+        opt.value = act.id;
+        opt.textContent = act.nombre || "Sin nombre";
+        if (act.id === state.actividadActualId) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function cambiarActividad(id) {
+      state.actividadActualId = id;
+      guardarEnStorage();
+      renderizarTodo();
+    }
+
+    function crearNuevaActividad() {
+      const nuevoNombre = prompt("Nombre de la nueva actividad (ej. Picaronada, Bingo):");
+      if (!nuevoNombre) return;
+      const nuevaId = "act_" + Date.now();
+      const nueva = {
+        id: nuevaId,
+        nombre: nuevoNombre,
+        fecha: new Date().toISOString().split("T")[0],
+        responsable: "",
+        items: []
+      };
+      state.actividades.push(nueva);
+      state.actividadActualId = nuevaId;
+      guardarEnStorage();
+      poblarSelectorActividades();
+      renderizarTodo();
+    }
+
+    function eliminarActividadActual() {
+      if (state.actividades.length <= 1) {
+        alert("Debes tener al menos una actividad registrada.");
+        return;
+      }
+      const actual = obtenerActividadActual();
+      if (confirm(`¿Estás seguro de eliminar la actividad "${actual.nombre}"? Se perderán sus cuentas.`)) {
+        state.actividades = state.actividades.filter(a => a.id !== actual.id);
+        state.actividadActualId = state.actividades[0].id;
+        guardarEnStorage();
+        poblarSelectorActividades();
+        renderizarTodo();
+      }
+    }
+
+    function actualizarMetadatos() {
+      const act = obtenerActividadActual();
+      act.nombre = document.getElementById("act-nombre").value;
+      act.fecha = document.getElementById("act-fecha").value;
+      act.responsable = document.getElementById("act-responsable").value;
+      guardarEnStorage();
+      poblarSelectorActividades();
+      document.getElementById("firma-nombre-resp").textContent = act.responsable || "Responsable";
+    }
+
+    function agregarElemento(tipo) {
+      const act = obtenerActividadActual();
+      const descInput = document.getElementById(tipo === 'ingreso' ? 'nuevo-ingreso-desc' : 'nuevo-gasto-desc');
+      const montoInput = document.getElementById(tipo === 'ingreso' ? 'nuevo-ingreso-monto' : 'nuevo-gasto-monto');
+
+      const desc = descInput.value.trim();
+      const monto = parseFloat(montoInput.value);
+
+      if (!desc) { alert("Por favor escribe una descripción."); return; }
+      if (isNaN(monto) || monto <= 0) { alert("Ingresa un monto válido mayor a 0."); return; }
+
+      act.items.push({
+        id: "item_" + Date.now(),
+        tipo: tipo,
+        desc: desc,
+        monto: monto
+      });
+
+      descInput.value = "";
+      montoInput.value = "";
+      guardarEnStorage();
+      renderizarTodo();
+    }
+
+    function eliminarItem(id) {
+      const act = obtenerActividadActual();
+      act.items = act.items.filter(item => item.id !== id);
+      guardarEnStorage();
+      renderizarTodo();
+    }
+
+    function abrirModalEdicion(id) {
+      const act = obtenerActividadActual();
+      const item = act.items.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById("edit-id").value = item.id;
+      document.getElementById("edit-tipo").value = item.tipo;
+      document.getElementById("edit-desc").value = item.desc;
+      document.getElementById("edit-monto").value = item.monto;
+      document.getElementById("modal-edicion").classList.add("active");
+    }
+
+    function cerrarModal() {
+      document.getElementById("modal-edicion").classList.remove("active");
+    }
+
+    function guardarEdicion() {
+      const act = obtenerActividadActual();
+      const id = document.getElementById("edit-id").value;
+      const item = act.items.find(i => i.id === id);
+      if (!item) return;
+
+      const desc = document.getElementById("edit-desc").value.trim();
+      const monto = parseFloat(document.getElementById("edit-monto").value);
+      const tipo = document.getElementById("edit-tipo").value;
+
+      if (!desc || isNaN(monto) || monto <= 0) {
+        alert("Completa todos los campos con valores válidos.");
+        return;
+      }
+
+      item.desc = desc;
+      item.monto = monto;
+      item.tipo = tipo;
+
+      guardarEnStorage();
+      cerrarModal();
+      renderizarTodo();
+    }
+
+    function formatearSoles(num) {
+      return "S/ " + Number(num).toFixed(2);
+    }
+
+    function renderizarTodo() {
+      const act = obtenerActividadActual();
+
+      document.getElementById("act-nombre").value = act.nombre || "";
+      document.getElementById("act-fecha").value = act.fecha || "";
+      document.getElementById("act-responsable").value = act.responsable || "";
+      document.getElementById("firma-nombre-resp").textContent = act.responsable || "Responsable";
+
+      const tablaIngresos = document.getElementById("tabla-ingresos");
+      const tablaGastos = document.getElementById("tabla-gastos");
+      tablaIngresos.innerHTML = "";
+      tablaGastos.innerHTML = "";
+
+      let totalIng = 0;
+      let totalGas = 0;
+
+      act.items.forEach(item => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${item.desc}</td>
+          <td class="amount">${formatearSoles(item.monto)}</td>
+          <td class="actions no-pdf">
+            <button class="btn-icon" onclick="abrirModalEdicion('${item.id}')" title="Editar">✏️</button>
+            <button class="btn-icon" onclick="eliminarItem('${item.id}')" title="Eliminar" style="color: var(--red);">🗑️</button>
+          </td>
+        `;
+
+        if (item.tipo === "ingreso") {
+          totalIng += item.monto;
+          tablaIngresos.appendChild(fila);
+        } else {
+          totalGas += item.monto;
+          tablaGastos.appendChild(fila);
+        }
+      });
+
+      const saldo = totalIng - totalGas;
+
+      document.getElementById("total-ingresos").textContent = formatearSoles(totalIng);
+      document.getElementById("total-gastos").textContent = formatearSoles(totalGas);
+      
+      const elSaldo = document.getElementById("total-saldo");
+      elSaldo.textContent = formatearSoles(saldo);
+      elSaldo.style.color = saldo >= 0 ? "var(--green)" : "var(--red)";
+      document.getElementById("balance-label").textContent = saldo >= 0 ? "Ganancia Neta (Saldo)" : "Déficit / Falta";
+    }
+
+    /* Descargar en PDF directo con html2pdf.js */
+    function descargarPDF() {
+      const elemento = document.getElementById("area-pdf");
+      const act = obtenerActividadActual();
+      const nombreArchivo = (act.nombre ? act.nombre.replace(/\s+/g, '_') : 'Actividad') + "_Rendicion.pdf";
+
+      // Mostrar temporalmente las firmas
+      document.getElementById("bloque-firmas").style.display = "flex";
+      document.querySelectorAll(".no-pdf").forEach(el => el.style.display = "none");
+
+      const opciones = {
+        margin: [10, 10, 10, 10],
+        filename: nombreArchivo,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opciones).from(elemento).save().then(() => {
+        // Restaurar vista interactiva
+        document.getElementById("bloque-firmas").style.display = "none";
+        document.querySelectorAll(".no-pdf").forEach(el => el.style.display = "");
+      });
+    }
+
+    /* Impresión nativa */
+    function imprimirVentana() {
+      document.getElementById("bloque-firmas").style.display = "flex";
+      document.querySelectorAll(".no-pdf").forEach(el => el.style.display = "none");
+      window.print();
+      setTimeout(() => {
+        document.getElementById("bloque-firmas").style.display = "none";
+        document.querySelectorAll(".no-pdf").forEach(el => el.style.display = "");
+      }, 500);
+    }
+
+    // Permitir Enter en los inputs para agregar rápido
+    document.getElementById("nuevo-ingreso-monto").addEventListener("keyup", e => { if (e.key === "Enter") agregarElemento("ingreso"); });
+    document.getElementById("nuevo-gasto-monto").addEventListener("keyup", e => { if (e.key === "Enter") agregarElemento("gasto"); });
+
+    // Inicializar
+    cargarDatos();
+  </script>
+</body>
+</html>
