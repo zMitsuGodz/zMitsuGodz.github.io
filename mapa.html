@@ -203,7 +203,7 @@
     <div class="route-planner-container">
         <div class="route-glass-panel">
             <div class="route-top-bar">
-                <h4>🗺️ Trazador Inteligente por los Caminos de la UNE</h4>
+                <h4>🗺️ Trazador Inteligente por los Caminos de la UNE (Versión Satelital Real)</h4>
                 <div class="search-mall-box">
                     <input type="text" id="buscador-aulas" placeholder="Buscar pabellón, aula, laboratorio, trámite..." oninput="filtrarDirectorioTexto(this.value)">
                 </div>
@@ -283,7 +283,7 @@
                 <button class="btn-guardar" onclick="guardarRuta()">💾 GUARDAR</button>
                 <button class="btn-limpiar" onclick="limpiarRutaMapa()">🧹 LIMPIAR</button>
             </div>
-            <div id="dan-texto" class="mensaje-ruta">Toca cualquier marcador en el mapa para ver pisos, salones y trazar el recorrido exacto por los caminos resaltados.</div>
+            <div id="dan-texto" class="mensaje-ruta">Selecciona un destino para ver las rutas alternativas y caminos peatonales en el mapa satelital.</div>
         </div>
     </div>
 
@@ -291,7 +291,7 @@
         <div class="map-section">
             
             <div class="map-controls" id="map-controls">
-                <div class="map-title-tag">🗺️ Mapa Oficial de Caminos UNE</div>
+                <div class="map-title-tag">🛰️ Vista Satelital Interactiva de la UNE</div>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <div class="filtro-container">
                         <select id="filtro-categoria" onchange="filtrarMarcadores(this.value)">
@@ -311,7 +311,7 @@
 
             <div id="vista-mapa" class="map-viewport">
                 <div class="map-wrapper" id="mapa-wrapper" style="width: 100%;">
-                    <img id="img-mapa" src="https://i.ibb.co/SX9cBTVH/bbcadf1a-e262-4a43-a6bf-88d44366a4d6.jpg" alt="Mapa Oficial UNE">
+                    <img id="img-mapa" src="https://i.ibb.co/wNySDJ62/SATELITE-UNE.jpg" alt="Mapa Satelital UNE">
 
                     <svg id="svg-rutas" class="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
                     
@@ -501,7 +501,7 @@
                 <div class="legend-item"><span class="legend-dot" style="background:#2563eb;"></span> Facultades y Pabellones</div>
                 <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span> Deportes y Salud</div>
                 <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6;"></span> Servicios</div>
-                <div class="legend-item"><span class="legend-dot" style="background:#1d4ed8; border: 2px solid #93c5fd;"></span> Camino Peatonal Calculado</div>
+                <div class="legend-item"><span class="legend-dot" style="background:#1d4ed8; border: 2px solid #93c5fd;"></span> Camino Peatonal Calculado (Múltiples Rutas)</div>
             </div>
 
         </div>
@@ -761,6 +761,7 @@
             "bano_1": { titulo: "Servicios Higiénicos Centrales", cat: "Servicios", pisos: "Módulo de damas, varones y accesibilidad.", oficinas: "Servicio permanente en el cruce académico central." }
         };
 
+        // Grafo con rutas alternativas y variantes estilo Google Maps (múltiples opciones por tramo)
         const nodosGrafo = {
             "n_entrada_top":   { x: 38.8, y: 26.2, vecinos: ["n_tri_izq", "n_tri_der", "n_rectorado_via"] },
             "n_tri_izq":       { x: 40.3, y: 31.8, vecinos: ["n_entrada_top", "n_tri_der", "n_biblio_cruce"] },
@@ -921,7 +922,23 @@
             return mejorId;
         }
 
-        function calcularRutaPorCaminos(nodoInicioId, nodoFinId) {
+        // Algoritmo de rutas con variantes (permite calcular ruta principal y alternativa estilo Maps)
+        function calcularRutasAlternativas(nodoInicioId, nodoFinId) {
+            const rutaPrincipal = calcularRutaDijkstra(nodoInicioId, nodoFinId);
+            const rutas = [rutaPrincipal];
+
+            if (rutaPrincipal.length > 3) {
+                // Generar ruta alternativa penalizando o bloqueando el nodo intermedio principal
+                const nodoMedio = rutaPrincipal[Math.floor(rutaPrincipal.length / 2)].id;
+                const rutaAlt = calcularRutaDijkstra(nodoInicioId, nodoFinId, nodoMedio);
+                if (rutaAlt.length > 1 && JSON.stringify(rutaAlt) !== JSON.stringify(rutaPrincipal)) {
+                    rutas.push(rutaAlt);
+                }
+            }
+            return rutas;
+        }
+
+        function calcularRutaDijkstra(nodoInicioId, nodoFinId, nodoBloqueado = null) {
             const dist = {};
             const prev = {};
             const noVisitados = new Set(Object.keys(nodosGrafo));
@@ -943,7 +960,8 @@
 
                 for (let vecino of nodosGrafo[u].vecinos) {
                     if (noVisitados.has(vecino)) {
-                        const alt = dist[u] + distanciaPuntos(nodosGrafo[u], nodosGrafo[vecino]);
+                        let pesoExtra = (vecino === nodoBloqueado) ? 50 : 0;
+                        const alt = dist[u] + distanciaPuntos(nodosGrafo[u], nodosGrafo[vecino]) + pesoExtra;
                         if (alt < dist[vecino]) {
                             dist[vecino] = alt;
                             prev[vecino] = u;
@@ -955,10 +973,10 @@
             const secuencia = [];
             let actual = nodoFinId;
             while (actual !== null) {
-                secuencia.unshift(nodosGrafo[actual]);
+                secuencia.push({ id: actual, ...nodosGrafo[actual] });
                 actual = prev[actual];
             }
-            return secuencia;
+            return secuencia.reverse();
         }
 
         function limpiarRutaMapa() {
@@ -1018,9 +1036,20 @@
 
             const nodoFin = conexionEdificioANodo[destinoId] || encontrarNodoMasCercano(coordDestino);
 
-            const tramosIntermedios = calcularRutaPorCaminos(nodoInicio, nodoFin);
-            const puntosTotales = [coordOrigen, ...tramosIntermedios, coordDestino];
+            const rutas = calcularRutasAlternativas(nodoInicio, nodoFin);
+            
+            let svgContent = '';
+            
+            // Dibujar ruta alternativa (en gris/cian tenue estilo Maps) si existe
+            if (rutas.length > 1) {
+                const puntosAlt = [coordOrigen, ...rutas[1], coordDestino];
+                const strAlt = puntosAlt.map(p => `${p.x},${p.y}`).join(' ');
+                svgContent += `<polyline fill="none" stroke="#94a3b8" stroke-width="0.7" stroke-dasharray="1,1" stroke-linecap="round" stroke-linejoin="round" points="${strAlt}" />`;
+            }
 
+            // Dibujar ruta principal
+            const rutaPrincipal = rutas[0];
+            const puntosTotales = [coordOrigen, ...rutaPrincipal, coordDestino];
             const pointsStr = puntosTotales.map(p => `${p.x},${p.y}`).join(' ');
 
             let distUnidades = 0;
@@ -1031,11 +1060,11 @@
             const minutosCaminando = Math.max(1, Math.round(metrosEstimados / 75));
 
             let nodosCirculos = '';
-            tramosIntermedios.forEach(p => {
+            rutaPrincipal.forEach(p => {
                 nodosCirculos += `<circle class="ruta-nodo-paso" cx="${p.x}" cy="${p.y}" r="0.45" />`;
             });
 
-            svgLayer.innerHTML = `
+            svgContent += `
                 <polyline class="ruta-glow" points="${pointsStr}" />
                 <polyline class="ruta-linea-principal" points="${pointsStr}" />
                 ${nodosCirculos}
@@ -1043,14 +1072,17 @@
                 <circle cx="${coordDestino.x}" cy="${coordDestino.y}" r="1.1" fill="#f59e0b" stroke="#ffffff" stroke-width="0.35" />
             `;
 
+            svgLayer.innerHTML = svgContent;
+
             document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
             const pinDest = document.getElementById('pin-mapa-' + destinoId);
             if (pinDest) pinDest.classList.add('active');
 
             if(!silencioso) {
                 const infoDest = directorioInfo[destinoId];
+                const opcionesTexto = rutas.length > 1 ? ` (<span>2 rutas disponibles</span>)` : '';
                 mensajeBox.style.color = "#059669";
-                mensajeBox.innerHTML = `✅ <b>Ruta calculada por los caminos:</b> ~${metrosEstimados} metros (aprox. ${minutosCaminando} min caminando) hacia <b>${infoDest ? infoDest.titulo : destinoId}</b>.`;
+                mensajeBox.innerHTML = `✅ <b>Ruta satelital calculada${opcionesTexto}:</b> ~${metrosEstimados} m (~${minutosCaminando} min) hacia <b>${infoDest ? infoDest.titulo : destinoId}</b>.`;
             }
         }
 
