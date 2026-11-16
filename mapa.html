@@ -27,8 +27,8 @@
         @keyframes radar-ping { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        /* Animación para que la línea de la ruta parezca moverse */
-        @keyframes dash-flow { to { stroke-dashoffset: -20; } } 
+        @keyframes gato-giro { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes dash-flow { to { stroke-dashoffset: -10; } }
 
         body { 
             background: linear-gradient(-45deg, #020617, #1e1b4b, #0f172a, #172554);
@@ -37,12 +37,14 @@
             color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden;
         }
 
-        header { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); padding: 14px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); color: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        header { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); padding: 14px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); color: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.12); flex-wrap: wrap; gap: 10px; }
         .header-left { display: flex; align-items: center; gap: 15px; }
         .logo-placeholder { width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 900; font-size: 16px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
-        .header-actions { display: flex; gap: 10px; }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-reporte-header { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 15px; border-radius: 999px; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
         .btn-reporte-header:hover { background: var(--blue); border-color: var(--blue); }
+        .btn-falta-facultad { background: linear-gradient(135deg, #10b981, #059669); border: none; color: white; padding: 8px 15px; border-radius: 999px; font-size: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+        .btn-falta-facultad:hover { transform: translateY(-1px); }
 
         .route-planner-container { max-width: 1440px; margin: 20px auto 12px; padding: 0 15px; width: 100%; animation: popIn 0.4s ease-out forwards; }
         .route-glass-panel { background: var(--surface); backdrop-filter: blur(25px); border-radius: 20px; padding: 18px 22px; box-shadow: 0 15px 35px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.5); display: flex; flex-direction: column; gap: 12px; }
@@ -77,19 +79,14 @@
         .map-viewport { width: 100%; height: 65vh; min-height: 480px; overflow: auto; border-radius: 18px; background: #e5e7eb; position: relative; border: 3px solid #cbd5e1; cursor: grab; }
         .map-viewport:active { cursor: grabbing; }
         .map-wrapper { position: relative; width: 100%; min-width: 920px; transition: width 0.35s ease; transform-origin: top left; }
-        .map-wrapper img { width: 100%; height: auto; display: block; pointer-events: none; user-select: none; opacity: 0; transition: opacity 0.5s; }
-        .map-wrapper img.loaded { opacity: 1; }
+        .map-wrapper img#img-mapa { width: 100%; height: auto; display: block; pointer-events: none; user-select: none; opacity: 0; transition: opacity 0.5s; }
+        .map-wrapper img#img-mapa.loaded { opacity: 1; }
 
-        /* Loader para la imagen de Github */
         .loader-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 10px; color: #64748b; font-weight: 800; font-size: 14px; }
         .spinner { width: 40px; height: 40px; border: 4px solid #cbd5e1; border-top: 4px solid var(--blue); border-radius: 50%; animation: spin 1s linear infinite; }
 
-        /* TRAZADO MAPA DEL TESORO LINEAL (Línea directa punteada gruesa) */
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
-        .ruta-lineal-base { fill: none; stroke: rgba(37, 99, 235, 0.4); stroke-width: 1.5; stroke-linecap: round; }
-        .ruta-lineal-puntos { fill: none; stroke: #2563eb; stroke-width: 0.8; stroke-linecap: round; stroke-dasharray: 2.5, 2.5; animation: dash-flow 1.5s linear infinite reverse; }
 
-        /* PINES TAMAÑO FIJO */
         .map-pin { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; z-index: 10; cursor: pointer; transition: z-index 0.2s; }
         .pin-marker { width: 28px; height: 28px; background: white; border-radius: 50%; padding: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); position: relative; border: 2px solid var(--blue); display: flex; align-items: center; justify-content: center; font-size: 13px; }
         .pin-marker::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); border-width: 6px 5px 0; border-style: solid; border-color: var(--blue) transparent transparent transparent; }
@@ -104,32 +101,33 @@
         .map-pin[data-categoria="facultad"] .pin-marker::after { border-color: #2563eb transparent transparent transparent; }
         .map-pin[data-categoria="bienestar"] .pin-marker { border-color: #10b981; }
         .map-pin[data-categoria="bienestar"] .pin-marker::after { border-color: #10b981 transparent transparent transparent; }
+        .map-pin[data-categoria="servicios"] .pin-marker { border-color: #8b5cf6; }
+        .map-pin[data-categoria="servicios"] .pin-marker::after { border-color: #8b5cf6 transparent transparent transparent; }
 
         .map-pin.active { z-index: 30; }
         .map-pin.active .pin-marker { transform: scale(1.25); border-color: var(--blue); }
         .map-pin.active .pin-label { background: var(--blue); color: white; }
 
         /* AVATAR GPS Y MASCOTAS UNE */
-        .gps-avatar { position: absolute; transform: translate(-50%, -50%); z-index: 40; display: none; flex-direction: column; align-items: center; pointer-events: none; transition: top 0.1s linear, left 0.1s linear; }
+        .gps-avatar { position: absolute; transform: translate(-50%, -50%); z-index: 40; display: none; flex-direction: column; align-items: center; pointer-events: none; transition: top 0.15s linear, left 0.15s linear; }
         .gps-dot { width: 22px; height: 22px; background: var(--blue); border: 3px solid white; border-radius: 50%; box-shadow: 0 0 15px rgba(59, 130, 246, 0.9); position: relative; }
         .gps-dot::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: rgba(59, 130, 246, 0.4); border-radius: 50%; animation: radar-ping 2s infinite; }
         .gps-label { background: var(--blue); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10.5px; font-weight: 900; margin-bottom: 5px; white-space: nowrap; border: 1px solid white; }
         
-        /* Contenedor para avatares ilustrados (Gato o Burrito) */
-        .avatar-imagen { width: 50px; height: 50px; background-size: contain; background-repeat: no-repeat; background-position: center; display: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); transition: transform 0.2s ease; }
-        .avatar-imagen.mirar-izquierda { transform: scaleX(-1); }
+        .avatar-mascota-img { width: 52px; height: 52px; object-fit: contain; display: none; mix-blend-mode: multiply; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.45)); border-radius: 50%; }
+        .avatar-mascota-burro { width: 68px; height: 52px; object-fit: contain; display: none; mix-blend-mode: multiply; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.45)); }
+        .girando-rapido { animation: gato-giro 0.22s linear infinite !important; }
+        .mirar-izquierda { transform: scaleX(-1); }
 
-        /* PANEL INFO, FOTOS COMUNITARIAS Y CURIOSIDADES 360 */
+        /* VISOR 360 */
         .viewer-container { width: 100%; height: 65vh; min-height: 480px; border-radius: 18px; overflow: hidden; position: relative; display: none; background: #000; border: 3px solid white; }
         #panorama { width: 100%; height: 100%; }
         .btn-volver-mapa { position: absolute; top: 18px; left: 18px; z-index: 999; background: rgba(239, 68, 68, 0.92); color: white; border: 2px solid white; padding: 10px 18px; border-radius: 12px; font-weight: 900; cursor: pointer; }
+        .btn-subir-foto { position: absolute; top: 18px; right: 18px; z-index: 999; background: rgba(59, 130, 246, 0.92); color: white; border: 2px solid white; padding: 10px 18px; border-radius: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; }
         
-        .curiosidad-panel { position: absolute; bottom: 30px; right: 30px; z-index: 999; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px 20px; max-width: 320px; color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; display: none; }
+        .curiosidad-panel { position: absolute; bottom: 30px; right: 30px; z-index: 999; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px 20px; max-width: 330px; color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; display: none; }
         .curiosidad-panel h5 { color: var(--accent); font-size: 14px; margin-bottom: 5px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
         .curiosidad-panel p { font-size: 13px; line-height: 1.4; color: #e2e8f0; font-weight: 600; margin: 0; }
-        
-        /* Nuevo botón para subir fotos 360 comunitarias */
-        .btn-subir-foto { position: absolute; top: 18px; right: 18px; z-index: 999; background: rgba(59, 130, 246, 0.92); color: white; border: 2px solid white; padding: 10px 18px; border-radius: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; }
 
         /* SIDEBAR */
         .sidebar { flex: 1; min-width: 330px; background: var(--surface); border-radius: 24px; padding: 18px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; height: 75vh; min-height: 480px; border: 1px solid rgba(255,255,255,0.4); }
@@ -143,7 +141,7 @@
         .btn-sub { font-size: 11px; font-weight: 700; color: #64748b; }
         .img-thumb { width: 40px; height: 40px; background: #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; pointer-events: none; }
 
-        /* INFO DRAWER (FICHA DEL LUGAR) */
+        /* INFO DRAWER */
         .info-drawer { position: absolute; bottom: 25px; left: 25px; right: 25px; max-width: 540px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px); color: white; border-radius: 20px; padding: 20px; z-index: 50; box-shadow: 0 20px 45px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.18); display: none; animation: popIn 0.25s ease-out forwards; }
         .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
         .drawer-badge { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; padding: 4px 9px; border-radius: 6px; background: var(--blue); color: white; display: inline-block; margin-bottom: 4px; }
@@ -158,30 +156,43 @@
         .drawer-btn-ruta { background: var(--green); color: white; }
         .drawer-btn-360 { background: var(--accent); color: var(--primary); }
 
-        /* MODAL REPORTES Y SUBIDA DE FOTOS */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 9999; display: none; align-items: center; justify-content: center; }
-        .modal-box { background: white; border-radius: 20px; padding: 25px; width: 90%; max-width: 450px; animation: popIn 0.3s; }
-        .modal-box h3 { color: var(--primary); margin-bottom: 15px; font-weight: 900; font-size: 16px; }
+        /* MODALES */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 15px; }
+        .modal-box { background: white; border-radius: 20px; padding: 25px; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; animation: popIn 0.3s; }
+        .modal-box h3 { color: var(--primary); margin-bottom: 12px; font-weight: 900; font-size: 17px; }
         .modal-box label { font-size: 12px; font-weight: 800; color: #64748b; display: block; margin-bottom: 5px; }
-        .modal-box select, .modal-box input, .modal-box textarea { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; margin-bottom: 15px; font-family: inherit; font-size: 14px; font-weight: 600; outline: none; }
-        .modal-box input[type="file"] { padding: 8px; border: 1px dashed #cbd5e1; background: #f8fafc; }
-        .modal-box textarea { resize: vertical; min-height: 80px; }
+        .modal-box select, .modal-box input, .modal-box textarea { width: 100%; padding: 11px 12px; border: 2px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-family: inherit; font-size: 13.5px; font-weight: 600; outline: none; }
+        .modal-box textarea { resize: vertical; min-height: 75px; }
         .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
         .btn-cancelar { padding: 10px 15px; background: #e2e8f0; color: #475569; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; }
         .btn-enviar { padding: 10px 15px; background: var(--blue); color: white; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; }
-        .nota-revision { font-size: 11px; color: #f59e0b; font-weight: 700; margin-bottom: 10px; display: block; }
+        .nota-revision { font-size: 11px; color: #d97706; font-weight: 700; margin-bottom: 12px; display: block; }
 
-        /* CONTROLES DE AVATAR Y PRUEBA */
+        /* PANEL INFERIOR */
         .tools-container { max-width: 1440px; margin: 0 auto 35px; padding: 0 15px; width: 100%; }
         .tools-card { background: var(--surface); border-radius: 24px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; }
         .tools-header-fila { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-        .avatar-selector { display: flex; align-items: center; gap: 8px; background: white; padding: 5px 10px; border-radius: 12px; border: 2px solid #e2e8f0; }
-        .avatar-selector label { font-size: 12px; font-weight: 800; color: var(--primary); margin: 0; }
-        .avatar-selector select { border: none; font-weight: 700; outline: none; background: transparent; cursor: pointer; }
+        .avatar-selector { display: flex; align-items: center; gap: 8px; background: white; padding: 6px 12px; border-radius: 12px; border: 2px solid #cbd5e1; }
+        .avatar-selector label { font-size: 12px; font-weight: 900; color: var(--primary); margin: 0; }
+        .avatar-selector select { border: none; font-weight: 800; outline: none; background: transparent; cursor: pointer; color: var(--blue); }
+        
+        .gps-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; }
+        .btn-action { padding: 11px 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; color: white; font-size: 12.5px; flex: 1; }
+        .bg-green { background: linear-gradient(135deg, #10b981, #059669); }
+        .bg-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .bg-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .joystick-container { background: rgba(255, 255, 255, 0.85); padding: 16px; border-radius: 18px; text-align: center; border: 1px solid #e2e8f0; }
+        .d-pad { display: grid; grid-template-columns: 54px 54px 54px; gap: 6px; justify-content: center; margin-top: 10px; }
+        .d-btn { width: 54px; height: 54px; background: white; border-radius: 14px; font-size: 20px; cursor: pointer; border: 2px solid #cbd5e1; }
+        .d-up { grid-column: 2; } .d-left { grid-column: 1; } .d-right { grid-column: 3; } .d-down { grid-column: 2; }
+
+        #resultado-gps { font-family: monospace; font-size: 12.5px; background: #1e293b; color: #10b981; padding: 15px; border-radius: 10px; display: none; position: relative; margin-top:10px; }
+        .btn-copiar { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
         
         @media (max-width: 992px) {
             .main-wrapper { flex-direction: column; }
             .map-viewport { height: 55vh; }
+            .gps-grid { grid-template-columns: 1fr; }
             .ruta-box { flex-direction: column; align-items: stretch; }
             .sidebar { height: auto; min-height: auto; max-height: 360px; }
             .info-drawer { left: 12px; right: 12px; bottom: 12px; padding: 15px; }
@@ -195,13 +206,15 @@
             <div class="logo-placeholder">UNE</div>
             <div>
                 <strong style="font-size: 16px;">Universidad Nacional de Educación</strong><br>
-                <span style="font-size: 11.5px; color:#fbbf24; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Directorio y Navegación Peatonal</span>
+                <span style="font-size: 11.5px; color:#fbbf24; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Directorio y Navegación Peatonal 360°</span>
             </div>
         </div>
         <div class="header-actions">
-            <!-- BOTÓN ABRIR MODAL REPORTES -->
+            <button class="btn-falta-facultad" onclick="abrirModalFaltaLugar()">
+                <i class="fas fa-map-marker-alt"></i> ¿Falta tu facultad o lugar?
+            </button>
             <button class="btn-reporte-header" onclick="abrirModalReporte()">
-                <i class="fas fa-bullhorn"></i> Aportar / Reportar
+                <i class="fas fa-bullhorn"></i> Reportar / Dato Curioso
             </button>
         </div>
     </header>
@@ -209,7 +222,7 @@
     <div class="route-planner-container">
         <div class="route-glass-panel">
             <div class="route-top-bar">
-                <h4>🗺️ Trazador Inteligente de Rutas</h4>
+                <h4>🗺️ Trazador Directo de Rutas</h4>
                 <div class="search-mall-box">
                     <input type="text" id="buscador-aulas" placeholder="Buscar pabellón, aula, servicio..." oninput="filtrarDirectorioTexto(this.value)">
                 </div>
@@ -221,14 +234,18 @@
                         <option value="gps" style="font-weight: 900; color: #10b981;">📍 MI UBICACIÓN ACTUAL (GPS)</option>
                         <option value="entrada" selected>Entrada Principal</option>
                         <option value="garita">Garita de Seguridad</option>
+                        <option value="pab_administrativo">Pabellón Administrativo</option>
                         <option value="biblioteca">Biblioteca Central</option>
                         <option value="huaranguito">Plaza Huaranguito</option>
                         <option value="auditorio_prin">Auditorio Principal</option>
                         <option value="fac_tecnologia">Facultad de Tecnología</option>
+                        <option value="decanato_tecno">Decanato de Tecnología</option>
                         <option value="fac_telematica">F. Telemática y Telecom.</option>
+                        <option value="auditorio_telecom">Auditorio de Telecomunicaciones</option>
                         <option value="electricidad">Programa de Electricidad</option>
                         <option value="fac_ciencias">Facultad de Ciencias</option>
                         <option value="fac_inicial">Facultad de Educación Inicial</option>
+                        <option value="auditorio_pedagogia">Auditorio de Pedagogía</option>
                         <option value="colegio_aplicacion">Colegio de Aplicación</option>
                         <option value="sociales">F. Ciencias Sociales y Hum.</option>
                         <option value="idiomas">Facultad de Idiomas</option>
@@ -237,6 +254,7 @@
                         <option value="fac_vestido">Tecnología del Vestido</option>
                         <option value="talcomachay">Mirador Talcomachay</option>
                         <option value="estadio">Estadio UNE</option>
+                        <option value="estacionamiento">Playa de Estacionamiento</option>
                         <option value="gimnasio">Gimnasio UNE</option>
                         <option value="losa">Losa Deportiva Central</option>
                         <option value="piscina">Piscina Universitaria</option>
@@ -251,6 +269,7 @@
                         <option value="recta_ventas">Recta de Ventas</option>
                         <option value="comedor_a">Comedor Univ. Acceso A</option>
                         <option value="comedor_b">Comedor Univ. Acceso B</option>
+                        <option value="oti">Oficinas de OTI</option>
                         <option value="of_servicios">Oficina de Servicios Generales</option>
                         <option value="papeleria_1">Papelería 1</option>
                         <option value="bano_1">Baño 1 (Cruce Central)</option>
@@ -264,14 +283,18 @@
                         <option value="" disabled selected>¿A qué lugar vas?</option>
                         <option value="entrada">Entrada Principal</option>
                         <option value="garita">Garita de Seguridad</option>
+                        <option value="pab_administrativo">Pabellón Administrativo</option>
                         <option value="biblioteca">Biblioteca Central</option>
                         <option value="huaranguito">Plaza Huaranguito</option>
                         <option value="auditorio_prin">Auditorio Principal</option>
                         <option value="fac_tecnologia">Facultad de Tecnología</option>
+                        <option value="decanato_tecno">Decanato de Tecnología</option>
                         <option value="fac_telematica">F. Telemática y Telecom.</option>
+                        <option value="auditorio_telecom">Auditorio de Telecomunicaciones</option>
                         <option value="electricidad">Programa de Electricidad</option>
                         <option value="fac_ciencias">Facultad de Ciencias</option>
                         <option value="fac_inicial">Facultad de Educación Inicial</option>
+                        <option value="auditorio_pedagogia">Auditorio de Pedagogía</option>
                         <option value="colegio_aplicacion">Colegio de Aplicación</option>
                         <option value="sociales">F. Ciencias Sociales y Hum.</option>
                         <option value="idiomas">Facultad de Idiomas</option>
@@ -280,6 +303,7 @@
                         <option value="fac_vestido">Tecnología del Vestido</option>
                         <option value="talcomachay">Mirador Talcomachay</option>
                         <option value="estadio">Estadio UNE</option>
+                        <option value="estacionamiento">Playa de Estacionamiento</option>
                         <option value="gimnasio">Gimnasio UNE</option>
                         <option value="losa">Losa Deportiva Central</option>
                         <option value="piscina">Piscina Universitaria</option>
@@ -294,6 +318,7 @@
                         <option value="recta_ventas">Recta de Ventas</option>
                         <option value="comedor_a">Comedor Univ. Acceso A</option>
                         <option value="comedor_b">Comedor Univ. Acceso B</option>
+                        <option value="oti">Oficinas de OTI</option>
                         <option value="of_servicios">Oficina de Servicios Generales</option>
                         <option value="papeleria_1">Papelería 1</option>
                         <option value="bano_1">Baño 1 (Cruce Central)</option>
@@ -303,10 +328,9 @@
                 </div>
                 <button class="btn-trazar" onclick="trazarRutaVisual()">🚀 CALCULAR CAMINO</button>
                 <button class="btn-limpiar" onclick="limpiarRutaMapa()">🧹 LIMPIAR</button>
-                <!-- BOTÓN DE PRUEBA -->
-                <button class="btn-prueba" id="btn-prueba-nav" onclick="iniciarModoPrueba()" style="display:none;"><i class="fas fa-play"></i> Iniciar Prueba</button>
+                <button class="btn-prueba" id="btn-prueba-nav" onclick="iniciarModoPrueba()"><i class="fas fa-play"></i> Modo Prueba (Entrada)</button>
             </div>
-            <div id="dan-texto" class="mensaje-ruta">Selecciona un destino o toca un lugar en el mapa para trazar la ruta lineal directa.</div>
+            <div id="dan-texto" class="mensaje-ruta">Selecciona un destino para trazar la línea directa con guiones.</div>
         </div>
     </div>
 
@@ -331,31 +355,26 @@
                 </div>
             </div>
 
-            <!-- CONTENEDOR DE MAPA Y PINES CON TAMAÑO FIJO -->
             <div id="vista-mapa" class="map-viewport">
-                <!-- Loader que se muestra mientras carga el mapa de Github -->
                 <div id="map-loader" class="loader-container">
                     <div class="spinner"></div>
-                    <span>Cargando imagen satelital 4K...</span>
+                    <span>Cargando mapa satelital...</span>
                 </div>
 
                 <div class="map-wrapper" id="mapa-wrapper" style="width: 100%;">
-                    <!-- IMAGEN SATELITAL CARGA DIFERIDA -->
-                    <img id="img-mapa" crossorigin="anonymous" src="https://i.ibb.co/wNySDJ62/SATELITE-UNE.jpg" alt="Mapa Satelital UNE" onload="document.getElementById('map-loader').style.display='none'; this.classList.add('loaded');">
+                    <img id="img-mapa" src="https://i.ibb.co/wNySDJ62/SATELITE-UNE.jpg" alt="Mapa Satelital UNE" onload="document.getElementById('map-loader').style.display='none'; this.classList.add('loaded');">
                     
                     <svg id="svg-rutas" class="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
 
-                    <!-- AVATAR GPS CON OPCIÓN DE MASCOTA -->
+                    <!-- AVATAR GPS CON BURRITO Y GATITO DE IBB -->
                     <div id="avatar-estudiante" class="gps-avatar">
                         <div class="gps-label" id="gps-text-label">📍 Tú estás aquí</div>
-                        <!-- Punto básico azul -->
-                        <div class="gps-dot" id="gps-dot-basic"></div>
-                        <!-- Imágenes (Gato / Burrito) -->
-                        <div class="avatar-imagen" id="gps-img-gato" style="background-image: url('gato-une.png');"></div>
-                        <div class="avatar-imagen" id="gps-img-burrito" style="background-image: url('burrito-une.png'); width: 80px;"></div>
+                        <div class="gps-dot" id="gps-dot-basic" style="display:none;"></div>
+                        <img id="gps-img-burrito" class="avatar-mascota-burro" src="https://i.ibb.co/GQkr8WrC/cfb89f97-0014-46be-b04e-c65c00af689d.webp" alt="Burrito UNE" style="display:block;">
+                        <img id="gps-img-gato" class="avatar-mascota-img" src="https://i.ibb.co/NdMnyRLv/Gemini-Generated-Image-3x9xig3x9xig3x9x.jpg" alt="Gato UNE" style="display:none;">
                     </div>
 
-                    <!-- PINES (Coordenadas actualizadas) -->
+                    <!-- PINES -->
                     <div class="map-pin" data-categoria="principal" id="pin-mapa-entrada" style="top: 25.7%; left: 34.4%;" onclick="seleccionarLugar('entrada')">
                         <div class="pin-marker"><span class="pin-icon">🚪</span></div><div class="pin-label">Entrada</div>
                     </div>
@@ -378,8 +397,14 @@
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_tecnologia" style="top: 65.6%; left: 66.3%;" onclick="seleccionarLugar('fac_tecnologia')">
                         <div class="pin-marker"><span class="pin-icon">⚙️</span></div><div class="pin-label">F. Tecnología</div>
                     </div>
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-decanato_tecno" style="top: 68.5%; left: 63.6%;" onclick="seleccionarLugar('decanato_tecno')">
+                        <div class="pin-marker"><span class="pin-icon">🏢</span></div><div class="pin-label">Decanato FATEC</div>
+                    </div>
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_telematica" style="top: 36.1%; left: 88.4%;" onclick="seleccionarLugar('fac_telematica')">
                         <div class="pin-marker"><span class="pin-icon">💻</span></div><div class="pin-label">F. Telemática</div>
+                    </div>
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-auditorio_telecom" style="top: 29.9%; left: 87.1%;" onclick="seleccionarLugar('auditorio_telecom')">
+                        <div class="pin-marker"><span class="pin-icon">🎤</span></div><div class="pin-label">Aud. Telecom</div>
                     </div>
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-electricidad" style="top: 71.9%; left: 52.8%;" onclick="seleccionarLugar('electricidad')">
                         <div class="pin-marker"><span class="pin-icon">⚡</span></div><div class="pin-label">Electricidad</div>
@@ -389,6 +414,9 @@
                     </div>
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_inicial" style="top: 44.7%; left: 41.6%;" onclick="seleccionarLugar('fac_inicial')">
                         <div class="pin-marker"><span class="pin-icon">🧸</span></div><div class="pin-label">F. Inicial</div>
+                    </div>
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-auditorio_pedagogia" style="top: 44.4%; left: 57.5%;" onclick="seleccionarLugar('auditorio_pedagogia')">
+                        <div class="pin-marker"><span class="pin-icon">🎓</span></div><div class="pin-label">Aud. Pedagogía</div>
                     </div>
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-colegio_aplicacion" style="top: 58.1%; left: 49.4%;" onclick="seleccionarLugar('colegio_aplicacion')">
                         <div class="pin-marker"><span class="pin-icon">🏫</span></div><div class="pin-label">Col. Aplicación</div>
@@ -411,6 +439,9 @@
 
                     <div class="map-pin" data-categoria="bienestar" id="pin-mapa-estadio" style="top: 54.8%; left: 19.4%;" onclick="seleccionarLugar('estadio')">
                         <div class="pin-marker"><span class="pin-icon">⚽</span></div><div class="pin-label">Estadio UNE</div>
+                    </div>
+                    <div class="map-pin" data-categoria="bienestar" id="pin-mapa-estacionamiento" style="top: 48.8%; left: 31.6%;" onclick="seleccionarLugar('estacionamiento')">
+                        <div class="pin-marker"><span class="pin-icon">🚙</span></div><div class="pin-label">Estacionamiento</div>
                     </div>
                     <div class="map-pin" data-categoria="bienestar" id="pin-mapa-gimnasio" style="top: 62.1%; left: 40.6%;" onclick="seleccionarLugar('gimnasio')">
                         <div class="pin-marker"><span class="pin-icon">🏋️</span></div><div class="pin-label">Gimnasio</div>
@@ -455,6 +486,9 @@
                     <div class="map-pin" data-categoria="servicios" id="pin-mapa-comedor_b" style="top: 31.0%; left: 68.7%;" onclick="seleccionarLugar('comedor_b')">
                         <div class="pin-marker"><span class="pin-icon">🍽️</span></div><div class="pin-label">Comedor B</div>
                     </div>
+                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-oti" style="top: 24.8%; left: 83.8%;" onclick="seleccionarLugar('oti')">
+                        <div class="pin-marker"><span class="pin-icon">⚙️</span></div><div class="pin-label">OTI</div>
+                    </div>
                     <div class="map-pin" data-categoria="servicios" id="pin-mapa-of_servicios" style="top: 41.1%; left: 77.8%;" onclick="seleccionarLugar('of_servicios')">
                         <div class="pin-marker"><span class="pin-icon">🛠️</span></div><div class="pin-label">Serv. Generales</div>
                     </div>
@@ -497,19 +531,15 @@
                 </div>
                 <div class="drawer-actions" id="acciones-ficha">
                     <button class="drawer-btn drawer-btn-ruta" id="btn-ficha-ir">🚀 Trazar Ruta Aquí</button>
-                    <!-- EL BOTÓN 360 SE AGREGA DINÁMICAMENTE POR JS -->
+                    <button class="drawer-btn drawer-btn-360" id="btn-ficha-360">🕶️ Ver 360°</button>
                 </div>
             </div>
 
             <!-- VISOR 360 Y CURIOSIDADES -->
             <div id="vista-360" class="viewer-container">
                 <button class="btn-volver-mapa" onclick="volverAlMapa()">🔙 VOLVER AL MAPA</button>
-                
-                <!-- Botón para subir fotos de la comunidad -->
-                <button class="btn-subir-foto" onclick="abrirModalFoto()">📷 Aportar Foto 360°</button>
-
+                <button class="btn-subir-foto" onclick="abrirModalFoto()">📷 Subir Foto / Dato Curioso</button>
                 <div id="panorama"></div>
-                <!-- PANEL DE CURIOSIDADES -->
                 <div id="curiosidades-overlay" class="curiosidad-panel">
                     <h5>💡 Sabías que...</h5>
                     <p id="curiosidad-texto">Cargando dato curioso...</p>
@@ -531,12 +561,13 @@
             <button class="btn-destino" data-id="fac_tecnologia" onclick="seleccionarLugar('fac_tecnologia')"><div class="btn-left"><div class="img-thumb">⚙️</div><div class="btn-info"><span class="btn-title">Facultad de Tecnología</span><span class="btn-sub">Pabellón Central</span></div></div></button>
             <button class="btn-destino" data-id="decanato_tecno" onclick="seleccionarLugar('decanato_tecno')"><div class="btn-left"><div class="img-thumb">🏢</div><div class="btn-info"><span class="btn-title">Decanato de Tecnología</span><span class="btn-sub">Administración FATEC</span></div></div></button>
             <button class="btn-destino" data-id="fac_telematica" onclick="seleccionarLugar('fac_telematica')"><div class="btn-left"><div class="img-thumb">💻</div><div class="btn-info"><span class="btn-title">F. Telemática y Telecom.</span><span class="btn-sub">Pabellón de Sistemas</span></div></div></button>
+            <button class="btn-destino" data-id="auditorio_telecom" onclick="seleccionarLugar('auditorio_telecom')"><div class="btn-left"><div class="img-thumb">🎤</div><div class="btn-info"><span class="btn-title">Auditorio de Telecom.</span><span class="btn-sub">Charlas Tecnológicas</span></div></div></button>
             <button class="btn-destino" data-id="electricidad" onclick="seleccionarLugar('electricidad')"><div class="btn-left"><div class="img-thumb">⚡</div><div class="btn-info"><span class="btn-title">Programa de Electricidad</span><span class="btn-sub">Talleres Eléctricos</span></div></div></button>
             <button class="btn-destino" data-id="fac_ciencias" onclick="seleccionarLugar('fac_ciencias')"><div class="btn-left"><div class="img-thumb">🔬</div><div class="btn-info"><span class="btn-title">Facultad de Ciencias</span><span class="btn-sub">Labs Química y Física</span></div></div></button>
             <button class="btn-destino" data-id="fac_inicial" onclick="seleccionarLugar('fac_inicial')"><div class="btn-left"><div class="img-thumb">🧸</div><div class="btn-info"><span class="btn-title">F. Educación Inicial</span><span class="btn-sub">Aulas y Ludoteca</span></div></div></button>
+            <button class="btn-destino" data-id="auditorio_pedagogia" onclick="seleccionarLugar('auditorio_pedagogia')"><div class="btn-left"><div class="img-thumb">🎓</div><div class="btn-info"><span class="btn-title">Auditorio de Pedagogía</span><span class="btn-sub">Educación Primaria</span></div></div></button>
             <button class="btn-destino" data-id="colegio_aplicacion" onclick="seleccionarLugar('colegio_aplicacion')"><div class="btn-left"><div class="img-thumb">🏫</div><div class="btn-info"><span class="btn-title">Colegio de Aplicación</span><span class="btn-sub">Educación Básica</span></div></div></button>
-            <button class="btn-destino" data-id="sociales" onclick="seleccionarLugar('sociales')"><div class="btn-left"><div class="img-thumb">📚</div><div class="btn-info"><span class="btn-title">F. Ciencias Sociales</span><span class="btn-sub">Humanidades</span></div></div></button>
-            <button class="btn-destino" data-id="sociales_norte" onclick="seleccionarLugar('sociales_norte')"><div class="btn-left"><div class="img-thumb">🌎</div><div class="btn-info"><span class="btn-title">F. Ciencias Sociales Norte</span><span class="btn-sub">Historia y Geo</span></div></div></button>
+            <button class="btn-destino" data-id="sociales" onclick="seleccionarLugar('sociales')"><div class="btn-left"><div class="img-thumb">📚</div><div class="btn-info"><span class="btn-title">F. Ciencias Sociales y Hum.</span><span class="btn-sub">Humanidades</span></div></div></button>
             <button class="btn-destino" data-id="idiomas" onclick="seleccionarLugar('idiomas')"><div class="btn-left"><div class="img-thumb">🗣️</div><div class="btn-info"><span class="btn-title">Facultad de Idiomas</span><span class="btn-sub">Centro de Lenguas</span></div></div></button>
             <button class="btn-destino" data-id="fac_civil" onclick="seleccionarLugar('fac_civil')"><div class="btn-left"><div class="img-thumb">🏗️</div><div class="btn-info"><span class="btn-title">Construcción Civil</span><span class="btn-sub">Topografía</span></div></div></button>
             <button class="btn-destino" data-id="fac_artistica" onclick="seleccionarLugar('fac_artistica')"><div class="btn-left"><div class="img-thumb">🎨</div><div class="btn-info"><span class="btn-title">Educación Artística</span><span class="btn-sub">Artes y Música</span></div></div></button>
@@ -553,13 +584,14 @@
             <button class="btn-destino" data-id="talcomachay" onclick="seleccionarLugar('talcomachay')"><div class="btn-left"><div class="img-thumb">⛰️</div><div class="btn-info"><span class="btn-title">Mirador Talcomachay</span><span class="btn-sub">Cerro Legendario</span></div></div></button>
             <button class="btn-destino" data-id="oficina_recreacion" onclick="seleccionarLugar('oficina_recreacion')"><div class="btn-left"><div class="img-thumb">♟️</div><div class="btn-info"><span class="btn-title">Oficina de Recreación</span><span class="btn-sub">Ajedrez y Ping-Pong</span></div></div></button>
             <button class="btn-destino" data-id="tuna" onclick="seleccionarLugar('tuna')"><div class="btn-left"><div class="img-thumb">🪕</div><div class="btn-info"><span class="btn-title">TUNA UNE</span><span class="btn-sub">Tradición</span></div></div></button>
-            <button class="btn-destino" data-id="rotonda" onclick="seleccionarLugar('rotonda')"><div class="btn-left"><div class="img-thumb">🎸</div><div class="btn-info"><span class="btn-title">Rotonda Central</span><span class="btn-sub">Área de descanso</span></div></div></button>
+            <button class="btn-destino" data-id="rotonda" onclick="seleccionarLugar('rotonda')"><div class="btn-left"><div class="img-thumb">🎸</div><div class="btn-info"><span class="btn-title">Rotonda</span><span class="btn-sub">Área de descanso</span></div></div></button>
 
             <h3>🚻 Servicios, Trámites y Ventas</h3>
             <button class="btn-destino" data-id="motos" onclick="seleccionarLugar('motos')"><div class="btn-left"><div class="img-thumb">🏍️</div><div class="btn-info"><span class="btn-title">Paradero de Motos</span><span class="btn-sub">Transporte Interno</span></div></div></button>
             <button class="btn-destino" data-id="recta_ventas" onclick="seleccionarLugar('recta_ventas')"><div class="btn-left"><div class="img-thumb">🏪</div><div class="btn-info"><span class="btn-title">Recta de Ventas</span><span class="btn-sub">Almuerzos e Internet</span></div></div></button>
             <button class="btn-destino" data-id="comedor_a" onclick="seleccionarLugar('comedor_a')"><div class="btn-left"><div class="img-thumb">🍲</div><div class="btn-info"><span class="btn-title">Comedor Univ. Acceso A</span><span class="btn-sub">Atención Principal</span></div></div></button>
             <button class="btn-destino" data-id="comedor_b" onclick="seleccionarLugar('comedor_b')"><div class="btn-left"><div class="img-thumb">🍽️</div><div class="btn-info"><span class="btn-title">Comedor Univ. Acceso B</span><span class="btn-sub">Bienestar Estudiantil</span></div></div></button>
+            <button class="btn-destino" data-id="oti" onclick="seleccionarLugar('oti')"><div class="btn-left"><div class="img-thumb">⚙️</div><div class="btn-info"><span class="btn-title">Oficinas de OTI</span><span class="btn-sub">Tecnologías de Información</span></div></div></button>
             <button class="btn-destino" data-id="aseped" onclick="seleccionarLugar('aseped')"><div class="btn-left"><div class="img-thumb">🏢</div><div class="btn-info"><span class="btn-title">ASEPED La Cantuta</span><span class="btn-sub">Servicios Estudiantiles</span></div></div></button>
             <button class="btn-destino" data-id="of_servicios" onclick="seleccionarLugar('of_servicios')"><div class="btn-left"><div class="img-thumb">🛠️</div><div class="btn-info"><span class="btn-title">Servicios Generales</span><span class="btn-sub">Mantenimiento UNE</span></div></div></button>
             <button class="btn-destino" data-id="papeleria_1" onclick="seleccionarLugar('papeleria_1')"><div class="btn-left"><div class="img-thumb">🖨️</div><div class="btn-info"><span class="btn-title">Papelería 1</span><span class="btn-sub">Copias</span></div></div></button>
@@ -575,20 +607,21 @@
             <div class="tools-header-fila">
                 <h4>🛰️ Navegación Satelital y Modo Prueba</h4>
                 <div class="avatar-selector">
-                    <label>Tu Avatar:</label>
+                    <label>Elegir Personaje GPS:</label>
                     <select id="select-avatar" onchange="cambiarAvatar(this.value)">
-                        <option value="punto">Punto Azul Clásico</option>
-                        <option value="gato">🐱 Gatito de la UNE</option>
-                        <option value="burrito">🚌 Bus "El Burrito"</option>
+                        <option value="burrito" selected>🚌 Bus "El Burrito" UNE</option>
+                        <option value="gato">🐱 Gatito de la UNE (Gira al moverse)</option>
+                        <option value="punto">🔵 Punto Azul Clásico</option>
                     </select>
                 </div>
             </div>
             
             <div class="gps-grid">
                 <div>
-                    <p style="margin-bottom: 14px; font-size: 13px; font-weight: 700; color: #475569;">Puedes activar tu GPS real o usar el modo simulador. Además, prueba el recorrido automático pulsando el botón morado de prueba.</p>
+                    <p style="margin-bottom: 14px; font-size: 13px; font-weight: 700; color: #475569;">Activa tu GPS real, inicia el Modo Prueba desde la Entrada Principal o muévete con el Joystick.</p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button class="btn-action bg-green" onclick="iniciarNavegacion()">🚶 Activar GPS</button>
+                        <button class="btn-action bg-purple" onclick="iniciarModoPrueba()">▶️ Modo Prueba (Entrada)</button>
                         <button class="btn-action bg-red" onclick="detenerNavegacion()">🛑 Detener</button>
                     </div>
                     <div id="panel-instrucciones" style="margin-top: 16px; font-weight: 900; color: #1e3a8a; background: rgba(255,255,255,0.85); padding: 14px; border-radius: 12px; border: 2px dashed #cbd5e1;">Sistema en espera...</div>
@@ -620,82 +653,116 @@
         </div>
     </div>
 
-    <!-- MODAL REPORTE GOOGLE SHEETS -->
-    <div id="modal-reporte" class="modal-overlay">
+    <!-- MODAL ¿FALTA TU FACULTAD O LUGAR? -->
+    <div id="modal-falta-lugar" class="modal-overlay">
         <div class="modal-box">
-            <h3>📢 Reportar Estado / Aportar al Mapa</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Ayúdanos a mantener la UNE actualizada. Reporta infraestructura dañada, falta de higiene o nuevos lugares.</p>
+            <h3>📍 ¿Falta tu Facultad, Pabellón o Salón?</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Envíanos el nombre obligatorio de la facultad o ambiente junto con tu ubicación GPS para agregarlo al mapa oficial.</p>
             
-            <label>Ubicación / Pabellón:</label>
-            <select id="reporte-lugar" onchange="toggleOtroInput('lugar')">
-                <option value="Baño 1">Baño 1</option>
-                <option value="Baño 2">Baño 2</option>
-                <option value="Baño 4">Baño 4</option>
-                <option value="Comedor">Comedor</option>
-                <option value="Aulas">Aulas (General)</option>
-                <option value="Exteriores">Jardines / Exteriores</option>
-                <option value="Otro">Otro (Especificar)</option>
-            </select>
-            <input type="text" id="reporte-lugar-otro" placeholder="Escribe el lugar exacto..." style="display:none; margin-top:5px;">
+            <label>Nombre de la Facultad, Escuela o Lugar (Obligatorio *):</label>
+            <input type="text" id="nuevo-lugar-nombre" placeholder="Ej: Pabellón de Agropecuaria / Lab. de Robótica" required>
 
-            <label>Tipo de Reporte:</label>
-            <select id="reporte-tipo" onchange="toggleOtroInput('tipo')">
-                <option value="Falta Limpieza / Papel">Falta Limpieza / Papel</option>
-                <option value="Infraestructura Rota">Puerta/Mobiliario Roto</option>
-                <option value="Falta Iluminación">Falta Iluminación</option>
-                <option value="Actualización de Mapa">Falta un lugar en el mapa</option>
-                <option value="Otro">Otro (Especificar)</option>
-            </select>
-            <input type="text" id="reporte-tipo-otro" placeholder="Escribe el tipo de reporte..." style="display:none; margin-top:5px;">
+            <label>Coordenadas GPS o Punto en el Mapa (Obligatorio *):</label>
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <input type="text" id="nuevo-lugar-gps" placeholder="Presiona el botón para capturar tu GPS ->" style="margin-bottom:0;" readonly>
+                <button type="button" onclick="capturarGPSParaNuevoLugar()" style="background:var(--green); color:white; border:none; padding:0 14px; border-radius:10px; font-weight:900; cursor:pointer; white-space:nowrap;">📡 Mi GPS</button>
+            </div>
 
-            <label>Detalles adicionales:</label>
-            <textarea id="reporte-detalle" placeholder="Ej: No hay papel en el baño de varones y el caño gotea..."></textarea>
+            <label>Pisos, aulas o dato curioso del lugar:</label>
+            <textarea id="nuevo-lugar-detalle" placeholder="Ej: Piso 2 aula 204, al costado del vivero..."></textarea>
             
-            <div id="msg-reporte" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Reporte enviado correctamente a la base de datos.</div>
+            <div id="msg-falta-lugar" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ ¡Lugar enviado a tu Google Sheets!</div>
 
             <div class="modal-actions">
-                <button class="btn-cancelar" onclick="cerrarModalReporte()">Cancelar</button>
-                <button class="btn-enviar" onclick="enviarReporteSheets()">Enviar Reporte</button>
+                <button class="btn-cancelar" onclick="cerrarModalFaltaLugar()">Cancelar</button>
+                <button class="btn-enviar" id="btn-enviar-nuevo-lugar" onclick="enviarNuevoLugarSheets()">Enviar Lugar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL APORTE FOTO 360 -->
+    <!-- MODAL REPORTE / DATO CURIOSO GOOGLE SHEETS -->
+    <div id="modal-reporte" class="modal-overlay">
+        <div class="modal-box">
+            <h3>📢 Reportar Mantenimiento o Dato Curioso</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Reporta si en un baño falta papel, puertas rotas, o comparte un dato curioso para mostrarlo en la vista 360°.</p>
+            
+            <label>Ubicación / Pabellón:</label>
+            <select id="reporte-lugar" onchange="toggleOtroInput('lugar')">
+                <option value="Baño 1">Baño 1 (Cruce Central)</option>
+                <option value="Baño 2">Baño 2 (Óvalo Oeste)</option>
+                <option value="Baño 4">Baño 4 (Zona Losa)</option>
+                <option value="Biblioteca Central">Biblioteca Central</option>
+                <option value="Comedor">Comedor Universitario</option>
+                <option value="Facultad de Tecnología">Facultad de Tecnología</option>
+                <option value="F. Telemática y Telecom.">F. Telemática y Telecom.</option>
+                <option value="Otro">Otro (Especificar lugar)</option>
+            </select>
+            <input type="text" id="reporte-lugar-otro" placeholder="Escribe la ubicación exacta..." style="display:none;">
+
+            <label>Tipo de Aporte o Reporte:</label>
+            <select id="reporte-tipo" onchange="toggleOtroInput('tipo')">
+                <option value="Falta Limpieza / Papel Higiénico">Falta Limpieza / Papel Higiénico</option>
+                <option value="Infraestructura o Puerta Rota">Infraestructura o Puerta Rota</option>
+                <option value="Dato Curioso para el 360°">💡 Dato Curioso para la vista 360°</option>
+                <option value="Otro">Otro (Especificar tipo)</option>
+            </select>
+            <input type="text" id="reporte-tipo-otro" placeholder="Especifica el tipo de reporte..." style="display:none;">
+
+            <label>Detalles adicionales:</label>
+            <textarea id="reporte-detalle" placeholder="Escribe aquí el detalle o el dato curioso..."></textarea>
+            
+            <div id="msg-reporte" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Enviado correctamente a Google Sheets.</div>
+
+            <div class="modal-actions">
+                <button class="btn-cancelar" onclick="cerrarModalReporte()">Cancelar</button>
+                <button class="btn-enviar" id="btn-enviar-rep" onclick="enviarReporteSheets()">Enviar a Sheets</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL APORTE FOTO 360 Y DATO CURIOSO -->
     <div id="modal-foto" class="modal-overlay">
         <div class="modal-box">
-            <h3>📷 Aportar Foto Comunitaria</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">¿Tienes una foto normal o panorámica de este lugar? Súbela aquí para ayudar a otros estudiantes a guiarse mejor. El administrador revisará la foto antes de publicarla en el mapa.</p>
+            <h3>📷 Subir Foto de Referencia o Dato Curioso</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Comparte el enlace de tu foto o escribe una referencia/dato curioso de este ambiente. Pasará por tu revisión en Google Sheets antes de publicarse.</p>
             
-            <label>Lugar a mostrar:</label>
-            <input type="text" id="foto-lugar-texto" value="Lugar actual" disabled style="background:#e2e8f0; color:#475569; border-color:#cbd5e1;">
+            <label>Lugar seleccionado:</label>
+            <input type="text" id="foto-lugar-texto" value="Lugar actual" readonly style="background:#e2e8f0; color:#475569;">
 
-            <label>Tu Nombre (Opcional, para darte créditos):</label>
-            <input type="text" id="foto-autor" placeholder="Ej: Juan Pérez (Promo 2026)">
+            <label>Tu Nombre o Apelativo:</label>
+            <input type="text" id="foto-autor" placeholder="Ej: Jean (Telecomunicaciones)">
 
-            <label>Selecciona tu imagen (JPG o PNG):</label>
+            <label>Enlace de la foto (IBB, Drive, Imgur) o selecciona archivo:</label>
+            <input type="text" id="foto-url-link" placeholder="Pega aquí el link de tu foto (opcional)...">
             <input type="file" id="foto-archivo" accept="image/*">
+
+            <label>Dato curioso o referencia de este lugar:</label>
+            <textarea id="foto-curiosidad-input" placeholder="Ej: Aquí en el 2do piso están los laboratorios de redes..."></textarea>
             
-            <span class="nota-revision">⚠️ La foto no aparecerá inmediatamente. Debe ser verificada por moderación.</span>
+            <span class="nota-revision">⚠️ Requiere autorización del administrador antes de mostrarse públicamente.</span>
             
-            <div id="msg-foto" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Foto enviada a revisión. ¡Gracias por tu aporte!</div>
+            <div id="msg-foto" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Enviado a revisión en Google Sheets.</div>
 
             <div class="modal-actions">
                 <button class="btn-cancelar" onclick="cerrarModalFoto()">Cancelar</button>
-                <button class="btn-enviar" onclick="enviarFoto()">Subir para Revisión</button>
+                <button class="btn-enviar" id="btn-enviar-foto-rev" onclick="enviarFoto()">Enviar para Autorización</button>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIGURACIONES BÁSICAS
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf4rWB2DwsSPCRGE957JSSpdy3fPFhVXXhsCh-h2XObEu634K7hKgcpR982jS9CZWYCA/exec';
+        const FOTO_360_DEFAULT = 'https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png';
+
         let modoEdicionActivo = false;
+        let gpsActivado = false;
         let puntoCapturadoHTML = "";
         let viewer = null;
         
         let isDragging = false;
         let startX, startY, scrollLeft, scrollTop;
 
-        const baseReal = { lat: -11.945463, lon: -76.701921 }; 
+        const baseReal = { lat: -11.945380, lon: -76.702065 }; 
         const baseMapa = { x: 34.4, y: 25.7 }; 
 
         let miXActual = baseMapa.x;
@@ -714,127 +781,55 @@
             "topico": { x: 22.6, y: 86.2 }, "capilla": { x: 34.0, y: 84.4 }, "estacionamiento": { x: 31.6, y: 48.8 },
             "rotonda": { x: 62.4, y: 72.8 }, "talcomachay": { x: 96.3, y: 94.7 }, "oficina_recreacion": { x: 81.7, y: 38.2 },
             "tuna": { x: 81.0, y: 35.0 }, "motos": { x: 32.3, y: 24.9 }, "recta_ventas": { x: 42.4, y: 17.9 },
-            "comedor_a": { x: 75.0, y: 42.7 }, "comedor_b": { x: 68.7, y: 31.0 }, "of_servicios": { x: 77.8, y: 41.1 },
-            "papeleria_1": { x: 87.3, y: 41.0 }, "aseped": { x: 44.5, y: 71.6 }, "bano_1": { x: 73.7, y: 51.3 },
-            "bano_2": { x: 34.5, y: 37.3 }, "bano_4": { x: 38.3, y: 63.0 }
+            "comedor_a": { x: 75.0, y: 42.7 }, "comedor_b": { x: 68.7, y: 31.0 }, "oti": { x: 83.8, y: 24.8 },
+            "of_servicios": { x: 77.8, y: 41.1 }, "papeleria_1": { x: 87.3, y: 41.0 }, "aseped": { x: 44.5, y: 71.6 },
+            "bano_1": { x: 73.7, y: 51.3 }, "bano_2": { x: 34.5, y: 37.3 }, "bano_4": { x: 38.3, y: 63.0 }
         };
 
         const directorioInfo = {
             "talcomachay": { titulo: "Mirador Talcomachay", cat: "Naturaleza y Mitos", pisos: "Cerro del Campus", oficinas: "Zona de Trekking estudiantil.", curiosidad: "La leyenda dice que si llegas a lo más alto del cerro, tendrás tu título algún día." },
-            "oficina_recreacion": { titulo: "Oficina de Recreación", cat: "Bienestar", pisos: "Módulo", oficinas: "Centro de esparcimiento.", curiosidad: "Aquí hay ajedrez, damas y mesas de ping-pong gratis para que jueguen los estudiantes." },
-            "tuna": { titulo: "TUNA UNE La Cantuta", cat: "Cultura", pisos: "Módulo", oficinas: "Centro cultural.", curiosidad: "Conocida como la segunda casa del alumno Guillermo Cisneros." },
-            "entrada": { titulo: "Entrada Principal", cat: "Acceso Principal", pisos: "Nivel Único", oficinas: "Control peatonal y vehicular principal." },
-            "garita": { titulo: "Garita de Seguridad", cat: "Seguridad", pisos: "Módulo", oficinas: "Registro de visitantes." },
-            "pab_administrativo": { titulo: "Pabellón Administrativo", cat: "Administrativo", pisos: "Mesa de Partes / Trámites", oficinas: "Matrícula e informes." },
-            "biblioteca": { titulo: "Biblioteca Central", cat: "Académico", pisos: "3 Pisos", oficinas: "Salas de lectura y virtuales." },
-            "huaranguito": { titulo: "Plaza Huaranguito", cat: "Espacio Libre", pisos: "Área verde", oficinas: "Descanso estudiantil." },
-            "auditorio_prin": { titulo: "Auditorio Principal Magisterial", cat: "Auditorio", pisos: "Platea y Mezzanine", oficinas: "Ceremonias y graduaciones." },
-            "sociales_norte": { titulo: "F. Ciencias Sociales (Norte)", cat: "Facultad", pisos: "Pabellón Norte", oficinas: "Aulas de Humanidades e Historia." },
-            "idiomas": { titulo: "Facultad de Idiomas", cat: "Facultad", pisos: "Piso 1 y 2", oficinas: "Centro de Idiomas UNE." },
-            "fac_inicial": { titulo: "F. Educación Inicial", cat: "Facultad", pisos: "Aulas y Ludoteca", oficinas: "Decanato de Inicial." },
-            "auditorio_pedagogia": { titulo: "Auditorio de Pedagogía", cat: "Auditorio", pisos: "Primer Nivel", oficinas: "Eventos académicos de Primaria." },
-            "fac_ciencias": { titulo: "Facultad de Ciencias", cat: "Facultad", pisos: "Labs de Química, Biología y Física", oficinas: "Decanato de Ciencias." },
-            "sociales": { titulo: "F. Ciencias Sociales y Humanidades", cat: "Facultad", pisos: "Pabellón Principal", oficinas: "Decanato de Sociales." },
-            "colegio_aplicacion": { titulo: "Colegio de Aplicación", cat: "Académico", pisos: "Primaria", oficinas: "Prácticas Preprofesionales." },
-            "electricidad": { titulo: "Programa de Electricidad", cat: "Especialidad", pisos: "Talleres y Laboratorios", oficinas: "Instalaciones Eléctricas." },
-            "fac_tecnologia": { titulo: "Facultad de Tecnología", cat: "Facultad", pisos: "Talleres (Piso 1) y Aulas (Piso 2)", oficinas: "FATEC." },
-            "decanato_tecno": { titulo: "Decanato de Tecnología", cat: "Administrativo", pisos: "Piso 1", oficinas: "Administración Central de FATEC." },
-            "fac_telematica": { titulo: "F. Telemática y Telecom.", cat: "Especialidad", pisos: "Labs de Redes y Sistemas", oficinas: "Coordinación de Especialidad." },
-            "auditorio_telecom": { titulo: "Auditorio de Telecomunicaciones", cat: "Auditorio", pisos: "Primer Piso", oficinas: "Conferencias de Sistemas." },
-            "fac_educacion": { titulo: "Facultad de Educación", cat: "Facultad", pisos: "Pabellón Sureste", oficinas: "Coordinaciones docentes." },
-            "fac_fisica": { titulo: "F. Educación Física", cat: "Facultad", pisos: "Pabellón Sur", oficinas: "Aulas de Biomecánica." },
-            "fac_civil": { titulo: "Construcción Civil", cat: "Especialidad", pisos: "Labs de Suelos y Topografía", oficinas: "Jefatura Civil." },
-            "fac_artistica": { titulo: "Educación Artística", cat: "Especialidad", pisos: "Talleres de Música y Artes", oficinas: "Coordinación de Arte." },
-            "fac_vestido": { titulo: "Tecnología del Vestido", cat: "Especialidad", pisos: "Diseño y Patronaje", oficinas: "Talleres FATEC." },
-            "estadio": { titulo: "Estadio UNE", cat: "Deportes", pisos: "Campo Deportivo de Grass", oficinas: "Tribuna y entrenamiento libre." },
-            "gimnasio": { titulo: "Gimnasio UNE", cat: "Deportes", pisos: "Coliseo Cerrado", oficinas: "Máquinas y cultura física." },
-            "losa": { titulo: "Losa Deportiva Central", cat: "Deportes", pisos: "Canchas Multiusos", oficinas: "Con toldo azul y graderías." },
-            "piscina": { titulo: "Piscina Universitaria", cat: "Deportes", pisos: "Piscina y Vestidores", oficinas: "Clases de natación." },
-            "topico": { titulo: "Tópico / Centro de Salud", cat: "Salud", pisos: "Primer Nivel", oficinas: "Atención médica, dental y psicología." },
-            "capilla": { titulo: "Capilla Universitaria", cat: "Bienestar", pisos: "Nave Central", oficinas: "Actividades religiosas." },
-            "estacionamiento": { titulo: "Playa de Estacionamiento", cat: "Servicios", pisos: "Superficie de Tierra", oficinas: "Área de aparcamiento vehicular." },
-            "rotonda": { titulo: "La Rotonda", cat: "Espacio Cultural", pisos: "Exterior", oficinas: "Área de descanso." },
-            "motos": { titulo: "Paradero de Motos", cat: "Transporte", pisos: "Acceso Norte", oficinas: "Movilidad interna." },
-            "recta_ventas": { titulo: "Recta de Ventas y Almuerzos", cat: "Servicios", pisos: "Kioskos", oficinas: "Almuerzos, menú, copias e internet." },
-            "comedor_a": { titulo: "Comedor Acceso A", cat: "Bienestar", pisos: "Planta Principal", oficinas: "Tickets y atención general." },
-            "comedor_b": { titulo: "Comedor Acceso B", cat: "Bienestar", pisos: "Entrada Sur", oficinas: "Bienestar Universitario." },
-            "aseped": { titulo: "ASEPED La Cantuta", cat: "Administrativo", pisos: "Pabellón", oficinas: "Oficinas Estudiantiles." },
-            "of_servicios": { titulo: "Servicios Generales", cat: "Mantenimiento", pisos: "Pabellón Logístico", oficinas: "Mantenimiento UNE." },
-            "papeleria_1": { titulo: "Papelería 1", cat: "Servicios", pisos: "Módulo", oficinas: "Impresiones y fotocopias." },
-            "bano_1": { titulo: "Baño 1", cat: "SSHH", pisos: "Eje Central", oficinas: "Baños generales (H/M)." },
-            "bano_2": { titulo: "Baño 2", cat: "SSHH", pisos: "Óvalo Oeste", oficinas: "Baños cerca a Biblioteca." },
-            "bano_4": { titulo: "Baño 4", cat: "SSHH", pisos: "Zona Losa", oficinas: "Baños zona deportiva." }
-        };
-
-        // RUTAS
-        const nodosGrafo = {
-            "n_entrada_top":   { x: 34.4, y: 25.7, vecinos: ["n_tri_izq", "n_recta_cruce"] },
-            "n_tri_izq":       { x: 33.3, y: 26.6, vecinos: ["n_entrada_top", "n_motos_cruce", "n_biblio_cruce"] },
-            "n_motos_cruce":   { x: 32.3, y: 24.9, vecinos: ["n_tri_izq", "n_recta_cruce"] },
-            "n_recta_cruce":   { x: 42.4, y: 17.9, vecinos: ["n_motos_cruce", "n_admin"] },
-            "n_admin":         { x: 52.0, y: 19.9, vecinos: ["n_recta_cruce", "n_audi_prin"] },
-            "n_audi_prin":     { x: 72.8, y: 20.7, vecinos: ["n_admin", "n_curva_norte"] },
-            "n_curva_norte":   { x: 70.3, y: 15.1, vecinos: ["n_audi_prin", "n_soc_norte", "n_via_este"] },
-            "n_soc_norte":     { x: 68.3, y: 9.2, vecinos: ["n_curva_norte"] },
-            "n_via_este":      { x: 75.0, y: 42.7, vecinos: ["n_curva_norte", "n_com_b", "n_telematica"] },
-            "n_telematica":    { x: 88.4, y: 36.1, vecinos: ["n_via_este", "n_audi_telecom"] },
-            "n_audi_telecom":  { x: 87.1, y: 29.9, vecinos: ["n_telematica"] },
-            "n_com_b":         { x: 68.7, y: 31.0, vecinos: ["n_via_este", "n_huaranguito"] },
-            "n_huaranguito":   { x: 48.3, y: 31.1, vecinos: ["n_com_b", "n_biblio_cruce", "n_centro"] },
-            "n_biblio_cruce":  { x: 41.9, y: 34.7, vecinos: ["n_tri_izq", "n_huaranguito", "n_ovalo_oeste", "n_bano2"] },
-            "n_bano2":         { x: 34.5, y: 37.3, vecinos: ["n_biblio_cruce"] },
-            "n_ovalo_oeste":   { x: 41.6, y: 44.7, vecinos: ["n_biblio_cruce", "n_centro", "n_estacionamiento"] },
-            "n_estacionamiento":{ x: 31.6, y: 48.8, vecinos: ["n_ovalo_oeste", "n_estadio"] },
-            "n_estadio":       { x: 19.4, y: 54.8, vecinos: ["n_estacionamiento"] },
-            "n_centro":        { x: 57.5, y: 44.4, vecinos: ["n_huaranguito", "n_ovalo_oeste", "n_colegio", "n_ciencias"] },
-            "n_colegio":       { x: 49.4, y: 58.1, vecinos: ["n_centro", "n_gimnasio", "n_losa"] },
-            "n_gimnasio":      { x: 40.6, y: 62.1, vecinos: ["n_colegio", "n_bano4"] },
-            "n_bano4":         { x: 38.3, y: 63.0, vecinos: ["n_gimnasio", "n_piscina"] },
-            "n_piscina":       { x: 35.7, y: 71.6, vecinos: ["n_bano4", "n_fisica"] },
-            "n_fisica":        { x: 32.5, y: 78.6, vecinos: ["n_piscina", "n_capilla"] },
-            "n_capilla":       { x: 34.0, y: 84.4, vecinos: ["n_fisica", "n_topico", "n_vestido"] },
-            "n_topico":        { x: 22.6, y: 86.2, vecinos: ["n_capilla"] },
-            "n_vestido":       { x: 43.2, y: 89.6, vecinos: ["n_capilla"] },
-            "n_losa":          { x: 50.7, y: 64.1, vecinos: ["n_colegio", "n_tecno", "n_electricidad"] },
-            "n_electricidad":  { x: 52.8, y: 71.9, vecinos: ["n_losa", "n_aseped"] },
-            "n_aseped":        { x: 44.5, y: 71.6, vecinos: ["n_electricidad"] },
-            "n_tecno":         { x: 66.3, y: 65.6, vecinos: ["n_losa", "n_civil", "n_decanato_tecno"] },
-            "n_decanato_tecno":{ x: 63.6, y: 68.5, vecinos: ["n_tecno", "n_artistica"] },
-            "n_artistica":     { x: 62.5, y: 79.2, vecinos: ["n_decanato_tecno"] },
-            "n_civil":         { x: 73.5, y: 65.9, vecinos: ["n_tecno", "n_ciencias", "n_rotonda"] },
-            "n_rotonda":       { x: 62.4, y: 72.8, vecinos: ["n_civil"] },
-            "n_ciencias":      { x: 65.2, y: 51.6, vecinos: ["n_centro", "n_civil", "n_bano1", "n_sociales"] },
-            "n_bano1":         { x: 73.7, y: 51.3, vecinos: ["n_ciencias"] },
-            "n_sociales":      { x: 82.7, y: 49.7, vecinos: ["n_ciencias", "n_talcomachay"] },
-            "n_talcomachay":   { x: 96.3, y: 94.7, vecinos: ["n_sociales"] }
-        };
-
-        const conexionEdificioANodo = {
-            "entrada": "n_entrada_top", "garita": "n_tri_izq", "pab_administrativo": "n_admin",
-            "sociales_norte": "n_soc_norte", "idiomas": "n_curva_norte", "auditorio_prin": "n_audi_prin",
-            "biblioteca": "n_biblio_cruce", "huaranguito": "n_huaranguito", "fac_inicial": "n_ovalo_oeste",
-            "auditorio_pedagogia": "n_centro", "comedor_a": "n_via_este", "comedor_b": "n_com_b",
-            "fac_ciencias": "n_ciencias", "sociales": "n_sociales", "colegio_aplicacion": "n_colegio",
-            "estadio": "n_estadio", "estacionamiento": "n_estacionamiento", "gimnasio": "n_gimnasio",
-            "losa": "n_losa", "electricidad": "n_electricidad", "fac_tecnologia": "n_tecno",
-            "decanato_tecno": "n_decanato_tecno", "fac_telematica": "n_telematica", "auditorio_telecom": "n_audi_telecom",
-            "fac_educacion": "n_civil", "piscina": "n_piscina", "fac_fisica": "n_fisica", "topico": "n_topico",
-            "capilla": "n_capilla", "fac_civil": "n_civil", "rotonda": "n_rotonda", "fac_artistica": "n_artistica",
-            "fac_vestido": "n_vestido", "motos": "n_motos_cruce", "recta_ventas": "n_recta_cruce", 
-            "of_servicios": "n_via_este", "papeleria_1": "n_telematica", "bano_1": "n_bano1", "bano_2": "n_bano2", "bano_4": "n_bano4",
-            "aseped": "n_aseped", "oficina_recreacion": "n_sociales", "tuna": "n_sociales", "talcomachay": "n_talcomachay"
-        };
-
-        window.onload = function() {
-            const rutaGuardada = localStorage.getItem('rutaUNE');
-            if(rutaGuardada) {
-                const data = JSON.parse(rutaGuardada);
-                if (coordenadasMapa[data.origen] && coordenadasMapa[data.destino]) {
-                    document.getElementById('select-origen').value = data.origen;
-                    document.getElementById('select-destino').value = data.destino;
-                    trazarRutaVisual(true);
-                }
-            }
+            "oficina_recreacion": { titulo: "Oficina de Recreación", cat: "Bienestar", pisos: "Módulo Recreacional", oficinas: "Juegos libres para alumnos.", curiosidad: "Aquí hay ajedrez, damas y mesas de ping-pong gratis para que jueguen los estudiantes." },
+            "tuna": { titulo: "TUNA UNE La Cantuta", cat: "Cultura", pisos: "Módulo Cultural", oficinas: "Agrupación musical.", curiosidad: "Conocida como la segunda casa del alumno Guillermo Cisneros." },
+            "entrada": { titulo: "Entrada Principal", cat: "Acceso Principal", pisos: "Nivel Único", oficinas: "Control peatonal y vehicular principal.", curiosidad: "Punto de encuentro clásico de todas las promociones de La Cantuta." },
+            "garita": { titulo: "Garita de Seguridad", cat: "Seguridad", pisos: "Módulo", oficinas: "Registro y vigilancia.", curiosidad: "No olvides mostrar tu carné universitario al ingresar." },
+            "pab_administrativo": { titulo: "Pabellón Administrativo", cat: "Administrativo", pisos: "Mesa de Partes / Trámites", oficinas: "Matrícula, constancias e informes.", curiosidad: "Aquí se gestionan los trámites documentarios centrales de la universidad." },
+            "biblioteca": { titulo: "Biblioteca Central", cat: "Académico", pisos: "3 Pisos", oficinas: "Salas de lectura, tesis y cubículos.", curiosidad: "Cuenta con una amplia colección de tesis y textos pedagógicos." },
+            "huaranguito": { titulo: "Plaza Huaranguito", cat: "Espacio Libre", pisos: "Área verde central", oficinas: "Descanso estudiantil.", curiosidad: "Uno de los puntos más frescos para estudiar al aire libre." },
+            "auditorio_prin": { titulo: "Auditorio Principal Magisterial", cat: "Auditorio", pisos: "Platea y Mezzanine", oficinas: "Ceremonias y graduaciones.", curiosidad: "Sede de las colaciones y eventos principales de la UNE." },
+            "idiomas": { titulo: "Facultad de Idiomas", cat: "Facultad", pisos: "Piso 1 y 2", oficinas: "Centro de Idiomas UNE.", curiosidad: "Aquí puedes llevar tus cursos de inglés, quechua y otros idiomas para egresar." },
+            "fac_inicial": { titulo: "F. Educación Inicial", cat: "Facultad", pisos: "Aulas y Ludoteca", oficinas: "Decanato de Inicial.", curiosidad: "Ubicada frente al óvalo clásico de Educación Inicial." },
+            "auditorio_pedagogia": { titulo: "Auditorio de Pedagogía", cat: "Auditorio", pisos: "Primer Nivel", oficinas: "Eventos académicos de Pedagogía.", curiosidad: "Punto clave para seminarios y exposiciones pedagógicas." },
+            "fac_ciencias": { titulo: "Facultad de Ciencias", cat: "Facultad", pisos: "Labs de Química, Biología y Física", oficinas: "Decanato de Ciencias.", curiosidad: "Alberga los laboratorios científicos centrales del campus." },
+            "sociales": { titulo: "F. Ciencias Sociales y Humanidades", cat: "Facultad", pisos: "Pabellón Principal", oficinas: "Decanato de Sociales.", curiosidad: "Aquí se forman los futuros docentes de Historia, Psicología, Filosofía y Literatura." },
+            "colegio_aplicacion": { titulo: "Colegio de Aplicación", cat: "Académico", pisos: "Nivel Primaria", oficinas: "Prácticas Preprofesionales.", curiosidad: "Centro experimental donde los estudiantes de la UNE realizan sus prácticas docentes." },
+            "electricidad": { titulo: "Programa de Electricidad", cat: "Especialidad", pisos: "Talleres y Laboratorios", oficinas: "Instalaciones Eléctricas y Potencia.", curiosidad: "Equipada con módulos de máquinas eléctricas y automatización." },
+            "fac_tecnologia": { titulo: "Facultad de Tecnología", cat: "Facultad", pisos: "Talleres y Aulas FATEC", oficinas: "Escuelas técnicas.", curiosidad: "Cuna de las especialidades técnicas e industriales de La Cantuta." },
+            "decanato_tecno": { titulo: "Decanato de Tecnología", cat: "Administrativo", pisos: "Piso 1 y 2", oficinas: "Administración FATEC.", curiosidad: "Oficina central para trámites de la Facultad de Tecnología." },
+            "fac_telematica": { titulo: "F. Telecomunicaciones e Informática", cat: "Especialidad", pisos: "Labs de Redes, Electrónica y Cómputo", oficinas: "Coordinación de Telecomunicaciones e Informática.", curiosidad: "Aquí se desarrollan proyectos de redes, programación, electrónica y robótica." },
+            "auditorio_telecom": { titulo: "Auditorio de Telecomunicaciones", cat: "Auditorio", pisos: "Primer Piso", oficinas: "Conferencias Tecnológicas.", curiosidad: "Escenario de ferias tecnológicas y ponencias de informática." },
+            "fac_fisica": { titulo: "F. Educación Física", cat: "Facultad", pisos: "Pabellón Sur", oficinas: "Aulas de Biomecánica y Deporte.", curiosidad: "Conectada directamente con el circuito deportivo del campus." },
+            "fac_civil": { titulo: "Construcción Civil", cat: "Especialidad", pisos: "Labs de Suelos y Topografía", oficinas: "Jefatura Civil.", curiosidad: "Realizan levantamientos topográficos por todo el campus." },
+            "fac_artistica": { titulo: "Educación Artística", cat: "Especialidad", pisos: "Talleres de Música y Artes", oficinas: "Coordinación de Arte.", curiosidad: "Siempre escucharás música y ensayos al pasar por este pabellón." },
+            "fac_vestido": { titulo: "Tecnología del Vestido", cat: "Especialidad", pisos: "Diseño y Patronaje", oficinas: "Talleres Textiles.", curiosidad: "Famosa por sus desfiles y proyectos de confección industrial." },
+            "estadio": { titulo: "Estadio UNE", cat: "Deportes", pisos: "Campo Deportivo de Grass", oficinas: "Tribuna y entrenamiento.", curiosidad: "Recientemente renovado con césped mantenido y arcos nuevos." },
+            "gimnasio": { titulo: "Gimnasio UNE", cat: "Deportes", pisos: "Coliseo Cerrado", oficinas: "Máquinas y cultura física.", curiosidad: "Al costado cuenta con la fosa de arena para salto largo." },
+            "losa": { titulo: "Losa Deportiva Central", cat: "Deportes", pisos: "Canchas Multiusos", oficinas: "Con toldo azul.", curiosidad: "Protegida con un gran toldo azul para jugar futsal y vóley sin sol." },
+            "piscina": { titulo: "Piscina Universitaria", cat: "Deportes", pisos: "Piscina y Vestidores", oficinas: "Clases de natación.", curiosidad: "Ubicada pasando el gimnasio rumbo a Educación Física." },
+            "topico": { titulo: "Tópico / Centro de Salud", cat: "Salud", pisos: "Primer Nivel", oficinas: "Atención médica, dental y psicología.", curiosidad: "Brinda atención primaria gratuita para todos los estudiantes." },
+            "capilla": { titulo: "Capilla Universitaria", cat: "Bienestar", pisos: "Nave Central", oficinas: "Pastoral universitaria.", curiosidad: "Ubicada cerca de la salida sur del campus." },
+            "estacionamiento": { titulo: "Playa de Estacionamiento", cat: "Servicios", pisos: "Explanada", oficinas: "Aparcamiento vehicular.", curiosidad: "Zona organizada antes de ingresar al Estadio UNE." },
+            "rotonda": { titulo: "La Rotonda", cat: "Espacio Cultural", pisos: "Glorieta Exterior", oficinas: "Área de reunión.", curiosidad: "Punto clásico de reunión en la zona baja de tecnología." },
+            "motos": { titulo: "Paradero de Motos", cat: "Transporte", pisos: "Acceso Norte", oficinas: "Movilidad rápida.", curiosidad: "Paradero principal al salir por la puerta de Circunvalación." },
+            "recta_ventas": { titulo: "Recta de Ventas y Almuerzos", cat: "Servicios", pisos: "Exteriores", oficinas: "Almuerzos, menú, copias e internet.", curiosidad: "El lugar favorito para almorzar económico e imprimir trabajos urgentes." },
+            "comedor_a": { titulo: "Comedor Acceso A", cat: "Bienestar", pisos: "Planta Principal", oficinas: "Atención de desayuno y almuerzo.", curiosidad: "Uno de los servicios más queridos por los estudiantes cantuteños." },
+            "comedor_b": { titulo: "Comedor Acceso B", cat: "Bienestar", pisos: "Entrada Norte", oficinas: "Bienestar Universitario.", curiosidad: "Segundo acceso al comedor universitario." },
+            "oti": { titulo: "Oficinas de OTI", cat: "Administrativo", pisos: "Módulo TI", oficinas: "Oficina de Tecnologías de la Información.", curiosidad: "Encargados de los sistemas informáticos y red del campus." },
+            "aseped": { titulo: "ASEPED La Cantuta", cat: "Asociación", pisos: "Pabellón", oficinas: "Gremio y servicios.", curiosidad: "Ubicado frente a la zona deportiva y piscina." },
+            "of_servicios": { titulo: "Servicios Generales", cat: "Mantenimiento", pisos: "Pabellón Logístico", oficinas: "Mantenimiento UNE.", curiosidad: "Gestiona el cuidado de las áreas verdes e instalaciones." },
+            "papeleria_1": { titulo: "Papelería 1", cat: "Servicios", pisos: "Módulo", oficinas: "Impresiones y útiles.", curiosidad: "Ideal para comprar materiales camino a Telecomunicaciones." },
+            "bano_1": { titulo: "Baño 1 (Cruce Central)", cat: "SSHH", pisos: "Módulo Central", oficinas: "Servicios Higiénicos.", curiosidad: "Puedes reportar si falta papel o mantenimiento desde el botón superior." },
+            "bano_2": { titulo: "Baño 2 (Óvalo Oeste)", cat: "SSHH", pisos: "Módulo Oeste", oficinas: "Servicios Higiénicos.", curiosidad: "Ubicado cerca de la entrada y biblioteca." },
+            "bano_4": { titulo: "Baño 4 (Zona Losa)", cat: "SSHH", pisos: "Módulo Deportivo", oficinas: "Servicios Higiénicos.", curiosidad: "Da soporte a toda el área del gimnasio y losa deportiva." }
         };
 
         function seleccionarLugar(id) {
@@ -842,32 +837,35 @@
             const pin = document.getElementById('pin-mapa-' + id);
             if (pin) pin.classList.add('active');
 
-            const info = directorioInfo[id];
-            if(info) {
-                document.getElementById('drawer-categoria').textContent = info.cat;
-                document.getElementById('drawer-titulo').textContent = info.titulo;
-                document.getElementById('drawer-pisos').textContent = info.pisos;
-                document.getElementById('drawer-oficinas').textContent = info.oficinas;
+            document.querySelectorAll('.btn-destino').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-id') === id);
+            });
 
-                document.getElementById('btn-ficha-ir').onclick = function() {
-                    document.getElementById('select-destino').value = id;
-                    cerrarFichaMall();
-                    trazarRutaVisual();
-                };
-                
-                const accionesDiv = document.getElementById('acciones-ficha');
-                accionesDiv.innerHTML = `<button class="drawer-btn drawer-btn-ruta" id="btn-ficha-ir">🚀 Trazar Ruta Aquí</button>`;
-                
-                if(info.pisos !== "Exterior" && info.pisos !== "Cerro del Campus") {
-                    accionesDiv.innerHTML += `<button class="drawer-btn drawer-btn-360" id="btn-ficha-360">🕶️ Ver 360°</button>`;
-                    document.getElementById('btn-ficha-360').onclick = function() {
-                        cerrarFichaMall();
-                        abrir360(id);
-                    };
-                }
+            const info = directorioInfo[id] || {
+                titulo: id.toUpperCase(),
+                cat: "Campus UNE",
+                pisos: "Pabellón Universitario",
+                oficinas: "Campus La Cantuta",
+                curiosidad: "Espacio académico de la Universidad Nacional de Educación."
+            };
 
-                document.getElementById('ficha-mall').style.display = 'block';
-            }
+            document.getElementById('drawer-categoria').textContent = info.cat;
+            document.getElementById('drawer-titulo').textContent = info.titulo;
+            document.getElementById('drawer-pisos').textContent = info.pisos;
+            document.getElementById('drawer-oficinas').textContent = info.oficinas;
+
+            document.getElementById('btn-ficha-ir').onclick = function() {
+                document.getElementById('select-destino').value = id;
+                cerrarFichaMall();
+                trazarRutaVisual();
+            };
+
+            document.getElementById('btn-ficha-360').onclick = function() {
+                cerrarFichaMall();
+                abrir360(id);
+            };
+
+            document.getElementById('ficha-mall').style.display = 'block';
         }
 
         function cerrarFichaMall() { document.getElementById('ficha-mall').style.display = 'none'; }
@@ -884,70 +882,18 @@
 
         function distanciaPuntos(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
 
-        function encontrarNodoMasCercano(punto) {
-            let mejorId = null, menorDist = Infinity;
-            for (let id in nodosGrafo) {
-                const d = distanciaPuntos(punto, nodosGrafo[id]);
-                if (d < menorDist) { menorDist = d; mejorId = id; }
-            }
-            return mejorId;
-        }
-
-        function calcularRutasAlternativas(nodoInicioId, nodoFinId) {
-            const rutaPrincipal = calcularRutaDijkstra(nodoInicioId, nodoFinId);
-            const rutas = [rutaPrincipal];
-
-            if (rutaPrincipal.length > 3) {
-                const nodoMedio = rutaPrincipal[Math.floor(rutaPrincipal.length / 2)].id;
-                const rutaAlt = calcularRutaDijkstra(nodoInicioId, nodoFinId, nodoMedio);
-                if (rutaAlt.length > 1 && JSON.stringify(rutaAlt) !== JSON.stringify(rutaPrincipal)) {
-                    rutas.push(rutaAlt);
-                }
-            }
-            return rutas;
-        }
-
-        function calcularRutaDijkstra(nodoInicioId, nodoFinId, nodoBloqueado = null) {
-            const dist = {}, prev = {}, noVisitados = new Set(Object.keys(nodosGrafo));
-            for (let k in nodosGrafo) { dist[k] = Infinity; prev[k] = null; }
-            dist[nodoInicioId] = 0;
-
-            while (noVisitados.size > 0) {
-                let u = null;
-                for (let candidato of noVisitados) {
-                    if (u === null || dist[candidato] < dist[u]) u = candidato;
-                }
-                if (u === null || u === nodoFinId || dist[u] === Infinity) break;
-                noVisitados.delete(u);
-                for (let vecino of nodosGrafo[u].vecinos) {
-                    if (noVisitados.has(vecino)) {
-                        let pesoExtra = (vecino === nodoBloqueado) ? 50 : 0;
-                        const alt = dist[u] + distanciaPuntos(nodosGrafo[u], nodosGrafo[vecino]) + pesoExtra;
-                        if (alt < dist[vecino]) { dist[vecino] = alt; prev[vecino] = u; }
-                    }
-                }
-            }
-            const secuencia = [];
-            let actual = nodoFinId;
-            while (actual !== null) {
-                secuencia.push({ id: actual, ...nodosGrafo[actual] });
-                actual = prev[actual];
-            }
-            return secuencia.reverse();
-        }
-
         function limpiarRutaMapa() {
             document.getElementById('svg-rutas').innerHTML = '';
             document.getElementById('dan-texto').style.color = '#475569';
-            document.getElementById('dan-texto').innerHTML = 'Mapa limpio. Elige un punto de partida y destino para calcular el camino.';
+            document.getElementById('dan-texto').innerHTML = 'Mapa limpio. Elige un punto de partida y destino para trazar la línea directa.';
             document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
             detenerNavegacion();
-            document.getElementById('btn-prueba-nav').style.display = 'none';
         }
 
-        // Variable global para la ruta de prueba
-        let rutaAmoverse = [];
+        let puntoInicioPrueba = null;
+        let puntoFinPrueba = null;
 
+        // TRAZADO EN LÍNEA RECTA DIRECTA CON GUIONES (SIN MANCHAS NEGRAS)
         function trazarRutaVisual(silencioso = false) {
             document.getElementById('filtro-categoria').value = 'todos';
             filtrarMarcadores('todos');
@@ -956,15 +902,11 @@
             const destinoId = document.getElementById('select-destino').value;
             const svgLayer = document.getElementById('svg-rutas');
             const mensajeBox = document.getElementById('dan-texto');
-            
-            // Ocultar botón de prueba si se traza nueva ruta
-            document.getElementById('btn-prueba-nav').style.display = 'none';
-            detenerNavegacion();
 
             if (origenId === 'gps') {
                 if (!gpsActivado) {
                     mensajeBox.style.color = "#dc2626";
-                    mensajeBox.innerHTML = "❌ Activa primero el botón 'Activar GPS' o mueve el Joystick inferior.";
+                    mensajeBox.innerHTML = "❌ Activa primero el botón 'Activar GPS' o 'Modo Prueba'.";
                     return;
                 }
                 origenId = 'usuario_actual'; 
@@ -988,152 +930,125 @@
                 volverAlMapa();
             }
 
-            svgLayer.innerHTML = '';
-
             const coordOrigen = (origenId === 'usuario_actual') ? { x: miXActual, y: miYActual } : coordenadasMapa[origenId];
             const coordDestino = coordenadasMapa[destinoId];
             if (!coordOrigen || !coordDestino) return;
 
-            const nodoInicio = (origenId === 'usuario_actual') ? encontrarNodoMasCercano(coordOrigen) : (conexionEdificioANodo[origenId] || encontrarNodoMasCercano(coordOrigen));
-            const nodoFin = conexionEdificioANodo[destinoId] || encontrarNodoMasCercano(coordDestino);
+            puntoInicioPrueba = coordOrigen;
+            puntoFinPrueba = coordDestino;
 
-            const rutas = calcularRutasAlternativas(nodoInicio, nodoFin);
-            
-            let svgContent = '';
-            
-            // RUTA ALTERNATIVA (Línea delgada)
-            if (rutas.length > 1) {
-                const puntosAlt = [coordOrigen, ...rutas[1], coordDestino];
-                const strAlt = puntosAlt.map(p => `${p.x},${p.y}`).join(' ');
-                svgContent += `<polyline class="ruta-lineal-base" stroke-dasharray="1,1.5" points="${strAlt}" />`;
-            }
-
-            // RUTA PRINCIPAL ESTILO MAPA DEL TESORO
-            const rutaPrincipal = rutas[0];
-            const puntosTotales = [coordOrigen, ...rutaPrincipal, coordDestino];
-            const pointsStr = puntosTotales.map(p => `${p.x},${p.y}`).join(' ');
-
-            let distUnidades = 0;
-            for (let i = 0; i < puntosTotales.length - 1; i++) {
-                distUnidades += distanciaPuntos(puntosTotales[i], puntosTotales[i + 1]);
-            }
+            const distUnidades = distanciaPuntos(coordOrigen, coordDestino);
             const metrosEstimados = Math.round(distUnidades * 6.5);
             const minutosCaminando = Math.max(1, Math.round(metrosEstimados / 75));
 
-            // Trazado de ruta punteada
-            svgContent += `<polyline class="ruta-tesoro-puntos" points="${pointsStr}" />`;
-
-            // Círculos de inicio y fin
-            svgContent += `
-                <circle cx="${coordOrigen.x}" cy="${coordOrigen.y}" r="0.6" fill="#10b981" stroke="#ffffff" stroke-width="0.2" />
-                <circle cx="${coordDestino.x}" cy="${coordDestino.y}" r="0.7" fill="#f59e0b" stroke="#ffffff" stroke-width="0.2" />
+            // LÍNEA RECTA DIRECTA CON GUIONES (fill="none" evita cualquier mancha negra)
+            svgLayer.innerHTML = `
+                <line x1="${coordOrigen.x}" y1="${coordOrigen.y}" x2="${coordDestino.x}" y2="${coordDestino.y}"
+                      stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round" fill="none" />
+                <line x1="${coordOrigen.x}" y1="${coordOrigen.y}" x2="${coordDestino.x}" y2="${coordDestino.y}"
+                      stroke="#dc2626" stroke-width="0.7" stroke-dasharray="1.8, 1.4" stroke-linecap="round" fill="none"
+                      style="animation: dash-flow 1s linear infinite;" />
+                <circle cx="${coordOrigen.x}" cy="${coordOrigen.y}" r="0.9" fill="#10b981" stroke="#ffffff" stroke-width="0.25" />
+                <circle cx="${coordDestino.x}" cy="${coordDestino.y}" r="1.0" fill="#f59e0b" stroke="#ffffff" stroke-width="0.25" />
             `;
-
-            svgLayer.innerHTML = svgContent;
 
             document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
             if(document.getElementById('pin-mapa-' + destinoId)) document.getElementById('pin-mapa-' + destinoId).classList.add('active');
 
             if(!silencioso) {
                 const infoDest = directorioInfo[destinoId];
-                const opcionesTexto = rutas.length > 1 ? ` (<span>2 rutas generadas</span>)` : '';
                 mensajeBox.style.color = "#059669";
-                mensajeBox.innerHTML = `✅ <b>Ruta calculada${opcionesTexto}:</b> ~${metrosEstimados} m (~${minutosCaminando} min) hacia <b>${infoDest ? infoDest.titulo : destinoId}</b>.`;
+                mensajeBox.innerHTML = `✅ <b>Línea directa trazada:</b> ~${metrosEstimados} m (~${minutosCaminando} min) hacia <b>${infoDest ? infoDest.titulo : destinoId}</b>.`;
             }
-
-            // Habilitar modo de prueba automático guardando la ruta generada
-            rutaAmoverse = puntosTotales;
-            document.getElementById('btn-prueba-nav').style.display = 'flex';
         }
 
         // ==========================================
-        //  MODO PRUEBA (RECORRIDO ANIMADO)
+        //  MODO PRUEBA DESDE LA ENTRADA PRINCIPAL
         // ==========================================
-        let intervaloPrueba;
-        let pasoActual = 0;
-        let pProgreso = 0;
+        let intervaloPrueba = null;
+        let progresoRecta = 0;
+        let timeoutGiroGato = null;
+
+        function activarGiroGatoTemporal() {
+            const tipoAvatar = document.getElementById('select-avatar').value;
+            const imgGato = document.getElementById('gps-img-gato');
+            if (tipoAvatar === 'gato') {
+                imgGato.classList.add('girando-rapido');
+                clearTimeout(timeoutGiroGato);
+                timeoutGiroGato = setTimeout(() => {
+                    imgGato.classList.remove('girando-rapido');
+                }, 450);
+            }
+        }
 
         function iniciarModoPrueba() {
-            if (rutaAmoverse.length < 2) return;
-            
-            // Forzar inicio desde la entrada de la UNE si está configurado así
-            miXActual = baseMapa.x;
-            miYActual = baseMapa.y;
-            
-            document.getElementById('avatar-estudiante').style.display = 'flex';
-            const panel = document.getElementById('panel-instrucciones');
-            panel.innerHTML = "🚶 Modo Prueba Activo: Caminando por la ruta...";
-            panel.style.background = "#fef3c7";
-            
-            pasoActual = 0;
-            pProgreso = 0;
-            
             clearInterval(intervaloPrueba);
-            intervaloPrueba = setInterval(animarPaso, 40);
-        }
+            gpsActivado = true;
 
-        function animarPaso() {
-            if (pasoActual >= rutaAmoverse.length - 1) {
-                clearInterval(intervaloPrueba);
-                const panel = document.getElementById('panel-instrucciones');
-                panel.innerHTML = "✅ ¡Has llegado a tu destino!";
-                panel.style.background = "#dcfce7";
-                return;
-            }
+            // Siempre empieza en la Entrada Principal de la universidad como pediste
+            miXActual = coordenadasMapa["entrada"].x;
+            miYActual = coordenadasMapa["entrada"].y;
 
-            const p1 = rutaAmoverse[pasoActual];
-            const p2 = rutaAmoverse[pasoActual + 1];
-
-            // Velocidad de la animación (más alto = más lento)
-            pProgreso += 0.05; 
+            const destinoId = document.getElementById('select-destino').value || 'biblioteca';
+            document.getElementById('select-origen').value = 'entrada';
+            document.getElementById('select-destino').value = destinoId;
             
-            if (pProgreso >= 1) {
-                pProgreso = 0;
-                pasoActual++;
-                if (pasoActual >= rutaAmoverse.length - 1) return;
-            }
+            const coordDestino = coordenadasMapa[destinoId];
+            puntoInicioPrueba = { x: miXActual, y: miYActual };
+            puntoFinPrueba = coordDestino;
 
-            // Calcular nueva posición interpolada
-            miXActual = p1.x + (p2.x - p1.x) * pProgreso;
-            miYActual = p1.y + (p2.y - p1.y) * pProgreso;
+            // Trazar la línea directa antes de moverse
+            document.getElementById('svg-rutas').innerHTML = `
+                <line x1="${puntoInicioPrueba.x}" y1="${puntoInicioPrueba.y}" x2="${puntoFinPrueba.x}" y2="${puntoFinPrueba.y}"
+                      stroke="rgba(255,255,255,0.85)" stroke-width="1.2" stroke-linecap="round" fill="none" />
+                <line x1="${puntoInicioPrueba.x}" y1="${puntoInicioPrueba.y}" x2="${puntoFinPrueba.x}" y2="${puntoFinPrueba.y}"
+                      stroke="#dc2626" stroke-width="0.7" stroke-dasharray="1.8, 1.4" stroke-linecap="round" fill="none" />
+                <circle cx="${puntoInicioPrueba.x}" cy="${puntoInicioPrueba.y}" r="0.9" fill="#10b981" stroke="#ffffff" stroke-width="0.25" />
+                <circle cx="${puntoFinPrueba.x}" cy="${puntoFinPrueba.y}" r="1.0" fill="#f59e0b" stroke="#ffffff" stroke-width="0.25" />
+            `;
 
             const avatar = document.getElementById('avatar-estudiante');
+            avatar.style.display = 'flex';
             avatar.style.left = miXActual + '%';
             avatar.style.top = miYActual + '%';
-            
-            // Voltear el gato o bus según la dirección (si va a la izquierda, voltea el img)
-            const dx = p2.x - p1.x;
-            const imgGato = document.getElementById('gps-img-gato');
-            const imgBurrito = document.getElementById('gps-img-burrito');
-            
-            if (dx < 0) {
-                imgGato.classList.add('mirar-izquierda');
-                imgBurrito.classList.add('mirar-izquierda');
-            } else if (dx > 0) {
-                imgGato.classList.remove('mirar-izquierda');
-                imgBurrito.classList.remove('mirar-izquierda');
-            }
+            cambiarAvatar(document.getElementById('select-avatar').value);
+
+            const panel = document.getElementById('panel-instrucciones');
+            panel.innerHTML = `🚀 Modo Prueba Activo: Saliendo desde Entrada Principal hacia ${directorioInfo[destinoId]?.titulo || destinoId}...`;
+            panel.style.background = "#fef3c7";
+
+            progresoRecta = 0;
+            intervaloPrueba = setInterval(() => {
+                progresoRecta += 0.02;
+                if (progresoRecta >= 1) {
+                    progresoRecta = 1;
+                    clearInterval(intervaloPrueba);
+                    document.getElementById('gps-img-gato').classList.remove('girando-rapido');
+                    panel.innerHTML = "✅ ¡Modo Prueba completado! Llegaste al destino.";
+                    panel.style.background = "#dcfce7";
+                } else {
+                    activarGiroGatoTemporal();
+                }
+
+                miXActual = puntoInicioPrueba.x + (puntoFinPrueba.x - puntoInicioPrueba.x) * progresoRecta;
+                miYActual = puntoInicioPrueba.y + (puntoFinPrueba.y - puntoInicioPrueba.y) * progresoRecta;
+
+                avatar.style.left = miXActual + '%';
+                avatar.style.top = miYActual + '%';
+            }, 60);
         }
 
         // ==========================================
-        //  SELECCIÓN DE AVATAR GPS
+        //  SELECCIÓN DE AVATAR GPS (BURRITO / GATO / PUNTO)
         // ==========================================
         function cambiarAvatar(tipo) {
             const dot = document.getElementById('gps-dot-basic');
-            const lbl = document.getElementById('gps-text-label');
             const gato = document.getElementById('gps-img-gato');
             const burrito = document.getElementById('gps-img-burrito');
 
-            if (tipo === 'punto') {
-                dot.style.display = 'block'; lbl.style.display = 'block';
-                gato.style.display = 'none'; burrito.style.display = 'none';
-            } else if (tipo === 'gato') {
-                dot.style.display = 'none'; lbl.style.display = 'none';
-                gato.style.display = 'block'; burrito.style.display = 'none';
-            } else if (tipo === 'burrito') {
-                dot.style.display = 'none'; lbl.style.display = 'none';
-                gato.style.display = 'none'; burrito.style.display = 'block';
-            }
+            dot.style.display = (tipo === 'punto') ? 'block' : 'none';
+            gato.style.display = (tipo === 'gato') ? 'block' : 'none';
+            burrito.style.display = (tipo === 'burrito') ? 'block' : 'none';
         }
 
         // MANEJO DE ZOOM Y PANORAMA DEL MAPA
@@ -1202,12 +1117,12 @@
             puntero.style.left = x.toFixed(1) + '%';
             puntero.style.top = y.toFixed(1) + '%';
 
-            puntoCapturadoHTML = `"nuevo_punto": { x: ${x.toFixed(1)}, y: ${y.toFixed(1)} }`;
+            puntoCapturadoHTML = `HTML Pin: top: ${y.toFixed(1)}%; left: ${x.toFixed(1)}%;\nNodo Camino JS: { x: ${x.toFixed(1)}, y: ${y.toFixed(1)} }\nGPS Aprox: lat: ${calcLat.toFixed(6)}, lon: ${calcLon.toFixed(6)}`;
             document.getElementById('resultado-gps').innerHTML = `
                 <span style="color:#ec4899; font-weight:900;">● Punto Capturado</span><br>
                 <b>Coordenadas:</b> x: ${x.toFixed(1)}, y: ${y.toFixed(1)}<br>
                 <b>GPS:</b> lat: ${calcLat.toFixed(6)}, lon: ${calcLon.toFixed(6)}
-                <button class="btn-copiar" onclick="copiarPunto()">📋 COPIAR JS</button>
+                <button class="btn-copiar" onclick="copiarPunto()">📋 COPIAR</button>
             `;
         });
 
@@ -1216,23 +1131,32 @@
                 const btn = document.querySelector('.btn-copiar');
                 btn.innerHTML = "✅ COPIADO";
                 btn.style.background = "var(--green)";
-                setTimeout(() => { btn.innerHTML = "📋 COPIAR JS"; btn.style.background = "rgba(255,255,255,0.1)"; }, 2000);
+                setTimeout(() => { btn.innerHTML = "📋 COPIAR"; btn.style.background = "rgba(255,255,255,0.1)"; }, 2000);
             });
         }
 
-        // VISOR 360 Y CURIOSIDADES
+        // VISOR 360 CON LA IMAGEN DE BIBLIOTECA EN TODOS LOS PUNTOS
         function inicializarPannellum(sceneId) {
-            if (viewer !== null) { viewer.loadScene(sceneId); return; }
+            const escenasDinamicas = {};
+            Object.keys(coordenadasMapa).forEach(key => {
+                escenasDinamicas[key] = {
+                    "type": "equirectangular",
+                    "panorama": FOTO_360_DEFAULT,
+                    "title": directorioInfo[key] ? directorioInfo[key].titulo : key
+                };
+            });
+
+            if (viewer !== null) {
+                viewer.destroy();
+            }
             viewer = pannellum.viewer('panorama', {
-                "default": { "firstScene": sceneId, "sceneFadeDuration": 1000, "autoLoad": true, "crossOrigin": "anonymous" },
-                "scenes": {
-                    // Para que en Github funcione, debe ser la ruta exacta a tu carpeta
-                    "entrada": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "talcomachay": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "biblioteca": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    "fac_tecnologia": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
-                    // Añade tus escenas aquí usando el ID correspondiente...
-                }
+                "default": {
+                    "firstScene": sceneId,
+                    "sceneFadeDuration": 800,
+                    "autoLoad": true,
+                    "crossOrigin": "anonymous"
+                },
+                "scenes": escenasDinamicas
             });
         }
 
@@ -1250,9 +1174,7 @@
                 panelCuriosidad.style.display = 'none';
             }
             
-            // Pasar el nombre del lugar al modal de fotos
             document.getElementById('foto-lugar-texto').value = info ? info.titulo : sceneId;
-
             inicializarPannellum(sceneId);
         }
 
@@ -1264,8 +1186,65 @@
         }
 
         // ==========================================
-        // MODAL DE APORTE DE FOTOS Y REPORTES
+        // MODALES Y ENVÍO A GOOGLE SHEETS
         // ==========================================
+        function abrirModalFaltaLugar() {
+            document.getElementById('msg-falta-lugar').style.display = 'none';
+            document.getElementById('modal-falta-lugar').style.display = 'flex';
+        }
+        function cerrarModalFaltaLugar() {
+            document.getElementById('modal-falta-lugar').style.display = 'none';
+        }
+        function capturarGPSParaNuevoLugar() {
+            const inputGps = document.getElementById('nuevo-lugar-gps');
+            inputGps.value = "Obteniendo GPS...";
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    inputGps.value = `lat: ${pos.coords.latitude.toFixed(6)}, lon: ${pos.coords.longitude.toFixed(6)}`;
+                }, () => {
+                    inputGps.value = `Mapa X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%`;
+                });
+            } else {
+                inputGps.value = `Mapa X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%`;
+            }
+        }
+        function enviarNuevoLugarSheets() {
+            const nombre = document.getElementById('nuevo-lugar-nombre').value.trim();
+            const gps = document.getElementById('nuevo-lugar-gps').value.trim();
+            const detalle = document.getElementById('nuevo-lugar-detalle').value.trim();
+            const btn = document.getElementById('btn-enviar-nuevo-lugar');
+
+            if (!nombre) {
+                alert("⚠️ Es obligatorio escribir el nombre de la facultad o lugar que deseas agregar.");
+                document.getElementById('nuevo-lugar-nombre').focus();
+                return;
+            }
+            if (!gps) {
+                alert("⚠️ Presiona el botón 'Mi GPS' para adjuntar las coordenadas del lugar.");
+                return;
+            }
+
+            btn.innerHTML = "Enviando..."; btn.disabled = true;
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'lugar': nombre,
+                    'tipo': 'NUEVO LUGAR / FACULTAD',
+                    'detalle': `Coordenadas: ${gps} | Info: ${detalle}`
+                })
+            }).then(() => {
+                document.getElementById('msg-falta-lugar').style.display = 'block';
+                btn.innerHTML = "Enviar Lugar"; btn.disabled = false;
+                document.getElementById('nuevo-lugar-nombre').value = "";
+                document.getElementById('nuevo-lugar-gps').value = "";
+                document.getElementById('nuevo-lugar-detalle').value = "";
+                setTimeout(() => cerrarModalFaltaLugar(), 2200);
+            }).catch(() => {
+                alert("Error de red al enviar.");
+                btn.innerHTML = "Enviar Lugar"; btn.disabled = false;
+            });
+        }
+
         function toggleOtroInput(campo) {
             const select = document.getElementById(`reporte-${campo}`);
             const input = document.getElementById(`reporte-${campo}-otro`);
@@ -1286,7 +1265,7 @@
             document.getElementById('modal-reporte').style.display = 'none';
             document.getElementById('reporte-detalle').value = "";
             document.getElementById('reporte-lugar').value = "Baño 1";
-            document.getElementById('reporte-tipo').value = "Falta Limpieza / Papel";
+            document.getElementById('reporte-tipo').value = "Falta Limpieza / Papel Higiénico";
             toggleOtroInput('lugar');
             toggleOtroInput('tipo');
         }
@@ -1298,70 +1277,90 @@
         function cerrarModalFoto() {
             document.getElementById('modal-foto').style.display = 'none';
             document.getElementById('foto-archivo').value = "";
+            document.getElementById('foto-url-link').value = "";
+            document.getElementById('foto-curiosidad-input').value = "";
         }
 
         function enviarReporteSheets() {
             let lugar = document.getElementById('reporte-lugar').value;
-            if (lugar === "Otro") lugar = document.getElementById('reporte-lugar-otro').value;
+            if (lugar === "Otro") lugar = document.getElementById('reporte-lugar-otro').value.trim();
 
             let tipo = document.getElementById('reporte-tipo').value;
-            if (tipo === "Otro") tipo = document.getElementById('reporte-tipo-otro').value;
+            if (tipo === "Otro") tipo = document.getElementById('reporte-tipo-otro').value.trim();
 
-            const detalle = document.getElementById('reporte-detalle').value;
-            const btn = document.querySelector('.btn-enviar');
+            const detalle = document.getElementById('reporte-detalle').value.trim();
+            const btn = document.getElementById('btn-enviar-rep');
 
-            if(detalle.trim() === "") { alert("Por favor, ingresa los detalles del reporte."); return; }
+            if(!lugar || !tipo || !detalle) {
+                alert("Por favor, completa la ubicación, el tipo y los detalles.");
+                return;
+            }
 
             btn.innerHTML = "Enviando..."; btn.disabled = true;
 
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyf4rWB2DwsSPCRGE957JSSpdy3fPFhVXXhsCh-h2XObEu634K7hKgcpR982jS9CZWYCA/exec'; 
-
-            fetch(scriptURL, { 
+            fetch(SCRIPT_URL, { 
                 method: 'POST', 
                 body: new URLSearchParams({ 'lugar': lugar, 'tipo': tipo, 'detalle': detalle }) 
             })
-            .then(response => {
+            .then(() => {
                 document.getElementById('msg-reporte').style.display = 'block';
-                btn.innerHTML = "Enviar Reporte"; 
+                btn.innerHTML = "Enviar a Sheets"; 
                 btn.disabled = false;
-                setTimeout(() => { cerrarModalReporte(); }, 2500);
+                setTimeout(() => { cerrarModalReporte(); }, 2200);
             })
-            .catch(error => {
-                console.error('Error al enviar:', error.message);
+            .catch(() => {
                 alert("Hubo un problema al enviar. Revisa tu conexión.");
-                btn.innerHTML = "Enviar Reporte"; 
+                btn.innerHTML = "Enviar a Sheets"; 
                 btn.disabled = false;
             });
         }
         
         function enviarFoto() {
+            const lugar = document.getElementById('foto-lugar-texto').value;
+            const autor = document.getElementById('foto-autor').value.trim() || "Anónimo";
+            const linkFoto = document.getElementById('foto-url-link').value.trim();
             const archivo = document.getElementById('foto-archivo').files[0];
-            const btn = document.querySelectorAll('.btn-enviar')[1]; // El botón de subir foto
+            const curiosidad = document.getElementById('foto-curiosidad-input').value.trim();
+            const btn = document.getElementById('btn-enviar-foto-rev');
             
-            if(!archivo) { alert("Por favor, selecciona una imagen primero."); return; }
+            if(!linkFoto && !archivo && !curiosidad) {
+                alert("Por favor adjunta una foto o escribe un dato curioso.");
+                return;
+            }
             
-            btn.innerHTML = "Subiendo..."; btn.disabled = true;
-            
-            // Simulación de envío de archivo (En un entorno real aquí harías un POST formData a tu servidor/Sheets)
-            setTimeout(() => {
+            btn.innerHTML = "Enviando..."; btn.disabled = true;
+            const nombreArchivo = archivo ? archivo.name : "Sin archivo local";
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: new URLSearchParams({
+                    'lugar': lugar,
+                    'tipo': 'FOTO / DATO CURIOSO (PENDIENTE AUTORIZACIÓN)',
+                    'detalle': `Autor: ${autor} | Link: ${linkFoto} | Archivo: ${nombreArchivo} | Curiosidad: ${curiosidad}`
+                })
+            }).then(() => {
                 document.getElementById('msg-foto').style.display = 'block';
-                btn.innerHTML = "Subir para Revisión"; btn.disabled = false;
-                setTimeout(() => { cerrarModalFoto(); }, 2500);
-            }, 1500);
+                btn.innerHTML = "Enviar para Autorización"; btn.disabled = false;
+                setTimeout(() => { cerrarModalFoto(); }, 2200);
+            }).catch(() => {
+                alert("Hubo un problema al enviar.");
+                btn.innerHTML = "Enviar para Autorización"; btn.disabled = false;
+            });
         }
 
         // ==========================================
-        //  GPS EN VIVO
+        //  GPS EN VIVO Y JOYSTICK CON GIRO DEL GATO
         // ==========================================
         let watchId = null;
         let simLat = baseReal.lat; 
         let simLon = baseReal.lon; 
 
         function iniciarNavegacion() {
-            clearInterval(intervaloPrueba); // Detener el modo prueba si estaba andando
+            clearInterval(intervaloPrueba);
             gpsActivado = true;
             const panel = document.getElementById('panel-instrucciones');
             document.getElementById('avatar-estudiante').style.display = 'flex';
+            cambiarAvatar(document.getElementById('select-avatar').value);
             
             if (!navigator.geolocation) {
                 panel.innerHTML = "❌ Tu navegador no soporta geolocalización.";
@@ -1372,7 +1371,7 @@
             
             watchId = navigator.geolocation.watchPosition(
                 evaluarUbicacion, 
-                function() { panel.innerHTML = "❌ Activa el permiso de ubicación en tu dispositivo."; },
+                function() { panel.innerHTML = "❌ Activa el permiso de ubicación en tu celular o usa el Modo Prueba."; },
                 { enableHighAccuracy: true, maximumAge: 0 }
             );
         }
@@ -1382,10 +1381,12 @@
             clearInterval(intervaloPrueba);
             gpsActivado = true;
             document.getElementById('avatar-estudiante').style.display = 'flex';
+            cambiarAvatar(document.getElementById('select-avatar').value);
             
-            simLat += dLat * 0.000080; 
-            simLon += dLon * 0.000080;
-            evaluarUbicacion({ coords: { latitude: simLat, longitude: simLon } });
+            simLat += dLat * 0.000050; 
+            simLon += dLon * 0.000050;
+            activarGiroGatoTemporal();
+            evaluarUbicacion({ coords: { latitude: simLat, longitude: simLon } }, dLon);
         }
 
         function detenerNavegacion() {
@@ -1394,13 +1395,14 @@
             watchId = null;
             gpsActivado = false;
             document.getElementById('avatar-estudiante').style.display = 'none';
+            document.getElementById('gps-img-gato').classList.remove('girando-rapido');
             
             const panel = document.getElementById('panel-instrucciones');
             panel.innerHTML = "Sistema en espera...";
             panel.style.background = "rgba(255,255,255,0.85)";
         }
 
-        function evaluarUbicacion(pos) {
+        function evaluarUbicacion(pos, dirLon = 0) {
             const miLat = pos.coords.latitude;
             const miLon = pos.coords.longitude;
             const panel = document.getElementById('panel-instrucciones');
@@ -1412,18 +1414,9 @@
             avatar.style.left = miXActual + '%';
             avatar.style.top = miYActual + '%';
             
-            // Voltear el gato o bus según la dirección manual simulada
-            const dx = (miLon - simLon);
-            const imgGato = document.getElementById('gps-img-gato');
             const imgBurrito = document.getElementById('gps-img-burrito');
-            
-            if (dx < 0) {
-                imgGato.classList.add('mirar-izquierda');
-                imgBurrito.classList.add('mirar-izquierda');
-            } else if (dx > 0) {
-                imgGato.classList.remove('mirar-izquierda');
-                imgBurrito.classList.remove('mirar-izquierda');
-            }
+            if (dirLon < 0) imgBurrito.classList.add('mirar-izquierda');
+            else if (dirLon > 0) imgBurrito.classList.remove('mirar-izquierda');
 
             if (miXActual < 0 || miXActual > 100 || miYActual < 0 || miYActual > 100) {
                 panel.innerHTML = `🛰️ ❌ Te encuentras fuera del perímetro del campus UNE.`;
@@ -1431,7 +1424,7 @@
                 return;
             }
 
-            panel.innerHTML = `🛰️ 🚶 Caminando por el campus (X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%)`;
+            panel.innerHTML = `🛰️ 🚶 Moviéndote por el campus (X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%)`;
             panel.style.background = "#dcfce7";
             
             if (document.getElementById('select-origen').value === 'gps' && document.getElementById('select-destino').value) {
