@@ -26,6 +26,9 @@
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.95) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
         @keyframes radar-ping { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Animación fluida para la ruta punteada (efecto caminar) */
+        @keyframes dash-flow { to { stroke-dashoffset: -20; } } 
 
         body { 
             background: linear-gradient(-45deg, #020617, #1e1b4b, #0f172a, #172554);
@@ -72,10 +75,17 @@
         .map-viewport { width: 100%; height: 65vh; min-height: 480px; overflow: auto; border-radius: 18px; background: #e5e7eb; position: relative; border: 3px solid #cbd5e1; cursor: grab; }
         .map-viewport:active { cursor: grabbing; }
         .map-wrapper { position: relative; width: 100%; min-width: 920px; transition: width 0.35s ease; transform-origin: top left; }
-        .map-wrapper img { width: 100%; height: auto; display: block; pointer-events: none; user-select: none; }
+        .map-wrapper img { width: 100%; height: auto; display: block; pointer-events: none; user-select: none; opacity: 0; transition: opacity 0.5s; }
+        .map-wrapper img.loaded { opacity: 1; }
 
-        /* TRAZADO FINO DE RUTAS SVG */
+        /* Loader para la imagen de Github */
+        .loader-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 10px; color: #64748b; font-weight: 800; font-size: 14px; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #cbd5e1; border-top: 4px solid var(--blue); border-radius: 50%; animation: spin 1s linear infinite; }
+
+        /* TRAZADO MAPA DEL TESORO (Línea punteada) */
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
+        /* La línea roja gruesa con espacios (dasharray) estilo mapa antiguo */
+        .ruta-tesoro-puntos { fill: none; stroke: #ef4444; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1.8, 2.5; animation: dash-flow 1.5s linear infinite reverse; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5)); }
 
         /* PINES TAMAÑO FIJO */
         .map-pin { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; z-index: 10; cursor: pointer; transition: z-index 0.2s; }
@@ -92,8 +102,6 @@
         .map-pin[data-categoria="facultad"] .pin-marker::after { border-color: #2563eb transparent transparent transparent; }
         .map-pin[data-categoria="bienestar"] .pin-marker { border-color: #10b981; }
         .map-pin[data-categoria="bienestar"] .pin-marker::after { border-color: #10b981 transparent transparent transparent; }
-        .map-pin[data-categoria="servicios"] .pin-marker { border-color: #8b5cf6; }
-        .map-pin[data-categoria="servicios"] .pin-marker::after { border-color: #8b5cf6 transparent transparent transparent; }
 
         .map-pin.active { z-index: 30; }
         .map-pin.active .pin-marker { transform: scale(1.25); border-color: var(--blue); }
@@ -189,6 +197,7 @@
                 <div class="ruta-selector">
                     <label>📍 Punto de Partida</label>
                     <select id="select-origen">
+                        <option value="gps" style="font-weight: 900; color: #10b981;">📍 MI UBICACIÓN ACTUAL (GPS)</option>
                         <option value="entrada" selected>Entrada Principal</option>
                         <option value="garita">Garita de Seguridad</option>
                         <option value="biblioteca">Biblioteca Central</option>
@@ -301,9 +310,15 @@
 
             <!-- CONTENEDOR DE MAPA Y PINES CON TAMAÑO FIJO -->
             <div id="vista-mapa" class="map-viewport">
+                <!-- Loader que se muestra mientras carga el mapa de Github -->
+                <div id="map-loader" class="loader-container">
+                    <div class="spinner"></div>
+                    <span>Cargando imagen satelital 4K...</span>
+                </div>
+
                 <div class="map-wrapper" id="mapa-wrapper" style="width: 100%;">
-                    <!-- ENLACE DIRECTO SATELITAL -->
-                    <img id="img-mapa" crossorigin="anonymous" src="https://i.ibb.co/wNySDJ62/SATELITE-UNE.jpg" alt="Mapa Satelital UNE">
+                    <!-- IMAGEN SATELITAL CARGA DIFERIDA -->
+                    <img id="img-mapa" crossorigin="anonymous" src="https://i.ibb.co/wNySDJ62/SATELITE-UNE.jpg" alt="Mapa Satelital UNE" onload="document.getElementById('map-loader').style.display='none'; this.classList.add('loaded');">
                     
                     <svg id="svg-rutas" class="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
 
@@ -457,6 +472,7 @@
             <div id="vista-360" class="viewer-container">
                 <button class="btn-volver-mapa" onclick="volverAlMapa()">🔙 VOLVER AL MAPA</button>
                 <div id="panorama"></div>
+                <!-- PANEL DE CURIOSIDADES -->
                 <div id="curiosidades-overlay" class="curiosidad-panel">
                     <h5>💡 Sabías que...</h5>
                     <p id="curiosidad-texto">Cargando dato curioso...</p>
@@ -769,8 +785,7 @@
                 const accionesDiv = document.getElementById('acciones-ficha');
                 accionesDiv.innerHTML = `<button class="drawer-btn drawer-btn-ruta" id="btn-ficha-ir">🚀 Trazar Ruta Aquí</button>`;
                 
-                // Solo si no es exterior
-                if(info.pisos !== "Exterior") {
+                if(info.pisos !== "Exterior" && info.pisos !== "Cerro del Campus") {
                     accionesDiv.innerHTML += `<button class="drawer-btn drawer-btn-360" id="btn-ficha-360">🕶️ Ver 360°</button>`;
                     document.getElementById('btn-ficha-360').onclick = function() {
                         cerrarFichaMall();
@@ -911,7 +926,7 @@
                 svgContent += `<polyline fill="none" stroke="#94a3b8" stroke-width="0.3" stroke-dasharray="0.8,0.8" stroke-linecap="round" stroke-linejoin="round" points="${strAlt}" />`;
             }
 
-            // DIBUJAR RUTA PRINCIPAL (Línea de brillo y Xs vectoriales)
+            // DIBUJAR RUTA PRINCIPAL ESTILO "MAPA DEL TESORO"
             const rutaPrincipal = rutas[0];
             const puntosTotales = [coordOrigen, ...rutaPrincipal, coordDestino];
             const pointsStr = puntosTotales.map(p => `${p.x},${p.y}`).join(' ');
@@ -923,26 +938,10 @@
             const metrosEstimados = Math.round(distUnidades * 6.5);
             const minutosCaminando = Math.max(1, Math.round(metrosEstimados / 75));
 
-            // Brillo azul suave de fondo
-            svgContent += `<polyline class="ruta-glow" points="${pointsStr}" />`;
+            // Ruta estilo Mapa de Tesoro (Línea punteada gruesa)
+            svgContent += `<polyline class="ruta-tesoro-puntos" points="${pointsStr}" />`;
 
-            // Marcas X del mapa del tesoro (muy finas para no verse inmensas)
-            for (let i = 0; i < puntosTotales.length - 1; i++) {
-                const p1 = puntosTotales[i];
-                const p2 = puntosTotales[i + 1];
-                const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
-                const steps = Math.max(1, Math.floor(dist / 1.5)); 
-                
-                for(let j = 1; j <= steps; j++) {
-                    const t = j / steps;
-                    const x = p1.x + t * (p2.x - p1.x);
-                    const y = p1.y + t * (p2.y - p1.y);
-                    const s = 0.25; // Tamaño vectorial de la X
-                    svgContent += `<path d="M${x-s},${y-s} L${x+s},${y+s} M${x-s},${y+s} L${x+s},${y-s}" stroke="#1d4ed8" stroke-width="0.25" stroke-linecap="round"/>`;
-                }
-            }
-
-            // Círculos de inicio y fin ajustados (más pequeños)
+            // Círculos de inicio y fin ajustados
             svgContent += `
                 <circle cx="${coordOrigen.x}" cy="${coordOrigen.y}" r="0.6" fill="#10b981" stroke="#ffffff" stroke-width="0.2" />
                 <circle cx="${coordDestino.x}" cy="${coordDestino.y}" r="0.7" fill="#f59e0b" stroke="#ffffff" stroke-width="0.2" />
@@ -1066,7 +1065,6 @@
             document.getElementById('map-controls').style.display = 'none';
             document.getElementById('vista-360').style.display = 'block';
             
-            // Mostrar curiosidad si existe
             const info = directorioInfo[sceneId];
             const panelCuriosidad = document.getElementById('curiosidades-overlay');
             if(info && info.curiosidad) {
@@ -1086,7 +1084,7 @@
             document.getElementById('map-controls').style.display = 'flex';
         }
 
-        // MODAL Y GOOGLE SHEETS
+        // MODAL Y GOOGLE SHEETS CORREGIDO
         function toggleOtroInput(campo) {
             const select = document.getElementById(`reporte-${campo}`);
             const input = document.getElementById(`reporte-${campo}-otro`);
