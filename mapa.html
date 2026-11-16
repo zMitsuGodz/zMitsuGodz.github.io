@@ -27,7 +27,7 @@
         @keyframes radar-ping { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        /* Animación fluida para la ruta punteada (efecto caminar) */
+        /* Animación para que la línea de la ruta parezca moverse */
         @keyframes dash-flow { to { stroke-dashoffset: -20; } } 
 
         body { 
@@ -60,6 +60,8 @@
         
         .btn-trazar { padding: 12px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 13.5px; height: 46px; }
         .btn-limpiar { padding: 12px 16px; background: #e2e8f0; color: #334155; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 13px; height: 46px; }
+        .btn-prueba { padding: 12px 16px; background: #8b5cf6; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 900; font-size: 13px; height: 46px; display: flex; align-items: center; gap: 6px; }
+        .btn-prueba:hover { background: #7c3aed; }
         .mensaje-ruta { font-weight: 800; font-size: 13px; min-height: 18px; }
 
         .main-wrapper { display: flex; max-width: 1440px; margin: 0 auto 25px; padding: 0 15px; gap: 20px; width: 100%; animation: popIn 0.5s ease-out forwards; }
@@ -82,10 +84,10 @@
         .loader-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 10px; color: #64748b; font-weight: 800; font-size: 14px; }
         .spinner { width: 40px; height: 40px; border: 4px solid #cbd5e1; border-top: 4px solid var(--blue); border-radius: 50%; animation: spin 1s linear infinite; }
 
-        /* TRAZADO MAPA DEL TESORO (Línea punteada) */
+        /* TRAZADO MAPA DEL TESORO LINEAL (Línea directa punteada gruesa) */
         .route-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
-        /* La línea roja gruesa con espacios (dasharray) estilo mapa antiguo */
-        .ruta-tesoro-puntos { fill: none; stroke: #ef4444; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1.8, 2.5; animation: dash-flow 1.5s linear infinite reverse; filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5)); }
+        .ruta-lineal-base { fill: none; stroke: rgba(37, 99, 235, 0.4); stroke-width: 1.5; stroke-linecap: round; }
+        .ruta-lineal-puntos { fill: none; stroke: #2563eb; stroke-width: 0.8; stroke-linecap: round; stroke-dasharray: 2.5, 2.5; animation: dash-flow 1.5s linear infinite reverse; }
 
         /* PINES TAMAÑO FIJO */
         .map-pin { position: absolute; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; z-index: 10; cursor: pointer; transition: z-index 0.2s; }
@@ -107,7 +109,17 @@
         .map-pin.active .pin-marker { transform: scale(1.25); border-color: var(--blue); }
         .map-pin.active .pin-label { background: var(--blue); color: white; }
 
-        /* PANEL INFO Y CURIOSIDADES 360 */
+        /* AVATAR GPS Y MASCOTAS UNE */
+        .gps-avatar { position: absolute; transform: translate(-50%, -50%); z-index: 40; display: none; flex-direction: column; align-items: center; pointer-events: none; transition: top 0.1s linear, left 0.1s linear; }
+        .gps-dot { width: 22px; height: 22px; background: var(--blue); border: 3px solid white; border-radius: 50%; box-shadow: 0 0 15px rgba(59, 130, 246, 0.9); position: relative; }
+        .gps-dot::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: rgba(59, 130, 246, 0.4); border-radius: 50%; animation: radar-ping 2s infinite; }
+        .gps-label { background: var(--blue); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10.5px; font-weight: 900; margin-bottom: 5px; white-space: nowrap; border: 1px solid white; }
+        
+        /* Contenedor para avatares ilustrados (Gato o Burrito) */
+        .avatar-imagen { width: 50px; height: 50px; background-size: contain; background-repeat: no-repeat; background-position: center; display: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); transition: transform 0.2s ease; }
+        .avatar-imagen.mirar-izquierda { transform: scaleX(-1); }
+
+        /* PANEL INFO, FOTOS COMUNITARIAS Y CURIOSIDADES 360 */
         .viewer-container { width: 100%; height: 65vh; min-height: 480px; border-radius: 18px; overflow: hidden; position: relative; display: none; background: #000; border: 3px solid white; }
         #panorama { width: 100%; height: 100%; }
         .btn-volver-mapa { position: absolute; top: 18px; left: 18px; z-index: 999; background: rgba(239, 68, 68, 0.92); color: white; border: 2px solid white; padding: 10px 18px; border-radius: 12px; font-weight: 900; cursor: pointer; }
@@ -115,6 +127,9 @@
         .curiosidad-panel { position: absolute; bottom: 30px; right: 30px; z-index: 999; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px 20px; max-width: 320px; color: white; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; display: none; }
         .curiosidad-panel h5 { color: var(--accent); font-size: 14px; margin-bottom: 5px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
         .curiosidad-panel p { font-size: 13px; line-height: 1.4; color: #e2e8f0; font-weight: 600; margin: 0; }
+        
+        /* Nuevo botón para subir fotos 360 comunitarias */
+        .btn-subir-foto { position: absolute; top: 18px; right: 18px; z-index: 999; background: rgba(59, 130, 246, 0.92); color: white; border: 2px solid white; padding: 10px 18px; border-radius: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; }
 
         /* SIDEBAR */
         .sidebar { flex: 1; min-width: 330px; background: var(--surface); border-radius: 24px; padding: 18px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; height: 75vh; min-height: 480px; border: 1px solid rgba(255,255,255,0.4); }
@@ -143,20 +158,26 @@
         .drawer-btn-ruta { background: var(--green); color: white; }
         .drawer-btn-360 { background: var(--accent); color: var(--primary); }
 
-        /* MODAL REPORTES */
+        /* MODAL REPORTES Y SUBIDA DE FOTOS */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 9999; display: none; align-items: center; justify-content: center; }
         .modal-box { background: white; border-radius: 20px; padding: 25px; width: 90%; max-width: 450px; animation: popIn 0.3s; }
-        .modal-box h3 { color: var(--primary); margin-bottom: 15px; font-weight: 900; }
+        .modal-box h3 { color: var(--primary); margin-bottom: 15px; font-weight: 900; font-size: 16px; }
         .modal-box label { font-size: 12px; font-weight: 800; color: #64748b; display: block; margin-bottom: 5px; }
         .modal-box select, .modal-box input, .modal-box textarea { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; margin-bottom: 15px; font-family: inherit; font-size: 14px; font-weight: 600; outline: none; }
+        .modal-box input[type="file"] { padding: 8px; border: 1px dashed #cbd5e1; background: #f8fafc; }
         .modal-box textarea { resize: vertical; min-height: 80px; }
         .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
         .btn-cancelar { padding: 10px 15px; background: #e2e8f0; color: #475569; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; }
         .btn-enviar { padding: 10px 15px; background: var(--blue); color: white; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; }
+        .nota-revision { font-size: 11px; color: #f59e0b; font-weight: 700; margin-bottom: 10px; display: block; }
 
-        /* RESULTADO GPS DEV */
-        #resultado-gps { font-family: monospace; font-size: 12.5px; background: #1e293b; color: #10b981; padding: 15px; border-radius: 10px; display: none; position: relative; margin-top:10px; }
-        .btn-copiar { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        /* CONTROLES DE AVATAR Y PRUEBA */
+        .tools-container { max-width: 1440px; margin: 0 auto 35px; padding: 0 15px; width: 100%; }
+        .tools-card { background: var(--surface); border-radius: 24px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; }
+        .tools-header-fila { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .avatar-selector { display: flex; align-items: center; gap: 8px; background: white; padding: 5px 10px; border-radius: 12px; border: 2px solid #e2e8f0; }
+        .avatar-selector label { font-size: 12px; font-weight: 800; color: var(--primary); margin: 0; }
+        .avatar-selector select { border: none; font-weight: 700; outline: none; background: transparent; cursor: pointer; }
         
         @media (max-width: 992px) {
             .main-wrapper { flex-direction: column; }
@@ -282,8 +303,10 @@
                 </div>
                 <button class="btn-trazar" onclick="trazarRutaVisual()">🚀 CALCULAR CAMINO</button>
                 <button class="btn-limpiar" onclick="limpiarRutaMapa()">🧹 LIMPIAR</button>
+                <!-- BOTÓN DE PRUEBA -->
+                <button class="btn-prueba" id="btn-prueba-nav" onclick="iniciarModoPrueba()" style="display:none;"><i class="fas fa-play"></i> Iniciar Prueba</button>
             </div>
-            <div id="dan-texto" class="mensaje-ruta">Selecciona un destino o toca un lugar en el mapa para trazar la ruta.</div>
+            <div id="dan-texto" class="mensaje-ruta">Selecciona un destino o toca un lugar en el mapa para trazar la ruta lineal directa.</div>
         </div>
     </div>
 
@@ -321,6 +344,16 @@
                     <img id="img-mapa" crossorigin="anonymous" src="https://i.ibb.co/wNySDJ62/SATELITE-UNE.jpg" alt="Mapa Satelital UNE" onload="document.getElementById('map-loader').style.display='none'; this.classList.add('loaded');">
                     
                     <svg id="svg-rutas" class="route-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+
+                    <!-- AVATAR GPS CON OPCIÓN DE MASCOTA -->
+                    <div id="avatar-estudiante" class="gps-avatar">
+                        <div class="gps-label" id="gps-text-label">📍 Tú estás aquí</div>
+                        <!-- Punto básico azul -->
+                        <div class="gps-dot" id="gps-dot-basic"></div>
+                        <!-- Imágenes (Gato / Burrito) -->
+                        <div class="avatar-imagen" id="gps-img-gato" style="background-image: url('gato-une.png');"></div>
+                        <div class="avatar-imagen" id="gps-img-burrito" style="background-image: url('burrito-une.png'); width: 80px;"></div>
+                    </div>
 
                     <!-- PINES (Coordenadas actualizadas) -->
                     <div class="map-pin" data-categoria="principal" id="pin-mapa-entrada" style="top: 25.7%; left: 34.4%;" onclick="seleccionarLugar('entrada')">
@@ -471,6 +504,10 @@
             <!-- VISOR 360 Y CURIOSIDADES -->
             <div id="vista-360" class="viewer-container">
                 <button class="btn-volver-mapa" onclick="volverAlMapa()">🔙 VOLVER AL MAPA</button>
+                
+                <!-- Botón para subir fotos de la comunidad -->
+                <button class="btn-subir-foto" onclick="abrirModalFoto()">📷 Aportar Foto 360°</button>
+
                 <div id="panorama"></div>
                 <!-- PANEL DE CURIOSIDADES -->
                 <div id="curiosidades-overlay" class="curiosidad-panel">
@@ -532,6 +569,44 @@
         </div>
     </div>
 
+    <!-- PANEL HERRAMIENTAS Y GPS AVATAR -->
+    <div class="tools-container">
+        <div class="tools-card">
+            <div class="tools-header-fila">
+                <h4>🛰️ Navegación Satelital y Modo Prueba</h4>
+                <div class="avatar-selector">
+                    <label>Tu Avatar:</label>
+                    <select id="select-avatar" onchange="cambiarAvatar(this.value)">
+                        <option value="punto">Punto Azul Clásico</option>
+                        <option value="gato">🐱 Gatito de la UNE</option>
+                        <option value="burrito">🚌 Bus "El Burrito"</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="gps-grid">
+                <div>
+                    <p style="margin-bottom: 14px; font-size: 13px; font-weight: 700; color: #475569;">Puedes activar tu GPS real o usar el modo simulador. Además, prueba el recorrido automático pulsando el botón morado de prueba.</p>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-action bg-green" onclick="iniciarNavegacion()">🚶 Activar GPS</button>
+                        <button class="btn-action bg-red" onclick="detenerNavegacion()">🛑 Detener</button>
+                    </div>
+                    <div id="panel-instrucciones" style="margin-top: 16px; font-weight: 900; color: #1e3a8a; background: rgba(255,255,255,0.85); padding: 14px; border-radius: 12px; border: 2px dashed #cbd5e1;">Sistema en espera...</div>
+                </div>
+                
+                <div class="joystick-container">
+                    <p style="font-size: 12.5px; font-weight: 900; color: #1e3a8a; text-transform: uppercase;">🕹️ Joystick Manual</p>
+                    <div class="d-pad">
+                        <button class="d-btn d-up" onclick="moverJoystick(1, 0)">⬆️</button>
+                        <button class="d-btn d-left" onclick="moverJoystick(0, -1)">⬅️</button>
+                        <button class="d-btn d-right" onclick="moverJoystick(0, 1)">➡️</button>
+                        <button class="d-btn d-down" onclick="moverJoystick(-1, 0)">⬇️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- PANEL MODO DEV -->
     <div style="max-width:1440px; margin: 0 auto 30px; padding: 0 15px;">
         <div style="background:var(--surface); border-radius: 20px; padding: 15px; border: 1px solid #cbd5e1; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
@@ -585,6 +660,32 @@
         </div>
     </div>
 
+    <!-- MODAL APORTE FOTO 360 -->
+    <div id="modal-foto" class="modal-overlay">
+        <div class="modal-box">
+            <h3>📷 Aportar Foto Comunitaria</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">¿Tienes una foto normal o panorámica de este lugar? Súbela aquí para ayudar a otros estudiantes a guiarse mejor. El administrador revisará la foto antes de publicarla en el mapa.</p>
+            
+            <label>Lugar a mostrar:</label>
+            <input type="text" id="foto-lugar-texto" value="Lugar actual" disabled style="background:#e2e8f0; color:#475569; border-color:#cbd5e1;">
+
+            <label>Tu Nombre (Opcional, para darte créditos):</label>
+            <input type="text" id="foto-autor" placeholder="Ej: Juan Pérez (Promo 2026)">
+
+            <label>Selecciona tu imagen (JPG o PNG):</label>
+            <input type="file" id="foto-archivo" accept="image/*">
+            
+            <span class="nota-revision">⚠️ La foto no aparecerá inmediatamente. Debe ser verificada por moderación.</span>
+            
+            <div id="msg-foto" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Foto enviada a revisión. ¡Gracias por tu aporte!</div>
+
+            <div class="modal-actions">
+                <button class="btn-cancelar" onclick="cerrarModalFoto()">Cancelar</button>
+                <button class="btn-enviar" onclick="enviarFoto()">Subir para Revisión</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // CONFIGURACIONES BÁSICAS
         let modoEdicionActivo = false;
@@ -601,50 +702,21 @@
         let miYActual = baseMapa.y;
 
         const coordenadasMapa = {
-            "entrada": { x: 34.4, y: 25.7 },
-            "garita": { x: 33.3, y: 26.6 },
-            "pab_administrativo": { x: 52.0, y: 19.9 },
-            "biblioteca": { x: 41.9, y: 34.7 },
-            "huaranguito": { x: 48.3, y: 31.1 },
-            "auditorio_prin": { x: 72.8, y: 20.7 },
-            "sociales_norte": { x: 68.3, y: 9.2 },
-            "idiomas": { x: 80.7, y: 17.9 },
-            "fac_inicial": { x: 41.6, y: 44.7 },
-            "auditorio_pedagogia": { x: 57.5, y: 44.4 },
-            "fac_ciencias": { x: 65.2, y: 51.6 },
-            "sociales": { x: 82.7, y: 49.7 },
-            "colegio_aplicacion": { x: 49.4, y: 58.1 },
-            "electricidad": { x: 52.8, y: 71.9 },
-            "fac_tecnologia": { x: 66.3, y: 65.6 },
-            "decanato_tecno": { x: 63.6, y: 68.5 },
-            "fac_telematica": { x: 88.4, y: 36.1 },
-            "auditorio_telecom": { x: 87.1, y: 29.9 },
-            "fac_educacion": { x: 73.7, y: 65.8 },
-            "fac_fisica": { x: 32.5, y: 78.6 },
-            "fac_civil": { x: 73.5, y: 65.9 },
-            "fac_artistica": { x: 62.5, y: 79.2 },
-            "fac_vestido": { x: 43.2, y: 89.6 },
-            "estadio": { x: 19.4, y: 54.8 },
-            "gimnasio": { x: 40.6, y: 62.1 },
-            "losa": { x: 50.7, y: 64.1 },
-            "piscina": { x: 35.7, y: 71.6 },
-            "topico": { x: 22.6, y: 86.2 },
-            "capilla": { x: 34.0, y: 84.4 },
-            "estacionamiento": { x: 31.6, y: 48.8 },
-            "rotonda": { x: 62.4, y: 72.8 },
-            "talcomachay": { x: 96.3, y: 94.7 },
-            "oficina_recreacion": { x: 81.7, y: 38.2 },
-            "tuna": { x: 81.0, y: 35.0 },
-            "motos": { x: 32.3, y: 24.9 },
-            "recta_ventas": { x: 42.4, y: 17.9 },
-            "comedor_a": { x: 75.0, y: 42.7 },
-            "comedor_b": { x: 68.7, y: 31.0 },
-            "of_servicios": { x: 77.8, y: 41.1 },
-            "papeleria_1": { x: 87.3, y: 41.0 },
-            "aseped": { x: 44.5, y: 71.6 },
-            "bano_1": { x: 73.7, y: 51.3 },
-            "bano_2": { x: 34.5, y: 37.3 },
-            "bano_4": { x: 38.3, y: 63.0 }
+            "entrada": { x: 34.4, y: 25.7 }, "garita": { x: 33.3, y: 26.6 }, "pab_administrativo": { x: 52.0, y: 19.9 },
+            "biblioteca": { x: 41.9, y: 34.7 }, "huaranguito": { x: 48.3, y: 31.1 }, "auditorio_prin": { x: 72.8, y: 20.7 },
+            "sociales_norte": { x: 68.3, y: 9.2 }, "idiomas": { x: 80.7, y: 17.9 }, "fac_inicial": { x: 41.6, y: 44.7 },
+            "auditorio_pedagogia": { x: 57.5, y: 44.4 }, "fac_ciencias": { x: 65.2, y: 51.6 }, "sociales": { x: 82.7, y: 49.7 },
+            "colegio_aplicacion": { x: 49.4, y: 58.1 }, "electricidad": { x: 52.8, y: 71.9 }, "fac_tecnologia": { x: 66.3, y: 65.6 },
+            "decanato_tecno": { x: 63.6, y: 68.5 }, "fac_telematica": { x: 88.4, y: 36.1 }, "auditorio_telecom": { x: 87.1, y: 29.9 },
+            "fac_educacion": { x: 73.7, y: 65.8 }, "fac_fisica": { x: 32.5, y: 78.6 }, "fac_civil": { x: 73.5, y: 65.9 },
+            "fac_artistica": { x: 62.5, y: 79.2 }, "fac_vestido": { x: 43.2, y: 89.6 }, "estadio": { x: 19.4, y: 54.8 },
+            "gimnasio": { x: 40.6, y: 62.1 }, "losa": { x: 50.7, y: 64.1 }, "piscina": { x: 35.7, y: 71.6 },
+            "topico": { x: 22.6, y: 86.2 }, "capilla": { x: 34.0, y: 84.4 }, "estacionamiento": { x: 31.6, y: 48.8 },
+            "rotonda": { x: 62.4, y: 72.8 }, "talcomachay": { x: 96.3, y: 94.7 }, "oficina_recreacion": { x: 81.7, y: 38.2 },
+            "tuna": { x: 81.0, y: 35.0 }, "motos": { x: 32.3, y: 24.9 }, "recta_ventas": { x: 42.4, y: 17.9 },
+            "comedor_a": { x: 75.0, y: 42.7 }, "comedor_b": { x: 68.7, y: 31.0 }, "of_servicios": { x: 77.8, y: 41.1 },
+            "papeleria_1": { x: 87.3, y: 41.0 }, "aseped": { x: 44.5, y: 71.6 }, "bano_1": { x: 73.7, y: 51.3 },
+            "bano_2": { x: 34.5, y: 37.3 }, "bano_4": { x: 38.3, y: 63.0 }
         };
 
         const directorioInfo = {
@@ -694,6 +766,7 @@
             "bano_4": { titulo: "Baño 4", cat: "SSHH", pisos: "Zona Losa", oficinas: "Baños zona deportiva." }
         };
 
+        // RUTAS
         const nodosGrafo = {
             "n_entrada_top":   { x: 34.4, y: 25.7, vecinos: ["n_tri_izq", "n_recta_cruce"] },
             "n_tri_izq":       { x: 33.3, y: 26.6, vecinos: ["n_entrada_top", "n_motos_cruce", "n_biblio_cruce"] },
@@ -868,7 +941,12 @@
             document.getElementById('dan-texto').style.color = '#475569';
             document.getElementById('dan-texto').innerHTML = 'Mapa limpio. Elige un punto de partida y destino para calcular el camino.';
             document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
+            detenerNavegacion();
+            document.getElementById('btn-prueba-nav').style.display = 'none';
         }
+
+        // Variable global para la ruta de prueba
+        let rutaAmoverse = [];
 
         function trazarRutaVisual(silencioso = false) {
             document.getElementById('filtro-categoria').value = 'todos';
@@ -878,6 +956,10 @@
             const destinoId = document.getElementById('select-destino').value;
             const svgLayer = document.getElementById('svg-rutas');
             const mensajeBox = document.getElementById('dan-texto');
+            
+            // Ocultar botón de prueba si se traza nueva ruta
+            document.getElementById('btn-prueba-nav').style.display = 'none';
+            detenerNavegacion();
 
             if (origenId === 'gps') {
                 if (!gpsActivado) {
@@ -919,14 +1001,14 @@
             
             let svgContent = '';
             
-            // DIBUJAR RUTA ALTERNATIVA (Gris delgada)
+            // RUTA ALTERNATIVA (Línea delgada)
             if (rutas.length > 1) {
                 const puntosAlt = [coordOrigen, ...rutas[1], coordDestino];
                 const strAlt = puntosAlt.map(p => `${p.x},${p.y}`).join(' ');
-                svgContent += `<polyline fill="none" stroke="#94a3b8" stroke-width="0.3" stroke-dasharray="0.8,0.8" stroke-linecap="round" stroke-linejoin="round" points="${strAlt}" />`;
+                svgContent += `<polyline class="ruta-lineal-base" stroke-dasharray="1,1.5" points="${strAlt}" />`;
             }
 
-            // DIBUJAR RUTA PRINCIPAL ESTILO "MAPA DEL TESORO"
+            // RUTA PRINCIPAL ESTILO MAPA DEL TESORO
             const rutaPrincipal = rutas[0];
             const puntosTotales = [coordOrigen, ...rutaPrincipal, coordDestino];
             const pointsStr = puntosTotales.map(p => `${p.x},${p.y}`).join(' ');
@@ -938,10 +1020,10 @@
             const metrosEstimados = Math.round(distUnidades * 6.5);
             const minutosCaminando = Math.max(1, Math.round(metrosEstimados / 75));
 
-            // Ruta estilo Mapa de Tesoro (Línea punteada gruesa)
+            // Trazado de ruta punteada
             svgContent += `<polyline class="ruta-tesoro-puntos" points="${pointsStr}" />`;
 
-            // Círculos de inicio y fin ajustados
+            // Círculos de inicio y fin
             svgContent += `
                 <circle cx="${coordOrigen.x}" cy="${coordOrigen.y}" r="0.6" fill="#10b981" stroke="#ffffff" stroke-width="0.2" />
                 <circle cx="${coordDestino.x}" cy="${coordDestino.y}" r="0.7" fill="#f59e0b" stroke="#ffffff" stroke-width="0.2" />
@@ -957,6 +1039,100 @@
                 const opcionesTexto = rutas.length > 1 ? ` (<span>2 rutas generadas</span>)` : '';
                 mensajeBox.style.color = "#059669";
                 mensajeBox.innerHTML = `✅ <b>Ruta calculada${opcionesTexto}:</b> ~${metrosEstimados} m (~${minutosCaminando} min) hacia <b>${infoDest ? infoDest.titulo : destinoId}</b>.`;
+            }
+
+            // Habilitar modo de prueba automático guardando la ruta generada
+            rutaAmoverse = puntosTotales;
+            document.getElementById('btn-prueba-nav').style.display = 'flex';
+        }
+
+        // ==========================================
+        //  MODO PRUEBA (RECORRIDO ANIMADO)
+        // ==========================================
+        let intervaloPrueba;
+        let pasoActual = 0;
+        let pProgreso = 0;
+
+        function iniciarModoPrueba() {
+            if (rutaAmoverse.length < 2) return;
+            
+            // Forzar inicio desde la entrada de la UNE si está configurado así
+            miXActual = baseMapa.x;
+            miYActual = baseMapa.y;
+            
+            document.getElementById('avatar-estudiante').style.display = 'flex';
+            const panel = document.getElementById('panel-instrucciones');
+            panel.innerHTML = "🚶 Modo Prueba Activo: Caminando por la ruta...";
+            panel.style.background = "#fef3c7";
+            
+            pasoActual = 0;
+            pProgreso = 0;
+            
+            clearInterval(intervaloPrueba);
+            intervaloPrueba = setInterval(animarPaso, 40);
+        }
+
+        function animarPaso() {
+            if (pasoActual >= rutaAmoverse.length - 1) {
+                clearInterval(intervaloPrueba);
+                const panel = document.getElementById('panel-instrucciones');
+                panel.innerHTML = "✅ ¡Has llegado a tu destino!";
+                panel.style.background = "#dcfce7";
+                return;
+            }
+
+            const p1 = rutaAmoverse[pasoActual];
+            const p2 = rutaAmoverse[pasoActual + 1];
+
+            // Velocidad de la animación (más alto = más lento)
+            pProgreso += 0.05; 
+            
+            if (pProgreso >= 1) {
+                pProgreso = 0;
+                pasoActual++;
+                if (pasoActual >= rutaAmoverse.length - 1) return;
+            }
+
+            // Calcular nueva posición interpolada
+            miXActual = p1.x + (p2.x - p1.x) * pProgreso;
+            miYActual = p1.y + (p2.y - p1.y) * pProgreso;
+
+            const avatar = document.getElementById('avatar-estudiante');
+            avatar.style.left = miXActual + '%';
+            avatar.style.top = miYActual + '%';
+            
+            // Voltear el gato o bus según la dirección (si va a la izquierda, voltea el img)
+            const dx = p2.x - p1.x;
+            const imgGato = document.getElementById('gps-img-gato');
+            const imgBurrito = document.getElementById('gps-img-burrito');
+            
+            if (dx < 0) {
+                imgGato.classList.add('mirar-izquierda');
+                imgBurrito.classList.add('mirar-izquierda');
+            } else if (dx > 0) {
+                imgGato.classList.remove('mirar-izquierda');
+                imgBurrito.classList.remove('mirar-izquierda');
+            }
+        }
+
+        // ==========================================
+        //  SELECCIÓN DE AVATAR GPS
+        // ==========================================
+        function cambiarAvatar(tipo) {
+            const dot = document.getElementById('gps-dot-basic');
+            const lbl = document.getElementById('gps-text-label');
+            const gato = document.getElementById('gps-img-gato');
+            const burrito = document.getElementById('gps-img-burrito');
+
+            if (tipo === 'punto') {
+                dot.style.display = 'block'; lbl.style.display = 'block';
+                gato.style.display = 'none'; burrito.style.display = 'none';
+            } else if (tipo === 'gato') {
+                dot.style.display = 'none'; lbl.style.display = 'none';
+                gato.style.display = 'block'; burrito.style.display = 'none';
+            } else if (tipo === 'burrito') {
+                dot.style.display = 'none'; lbl.style.display = 'none';
+                gato.style.display = 'none'; burrito.style.display = 'block';
             }
         }
 
@@ -1050,7 +1226,7 @@
             viewer = pannellum.viewer('panorama', {
                 "default": { "firstScene": sceneId, "sceneFadeDuration": 1000, "autoLoad": true, "crossOrigin": "anonymous" },
                 "scenes": {
-                    // Mantiene esta URL relativa como solicitaste para Github
+                    // Para que en Github funcione, debe ser la ruta exacta a tu carpeta
                     "entrada": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "talcomachay": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
                     "biblioteca": { "type": "equirectangular", "panorama": "fotos-360-une/BIBLIOTECA.png" },
@@ -1073,6 +1249,9 @@
             } else {
                 panelCuriosidad.style.display = 'none';
             }
+            
+            // Pasar el nombre del lugar al modal de fotos
+            document.getElementById('foto-lugar-texto').value = info ? info.titulo : sceneId;
 
             inicializarPannellum(sceneId);
         }
@@ -1084,7 +1263,9 @@
             document.getElementById('map-controls').style.display = 'flex';
         }
 
-        // MODAL Y GOOGLE SHEETS CORREGIDO
+        // ==========================================
+        // MODAL DE APORTE DE FOTOS Y REPORTES
+        // ==========================================
         function toggleOtroInput(campo) {
             const select = document.getElementById(`reporte-${campo}`);
             const input = document.getElementById(`reporte-${campo}-otro`);
@@ -1108,6 +1289,15 @@
             document.getElementById('reporte-tipo').value = "Falta Limpieza / Papel";
             toggleOtroInput('lugar');
             toggleOtroInput('tipo');
+        }
+
+        function abrirModalFoto() {
+            document.getElementById('msg-foto').style.display = 'none';
+            document.getElementById('modal-foto').style.display = 'flex';
+        }
+        function cerrarModalFoto() {
+            document.getElementById('modal-foto').style.display = 'none';
+            document.getElementById('foto-archivo').value = "";
         }
 
         function enviarReporteSheets() {
@@ -1143,14 +1333,32 @@
                 btn.disabled = false;
             });
         }
+        
+        function enviarFoto() {
+            const archivo = document.getElementById('foto-archivo').files[0];
+            const btn = document.querySelectorAll('.btn-enviar')[1]; // El botón de subir foto
+            
+            if(!archivo) { alert("Por favor, selecciona una imagen primero."); return; }
+            
+            btn.innerHTML = "Subiendo..."; btn.disabled = true;
+            
+            // Simulación de envío de archivo (En un entorno real aquí harías un POST formData a tu servidor/Sheets)
+            setTimeout(() => {
+                document.getElementById('msg-foto').style.display = 'block';
+                btn.innerHTML = "Subir para Revisión"; btn.disabled = false;
+                setTimeout(() => { cerrarModalFoto(); }, 2500);
+            }, 1500);
+        }
 
+        // ==========================================
+        //  GPS EN VIVO
+        // ==========================================
         let watchId = null;
         let simLat = baseReal.lat; 
         let simLon = baseReal.lon; 
-        let modoSimulador = false;
 
         function iniciarNavegacion() {
-            modoSimulador = false;
+            clearInterval(intervaloPrueba); // Detener el modo prueba si estaba andando
             gpsActivado = true;
             const panel = document.getElementById('panel-instrucciones');
             document.getElementById('avatar-estudiante').style.display = 'flex';
@@ -1171,7 +1379,7 @@
 
         function moverJoystick(dLat, dLon) {
             if(watchId !== null) detenerNavegacion();
-            modoSimulador = true;
+            clearInterval(intervaloPrueba);
             gpsActivado = true;
             document.getElementById('avatar-estudiante').style.display = 'flex';
             
@@ -1182,6 +1390,7 @@
 
         function detenerNavegacion() {
             if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+            clearInterval(intervaloPrueba);
             watchId = null;
             gpsActivado = false;
             document.getElementById('avatar-estudiante').style.display = 'none';
@@ -1202,16 +1411,27 @@
             const avatar = document.getElementById('avatar-estudiante');
             avatar.style.left = miXActual + '%';
             avatar.style.top = miYActual + '%';
-
-            const prefijo = modoSimulador ? "🎮 SIMULADOR: " : "🛰️ GPS EN VIVO: ";
+            
+            // Voltear el gato o bus según la dirección manual simulada
+            const dx = (miLon - simLon);
+            const imgGato = document.getElementById('gps-img-gato');
+            const imgBurrito = document.getElementById('gps-img-burrito');
+            
+            if (dx < 0) {
+                imgGato.classList.add('mirar-izquierda');
+                imgBurrito.classList.add('mirar-izquierda');
+            } else if (dx > 0) {
+                imgGato.classList.remove('mirar-izquierda');
+                imgBurrito.classList.remove('mirar-izquierda');
+            }
 
             if (miXActual < 0 || miXActual > 100 || miYActual < 0 || miYActual > 100) {
-                panel.innerHTML = `${prefijo}❌ Te encuentras fuera del perímetro del campus UNE.`;
+                panel.innerHTML = `🛰️ ❌ Te encuentras fuera del perímetro del campus UNE.`;
                 panel.style.background = "#fee2e2";
                 return;
             }
 
-            panel.innerHTML = `${prefijo}🚶 Caminando por el campus (X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%)`;
+            panel.innerHTML = `🛰️ 🚶 Caminando por el campus (X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%)`;
             panel.style.background = "#dcfce7";
             
             if (document.getElementById('select-origen').value === 'gps' && document.getElementById('select-destino').value) {
