@@ -956,7 +956,7 @@
             document.getElementById('reporte-detalle').value = "";
         }
 
-        function enviarReporteSheets() {
+       function enviarReporteSheets() {
             const lugar = document.getElementById('reporte-lugar').value;
             const tipo = document.getElementById('reporte-tipo').value;
             const detalle = document.getElementById('reporte-detalle').value;
@@ -966,21 +966,24 @@
 
             btn.innerHTML = "Enviando..."; btn.disabled = true;
 
-            // ESTE ES EL LINK DE TU GOOGLE APPS SCRIPT (Reemplazar cuando lo publiques)
-            const scriptURL = 'REEMPLAZA_CON_TU_URL_DE_APPS_SCRIPT'; 
+            // TU ENLACE REAL DE GOOGLE APPS SCRIPT
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyf4rWB2DwsSPCRGE957JSSpdy3fPFhVXXhsCh-h2XObEu634K7hKgcpR982jS9CZWYCA/exec'; 
 
-            /* Lógica real de Fetch a Google Sheets:
-            fetch(scriptURL, { method: 'POST', body: new URLSearchParams({ 'lugar': lugar, 'tipo': tipo, 'detalle': detalle }) })
-                .then(response => { ... })
-            */
-
-            // Simulación de envío exitoso para visualización:
-            setTimeout(() => {
+            // Enviamos los datos a tu Google Sheets
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: new URLSearchParams({ 'lugar': lugar, 'tipo': tipo, 'detalle': detalle }) 
+            })
+            .then(response => {
                 document.getElementById('msg-reporte').style.display = 'block';
-                btn.innerHTML = "Enviar Reporte"; btn.disabled = false;
+                btn.innerHTML = "Enviar Reporte"; 
+                btn.disabled = false;
                 setTimeout(() => { cerrarModalReporte(); }, 2500);
-            }, 1000);
+            })
+            .catch(error => {
+                console.error('Error al enviar:', error.message);
+                alert("Hubo un problema al enviar. Revisa tu conexión.");
+                btn.innerHTML = "Enviar Reporte"; 
+                btn.disabled = false;
+            });
         }
-    </script>
-</body>
-</html>
