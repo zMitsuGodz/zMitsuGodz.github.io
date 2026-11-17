@@ -1406,15 +1406,14 @@
             
             btn.innerHTML = "Subiendo al Excel..."; btn.disabled = true;
 
-            const enviarPayload = (dataUrlCompleta = "", base64Raw = "", mime = "", fileName = "") => {
-                const infoFotoTexto = linkFoto ? ` | Link Foto: ${linkFoto}` : (dataUrlCompleta ? ` | FOTO_SUBIDA: ${dataUrlCompleta}` : "");
+            const enviarPayload = (base64Raw = "", mime = "", fileName = "") => {
                 fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: new URLSearchParams({
                         'lugar': lugar,
                         'tipo': 'FOTO / DATO CURIOSO',
-                        'detalle': `${curiosidad} (Por: ${autor})${infoFotoTexto}`,
-                        'link': linkFoto || dataUrlCompleta,
+                        'detalle': `${curiosidad} (Por: ${autor})`,
+                        'link': linkFoto,
                         'imagenBase64': base64Raw,
                         'mimeType': mime,
                         'nombreArchivo': fileName
@@ -1435,7 +1434,7 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        const maxDim = 420;
+                        const maxDim = 380;
                         let w = img.width, h = img.height;
                         if (w > h && w > maxDim) { h *= maxDim / w; w = maxDim; }
                         else if (h > maxDim) { w *= maxDim / h; h = maxDim; }
@@ -1445,7 +1444,7 @@
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         const comprimidaDataUrl = canvas.toDataURL('image/jpeg', 0.65);
                         const base64SinCabecera = comprimidaDataUrl.split(',')[1];
-                        enviarPayload(comprimidaDataUrl, base64SinCabecera, 'image/jpeg', archivo.name);
+                        enviarPayload(base64SinCabecera, 'image/jpeg', archivo.name);
                     };
                     img.src = e.target.result;
                 };
