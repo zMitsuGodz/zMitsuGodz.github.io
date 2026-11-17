@@ -1017,25 +1017,52 @@
             img.src = imgElement.src;
         }
 
+        // LECTURA FLEXIBLE Y SIN CACHÉ DE LOS APROBADOS EN TU GOOGLE SHEETS
+        function normalizarTexto(txt) {
+            return String(txt || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .trim();
+        }
+
         function cargarCuriosidadesAprobadasDeSheets() {
-            fetch(SCRIPT_URL)
+            fetch(SCRIPT_URL + "?t=" + new Date().getTime(), { cache: "no-store" })
                 .then(r => r.json())
                 .then(lista => {
                     if (!Array.isArray(lista)) return;
                     lista.forEach(item => {
+                        const lugarExcel = normalizarTexto(item.lugar);
+                        if (!lugarExcel) return;
+
                         for (let k in directorioInfo) {
-                            if (directorioInfo[k].titulo.toLowerCase() === String(item.lugar).toLowerCase()) {
+                            const tituloWeb = normalizarTexto(directorioInfo[k].titulo);
+                            const idWeb = normalizarTexto(k);
+
+                            if (tituloWeb === lugarExcel || idWeb === lugarExcel || tituloWeb.includes(lugarExcel) || lugarExcel.includes(tituloWeb)) {
                                 if (item.detalle && !directorioInfo[k].listaCuriosidades.includes(item.detalle)) {
                                     directorioInfo[k].listaCuriosidades.push(item.detalle);
                                 }
                                 if (item.imagen && (String(item.imagen).startsWith('http') || String(item.imagen).startsWith('data:image'))) {
-                                    directorioInfo[k].listaFotos.push({ url: item.imagen, texto: item.detalle || "Aporte estudiantil" });
+                                    const yaExiste = directorioInfo[k].listaFotos.some(f => f.url === item.imagen);
+                                    if (!yaExiste) {
+                                        directorioInfo[k].listaFotos.push({
+                                            url: item.imagen,
+                                            texto: item.detalle || "Aporte estudiantil"
+                                        });
+                                    }
                                 }
                             }
                         }
                     });
+
+                    // Si el visor 360 ya está abierto, refresca los paneles en vivo
+                    if (document.getElementById('vista-360').style.display === 'block') {
+                        renderizarCuriosidadActual();
+                        renderizarGaleriaFotos();
+                    }
                 })
-                .catch(() => {});
+                .catch(err => console.error("Error cargando aprobados:", err));
         }
 
         window.onload = function() {
