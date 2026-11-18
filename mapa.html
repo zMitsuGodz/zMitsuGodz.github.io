@@ -29,7 +29,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes giro-eje-360 { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes dash-flow { to { stroke-dashoffset: -10; } }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.45); } 50% { box-shadow: 0 0 28px rgba(59, 130, 246, 0.75); } }
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         body { 
             background: linear-gradient(-45deg, #020617, #1e1b4b, #0f172a, #172554);
@@ -38,27 +38,54 @@
             color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden;
         }
 
-        /* BANNER PUBLICITARIO KANTUROBOT RELOADED 2026 */
-        .promo-banner {
-            background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 35%, #7c2d12 75%, #0f172a 100%);
-            color: white; padding: 10px 20px; display: flex; justify-content: center; align-items: center;
-            gap: 15px; border-bottom: 2px solid #fbbf24; position: relative; z-index: 1001;
-            animation: pulse-glow 3s infinite; flex-wrap: wrap; text-align: center;
+        /* FRANJA ANIMADA DE NOTICIAS (TICKER EN MOVIMIENTO) */
+        .news-ticker-bar {
+            background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+            color: white; border-bottom: 2px solid #fbbf24; position: relative; z-index: 1001;
+            display: flex; align-items: center; overflow: hidden; height: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .promo-badge { background: #fbbf24; color: #0f172a; font-weight: 900; font-size: 11px; padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.8px; }
-        .promo-text { font-size: 14px; font-weight: 900; letter-spacing: 0.4px; color: #f8fafc; }
-        .promo-text span { color: #38bdf8; text-decoration: underline; }
-        .promo-close { background: rgba(255,255,255,0.15); border: none; color: white; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-weight: 900; font-size: 12px; }
+        .news-ticker-badge {
+            background: #fbbf24; color: #0f172a; font-weight: 900; font-size: 11px;
+            padding: 0 14px; height: 100%; display: flex; align-items: center; gap: 6px;
+            text-transform: uppercase; letter-spacing: 0.8px; z-index: 3; flex-shrink: 0;
+            box-shadow: 4px 0 12px rgba(0,0,0,0.4);
+        }
+        .news-ticker-track-wrap {
+            flex: 1; overflow: hidden; display: flex; align-items: center;
+        }
+        .news-ticker-track {
+            display: flex; width: max-content;
+            animation: ticker-scroll 32s linear infinite;
+        }
+        .news-ticker-track:hover { animation-play-state: paused; }
+        .news-ticker-content {
+            display: flex; align-items: center; gap: 45px; padding-right: 45px;
+            font-size: 13px; font-weight: 800; color: #f8fafc; white-space: nowrap;
+        }
+        .news-ticker-content span b { color: #38bdf8; }
+        .news-ticker-close {
+            background: rgba(15, 23, 42, 0.9); border: none; color: #cbd5e1;
+            width: 34px; height: 100%; cursor: pointer; font-weight: 900; font-size: 13px;
+            z-index: 3; flex-shrink: 0;
+        }
+        .news-ticker-close:hover { color: white; background: #dc2626; }
 
-        header { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(20px); padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); color: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.12); flex-wrap: wrap; gap: 10px; }
+        header { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(20px); padding: 12px 22px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); color: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.12); flex-wrap: wrap; gap: 10px; }
         .header-left { display: flex; align-items: center; gap: 14px; }
-        .logo-app-img { width: 54px; height: 54px; border-radius: 14px; object-fit: cover; border: 2px solid #fbbf24; box-shadow: 0 0 18px rgba(245, 158, 11, 0.45); background: white; }
-        .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn-reporte-header { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 14px; border-radius: 999px; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
-        .btn-reporte-header:hover { background: var(--blue); border-color: var(--blue); }
-        .btn-falta-facultad { background: linear-gradient(135deg, #10b981, #059669); border: none; color: white; padding: 8px 14px; border-radius: 999px; font-size: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
-        .btn-docente-anonimo { background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #0f172a; padding: 8px 14px; border-radius: 999px; font-size: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(245,158,11,0.35); }
-        .btn-docente-anonimo:hover, .btn-falta-facultad:hover { transform: translateY(-1px); }
+        .logo-app-img { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; border: 2px solid #fbbf24; box-shadow: 0 0 18px rgba(245, 158, 11, 0.45); background: white; }
+        .header-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+        
+        /* BOTONES SEPARADOS EN LA CABECERA */
+        .btn-header-pill {
+            border: none; padding: 8px 13px; border-radius: 999px; font-size: 11.5px;
+            font-weight: 900; cursor: pointer; transition: 0.25s; display: flex; align-items: center; gap: 6px;
+        }
+        .btn-header-pill:hover { transform: translateY(-1px); }
+        .btn-serv-gen { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; box-shadow: 0 4px 12px rgba(239,68,68,0.35); }
+        .btn-curiosidad-top { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; box-shadow: 0 4px 12px rgba(59,130,246,0.35); }
+        .btn-falta-facultad { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+        .btn-docente-anonimo { background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; box-shadow: 0 4px 12px rgba(245,158,11,0.35); }
 
         .route-planner-container { max-width: 1440px; margin: 18px auto 12px; padding: 0 15px; width: 100%; animation: popIn 0.4s ease-out forwards; }
         .route-glass-panel { background: var(--surface); backdrop-filter: blur(25px); border-radius: 20px; padding: 18px 22px; box-shadow: 0 15px 35px rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.5); display: flex; flex-direction: column; gap: 12px; }
@@ -155,11 +182,43 @@
         .girando-rapido { animation: giro-eje-360 0.25s linear infinite !important; }
         .mirar-izquierda { transform: scaleX(-1); }
 
-        /* VISOR 360 + PANELES MINIMIZABLES CON TEXTO COMPLETO */
-        .viewer-container { width: 100%; height: 65vh; min-height: 480px; border-radius: 18px; overflow: hidden; position: relative; display: none; background: #000; border: 3px solid white; }
+        /* VISOR DUAL (FOTO PLANA HD SIN PIXELEO + ESFERA 360°) */
+        .viewer-container { width: 100%; height: 65vh; min-height: 480px; border-radius: 18px; overflow: hidden; position: relative; display: none; background: #020617; border: 3px solid white; }
         #panorama { width: 100%; height: 100%; }
-        .btn-volver-mapa { position: absolute; top: 18px; left: 18px; z-index: 999; background: rgba(239, 68, 68, 0.92); color: white; border: 2px solid white; padding: 10px 18px; border-radius: 12px; font-weight: 900; cursor: pointer; }
-        .btn-subir-foto { position: absolute; top: 18px; right: 18px; z-index: 999; background: rgba(59, 130, 246, 0.92); color: white; border: 2px solid white; padding: 10px 18px; border-radius: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        
+        .vista-plana-wrapper {
+            width: 100%; height: 100%; background: radial-gradient(circle, #0f172a 0%, #020617 100%);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; padding: 65px 15px 20px;
+        }
+        .vista-plana-wrapper img {
+            max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8); border: 2px solid rgba(255,255,255,0.2);
+        }
+        .badge-plana-info {
+            position: absolute; top: 68px; left: 50%; transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.85); color: #38bdf8; padding: 5px 14px;
+            border-radius: 999px; font-size: 11.5px; font-weight: 900; border: 1px solid rgba(56,189,248,0.4);
+            pointer-events: none; white-space: nowrap;
+        }
+
+        /* Selector superior entre Foto Plana y Esfera 360 */
+        .modo-visor-switch {
+            position: absolute; top: 18px; left: 50%; transform: translateX(-50%); z-index: 1000;
+            display: flex; background: rgba(15, 23, 42, 0.92); padding: 4px; border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.25); gap: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+        .btn-modo-visor {
+            background: transparent; color: #cbd5e1; border: none; padding: 7px 14px;
+            border-radius: 8px; font-size: 12px; font-weight: 900; cursor: pointer; transition: 0.2s;
+            white-space: nowrap;
+        }
+        .btn-modo-visor.activo {
+            background: var(--accent); color: var(--primary); box-shadow: 0 2px 8px rgba(245,158,11,0.4);
+        }
+
+        .btn-volver-mapa { position: absolute; top: 18px; left: 18px; z-index: 999; background: rgba(239, 68, 68, 0.92); color: white; border: 2px solid white; padding: 10px 16px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 12px; }
+        .btn-subir-foto { position: absolute; top: 18px; right: 18px; z-index: 999; background: rgba(59, 130, 246, 0.92); color: white; border: 2px solid white; padding: 10px 16px; border-radius: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; }
         
         .btn-minimizar-panel { background: rgba(255,255,255,0.16); color: white; border: 1px solid rgba(255,255,255,0.25); width: 26px; height: 26px; border-radius: 7px; font-size: 12px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-minimizar-panel:hover { background: var(--blue); }
@@ -205,9 +264,10 @@
         .drawer-box { background: rgba(255,255,255,0.07); padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }
         .drawer-box span { display: block; font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: 800; margin-bottom: 3px; }
         .drawer-box p { font-size: 12.5px; font-weight: 700; color: #e2e8f0; line-height: 1.35; }
-        .drawer-actions { display: flex; gap: 10px; }
-        .drawer-btn { flex: 1; padding: 11px 14px; border: none; border-radius: 11px; font-weight: 900; font-size: 12.5px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .drawer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .drawer-btn { flex: 1; padding: 11px 12px; border: none; border-radius: 11px; font-weight: 900; font-size: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .drawer-btn-ruta { background: var(--green); color: white; }
+        .drawer-btn-plana { background: #38bdf8; color: #0f172a; }
         .drawer-btn-360 { background: var(--accent); color: var(--primary); }
 
         /* MODALES */
@@ -247,19 +307,33 @@
             .ruta-box { flex-direction: column; align-items: stretch; }
             .sidebar { height: auto; min-height: auto; max-height: 360px; }
             .info-drawer { left: 12px; right: 12px; bottom: 12px; padding: 15px; }
-            .galeria-estudiantes-panel { top: 68px; bottom: auto; left: 12px; width: 260px; }
+            .galeria-estudiantes-panel { top: 68px; bottom: auto; left: 12px; width: 250px; }
+            .modo-visor-switch { top: 62px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- PUBLICIDAD OFICIAL KANTUROBOT RELOADED 2026 -->
-    <div class="promo-banner" id="banner-kanturobot">
-        <span class="promo-badge">🤖 EVENTO UNE 2026</span>
-        <div class="promo-text">
-            ¡PARTICIPA EN EL <span>KANTUROBOT RELOADED 2026</span> ESTE <b>18 DE NOVIEMBRE</b>! 🏆 Ven y demuestra tu talento en robótica y tecnología.
+    <!-- FRANJA DE NOTICIAS ANIMADA EN MOVIMIENTO (TICKER) -->
+    <div class="news-ticker-bar" id="banner-kanturobot">
+        <div class="news-ticker-badge">📢 NOTICIAS UNE</div>
+        <div class="news-ticker-track-wrap">
+            <div class="news-ticker-track">
+                <div class="news-ticker-content">
+                    <span>🤖 ¡PARTICIPA EN EL <b>KANTUROBOT RELOADED 2026</b> ESTE 18 DE NOVIEMBRE! Ven y demuestra tu talento en robótica y tecnología.</span>
+                    <span>🛠️ <b>NUEVO MÓDULO:</b> Los reportes de baños e infraestructura ahora se envían en una lista exclusiva para <b>Servicios Generales UNE</b>.</span>
+                    <span>📸 <b>VISTA DUAL:</b> Alterna entre <b>Foto Plana HD de Ubicación</b> y <b>Esfera 360°</b> en cada pabellón del campus.</span>
+                    <span>🕵️‍♂️ <b>TRANSPARENCIA:</b> Evalúa a tus docentes de forma 100% anónima y segura desde la barra superior.</span>
+                </div>
+                <div class="news-ticker-content">
+                    <span>🤖 ¡PARTICIPA EN EL <b>KANTUROBOT RELOADED 2026</b> ESTE 18 DE NOVIEMBRE! Ven y demuestra tu talento en robótica y tecnología.</span>
+                    <span>🛠️ <b>NUEVO MÓDULO:</b> Los reportes de baños e infraestructura ahora se envían en una lista exclusiva para <b>Servicios Generales UNE</b>.</span>
+                    <span>📸 <b>VISTA DUAL:</b> Alterna entre <b>Foto Plana HD de Ubicación</b> y <b>Esfera 360°</b> en cada pabellón del campus.</span>
+                    <span>🕵️‍♂️ <b>TRANSPARENCIA:</b> Evalúa a tus docentes de forma 100% anónima y segura desde la barra superior.</span>
+                </div>
+            </div>
         </div>
-        <button class="promo-close" onclick="document.getElementById('banner-kanturobot').style.display='none'" title="Cerrar anuncio">✕</button>
+        <button class="news-ticker-close" onclick="document.getElementById('banner-kanturobot').style.display='none'" title="Cerrar franja de noticias">✕</button>
     </div>
 
     <header>
@@ -270,15 +344,19 @@
                 <span style="font-size: 11px; color:#fbbf24; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Universidad Nacional de Educación - Tour 360°</span>
             </div>
         </div>
+        <!-- 4 BOTONES COMPLETAMENTE SEPARADOS POR FUNCIÓN -->
         <div class="header-actions">
-            <button class="btn-docente-anonimo" onclick="abrirModalDocente()">
-                <i class="fas fa-user-secret"></i> Evaluar Docente (100% Anónimo)
+            <button class="btn-header-pill btn-serv-gen" onclick="abrirModalServiciosGenerales()">
+                <i class="fas fa-tools"></i> Reportar a Servicios Generales
             </button>
-            <button class="btn-falta-facultad" onclick="abrirModalFaltaLugar()">
+            <button class="btn-header-pill btn-curiosidad-top" onclick="abrirModalFotoDesdeHeader()">
+                <i class="fas fa-lightbulb"></i> Subir Dato Curioso / Foto
+            </button>
+            <button class="btn-header-pill btn-falta-facultad" onclick="abrirModalFaltaLugar()">
                 <i class="fas fa-map-marker-alt"></i> ¿Falta tu facultad o lugar?
             </button>
-            <button class="btn-reporte-header" onclick="abrirModalReporte()">
-                <i class="fas fa-bullhorn"></i> Reportar / Dato Curioso
+            <button class="btn-header-pill btn-docente-anonimo" onclick="abrirModalDocente()">
+                <i class="fas fa-user-secret"></i> Evaluar Docente (Anónimo)
             </button>
         </div>
     </header>
@@ -607,7 +685,7 @@
                 </div>
             </div>
 
-            <!-- FICHA INFO Y ACCIONES -->
+            <!-- FICHA INFO Y ACCIONES CON OPCIÓN DE FOTO PLANA Y 360 -->
             <div id="ficha-mall" class="info-drawer">
                 <div class="drawer-header">
                     <div>
@@ -627,21 +705,37 @@
                     </div>
                 </div>
                 <div class="drawer-actions" id="acciones-ficha">
-                    <button class="drawer-btn drawer-btn-ruta" id="btn-ficha-ir">🚀 Trazar Ruta Aquí</button>
-                    <button class="drawer-btn drawer-btn-360" id="btn-ficha-360">🕶️ Ver 360° y Aportes</button>
+                    <button class="drawer-btn drawer-btn-ruta" id="btn-ficha-ir">🚀 Trazar Ruta</button>
+                    <button class="drawer-btn drawer-btn-plana" id="btn-ficha-plana">🖼️ Foto Ubicación</button>
+                    <button class="drawer-btn drawer-btn-360" id="btn-ficha-360">🕶️ Tour 360°</button>
                 </div>
             </div>
 
-            <!-- VISOR 360 + APARTADO DE FOTOS DE ESTUDIANTES Y CARRUSEL DE CURIOSIDADES CON BOTÓN DE MINIMIZAR -->
+            <!-- VISOR HÍBRIDO: FOTO PLANA HD DE UBICACIÓN + ESFERA 360° -->
             <div id="vista-360" class="viewer-container">
                 <button class="btn-volver-mapa" onclick="volverAlMapa()">🔙 VOLVER AL MAPA</button>
+
+                <!-- SELECTOR CENTRAL ENTRE FOTO PLANA HD Y ESFERA 360 -->
+                <div class="modo-visor-switch">
+                    <button id="tab-modo-plana" class="btn-modo-visor" onclick="cambiarModoVisor('plana')">🖼️ Foto Plana HD</button>
+                    <button id="tab-modo-360" class="btn-modo-visor activo" onclick="cambiarModoVisor('360')">🕶️ Esfera 360°</button>
+                </div>
+
                 <button class="btn-subir-foto" onclick="abrirModalFoto()">📷 Subir Foto / Dato Curioso</button>
+
+                <!-- CONTENEDOR FOTO PLANA HD (NÍTIDA SIN PIXELEO) -->
+                <div id="contenedor-foto-plana" class="vista-plana-wrapper">
+                    <div id="badge-titulo-plana" class="badge-plana-info">📍 Vista de Ubicación</div>
+                    <img id="img-plana-hd" src="" alt="Vista del lugar">
+                </div>
+
+                <!-- CONTENEDOR PANNELLUM 360 -->
                 <div id="panorama"></div>
 
-                <!-- APARTADO INTERACTIVO DE FOTOS DE ESTUDIANTES -->
+                <!-- APARTADO INTERACTIVO DE FOTOS DE ESTUDIANTES (SOLO APROBADAS) -->
                 <div id="galeria-estudiantes-overlay" class="galeria-estudiantes-panel">
                     <div class="curiosidad-header">
-                        <h5>📸 Fotos de Referencia</h5>
+                        <h5>📸 Fotos Aprobadas</h5>
                         <div style="display:flex; align-items:center; gap:6px;">
                             <span id="galeria-counter" class="curiosidad-counter">1 / 1</span>
                             <button class="btn-minimizar-panel" id="btn-min-galeria" onclick="toggleMinimizarPanel('galeria')" title="Minimizar / Maximizar">➖</button>
@@ -659,7 +753,7 @@
                     </div>
                 </div>
 
-                <!-- CARRUSEL AUTOMÁTICO Y MANUAL DE DATOS CURIOSOS -->
+                <!-- CARRUSEL AUTOMÁTICO Y MANUAL DE DATOS CURIOSOS (SOLO APROBADOS) -->
                 <div id="curiosidades-overlay" class="curiosidad-panel">
                     <div class="curiosidad-header">
                         <h5>💡 Sabías que...</h5>
@@ -781,7 +875,106 @@
         </div>
     </div>
 
-    <!-- MODAL EVALUACIÓN DOCENTE 100% ANÓNIMA -->
+    <!-- 1. MODAL EXCLUSIVO: SERVICIOS GENERALES (MANTENIMIENTO Y BAÑOS) -->
+    <div id="modal-reporte" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🛠️ Reporte para Servicios Generales UNE</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Este formulario va a una planilla exclusiva para que <b>Servicios Generales</b> atienda falta de papel o agua en baños, puertas rotas, luminarias o mobiliario dañado.</p>
+            
+            <label>Ubicación / Baño / Pabellón:</label>
+            <select id="reporte-lugar" onchange="toggleOtroInput('lugar')">
+                <option value="Baño 1 (Cruce Central)">Baño 1 (Cruce Central)</option>
+                <option value="Baño 2 (Óvalo Oeste)">Baño 2 (Óvalo Oeste)</option>
+                <option value="Baño 4 (Zona Losa)">Baño 4 (Zona Losa)</option>
+                <option value="Facultad de Tecnología">Facultad de Tecnología</option>
+                <option value="F. Telemática y Telecom.">F. Telemática y Telecom.</option>
+                <option value="Facultad de Agropecuaria y Nutrición">Facultad de Agropecuaria y Nutrición</option>
+                <option value="Biblioteca Central">Biblioteca Central</option>
+                <option value="Comedor Universitario">Comedor Universitario</option>
+                <option value="Otro">Otro (Especificar ambiente)</option>
+            </select>
+            <input type="text" id="reporte-lugar-otro" placeholder="Escribe la ubicación o aula exacta..." style="display:none;">
+
+            <label>Tipo de Atención Requerida:</label>
+            <select id="reporte-tipo" onchange="toggleOtroInput('tipo')">
+                <option value="Falta Papel Higiénico / Jabón / Limpieza">🧻 Falta Papel Higiénico / Jabón / Limpieza</option>
+                <option value="Fuga de Agua / Grifería o Inodoro Malogrado">🚰 Fuga de Agua / Grifería o Inodoro Malogrado</option>
+                <option value="Puerta, Chapa, Ventana o Mobiliario Roto">🚪 Puerta, Chapa, Ventana o Mobiliario Roto</option>
+                <option value="Luminaria, Tomacorriente o Falla Eléctrica">💡 Luminaria, Tomacorriente o Falla Eléctrica</option>
+                <option value="Otro">Otro (Especificar incidencia)</option>
+            </select>
+            <input type="text" id="reporte-tipo-otro" placeholder="Especifica el problema..." style="display:none;">
+
+            <label>Detalle para el personal de mantenimiento:</label>
+            <textarea id="reporte-detalle" placeholder="Ej: En el baño de hombres del 1er piso no cierra la segunda puerta..."></textarea>
+            
+            <div id="msg-reporte" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Reporte registrado en la hoja de Servicios Generales.</div>
+
+            <div class="modal-actions">
+                <button class="btn-cancelar" onclick="cerrarModalServiciosGenerales()">Cancelar</button>
+                <button class="btn-enviar" id="btn-enviar-rep" onclick="enviarReporteServiciosGenerales()">Enviar a Servicios Generales</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL EXCLUSIVO: SUBIR DATO CURIOSO O FOTO DE REFERENCIA (SOLO SALE SI ES APROBADO) -->
+    <div id="modal-foto" class="modal-overlay">
+        <div class="modal-box">
+            <h3>💡 Subir Foto o Dato Curioso Estudiantil</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Comparte un dato curioso o una foto de un pabellón. <b>Solo se mostrará en la página web cuando el administrador cambie su estado de PENDIENTE a APROBADO.</b></p>
+            
+            <label>Selecciona el Lugar o Pabellón:</label>
+            <select id="foto-lugar-select"></select>
+
+            <label>Tu Nombre o Apelativo:</label>
+            <input type="text" id="foto-autor" placeholder="Ej: Jean Rodriguez (Telecomunicaciones)">
+
+            <label>Selecciona una foto de tu celular/PC o pega un link (Opcional):</label>
+            <input type="file" id="foto-archivo" accept="image/*">
+            <input type="text" id="foto-url-link" placeholder="O pega aquí el link de tu foto (IBB, Drive, Imgur)...">
+
+            <label>Dato curioso o historia de este lugar:</label>
+            <textarea id="foto-curiosidad-input" placeholder="Ej: Aquí en el 2do piso están los laboratorios de redes y robótica..."></textarea>
+            
+            <span class="nota-revision">🔒 Revisión activa: Tu aporte llegará como PENDIENTE al Excel y se publicará en la web únicamente tras ser APROBADO.</span>
+            
+            <div id="msg-foto" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ ¡Enviado a revisión (PENDIENTE)! Aparecerá en la web al ser APROBADO.</div>
+
+            <div class="modal-actions">
+                <button class="btn-cancelar" onclick="cerrarModalFoto()">Cancelar</button>
+                <button class="btn-enviar" id="btn-enviar-foto-rev" onclick="enviarFoto()">Enviar para Aprobación</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MODAL EXCLUSIVO: ¿FALTA TU FACULTAD O LUGAR? -->
+    <div id="modal-falta-lugar" class="modal-overlay">
+        <div class="modal-box">
+            <h3>📍 ¿Falta tu Facultad, Pabellón o Salón?</h3>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Envíanos el nombre de la facultad o ambiente junto con tu ubicación GPS para agregarlo al mapa oficial.</p>
+            
+            <label>Nombre de la Facultad, Escuela o Lugar (Obligatorio *):</label>
+            <input type="text" id="nuevo-lugar-nombre" placeholder="Ej: Pabellón de Nutrición / Lab. de Robótica" required>
+
+            <label>Coordenadas GPS o Punto en el Mapa (Obligatorio *):</label>
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <input type="text" id="nuevo-lugar-gps" placeholder="Presiona el botón para capturar tu GPS ->" style="margin-bottom:0;" readonly>
+                <button type="button" onclick="capturarGPSParaNuevoLugar()" style="background:var(--green); color:white; border:none; padding:0 14px; border-radius:10px; font-weight:900; cursor:pointer; white-space:nowrap;">📡 Mi GPS</button>
+            </div>
+
+            <label>Pisos, aulas o referencia del lugar:</label>
+            <textarea id="nuevo-lugar-detalle" placeholder="Ej: Piso 2 aula 204, al costado del vivero..."></textarea>
+            
+            <div id="msg-falta-lugar" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ ¡Nuevo lugar enviado a la hoja Nuevos_Lugares!</div>
+
+            <div class="modal-actions">
+                <button class="btn-cancelar" onclick="cerrarModalFaltaLugar()">Cancelar</button>
+                <button class="btn-enviar" id="btn-enviar-nuevo-lugar" onclick="enviarNuevoLugarSheets()">Enviar Lugar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. MODAL EXCLUSIVO: EVALUACIÓN DOCENTE 100% ANÓNIMA -->
     <div id="modal-docente" class="modal-overlay">
         <div class="modal-box">
             <h3>🕵️‍♂️ Evaluación y Reporte Docente 100% Anónimo</h3>
@@ -824,122 +1017,31 @@
         </div>
     </div>
 
-    <!-- MODAL ¿FALTA TU FACULTAD O LUGAR? -->
-    <div id="modal-falta-lugar" class="modal-overlay">
-        <div class="modal-box">
-            <h3>📍 ¿Falta tu Facultad, Pabellón o Salón?</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Envíanos el nombre obligatorio de la facultad o ambiente junto con tu ubicación GPS para agregarlo al mapa oficial.</p>
-            
-            <label>Nombre de la Facultad, Escuela o Lugar (Obligatorio *):</label>
-            <input type="text" id="nuevo-lugar-nombre" placeholder="Ej: Pabellón de Agropecuaria / Lab. de Robótica" required>
-
-            <label>Coordenadas GPS o Punto en el Mapa (Obligatorio *):</label>
-            <div style="display:flex; gap:8px; margin-bottom:12px;">
-                <input type="text" id="nuevo-lugar-gps" placeholder="Presiona el botón para capturar tu GPS ->" style="margin-bottom:0;" readonly>
-                <button type="button" onclick="capturarGPSParaNuevoLugar()" style="background:var(--green); color:white; border:none; padding:0 14px; border-radius:10px; font-weight:900; cursor:pointer; white-space:nowrap;">📡 Mi GPS</button>
-            </div>
-
-            <label>Pisos, aulas o dato curioso del lugar:</label>
-            <textarea id="nuevo-lugar-detalle" placeholder="Ej: Piso 2 aula 204, al costado del vivero..."></textarea>
-            
-            <div id="msg-falta-lugar" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ ¡Lugar enviado a tu Google Sheets!</div>
-
-            <div class="modal-actions">
-                <button class="btn-cancelar" onclick="cerrarModalFaltaLugar()">Cancelar</button>
-                <button class="btn-enviar" id="btn-enviar-nuevo-lugar" onclick="enviarNuevoLugarSheets()">Enviar Lugar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL REPORTE / DATO CURIOSO GOOGLE SHEETS -->
-    <div id="modal-reporte" class="modal-overlay">
-        <div class="modal-box">
-            <h3>📢 Reportar Mantenimiento o Dato Curioso</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Reporta si en un baño falta papel, puertas rotas, o comparte un dato curioso para mostrarlo en la vista 360°.</p>
-            
-            <label>Ubicación / Pabellón:</label>
-            <select id="reporte-lugar" onchange="toggleOtroInput('lugar')">
-                <option value="Baño 1">Baño 1 (Cruce Central)</option>
-                <option value="Baño 2">Baño 2 (Óvalo Oeste)</option>
-                <option value="Baño 4">Baño 4 (Zona Losa)</option>
-                <option value="Biblioteca Central">Biblioteca Central</option>
-                <option value="Comedor">Comedor Universitario</option>
-                <option value="Facultad de Tecnología">Facultad de Tecnología</option>
-                <option value="F. Telemática y Telecom.">F. Telemática y Telecom.</option>
-                <option value="Facultad de Agropecuaria y Nutrición">Facultad de Agropecuaria y Nutrición</option>
-                <option value="Otro">Otro (Especificar lugar)</option>
-            </select>
-            <input type="text" id="reporte-lugar-otro" placeholder="Escribe la ubicación exacta..." style="display:none;">
-
-            <label>Tipo de Aporte o Reporte:</label>
-            <select id="reporte-tipo" onchange="toggleOtroInput('tipo')">
-                <option value="Falta Limpieza / Papel Higiénico">Falta Limpieza / Papel Higiénico</option>
-                <option value="Infraestructura o Puerta Rota">Infraestructura o Puerta Rota</option>
-                <option value="Dato Curioso para el 360°">💡 Dato Curioso para la vista 360°</option>
-                <option value="Otro">Otro (Especificar tipo)</option>
-            </select>
-            <input type="text" id="reporte-tipo-otro" placeholder="Especifica el tipo de reporte..." style="display:none;">
-
-            <label>Detalles adicionales:</label>
-            <textarea id="reporte-detalle" placeholder="Escribe aquí el detalle o el dato curioso..."></textarea>
-            
-            <div id="msg-reporte" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Enviado correctamente a Google Sheets.</div>
-
-            <div class="modal-actions">
-                <button class="btn-cancelar" onclick="cerrarModalReporte()">Cancelar</button>
-                <button class="btn-enviar" id="btn-enviar-rep" onclick="enviarReporteSheets()">Enviar a Sheets</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL APORTE FOTO 360 Y DATO CURIOSO -->
-    <div id="modal-foto" class="modal-overlay">
-        <div class="modal-box">
-            <h3>📷 Subir Foto de Referencia o Dato Curioso</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Selecciona una foto de tu galería o pega su link. Se verá al instante en la galería de esta vista y se enviará a tu Google Sheets.</p>
-            
-            <label>Lugar seleccionado:</label>
-            <input type="text" id="foto-lugar-texto" value="Lugar actual" readonly style="background:#e2e8f0; color:#475569;">
-
-            <label>Tu Nombre o Apelativo:</label>
-            <input type="text" id="foto-autor" placeholder="Ej: Jean Rodriguez (Telecomunicaciones)">
-
-            <label>Selecciona una foto de tu celular/PC o pega un link:</label>
-            <input type="file" id="foto-archivo" accept="image/*">
-            <input type="text" id="foto-url-link" placeholder="O pega aquí el link de tu foto (IBB, Drive, Imgur)...">
-
-            <label>Dato curioso o referencia de este lugar:</label>
-            <textarea id="foto-curiosidad-input" placeholder="Ej: Aquí en el 2do piso están los laboratorios de redes..."></textarea>
-            
-            <span class="nota-revision">⚠️ La foto llegará al Excel del administrador para su autorización permanente.</span>
-            
-            <div id="msg-foto" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ ¡Foto y dato enviados al Excel correctamente!</div>
-
-            <div class="modal-actions">
-                <button class="btn-cancelar" onclick="cerrarModalFoto()">Cancelar</button>
-                <button class="btn-enviar" id="btn-enviar-foto-rev" onclick="enviarFoto()">Enviar Foto y Dato</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyf4rWB2DwsSPCRGE957JSSpdy3fPFhVXXhsCh-h2XObEu634K7hKgcpR982jS9CZWYCA/exec';
         const FOTO_360_DEFAULT = 'https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png';
 
         // =========================================================================
-        // DICCIONARIO DE IMÁGENES 360° Y DE REFERENCIA CON TUS LINKS DE IMGBB
+        // 1. FOTOS PLANAS HD DE UBICACIÓN (SE VEN NÍTIDAS SIN ESTIRARSE NI PIXELEARSE)
+        // =========================================================================
+        const fotosPlanasPorLugar = {
+            "fac_telematica": "https://i.ibb.co/KxmC5HNb/telematica.jpg",
+            "fac_agropecuaria": "https://i.ibb.co/h1dbZzGC/facultad-agropecuaria.jpg",
+            "decanato_tecno": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
+            "fac_tecnologia": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
+            "rotonda": "https://i.ibb.co/1YXqPG2z/rotonda.jpg",
+            "oti": "https://i.ibb.co/wh3cr41p/oti.jpg"
+        };
+
+        // =========================================================================
+        // 2. IMÁGENES PANORÁMICAS EQUIRECTANGULARES PARA EL VISOR ESFÉRICO 360°
         // =========================================================================
         const fotos360PorLugar = {
             "entrada": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
             "biblioteca": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
-            "fac_telematica": "https://i.ibb.co/KxmC5HNb/telematica.jpg",
-            "fac_agropecuaria": "https://i.ibb.co/h1dbZzGC/facultad-agropecuaria.jpg",
-            "decanato_tecno": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
-            "rotonda": "https://i.ibb.co/1YXqPG2z/rotonda.jpg",
-            "oti": "https://i.ibb.co/wh3cr41p/oti.jpg",
-            "fac_tecnologia": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
             "auditorio_prin": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
             "comedor_a": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png"
+            // Cuando tomes fotos equirectangulares 360° de otros puntos, pégalas aquí
         };
 
         const fotosReferenciaIniciales = {
@@ -982,9 +1084,7 @@
             "bano_1": { x: 73.7, y: 51.3 }, "bano_2": { x: 34.5, y: 37.3 }, "bano_4": { x: 38.3, y: 63.0 }
         };
 
-        // =========================================================================
-        // PUNTOS DE CALIBRACIÓN GPS REALES TOMADOS POR TI EN EL CAMPUS UNE
-        // =========================================================================
+        // PUNTOS DE CALIBRACIÓN GPS REALES TOMADOS EN CAMPO
         const anclasGPSReales = [
             { id: "sociales",         lat: -11.946157, lon: -76.699158, x: 82.7, y: 49.7 },
             { id: "fac_artistica",    lat: -11.947034, lon: -76.699627, x: 62.5, y: 79.2 },
@@ -999,26 +1099,18 @@
             { id: "entrada",          lat: -11.945380, lon: -76.702065, x: 34.4, y: 25.7 }
         ];
 
-        // Convierte cualquier Lat/Lon real de celular a % (X, Y) exacto del mapa usando tus puntos de campo
         function convertirGpsAMapaCalibrado(lat, lon) {
-            // 1. Modelo global calibrado con los extremos reales de la UNE
             const xGlobal = 35.7 + ((lon - (-76.702163)) / 0.0000622);
             const yGlobal = 25.7 + (((-11.945380) - lat) / 0.0000485);
 
-            // 2. Interpolación magnética ponderada por distancia inversa (IDW) hacia tus puntos medidos en campo
-            let sumaPesos = 0;
-            let sumaX = 0;
-            let sumaY = 0;
-            let distMinGrados = Infinity;
+            let sumaPesos = 0, sumaX = 0, sumaY = 0, distMinGrados = Infinity;
 
             for (let i = 0; i < anclasGPSReales.length; i++) {
                 const a = anclasGPSReales[i];
                 const d = Math.hypot(lat - a.lat, lon - a.lon);
                 if (d < distMinGrados) distMinGrados = d;
+                if (d < 0.00004) return { x: a.x, y: a.y };
 
-                if (d < 0.00004) {
-                    return { x: a.x, y: a.y };
-                }
                 const peso = 1 / Math.pow(d, 2.4);
                 sumaPesos += peso;
                 sumaX += a.x * peso;
@@ -1027,20 +1119,19 @@
 
             const xAnclas = sumaX / sumaPesos;
             const yAnclas = sumaY / sumaPesos;
-
-            // Combina suavemente las anclas cercanas con la tendencia global del mapa
             const factorLocal = Math.max(0, Math.min(0.85, 1 - (distMinGrados / 0.0018)));
-            const xFinal = (xAnclas * factorLocal) + (xGlobal * (1 - factorLocal));
-            const yFinal = (yAnclas * factorLocal) + (yGlobal * (1 - factorLocal));
 
-            return { x: xFinal, y: yFinal };
+            return {
+                x: (xAnclas * factorLocal) + (xGlobal * (1 - factorLocal)),
+                y: (yAnclas * factorLocal) + (yGlobal * (1 - factorLocal))
+            };
         }
 
-        // Convierte un clic en el mapa (X%, Y%) a Lat/Lon aproximado coherente con tu calibración
         function convertirMapaAGpsAprox(x, y) {
-            const lon = -76.702163 + ((x - 35.7) * 0.0000622);
-            const lat = -11.945380 - ((y - 25.7) * 0.0000485);
-            return { lat, lon };
+            return {
+                lon: -76.702163 + ((x - 35.7) * 0.0000622),
+                lat: -11.945380 - ((y - 25.7) * 0.0000485)
+            };
         }
 
         const directorioInfo = {
@@ -1087,7 +1178,7 @@
             "aseped": { titulo: "ASEPED La Cantuta", cat: "Asociación", pisos: "Pabellón", oficinas: "Gremio y servicios.", curiosidad: "Ubicado frente a la zona deportiva y piscina." },
             "of_servicios": { titulo: "Servicios Generales", cat: "Mantenimiento", pisos: "Pabellón Logístico", oficinas: "Mantenimiento UNE.", curiosidad: "Gestiona el cuidado de las áreas verdes e instalaciones." },
             "papeleria_1": { titulo: "Papelería 1", cat: "Servicios", pisos: "Módulo", oficinas: "Impresiones y útiles.", curiosidad: "Ideal para comprar materiales camino a Telecomunicaciones." },
-            "bano_1": { titulo: "Baño 1 (Cruce Central)", cat: "SSHH", pisos: "Módulo Central", oficinas: "Servicios Higiénicos.", curiosidad: "Puedes reportar si falta papel o mantenimiento desde el botón superior." },
+            "bano_1": { titulo: "Baño 1 (Cruce Central)", cat: "SSHH", pisos: "Módulo Central", oficinas: "Servicios Higiénicos.", curiosidad: "Puedes reportar si falta papel o mantenimiento desde el botón rojo superior." },
             "bano_2": { titulo: "Baño 2 (Óvalo Oeste)", cat: "SSHH", pisos: "Módulo Oeste", oficinas: "Servicios Higiénicos.", curiosidad: "Ubicado cerca de la entrada y biblioteca." },
             "bano_4": { titulo: "Baño 4 (Zona Losa)", cat: "SSHH", pisos: "Módulo Deportivo", oficinas: "Servicios Higiénicos.", curiosidad: "Da soporte a toda el área del gimnasio y losa deportiva." }
         };
@@ -1095,6 +1186,17 @@
         for (let k in directorioInfo) {
             directorioInfo[k].listaCuriosidades = [directorioInfo[k].curiosidad];
             directorioInfo[k].listaFotos = fotosReferenciaIniciales[k] ? [...fotosReferenciaIniciales[k]] : [];
+        }
+
+        function poblarSelectLugaresFoto() {
+            const sel = document.getElementById('foto-lugar-select');
+            sel.innerHTML = '';
+            for (let k in directorioInfo) {
+                const opt = document.createElement('option');
+                opt.value = directorioInfo[k].titulo;
+                opt.textContent = directorioInfo[k].titulo;
+                sel.appendChild(opt);
+            }
         }
 
         function quitarFondoBlancoCanvas(imgElement) {
@@ -1130,6 +1232,7 @@
                 .trim();
         }
 
+        // CARGA ÚNICAMENTE LOS DATOS Y FOTOS QUE ESTÁN EN ESTADO "APROBADO" EN GOOGLE SHEETS
         function cargarCuriosidadesAprobadasDeSheets() {
             fetch(SCRIPT_URL + "?t=" + new Date().getTime(), { cache: "no-store" })
                 .then(r => r.json())
@@ -1152,7 +1255,7 @@
                                     if (!yaExiste) {
                                         directorioInfo[k].listaFotos.push({
                                             url: item.imagen,
-                                            texto: item.detalle || "Aporte estudiantil"
+                                            texto: item.detalle || "Aporte estudiantil aprobado"
                                         });
                                     }
                                 }
@@ -1169,6 +1272,7 @@
         }
 
         window.onload = function() {
+            poblarSelectLugaresFoto();
             quitarFondoBlancoCanvas(document.getElementById('gps-img-gato'));
             quitarFondoBlancoCanvas(document.getElementById('gps-img-burrito'));
             quitarFondoBlancoCanvas(document.getElementById('gps-img-chupetes'));
@@ -1176,7 +1280,6 @@
             cargarCuriosidadesAprobadasDeSheets();
         };
 
-        // INTERRUPTOR SUPERIOR PARA ACTIVAR/DESACTIVAR EL GPS SIN BAJAR
         function actualizarUIInterruptorGPS(activo) {
             const sw = document.getElementById('btn-gps-top-switch');
             const lbl = document.getElementById('gps-switch-label');
@@ -1190,11 +1293,8 @@
         }
 
         function toggleGPSDesdeArriba() {
-            if (gpsActivado) {
-                detenerNavegacion();
-            } else {
-                iniciarNavegacion();
-            }
+            if (gpsActivado) detenerNavegacion();
+            else iniciarNavegacion();
         }
 
         function toggleMinimizarPanel(tipo) {
@@ -1218,6 +1318,7 @@
         }
 
         function seleccionarLugar(id) {
+            escenaActualId = id;
             document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
             const pin = document.getElementById('pin-mapa-' + id);
             if (pin) pin.classList.add('active');
@@ -1245,9 +1346,14 @@
                 trazarRutaVisual();
             };
 
+            document.getElementById('btn-ficha-plana').onclick = function() {
+                cerrarFichaMall();
+                abrirVisorUbicacion(id, 'plana');
+            };
+
             document.getElementById('btn-ficha-360').onclick = function() {
                 cerrarFichaMall();
-                abrir360(id);
+                abrirVisorUbicacion(id, '360');
             };
 
             document.getElementById('ficha-mall').style.display = 'block';
@@ -1521,6 +1627,9 @@
             });
         }
 
+        // =========================================================================
+        // VISOR HÍBRIDO: ALTERNAR ENTRE FOTO PLANA HD Y ESFERA 360°
+        // =========================================================================
         let indiceCuriosidad = 0;
         let indiceFotoGaleria = 0;
         let timerCarruselCuriosidad = null;
@@ -1548,6 +1657,59 @@
                 },
                 "scenes": escenasDinamicas
             });
+        }
+
+        function cambiarModoVisor(modo) {
+            const tabPlana = document.getElementById('tab-modo-plana');
+            const tab360 = document.getElementById('tab-modo-360');
+            const contPlana = document.getElementById('contenedor-foto-plana');
+            const cont360 = document.getElementById('panorama');
+
+            const info = directorioInfo[escenaActualId];
+            const urlPlana = fotosPlanasPorLugar[escenaActualId] || (info && info.listaFotos.length > 0 ? info.listaFotos[0].url : FOTO_360_DEFAULT);
+
+            if (modo === 'plana') {
+                tabPlana.classList.add('activo');
+                tab360.classList.remove('activo');
+                cont360.style.display = 'none';
+                contPlana.style.display = 'flex';
+                document.getElementById('img-plana-hd').src = urlPlana;
+                document.getElementById('badge-titulo-plana').innerText = `📍 ${info ? info.titulo : escenaActualId} (Vista Plana HD)`;
+            } else {
+                tab360.classList.add('activo');
+                tabPlana.classList.remove('activo');
+                contPlana.style.display = 'none';
+                cont360.style.display = 'block';
+                inicializarPannellum(escenaActualId);
+            }
+        }
+
+        function abrirVisorUbicacion(sceneId, modoPreferido = 'auto') {
+            escenaActualId = sceneId;
+            document.getElementById('vista-mapa').style.display = 'none';
+            document.getElementById('map-controls').style.display = 'none';
+            document.getElementById('vista-360').style.display = 'block';
+            
+            const info = directorioInfo[sceneId];
+            const panelCuriosidad = document.getElementById('curiosidades-overlay');
+            if(info) {
+                indiceCuriosidad = 0;
+                indiceFotoGaleria = 0;
+                panelCuriosidad.style.display = 'block';
+                renderizarCuriosidadActual();
+                reiniciarTimerCuriosidades();
+                renderizarGaleriaFotos();
+                document.getElementById('foto-lugar-select').value = info.titulo;
+            } else {
+                panelCuriosidad.style.display = 'none';
+            }
+
+            // Si tiene foto plana de ImgBB o pidió modo 'plana', abre en Foto Plana HD sin pixelear
+            if (modoPreferido === 'plana' || (modoPreferido === 'auto' && fotosPlanasPorLugar[sceneId])) {
+                cambiarModoVisor('plana');
+            } else {
+                cambiarModoVisor('360');
+            }
         }
 
         function renderizarCuriosidadActual() {
@@ -1598,29 +1760,6 @@
             renderizarGaleriaFotos();
         }
 
-        function abrir360(sceneId) {
-            escenaActualId = sceneId;
-            document.getElementById('vista-mapa').style.display = 'none';
-            document.getElementById('map-controls').style.display = 'none';
-            document.getElementById('vista-360').style.display = 'block';
-            
-            const info = directorioInfo[sceneId];
-            const panelCuriosidad = document.getElementById('curiosidades-overlay');
-            if(info) {
-                indiceCuriosidad = 0;
-                indiceFotoGaleria = 0;
-                panelCuriosidad.style.display = 'block';
-                renderizarCuriosidadActual();
-                reiniciarTimerCuriosidades();
-                renderizarGaleriaFotos();
-            } else {
-                panelCuriosidad.style.display = 'none';
-            }
-            
-            document.getElementById('foto-lugar-texto').value = info ? info.titulo : sceneId;
-            inicializarPannellum(sceneId);
-        }
-
         function volverAlMapa() {
             clearInterval(timerCarruselCuriosidad);
             document.getElementById('vista-360').style.display = 'none';
@@ -1630,9 +1769,9 @@
             document.getElementById('map-controls').style.display = 'flex';
         }
 
-        // ==========================================
-        // MODALES Y ENVÍO A GOOGLE SHEETS
-        // ==========================================
+        // =========================================================================
+        // ENVÍOS SEPARADOS A GOOGLE SHEETS (SIN MOSTRAR PENDIENTES EN LA WEB)
+        // =========================================================================
         function abrirModalDocente() {
             document.getElementById('msg-docente').style.display = 'none';
             document.getElementById('modal-docente').style.display = 'flex';
@@ -1657,6 +1796,7 @@
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: new URLSearchParams({
+                    'categoria': 'DOCENTE',
                     'lugar': `${facultad} - Docente: ${nombre}`,
                     'tipo': `EVALUACIÓN DOCENTE ANÓNIMA (${calif})`,
                     'detalle': `Curso: ${curso} | Opinión: ${coment}`
@@ -1700,13 +1840,8 @@
             const detalle = document.getElementById('nuevo-lugar-detalle').value.trim();
             const btn = document.getElementById('btn-enviar-nuevo-lugar');
 
-            if (!nombre) {
-                alert("⚠️ Es obligatorio escribir el nombre de la facultad o lugar que deseas agregar.");
-                document.getElementById('nuevo-lugar-nombre').focus();
-                return;
-            }
-            if (!gps) {
-                alert("⚠️ Presiona el botón 'Mi GPS' para adjuntar las coordenadas del lugar.");
+            if (!nombre || !gps) {
+                alert("⚠️ Escribe el nombre del lugar y presiona '📡 Mi GPS'.");
                 return;
             }
 
@@ -1714,7 +1849,9 @@
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: new URLSearchParams({
+                    'categoria': 'NUEVO_LUGAR',
                     'lugar': nombre,
+                    'gps': gps,
                     'tipo': 'NUEVO LUGAR / FACULTAD',
                     'detalle': `Coordenadas: ${gps} | Info: ${detalle}`
                 })
@@ -1742,18 +1879,63 @@
             }
         }
 
-        function abrirModalReporte() {
+        function abrirModalServiciosGenerales() {
             document.getElementById('msg-reporte').style.display = 'none';
             document.getElementById('modal-reporte').style.display = 'flex';
         }
 
-        function cerrarModalReporte() {
+        function cerrarModalServiciosGenerales() {
             document.getElementById('modal-reporte').style.display = 'none';
             document.getElementById('reporte-detalle').value = "";
-            document.getElementById('reporte-lugar').value = "Baño 1";
-            document.getElementById('reporte-tipo').value = "Falta Limpieza / Papel Higiénico";
+            document.getElementById('reporte-lugar').value = "Baño 1 (Cruce Central)";
+            document.getElementById('reporte-tipo').value = "Falta Papel Higiénico / Jabón / Limpieza";
             toggleOtroInput('lugar');
             toggleOtroInput('tipo');
+        }
+
+        function enviarReporteServiciosGenerales() {
+            let lugar = document.getElementById('reporte-lugar').value;
+            if (lugar === "Otro") lugar = document.getElementById('reporte-lugar-otro').value.trim();
+
+            let tipo = document.getElementById('reporte-tipo').value;
+            if (tipo === "Otro") tipo = document.getElementById('reporte-tipo-otro').value.trim();
+
+            const detalle = document.getElementById('reporte-detalle').value.trim();
+            const btn = document.getElementById('btn-enviar-rep');
+
+            if(!lugar || !tipo || !detalle) {
+                alert("Por favor, completa la ubicación, el tipo de incidencia y el detalle para Servicios Generales.");
+                return;
+            }
+
+            btn.innerHTML = "Enviando..."; btn.disabled = true;
+
+            fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                body: new URLSearchParams({
+                    'categoria': 'SERVICIOS_GENERALES',
+                    'lugar': lugar,
+                    'tipo': tipo,
+                    'detalle': detalle
+                }) 
+            })
+            .then(() => {
+                document.getElementById('msg-reporte').style.display = 'block';
+                btn.innerHTML = "Enviar a Servicios Generales"; 
+                btn.disabled = false;
+                setTimeout(() => { cerrarModalServiciosGenerales(); }, 2200);
+            })
+            .catch(() => {
+                alert("Hubo un problema al enviar. Revisa tu conexión.");
+                btn.innerHTML = "Enviar a Servicios Generales"; 
+                btn.disabled = false;
+            });
+        }
+
+        function abrirModalFotoDesdeHeader() {
+            const info = directorioInfo[escenaActualId];
+            if (info) document.getElementById('foto-lugar-select').value = info.titulo;
+            abrirModalFoto();
         }
 
         function abrirModalFoto() {
@@ -1766,43 +1948,10 @@
             document.getElementById('foto-url-link').value = "";
             document.getElementById('foto-curiosidad-input').value = "";
         }
-
-        function enviarReporteSheets() {
-            let lugar = document.getElementById('reporte-lugar').value;
-            if (lugar === "Otro") lugar = document.getElementById('reporte-lugar-otro').value.trim();
-
-            let tipo = document.getElementById('reporte-tipo').value;
-            if (tipo === "Otro") tipo = document.getElementById('reporte-tipo-otro').value.trim();
-
-            const detalle = document.getElementById('reporte-detalle').value.trim();
-            const btn = document.getElementById('btn-enviar-rep');
-
-            if(!lugar || !tipo || !detalle) {
-                alert("Por favor, completa la ubicación, el tipo y los detalles.");
-                return;
-            }
-
-            btn.innerHTML = "Enviando..."; btn.disabled = true;
-
-            fetch(SCRIPT_URL, { 
-                method: 'POST', 
-                body: new URLSearchParams({ 'lugar': lugar, 'tipo': tipo, 'detalle': detalle }) 
-            })
-            .then(() => {
-                document.getElementById('msg-reporte').style.display = 'block';
-                btn.innerHTML = "Enviar a Sheets"; 
-                btn.disabled = false;
-                setTimeout(() => { cerrarModalReporte(); }, 2200);
-            })
-            .catch(() => {
-                alert("Hubo un problema al enviar. Revisa tu conexión.");
-                btn.innerHTML = "Enviar a Sheets"; 
-                btn.disabled = false;
-            });
-        }
         
+        // ENVÍA FOTO Y DATO CURIOSO EN ESTADO "PENDIENTE" SIN PUBLICARLO EN LA WEB HASTA SER APROBADO
         function enviarFoto() {
-            const lugar = document.getElementById('foto-lugar-texto').value;
+            const lugar = document.getElementById('foto-lugar-select').value;
             const autor = document.getElementById('foto-autor').value.trim() || "Anónimo";
             const linkFoto = document.getElementById('foto-url-link').value.trim();
             const archivo = document.getElementById('foto-archivo').files[0];
@@ -1814,27 +1963,15 @@
                 return;
             }
             
-            btn.innerHTML = "Subiendo al Excel..."; btn.disabled = true;
+            btn.innerHTML = "Enviando a revisión..."; btn.disabled = true;
 
             const textoFinal = `${curiosidad || "Foto de referencia"} (Por: ${autor})`;
 
-            const enviarPayload = (base64Raw = "", mime = "", fileName = "", previewLocalUrl = "") => {
-                if (directorioInfo[escenaActualId]) {
-                    if (curiosidad) {
-                        directorioInfo[escenaActualId].listaCuriosidades.push(textoFinal);
-                        indiceCuriosidad = directorioInfo[escenaActualId].listaCuriosidades.length - 1;
-                        renderizarCuriosidadActual();
-                    }
-                    if (previewLocalUrl || linkFoto) {
-                        directorioInfo[escenaActualId].listaFotos.push({ url: previewLocalUrl || linkFoto, texto: textoFinal });
-                        indiceFotoGaleria = directorioInfo[escenaActualId].listaFotos.length - 1;
-                        renderizarGaleriaFotos();
-                    }
-                }
-
+            const enviarPayload = (base64Raw = "", mime = "", fileName = "") => {
                 fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: new URLSearchParams({
+                        'categoria': 'CURIOSIDAD',
                         'lugar': lugar,
                         'tipo': 'FOTO / DATO CURIOSO',
                         'detalle': textoFinal,
@@ -1845,11 +1982,11 @@
                     })
                 }).then(() => {
                     document.getElementById('msg-foto').style.display = 'block';
-                    btn.innerHTML = "Enviar Foto y Dato"; btn.disabled = false;
-                    setTimeout(() => { cerrarModalFoto(); }, 2000);
+                    btn.innerHTML = "Enviar para Aprobación"; btn.disabled = false;
+                    setTimeout(() => { cerrarModalFoto(); }, 2400);
                 }).catch(() => {
                     alert("Hubo un problema al enviar.");
-                    btn.innerHTML = "Enviar Foto y Dato"; btn.disabled = false;
+                    btn.innerHTML = "Enviar para Aprobación"; btn.disabled = false;
                 });
             };
 
@@ -1869,7 +2006,7 @@
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         const comprimidaDataUrl = canvas.toDataURL('image/jpeg', 0.62);
                         const base64SinCabecera = comprimidaDataUrl.split(',')[1];
-                        enviarPayload(base64SinCabecera, 'image/jpeg', archivo.name, comprimidaDataUrl);
+                        enviarPayload(base64SinCabecera, 'image/jpeg', archivo.name);
                     };
                     img.src = e.target.result;
                 };
@@ -1880,7 +2017,7 @@
         }
 
         // =========================================================================
-        //  NAVEGACIÓN GPS CALIBRADA Y JOYSTICK MANUAL DIRECTO EN % DEL MAPA
+        //  NAVEGACIÓN GPS CALIBRADA Y JOYSTICK MANUAL
         // =========================================================================
         let watchId = null;
 
@@ -1918,7 +2055,6 @@
             document.getElementById('avatar-estudiante').style.display = 'flex';
             cambiarAvatar(document.getElementById('select-avatar').value);
             
-            // Movimiento directo y preciso en porcentaje del mapa
             miXActual = Math.max(2, Math.min(98, miXActual + (dX * 1.6)));
             miYActual = Math.max(2, Math.min(98, miYActual - (dY * 1.6)));
 
@@ -1945,7 +2081,6 @@
             const miLon = pos.coords.longitude;
             const prevX = miXActual;
 
-            // Verificar si realmente está muy lejos de La Cantuta (> 1.5 km del centro del campus)
             const fueraDeChosicaUNE = (miLat > -11.938 || miLat < -11.956 || miLon < -76.712 || miLon > -76.691);
             const panel = document.getElementById('panel-instrucciones');
 
@@ -1955,7 +2090,6 @@
                 return;
             }
 
-            // Convertir con el sistema multiancla calibrado y mantener siempre dentro del mapa si está en la UNE
             const puntoCalibrado = convertirGpsAMapaCalibrado(miLat, miLon);
             miXActual = Math.max(3, Math.min(97, puntoCalibrado.x));
             miYActual = Math.max(3, Math.min(97, puntoCalibrado.y));
