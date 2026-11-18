@@ -135,13 +135,27 @@
         .avatar-top-selector select { border: none; font-weight: 900; font-size: 12.5px; outline: none; background: transparent; cursor: pointer; color: #1d4ed8; }
 
         .filtro-container select { padding: 9px 14px; border-radius: 10px; border: none; font-weight: 800; font-size: 12.5px; color: white; background: var(--primary); outline: none; cursor: pointer; }
-        .zoom-btns { display: flex; gap: 6px; }
-        .zoom-btns button { background: var(--primary); color: white; border: none; width: 38px; height: 38px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.25s; }
-        .zoom-btns button:hover { background: var(--blue); }
+        
+        /* DESLIZADOR DE ZOOM ESTILO CONTROL DE VOLUMEN */
+        .zoom-slider-box {
+            display: flex; align-items: center; gap: 8px; background: var(--primary);
+            color: white; padding: 6px 12px; border-radius: 11px; font-size: 12px; font-weight: 900;
+        }
+        .zoom-slider-box input[type="range"] {
+            -webkit-appearance: none; appearance: none; width: 105px; height: 6px;
+            background: #334155; border-radius: 99px; outline: none; cursor: pointer;
+        }
+        .zoom-slider-box input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none; width: 16px; height: 16px;
+            border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid white;
+        }
+        .zoom-val-badge {
+            min-width: 42px; text-align: right; color: #fbbf24; font-size: 11.5px;
+        }
 
         .map-viewport { width: 100%; height: 65vh; min-height: 480px; overflow: auto; border-radius: 18px; background: #e5e7eb; position: relative; border: 3px solid #cbd5e1; cursor: grab; }
         .map-viewport:active { cursor: grabbing; }
-        .map-wrapper { position: relative; width: 100%; min-width: 920px; transition: width 0.35s ease; transform-origin: top left; }
+        .map-wrapper { position: relative; width: 100%; min-width: 920px; transition: width 0.15s ease-out; transform-origin: top left; }
         .map-wrapper img#img-mapa { width: 100%; height: auto; display: block; pointer-events: none; user-select: none; opacity: 0; transition: opacity 0.5s; }
         .map-wrapper img#img-mapa.loaded { opacity: 1; }
 
@@ -182,7 +196,7 @@
         .girando-rapido { animation: giro-eje-360 0.25s linear infinite !important; }
         .mirar-izquierda { transform: scaleX(-1); }
 
-        /* VISOR DUAL (FOTO PLANA HD SIN PIXELEO + ESFERA 360°) */
+        /* VISOR DUAL (ESFERA 360° + FOTO PLANA HD) */
         .viewer-container { width: 100%; height: 65vh; min-height: 480px; border-radius: 18px; overflow: hidden; position: relative; display: none; background: #020617; border: 3px solid white; }
         #panorama { width: 100%; height: 100%; }
         
@@ -202,7 +216,6 @@
             pointer-events: none; white-space: nowrap;
         }
 
-        /* Selector superior entre Foto Plana y Esfera 360 */
         .modo-visor-switch {
             position: absolute; top: 18px; left: 50%; transform: translateX(-50%); z-index: 1000;
             display: flex; background: rgba(15, 23, 42, 0.92); padding: 4px; border-radius: 12px;
@@ -282,8 +295,8 @@
         .btn-enviar { padding: 10px 15px; background: var(--blue); color: white; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; }
         .nota-revision { font-size: 11px; color: #d97706; font-weight: 700; margin-bottom: 12px; display: block; }
 
-        /* PANEL INFERIOR */
-        .tools-container { max-width: 1440px; margin: 0 auto 35px; padding: 0 15px; width: 100%; }
+        /* PANEL INFERIOR Y SECCIONES DE SERVICIOS GENERALES / COLABORADORES */
+        .tools-container { max-width: 1440px; margin: 0 auto 25px; padding: 0 15px; width: 100%; }
         .tools-card { background: var(--surface); border-radius: 24px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #cbd5e1; }
         .tools-header-fila { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         
@@ -296,6 +309,26 @@
         .d-pad { display: grid; grid-template-columns: 54px 54px 54px; gap: 6px; justify-content: center; margin-top: 10px; }
         .d-btn { width: 54px; height: 54px; background: white; border-radius: 14px; font-size: 20px; cursor: pointer; border: 2px solid #cbd5e1; }
         .d-up { grid-column: 2; } .d-left { grid-column: 1; } .d-right { grid-column: 3; } .d-down { grid-column: 2; }
+
+        /* TABLA DE SEGUIMIENTO Y REPORTE PDF PARA SERVICIOS GENERALES */
+        .sg-table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid #cbd5e1; background: white; }
+        .sg-table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+        .sg-table th { background: var(--primary); color: white; padding: 10px 14px; font-weight: 900; text-transform: uppercase; font-size: 11px; }
+        .sg-table td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; font-weight: 700; color: #334155; }
+        .badge-estado-sg { padding: 4px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 900; display: inline-block; }
+        .estado-solucionado { background: #dcfce7; color: #065f46; border: 1px solid #10b981; }
+        .estado-pendiente { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
+        .btn-pdf-sg { background: linear-gradient(135deg, #dc2626, #991b1b); color: white; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 900; font-size: 12.5px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(220,38,38,0.3); }
+
+        /* MURO DE AGRADECIMIENTO A COLABORADORES APROBADOS */
+        .colaboradores-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .colaborador-chip {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a); color: white;
+            padding: 8px 15px; border-radius: 999px; font-size: 12.5px; font-weight: 800;
+            display: inline-flex; align-items: center; gap: 8px; border: 1px solid #fbbf24;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .colaborador-chip i { color: #fbbf24; }
 
         #resultado-gps { font-family: monospace; font-size: 12.5px; background: #1e293b; color: #10b981; padding: 15px; border-radius: 10px; display: none; position: relative; margin-top:10px; }
         .btn-copiar { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
@@ -321,15 +354,15 @@
             <div class="news-ticker-track">
                 <div class="news-ticker-content">
                     <span>🤖 ¡PARTICIPA EN EL <b>KANTUROBOT RELOADED 2026</b> ESTE 18 DE NOVIEMBRE! Ven y demuestra tu talento en robótica y tecnología.</span>
-                    <span>🛠️ <b>NUEVO MÓDULO:</b> Los reportes de baños e infraestructura ahora se envían en una lista exclusiva para <b>Servicios Generales UNE</b>.</span>
-                    <span>📸 <b>VISTA DUAL:</b> Alterna entre <b>Foto Plana HD de Ubicación</b> y <b>Esfera 360°</b> en cada pabellón del campus.</span>
-                    <span>🕵️‍♂️ <b>TRANSPARENCIA:</b> Evalúa a tus docentes de forma 100% anónima y segura desde la barra superior.</span>
+                    <span>🛠️ <b>SERVICIOS GENERALES:</b> Revisa al final de la página el estado de tus reportes y descarga el <b>Informe Oficial en PDF</b>.</span>
+                    <span>🕶️ <b>NUEVAS VISTAS 360°:</b> Explora Telemática, Agropecuaria, Decanato, Rotonda y OTI en <b>360°</b> o en <b>Foto Plana HD</b>.</span>
+                    <span>🌟 <b>MURO DE COLABORADORES:</b> ¡Gracias a todos los estudiantes cuyos aportes aprobados enriquecen UbícateUNE!</span>
                 </div>
                 <div class="news-ticker-content">
                     <span>🤖 ¡PARTICIPA EN EL <b>KANTUROBOT RELOADED 2026</b> ESTE 18 DE NOVIEMBRE! Ven y demuestra tu talento en robótica y tecnología.</span>
-                    <span>🛠️ <b>NUEVO MÓDULO:</b> Los reportes de baños e infraestructura ahora se envían en una lista exclusiva para <b>Servicios Generales UNE</b>.</span>
-                    <span>📸 <b>VISTA DUAL:</b> Alterna entre <b>Foto Plana HD de Ubicación</b> y <b>Esfera 360°</b> en cada pabellón del campus.</span>
-                    <span>🕵️‍♂️ <b>TRANSPARENCIA:</b> Evalúa a tus docentes de forma 100% anónima y segura desde la barra superior.</span>
+                    <span>🛠️ <b>SERVICIOS GENERALES:</b> Revisa al final de la página el estado de tus reportes y descarga el <b>Informe Oficial en PDF</b>.</span>
+                    <span>🕶️ <b>NUEVAS VISTAS 360°:</b> Explora Telemática, Agropecuaria, Decanato, Rotonda y OTI en <b>360°</b> o en <b>Foto Plana HD</b>.</span>
+                    <span>🌟 <b>MURO DE COLABORADORES:</b> ¡Gracias a todos los estudiantes cuyos aportes aprobados enriquecen UbícateUNE!</span>
                 </div>
             </div>
         </div>
@@ -344,7 +377,6 @@
                 <span style="font-size: 11px; color:#fbbf24; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Universidad Nacional de Educación - Tour 360°</span>
             </div>
         </div>
-        <!-- 4 BOTONES COMPLETAMENTE SEPARADOS POR FUNCIÓN -->
         <div class="header-actions">
             <button class="btn-header-pill btn-serv-gen" onclick="abrirModalServiciosGenerales()">
                 <i class="fas fa-tools"></i> Reportar a Servicios Generales
@@ -502,7 +534,7 @@
                     </select>
                 </div>
 
-                <div style="display: flex; gap: 8px; align-items: center;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                     <div class="filtro-container">
                         <select id="filtro-categoria" onchange="filtrarMarcadores(this.value)">
                             <option value="todos">👁️ Todos los lugares</option>
@@ -512,9 +544,11 @@
                             <option value="servicios">🚻 Servicios</option>
                         </select>
                     </div>
-                    <div class="zoom-btns">
-                        <button onclick="hacerZoom(-30)">➖</button>
-                        <button onclick="hacerZoom(30)">➕</button>
+                    <!-- BARRA DESLIZANTE DE LUPA ESTILO VOLUMEN (100% A 300%) -->
+                    <div class="zoom-slider-box" title="Desliza para acercar o alejar el mapa">
+                        <span>🔍</span>
+                        <input type="range" id="zoom-range-slider" min="100" max="300" step="5" value="100" oninput="cambiarZoomSlider(this.value)">
+                        <span id="zoom-val-label" class="zoom-val-badge">100%</span>
                     </div>
                 </div>
             </div>
@@ -540,7 +574,7 @@
                         <img id="gps-img-chirinos" class="avatar-mascota-img" crossorigin="anonymous" src="https://i.ibb.co/tMpRvtY8/DECANO-removebg-preview.png" alt="Dr. Daniel Chirinos" style="display:none;">
                     </div>
 
-                    <!-- PINES -->
+                    <!-- PINES CON TUS UBICACIONES EXACTAS EN EL MAPA -->
                     <div class="map-pin" data-categoria="principal" id="pin-mapa-entrada" style="top: 25.7%; left: 34.4%;" onclick="seleccionarLugar('entrada')">
                         <div class="pin-marker"><span class="pin-icon">🚪</span></div><div class="pin-label">Entrada</div>
                     </div>
@@ -572,13 +606,13 @@
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-auditorio_telecom" style="top: 29.9%; left: 87.1%;" onclick="seleccionarLugar('auditorio_telecom')">
                         <div class="pin-marker"><span class="pin-icon">🎤</span></div><div class="pin-label">Aud. Telecom</div>
                     </div>
-                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-electricidad" style="top: 71.9%; left: 52.8%;" onclick="seleccionarLugar('electricidad')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-electricidad" style="top: 73.2%; left: 53.9%;" onclick="seleccionarLugar('electricidad')">
                         <div class="pin-marker"><span class="pin-icon">⚡</span></div><div class="pin-label">Electricidad</div>
                     </div>
-                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-metalurgia" style="top: 71.7%; left: 48.6%;" onclick="seleccionarLugar('metalurgia')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-metalurgia" style="top: 73.2%; left: 49.5%;" onclick="seleccionarLugar('metalurgia')">
                         <div class="pin-marker"><span class="pin-icon">🔩</span></div><div class="pin-label">Metalurgia</div>
                     </div>
-                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_agropecuaria" style="top: 57.4%; left: 84.4%;" onclick="seleccionarLugar('fac_agropecuaria')">
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_agropecuaria" style="top: 62.3%; left: 81.5%;" onclick="seleccionarLugar('fac_agropecuaria')">
                         <div class="pin-marker"><span class="pin-icon">🌱</span></div><div class="pin-label">F. Agropecuaria</div>
                     </div>
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_ciencias" style="top: 51.6%; left: 65.2%;" onclick="seleccionarLugar('fac_ciencias')">
@@ -646,7 +680,7 @@
                         <div class="pin-marker"><span class="pin-icon">🪕</span></div><div class="pin-label">TUNA</div>
                     </div>
 
-                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-paradero_burrito" style="top: 75.7%; left: 37.7%;" onclick="seleccionarLugar('paradero_burrito')">
+                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-paradero_burrito" style="top: 77.2%; left: 37.6%;" onclick="seleccionarLugar('paradero_burrito')">
                         <div class="pin-marker"><span class="pin-icon">🚌</span></div><div class="pin-label">Paradero Burrito</div>
                     </div>
                     <div class="map-pin" data-categoria="servicios" id="pin-mapa-motos" style="top: 24.9%; left: 32.3%;" onclick="seleccionarLugar('motos')">
@@ -670,7 +704,7 @@
                     <div class="map-pin" data-categoria="servicios" id="pin-mapa-papeleria_1" style="top: 41.0%; left: 87.3%;" onclick="seleccionarLugar('papeleria_1')">
                         <div class="pin-marker"><span class="pin-icon">🖨️</span></div><div class="pin-label">Papelería</div>
                     </div>
-                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-aseped" style="top: 71.6%; left: 44.5%;" onclick="seleccionarLugar('aseped')">
+                    <div class="map-pin" data-categoria="servicios" id="pin-mapa-aseped" style="top: 73.2%; left: 44.6%;" onclick="seleccionarLugar('aseped')">
                         <div class="pin-marker"><span class="pin-icon">🏢</span></div><div class="pin-label">ASEPED</div>
                     </div>
                     <div class="map-pin" data-categoria="servicios" id="pin-mapa-bano_1" style="top: 51.3%; left: 73.7%;" onclick="seleccionarLugar('bano_1')">
@@ -685,7 +719,7 @@
                 </div>
             </div>
 
-            <!-- FICHA INFO Y ACCIONES CON OPCIÓN DE FOTO PLANA Y 360 -->
+            <!-- FICHA INFO Y ACCIONES CON OPCIÓN DE 360 Y FOTO PLANA HD -->
             <div id="ficha-mall" class="info-drawer">
                 <div class="drawer-header">
                     <div>
@@ -706,24 +740,24 @@
                 </div>
                 <div class="drawer-actions" id="acciones-ficha">
                     <button class="drawer-btn drawer-btn-ruta" id="btn-ficha-ir">🚀 Trazar Ruta</button>
-                    <button class="drawer-btn drawer-btn-plana" id="btn-ficha-plana">🖼️ Foto Ubicación</button>
                     <button class="drawer-btn drawer-btn-360" id="btn-ficha-360">🕶️ Tour 360°</button>
+                    <button class="drawer-btn drawer-btn-plana" id="btn-ficha-plana">🖼️ Foto Plana HD</button>
                 </div>
             </div>
 
-            <!-- VISOR HÍBRIDO: FOTO PLANA HD DE UBICACIÓN + ESFERA 360° -->
+            <!-- VISOR HÍBRIDO: ESFERA 360° + FOTO PLANA HD DE UBICACIÓN -->
             <div id="vista-360" class="viewer-container">
                 <button class="btn-volver-mapa" onclick="volverAlMapa()">🔙 VOLVER AL MAPA</button>
 
-                <!-- SELECTOR CENTRAL ENTRE FOTO PLANA HD Y ESFERA 360 -->
+                <!-- SELECTOR CENTRAL ENTRE ESFERA 360 Y FOTO PLANA HD -->
                 <div class="modo-visor-switch">
-                    <button id="tab-modo-plana" class="btn-modo-visor" onclick="cambiarModoVisor('plana')">🖼️ Foto Plana HD</button>
                     <button id="tab-modo-360" class="btn-modo-visor activo" onclick="cambiarModoVisor('360')">🕶️ Esfera 360°</button>
+                    <button id="tab-modo-plana" class="btn-modo-visor" onclick="cambiarModoVisor('plana')">🖼️ Foto Plana HD</button>
                 </div>
 
                 <button class="btn-subir-foto" onclick="abrirModalFoto()">📷 Subir Foto / Dato Curioso</button>
 
-                <!-- CONTENEDOR FOTO PLANA HD (NÍTIDA SIN PIXELEO) -->
+                <!-- CONTENEDOR FOTO PLANA HD -->
                 <div id="contenedor-foto-plana" class="vista-plana-wrapper">
                     <div id="badge-titulo-plana" class="badge-plana-info">📍 Vista de Ubicación</div>
                     <img id="img-plana-hd" src="" alt="Vista del lugar">
@@ -789,9 +823,9 @@
             <button class="btn-destino" data-id="decanato_tecno" onclick="seleccionarLugar('decanato_tecno')"><div class="btn-left"><div class="img-thumb">🏢</div><div class="btn-info"><span class="btn-title">Decanato de Tecnología</span><span class="btn-sub">Administración FATEC</span></div></div></button>
             <button class="btn-destino" data-id="fac_telematica" onclick="seleccionarLugar('fac_telematica')"><div class="btn-left"><div class="img-thumb">💻</div><div class="btn-info"><span class="btn-title">F. Telemática y Telecom.</span><span class="btn-sub">Pabellón de Sistemas</span></div></div></button>
             <button class="btn-destino" data-id="auditorio_telecom" onclick="seleccionarLugar('auditorio_telecom')"><div class="btn-left"><div class="img-thumb">🎤</div><div class="btn-info"><span class="btn-title">Auditorio de Telecom.</span><span class="btn-sub">Charlas Tecnológicas</span></div></div></button>
-            <button class="btn-destino" data-id="electricidad" onclick="seleccionarLugar('electricidad')"><div class="btn-left"><div class="img-thumb">⚡</div><div class="btn-info"><span class="btn-title">Programa de Electricidad</span><span class="btn-sub">Talleres Eléctricos</span></div></div></button>
+            <button class="btn-destino" data-id="electricidad" onclick="seleccionarLugar('electricidad')"><div class="btn-left"><div class="img-thumb">⚡</div><div class="btn-info"><span class="btn-title">Programa de Electricidad</span><span class="btn-sub">Talleres (X:53.9, Y:73.2)</span></div></div></button>
             <button class="btn-destino" data-id="metalurgia" onclick="seleccionarLugar('metalurgia')"><div class="btn-left"><div class="img-thumb">🔩</div><div class="btn-info"><span class="btn-title">Programa de Metalurgia</span><span class="btn-sub">Talleres FATEC</span></div></div></button>
-            <button class="btn-destino" data-id="fac_agropecuaria" onclick="seleccionarLugar('fac_agropecuaria')"><div class="btn-left"><div class="img-thumb">🌱</div><div class="btn-info"><span class="btn-title">F. Agropecuaria y Nutrición</span><span class="btn-sub">FAN (X:84.4, Y:57.4)</span></div></div></button>
+            <button class="btn-destino" data-id="fac_agropecuaria" onclick="seleccionarLugar('fac_agropecuaria')"><div class="btn-left"><div class="img-thumb">🌱</div><div class="btn-info"><span class="btn-title">F. Agropecuaria y Nutrición</span><span class="btn-sub">FAN (X:81.5, Y:62.3)</span></div></div></button>
             <button class="btn-destino" data-id="fac_ciencias" onclick="seleccionarLugar('fac_ciencias')"><div class="btn-left"><div class="img-thumb">🔬</div><div class="btn-info"><span class="btn-title">Facultad de Ciencias</span><span class="btn-sub">Labs Química y Física</span></div></div></button>
             <button class="btn-destino" data-id="fac_inicial" onclick="seleccionarLugar('fac_inicial')"><div class="btn-left"><div class="img-thumb">🧸</div><div class="btn-info"><span class="btn-title">F. Educación Inicial</span><span class="btn-sub">Aulas y Ludoteca</span></div></div></button>
             <button class="btn-destino" data-id="auditorio_pedagogia" onclick="seleccionarLugar('auditorio_pedagogia')"><div class="btn-left"><div class="img-thumb">🎓</div><div class="btn-info"><span class="btn-title">Auditorio de Pedagogía</span><span class="btn-sub">Educación Primaria</span></div></div></button>
@@ -816,13 +850,13 @@
             <button class="btn-destino" data-id="rotonda" onclick="seleccionarLugar('rotonda')"><div class="btn-left"><div class="img-thumb">🎸</div><div class="btn-info"><span class="btn-title">Rotonda</span><span class="btn-sub">Área de descanso</span></div></div></button>
 
             <h3>🚻 Servicios, Trámites y Ventas</h3>
-            <button class="btn-destino" data-id="paradero_burrito" onclick="seleccionarLugar('paradero_burrito')"><div class="btn-left"><div class="img-thumb">🚌</div><div class="btn-info"><span class="btn-title">Paradero del Burrito UNE</span><span class="btn-sub">Bus Universitario (X:37.7, Y:75.7)</span></div></div></button>
+            <button class="btn-destino" data-id="paradero_burrito" onclick="seleccionarLugar('paradero_burrito')"><div class="btn-left"><div class="img-thumb">🚌</div><div class="btn-info"><span class="btn-title">Paradero del Burrito UNE</span><span class="btn-sub">Bus Universitario (X:37.6, Y:77.2)</span></div></div></button>
             <button class="btn-destino" data-id="motos" onclick="seleccionarLugar('motos')"><div class="btn-left"><div class="img-thumb">🏍️</div><div class="btn-info"><span class="btn-title">Paradero de Motos</span><span class="btn-sub">Transporte Interno</span></div></div></button>
             <button class="btn-destino" data-id="recta_ventas" onclick="seleccionarLugar('recta_ventas')"><div class="btn-left"><div class="img-thumb">🏪</div><div class="btn-info"><span class="btn-title">Recta de Ventas</span><span class="btn-sub">Almuerzos e Internet</span></div></div></button>
             <button class="btn-destino" data-id="comedor_a" onclick="seleccionarLugar('comedor_a')"><div class="btn-left"><div class="img-thumb">🍲</div><div class="btn-info"><span class="btn-title">Comedor Univ. Acceso A</span><span class="btn-sub">Atención Principal</span></div></div></button>
             <button class="btn-destino" data-id="comedor_b" onclick="seleccionarLugar('comedor_b')"><div class="btn-left"><div class="img-thumb">🍽️</div><div class="btn-info"><span class="btn-title">Comedor Univ. Acceso B</span><span class="btn-sub">Bienestar Estudiantil</span></div></div></button>
             <button class="btn-destino" data-id="oti" onclick="seleccionarLugar('oti')"><div class="btn-left"><div class="img-thumb">⚙️</div><div class="btn-info"><span class="btn-title">Oficinas de OTI</span><span class="btn-sub">Tecnologías de Información</span></div></div></button>
-            <button class="btn-destino" data-id="aseped" onclick="seleccionarLugar('aseped')"><div class="btn-left"><div class="img-thumb">🏢</div><div class="btn-info"><span class="btn-title">ASEPED La Cantuta</span><span class="btn-sub">Servicios Estudiantiles</span></div></div></button>
+            <button class="btn-destino" data-id="aseped" onclick="seleccionarLugar('aseped')"><div class="btn-left"><div class="img-thumb">🏢</div><div class="btn-info"><span class="btn-title">ASEPED La Cantuta</span><span class="btn-sub">Servicios (X:44.6, Y:73.2)</span></div></div></button>
             <button class="btn-destino" data-id="of_servicios" onclick="seleccionarLugar('of_servicios')"><div class="btn-left"><div class="img-thumb">🛠️</div><div class="btn-info"><span class="btn-title">Servicios Generales</span><span class="btn-sub">Mantenimiento UNE</span></div></div></button>
             <button class="btn-destino" data-id="papeleria_1" onclick="seleccionarLugar('papeleria_1')"><div class="btn-left"><div class="img-thumb">🖨️</div><div class="btn-info"><span class="btn-title">Papelería 1</span><span class="btn-sub">Copias</span></div></div></button>
             <button class="btn-destino" data-id="bano_1" onclick="seleccionarLugar('bano_1')"><div class="btn-left"><div class="img-thumb">🚻</div><div class="btn-info"><span class="btn-title">Baño 1</span><span class="btn-sub">Cruce Central</span></div></div></button>
@@ -862,6 +896,51 @@
         </div>
     </div>
 
+    <!-- SECCIÓN: SEGUIMIENTO DE PETICIONES Y GENERADOR DE PDF OFICIAL PARA SERVICIOS GENERALES -->
+    <div class="tools-container">
+        <div class="tools-card">
+            <div class="tools-header-fila">
+                <div>
+                    <h4 style="color:var(--primary); font-size:16px; font-weight:900;">🛠️ Estado de Peticiones Estudiantiles y Reporte PDF para Servicios Generales</h4>
+                    <p style="font-size:12.5px; color:#64748b; font-weight:700; margin-top:3px;">Aquí los alumnos verifican si sus reportes han sido escuchados o solucionados, y se genera el PDF formal para entregar a la oficina de Servicios Generales UNE.</p>
+                </div>
+                <button class="btn-pdf-sg" onclick="generarPDFServiciosGenerales()">
+                    <i class="fas fa-file-pdf"></i> Descargar Informe Oficial en PDF
+                </button>
+            </div>
+
+            <div class="sg-table-wrap">
+                <table class="sg-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Ambiente / Ubicación</th>
+                            <th>Incidencia Reportada</th>
+                            <th>Detalle de la Petición</th>
+                            <th>Estado en Campus</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-servicios-body">
+                        <tr><td colspan="5" style="text-align:center; color:#64748b;">Cargando peticiones registradas...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN FINAL: MURO DE AGRADECIMIENTO A COLABORADORES APROBADOS -->
+    <div class="tools-container">
+        <div class="tools-card">
+            <h4 style="color:var(--primary); font-size:16px; font-weight:900;">🌟 Agradecimiento Especial a Nuestros Colaboradores Aprobados</h4>
+            <p style="font-size:12.5px; color:#64748b; font-weight:700; margin-top:4px;">Reconocimiento automático a los estudiantes y miembros de la UNE cuyos aportes de fotos y datos curiosos fueron verificados y aprobados:</p>
+            <div id="muro-colaboradores" class="colaboradores-grid">
+                <span class="colaborador-chip"><i class="fas fa-medal"></i> Jean Rodriguez Mendez (Creador - FATEC)</span>
+                <span class="colaborador-chip"><i class="fas fa-star"></i> Luis Vargas Perez (Colaborador)</span>
+                <span class="colaborador-chip"><i class="fas fa-star"></i> Dayron Padilla Untiveros (Colaborador)</span>
+            </div>
+        </div>
+    </div>
+
     <!-- PANEL MODO DEV -->
     <div style="max-width:1440px; margin: 0 auto 30px; padding: 0 15px;">
         <div style="background:var(--surface); border-radius: 20px; padding: 15px; border: 1px solid #cbd5e1; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
@@ -879,7 +958,7 @@
     <div id="modal-reporte" class="modal-overlay">
         <div class="modal-box">
             <h3>🛠️ Reporte para Servicios Generales UNE</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Este formulario va a una planilla exclusiva para que <b>Servicios Generales</b> atienda falta de papel o agua en baños, puertas rotas, luminarias o mobiliario dañado.</p>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Este formulario va directamente a la pestaña <b>Servicios_Generales</b> para atender falta de papel o agua en baños, puertas rotas, luminarias o mobiliario dañado.</p>
             
             <label>Ubicación / Baño / Pabellón:</label>
             <select id="reporte-lugar" onchange="toggleOtroInput('lugar')">
@@ -908,7 +987,7 @@
             <label>Detalle para el personal de mantenimiento:</label>
             <textarea id="reporte-detalle" placeholder="Ej: En el baño de hombres del 1er piso no cierra la segunda puerta..."></textarea>
             
-            <div id="msg-reporte" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Reporte registrado en la hoja de Servicios Generales.</div>
+            <div id="msg-reporte" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ Reporte registrado en la hoja Servicios_Generales.</div>
 
             <div class="modal-actions">
                 <button class="btn-cancelar" onclick="cerrarModalServiciosGenerales()">Cancelar</button>
@@ -917,16 +996,16 @@
         </div>
     </div>
 
-    <!-- 2. MODAL EXCLUSIVO: SUBIR DATO CURIOSO O FOTO DE REFERENCIA (SOLO SALE SI ES APROBADO) -->
+    <!-- 2. MODAL EXCLUSIVO: SUBIR DATO CURIOSO O FOTO DE REFERENCIA (PESTAÑA DATO CURIOSO) -->
     <div id="modal-foto" class="modal-overlay">
         <div class="modal-box">
             <h3>💡 Subir Foto o Dato Curioso Estudiantil</h3>
-            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Comparte un dato curioso o una foto de un pabellón. <b>Solo se mostrará en la página web cuando el administrador cambie su estado de PENDIENTE a APROBADO.</b></p>
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px; line-height:1.4;">Se guardará en la pestaña <b>DATO CURIOSO</b>. <b>Solo aparecerá en la web y en el muro de agradecimientos cuando cambies su estado de PENDIENTE a APROBADO.</b></p>
             
             <label>Selecciona el Lugar o Pabellón:</label>
             <select id="foto-lugar-select"></select>
 
-            <label>Tu Nombre o Apelativo:</label>
+            <label>Tu Nombre o Apelativo (Saldrá en Agradecimientos al aprobarse):</label>
             <input type="text" id="foto-autor" placeholder="Ej: Jean Rodriguez (Telecomunicaciones)">
 
             <label>Selecciona una foto de tu celular/PC o pega un link (Opcional):</label>
@@ -936,9 +1015,9 @@
             <label>Dato curioso o historia de este lugar:</label>
             <textarea id="foto-curiosidad-input" placeholder="Ej: Aquí en el 2do piso están los laboratorios de redes y robótica..."></textarea>
             
-            <span class="nota-revision">🔒 Revisión activa: Tu aporte llegará como PENDIENTE al Excel y se publicará en la web únicamente tras ser APROBADO.</span>
+            <span class="nota-revision">🔒 Revisión activa: Tu aporte llegará como PENDIENTE a la hoja DATO CURIOSO y se publicará únicamente tras ser APROBADO.</span>
             
-            <div id="msg-foto" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ ¡Enviado a revisión (PENDIENTE)! Aparecerá en la web al ser APROBADO.</div>
+            <div id="msg-foto" style="font-size:12px; font-weight:bold; color:var(--green); margin-bottom:10px; display:none;">✅ ¡Enviado a la hoja DATO CURIOSO (PENDIENTE)!</div>
 
             <div class="modal-actions">
                 <button class="btn-cancelar" onclick="cerrarModalFoto()">Cancelar</button>
@@ -1022,8 +1101,21 @@
         const FOTO_360_DEFAULT = 'https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png';
 
         // =========================================================================
-        // 1. FOTOS PLANAS HD DE UBICACIÓN (SE VEN NÍTIDAS SIN ESTIRARSE NI PIXELEARSE)
+        // 1. TUS 5 ENLACES EN EL VISOR 360° (Y TAMBIÉN DISPONIBLES EN FOTO PLANA HD)
         // =========================================================================
+        const fotos360PorLugar = {
+            "entrada": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
+            "biblioteca": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
+            "fac_telematica": "https://i.ibb.co/KxmC5HNb/telematica.jpg",
+            "fac_agropecuaria": "https://i.ibb.co/h1dbZzGC/facultad-agropecuaria.jpg",
+            "decanato_tecno": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
+            "fac_tecnologia": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
+            "rotonda": "https://i.ibb.co/1YXqPG2z/rotonda.jpg",
+            "oti": "https://i.ibb.co/wh3cr41p/oti.jpg",
+            "auditorio_prin": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
+            "comedor_a": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png"
+        };
+
         const fotosPlanasPorLugar = {
             "fac_telematica": "https://i.ibb.co/KxmC5HNb/telematica.jpg",
             "fac_agropecuaria": "https://i.ibb.co/h1dbZzGC/facultad-agropecuaria.jpg",
@@ -1033,30 +1125,12 @@
             "oti": "https://i.ibb.co/wh3cr41p/oti.jpg"
         };
 
-        // =========================================================================
-        // 2. IMÁGENES PANORÁMICAS EQUIRECTANGULARES PARA EL VISOR ESFÉRICO 360°
-        // =========================================================================
-        const fotos360PorLugar = {
-            "entrada": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
-            "biblioteca": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
-            "auditorio_prin": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
-            "comedor_a": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png"
-            // Cuando tomes fotos equirectangulares 360° de otros puntos, pégalas aquí
-        };
-
-        const fotosReferenciaIniciales = {
-            "fac_telematica": [{ url: "https://i.ibb.co/KxmC5HNb/telematica.jpg", texto: "Fachada de Telecomunicaciones e Informática (FATEC)" }],
-            "fac_agropecuaria": [{ url: "https://i.ibb.co/h1dbZzGC/facultad-agropecuaria.jpg", texto: "Facultad de Agropecuaria y Nutrición - UNE" }],
-            "decanato_tecno": [{ url: "https://i.ibb.co/WWtc6v0T/decanato.jpg", texto: "Decanato de la Facultad de Tecnología (FATEC)" }],
-            "rotonda": [{ url: "https://i.ibb.co/1YXqPG2z/rotonda.jpg", texto: "Vista de La Rotonda UNE" }],
-            "oti": [{ url: "https://i.ibb.co/wh3cr41p/oti.jpg", texto: "Oficinas de OTI - Tecnologías de la Información" }]
-        };
-
         let modoEdicionActivo = false;
         let gpsActivado = false;
         let puntoCapturadoHTML = "";
         let viewer = null;
         let escenaActualId = "entrada";
+        let listaReportesServicios = [];
         
         let isDragging = false;
         let startX, startY, scrollLeft, scrollTop;
@@ -1065,36 +1139,38 @@
         let miXActual = baseMapa.x;
         let miYActual = baseMapa.y;
 
+        // NODOS DEL MAPA CON TUS POSICIONES EXACTAS ACTUALIZADAS
         const coordenadasMapa = {
             "entrada": { x: 34.4, y: 25.7 }, "garita": { x: 33.3, y: 26.6 }, "pab_administrativo": { x: 52.0, y: 19.9 },
             "biblioteca": { x: 41.9, y: 34.7 }, "huaranguito": { x: 48.3, y: 31.1 }, "auditorio_prin": { x: 72.8, y: 20.7 },
             "sociales_norte": { x: 68.3, y: 9.2 }, "idiomas": { x: 80.7, y: 17.9 }, "fac_inicial": { x: 41.6, y: 44.7 },
             "auditorio_pedagogia": { x: 57.5, y: 44.4 }, "fac_ciencias": { x: 65.2, y: 51.6 }, "sociales": { x: 82.7, y: 49.7 },
-            "colegio_aplicacion": { x: 49.4, y: 58.1 }, "electricidad": { x: 52.8, y: 71.9 }, "metalurgia": { x: 48.6, y: 71.7 },
-            "fac_agropecuaria": { x: 84.4, y: 57.4 }, "fac_tecnologia": { x: 66.3, y: 65.6 }, "decanato_tecno": { x: 63.6, y: 68.5 },
+            "colegio_aplicacion": { x: 49.4, y: 58.1 }, "electricidad": { x: 53.9, y: 73.2 }, "metalurgia": { x: 49.5, y: 73.2 },
+            "fac_agropecuaria": { x: 81.5, y: 62.3 }, "fac_tecnologia": { x: 66.3, y: 65.6 }, "decanato_tecno": { x: 63.6, y: 68.5 },
             "fac_telematica": { x: 88.4, y: 36.1 }, "auditorio_telecom": { x: 87.1, y: 29.9 }, "fac_educacion": { x: 73.7, y: 65.8 },
             "fac_fisica": { x: 32.5, y: 78.6 }, "fac_civil": { x: 73.5, y: 65.9 }, "fac_artistica": { x: 62.5, y: 79.2 },
             "fac_vestido": { x: 43.2, y: 89.6 }, "estadio": { x: 19.4, y: 54.8 }, "gimnasio": { x: 40.6, y: 62.1 },
             "losa": { x: 50.7, y: 64.1 }, "piscina": { x: 35.7, y: 71.6 }, "topico": { x: 22.6, y: 86.2 },
             "capilla": { x: 34.0, y: 84.4 }, "estacionamiento": { x: 31.6, y: 48.8 }, "rotonda": { x: 62.4, y: 72.8 },
             "talcomachay": { x: 96.3, y: 94.7 }, "oficina_recreacion": { x: 81.7, y: 38.2 }, "tuna": { x: 81.0, y: 35.0 },
-            "paradero_burrito": { x: 37.7, y: 75.7 }, "motos": { x: 32.3, y: 24.9 }, "recta_ventas": { x: 42.4, y: 17.9 },
+            "paradero_burrito": { x: 37.6, y: 77.2 }, "motos": { x: 32.3, y: 24.9 }, "recta_ventas": { x: 42.4, y: 17.9 },
             "comedor_a": { x: 75.0, y: 42.7 }, "comedor_b": { x: 68.7, y: 31.0 }, "oti": { x: 83.8, y: 24.8 },
-            "of_servicios": { x: 77.8, y: 41.1 }, "papeleria_1": { x: 87.3, y: 41.0 }, "aseped": { x: 44.5, y: 71.6 },
+            "of_servicios": { x: 77.8, y: 41.1 }, "papeleria_1": { x: 87.3, y: 41.0 }, "aseped": { x: 44.6, y: 73.2 },
             "bano_1": { x: 73.7, y: 51.3 }, "bano_2": { x: 34.5, y: 37.3 }, "bano_4": { x: 38.3, y: 63.0 }
         };
 
-        // PUNTOS DE CALIBRACIÓN GPS REALES TOMADOS EN CAMPO
+        // ANCLAS GPS REALES MEDIDAS EN CAMPO + VINCULADAS A TUS NUEVOS PINES
         const anclasGPSReales = [
             { id: "sociales",         lat: -11.946157, lon: -76.699158, x: 82.7, y: 49.7 },
             { id: "fac_artistica",    lat: -11.947034, lon: -76.699627, x: 62.5, y: 79.2 },
             { id: "fac_civil",        lat: -11.947289, lon: -76.699516, x: 73.5, y: 65.9 },
-            { id: "fac_agropecuaria", lat: -11.947402, lon: -76.699556, x: 84.4, y: 57.4 },
+            { id: "fac_agropecuaria", lat: -11.947402, lon: -76.699556, x: 81.5, y: 62.3 },
             { id: "rotonda",          lat: -11.947556, lon: -76.700383, x: 62.4, y: 72.8 },
             { id: "decanato_tecno",   lat: -11.947442, lon: -76.700256, x: 63.6, y: 68.5 },
-            { id: "electricidad",     lat: -11.947647, lon: -76.700472, x: 52.8, y: 71.9 },
-            { id: "metalurgia",       lat: -11.947608, lon: -76.700758, x: 48.6, y: 71.7 },
-            { id: "aseped",           lat: -11.947651, lon: -76.700886, x: 44.5, y: 71.6 },
+            { id: "electricidad",     lat: -11.947647, lon: -76.700472, x: 53.9, y: 73.2 },
+            { id: "metalurgia",       lat: -11.947608, lon: -76.700758, x: 49.5, y: 73.2 },
+            { id: "aseped",           lat: -11.947651, lon: -76.700886, x: 44.6, y: 73.2 },
+            { id: "paradero_burrito", lat: -11.947878, lon: -76.702047, x: 37.6, y: 77.2 },
             { id: "piscina",          lat: -11.947808, lon: -76.702163, x: 35.7, y: 71.6 },
             { id: "entrada",          lat: -11.945380, lon: -76.702065, x: 34.4, y: 25.7 }
         ];
@@ -1135,9 +1211,9 @@
         }
 
         const directorioInfo = {
-            "fac_agropecuaria": { titulo: "Facultad de Agropecuaria y Nutrición", cat: "Facultad", pisos: "Pabellones, Laboratorios y Centros Experimentales", oficinas: "Decanato y Escuelas de Agropecuaria y Nutrición.", curiosidad: "Ubicada en el sector este del campus (X: 84.4%, Y: 57.4%), rodeada de áreas verdes productivas." },
+            "fac_agropecuaria": { titulo: "Facultad de Agropecuaria y Nutrición", cat: "Facultad", pisos: "Pabellones y Centros Experimentales (X: 81.5%, Y: 62.3%)", oficinas: "Decanato y Escuelas de Agropecuaria y Nutrición.", curiosidad: "Ubicada en el sector este del campus, rodeada de áreas verdes productivas." },
             "metalurgia": { titulo: "Programa de Metalurgia", cat: "Especialidad FATEC", pisos: "Talleres de Fundición y Soldadura", oficinas: "Coordinación de Metalurgia - Joyería.", curiosidad: "Ubicado entre el pabellón de Electricidad y ASEPED." },
-            "paradero_burrito": { titulo: "Paradero del Burrito UNE", cat: "Transporte Universitario", pisos: "Paradero Oficial (X: 37.7%, Y: 75.7%)", oficinas: "Salida y llegada del bus universitario.", curiosidad: "Aquí los estudiantes toman el clásico 'Burrito' de la UNE para sus rutas." },
+            "paradero_burrito": { titulo: "Paradero del Burrito UNE", cat: "Transporte Universitario", pisos: "Paradero Oficial (X: 37.6%, Y: 77.2%)", oficinas: "Salida y llegada del bus universitario.", curiosidad: "Aquí los estudiantes toman el clásico 'Burrito' de la UNE para sus rutas." },
             "talcomachay": { titulo: "Mirador Talcomachay", cat: "Naturaleza y Mitos", pisos: "Cerro del Campus", oficinas: "Zona de Trekking estudiantil.", curiosidad: "La leyenda dice que si llegas a lo más alto del cerro, tendrás tu título algún día." },
             "oficina_recreacion": { titulo: "Oficina de Recreación", cat: "Bienestar", pisos: "Módulo Recreacional", oficinas: "Juegos libres para alumnos.", curiosidad: "Aquí hay ajedrez, damas y mesas de ping-pong gratis para que jueguen los estudiantes." },
             "tuna": { titulo: "TUNA UNE La Cantuta", cat: "Cultura", pisos: "Módulo Cultural", oficinas: "Agrupación musical.", curiosidad: "Conocida como la segunda casa del alumno Guillermo Cisneros." },
@@ -1153,7 +1229,7 @@
             "fac_ciencias": { titulo: "Facultad de Ciencias", cat: "Facultad", pisos: "Labs de Química, Biología y Física", oficinas: "Decanato de Ciencias.", curiosidad: "Alberga los laboratorios científicos centrales del campus." },
             "sociales": { titulo: "F. Ciencias Sociales y Humanidades", cat: "Facultad", pisos: "Pabellón Principal", oficinas: "Decanato de Sociales.", curiosidad: "Aquí se forman los futuros docentes de Historia, Psicología, Filosofía y Literatura." },
             "colegio_aplicacion": { titulo: "Colegio de Aplicación", cat: "Académico", pisos: "Nivel Primaria", oficinas: "Prácticas Preprofesionales.", curiosidad: "Centro experimental donde los estudiantes de la UNE realizan sus prácticas docentes." },
-            "electricidad": { titulo: "Programa de Electricidad", cat: "Especialidad", pisos: "Talleres y Laboratorios", oficinas: "Instalaciones Eléctricas y Potencia.", curiosidad: "Equipada con módulos de máquinas eléctricas y automatización." },
+            "electricidad": { titulo: "Programa de Electricidad", cat: "Especialidad", pisos: "Talleres y Laboratorios (X: 53.9%, Y: 73.2%)", oficinas: "Instalaciones Eléctricas y Potencia.", curiosidad: "Equipada con módulos de máquinas eléctricas y automatización." },
             "fac_tecnologia": { titulo: "Facultad de Tecnología", cat: "Facultad", pisos: "Talleres y Aulas FATEC", oficinas: "Escuelas técnicas.", curiosidad: "Cuna de las especialidades técnicas e industriales de La Cantuta." },
             "decanato_tecno": { titulo: "Decanato de Tecnología", cat: "Administrativo", pisos: "Piso 1 y 2", oficinas: "Administración FATEC.", curiosidad: "Oficina central para trámites de la Facultad de Tecnología." },
             "fac_telematica": { titulo: "F. Telecomunicaciones e Informática", cat: "Especialidad", pisos: "Labs de Redes, Electrónica y Cómputo", oficinas: "Coordinación de Telecomunicaciones e Informática.", curiosidad: "Aquí se desarrollan proyectos de redes, programación, electrónica y robótica." },
@@ -1175,7 +1251,7 @@
             "comedor_a": { titulo: "Comedor Acceso A", cat: "Bienestar", pisos: "Planta Principal", oficinas: "Atención de desayuno y almuerzo.", curiosidad: "Uno de los servicios más queridos por los estudiantes cantuteños." },
             "comedor_b": { titulo: "Comedor Acceso B", cat: "Bienestar", pisos: "Entrada Norte", oficinas: "Bienestar Universitario.", curiosidad: "Segundo acceso al comedor universitario." },
             "oti": { titulo: "Oficinas de OTI", cat: "Administrativo", pisos: "Módulo TI", oficinas: "Oficina de Tecnologías de la Información.", curiosidad: "Encargados de los sistemas informáticos y red del campus." },
-            "aseped": { titulo: "ASEPED La Cantuta", cat: "Asociación", pisos: "Pabellón", oficinas: "Gremio y servicios.", curiosidad: "Ubicado frente a la zona deportiva y piscina." },
+            "aseped": { titulo: "ASEPED La Cantuta", cat: "Asociación", pisos: "Pabellón (X: 44.6%, Y: 73.2%)", oficinas: "Gremio y servicios.", curiosidad: "Ubicado frente a la zona deportiva y piscina." },
             "of_servicios": { titulo: "Servicios Generales", cat: "Mantenimiento", pisos: "Pabellón Logístico", oficinas: "Mantenimiento UNE.", curiosidad: "Gestiona el cuidado de las áreas verdes e instalaciones." },
             "papeleria_1": { titulo: "Papelería 1", cat: "Servicios", pisos: "Módulo", oficinas: "Impresiones y útiles.", curiosidad: "Ideal para comprar materiales camino a Telecomunicaciones." },
             "bano_1": { titulo: "Baño 1 (Cruce Central)", cat: "SSHH", pisos: "Módulo Central", oficinas: "Servicios Higiénicos.", curiosidad: "Puedes reportar si falta papel o mantenimiento desde el botón rojo superior." },
@@ -1183,9 +1259,10 @@
             "bano_4": { titulo: "Baño 4 (Zona Losa)", cat: "SSHH", pisos: "Módulo Deportivo", oficinas: "Servicios Higiénicos.", curiosidad: "Da soporte a toda el área del gimnasio y losa deportiva." }
         };
 
+        // Al iniciar, las listas de fotos de estudiantes empiezan vacías para que SOLO salgan las APROBADAS en el Excel
         for (let k in directorioInfo) {
             directorioInfo[k].listaCuriosidades = [directorioInfo[k].curiosidad];
-            directorioInfo[k].listaFotos = fotosReferenciaIniciales[k] ? [...fotosReferenciaIniciales[k]] : [];
+            directorioInfo[k].listaFotos = [];
         }
 
         function poblarSelectLugaresFoto() {
@@ -1232,15 +1309,26 @@
                 .trim();
         }
 
-        // CARGA ÚNICAMENTE LOS DATOS Y FOTOS QUE ESTÁN EN ESTADO "APROBADO" EN GOOGLE SHEETS
+        // CARGA APROBADOS DE LA HOJA "DATO CURIOSO" Y ACTUALIZA EL MURO DE AGRADECIMIENTOS
         function cargarCuriosidadesAprobadasDeSheets() {
             fetch(SCRIPT_URL + "?t=" + new Date().getTime(), { cache: "no-store" })
                 .then(r => r.json())
                 .then(lista => {
                     if (!Array.isArray(lista)) return;
+                    const colaboradoresSet = new Set();
+
                     lista.forEach(item => {
                         const lugarExcel = normalizarTexto(item.lugar);
                         if (!lugarExcel) return;
+
+                        // Extraer el nombre del colaborador si tiene formato "(Por: Nombre)"
+                        const matchAutor = String(item.detalle || "").match(/\(Por:\s*([^)]+)\)/i);
+                        if (matchAutor && matchAutor[1]) {
+                            const nombreLimpio = matchAutor[1].trim();
+                            if (nombreLimpio.toLowerCase() !== "anonimo" && nombreLimpio.toLowerCase() !== "anónimo") {
+                                colaboradoresSet.add(nombreLimpio);
+                            }
+                        }
 
                         for (let k in directorioInfo) {
                             const tituloWeb = normalizarTexto(directorioInfo[k].titulo);
@@ -1263,12 +1351,118 @@
                         }
                     });
 
+                    // Agregar colaboradores aprobados al muro de agradecimiento
+                    const muro = document.getElementById('muro-colaboradores');
+                    colaboradoresSet.forEach(autor => {
+                        const chip = document.createElement('span');
+                        chip.className = 'colaborador-chip';
+                        chip.innerHTML = `<i class="fas fa-check-circle"></i> ${autor}`;
+                        muro.appendChild(chip);
+                    });
+
                     if (document.getElementById('vista-360').style.display === 'block') {
                         renderizarCuriosidadActual();
                         renderizarGaleriaFotos();
                     }
                 })
                 .catch(err => console.error("Error cargando aprobados:", err));
+        }
+
+        // CARGA EL ESTADO DE PETICIONES DE SERVICIOS GENERALES PARA LOS ALUMNOS Y EL PDF
+        function cargarEstadoServiciosGenerales() {
+            fetch(SCRIPT_URL + "?tipo=SERVICIOS&t=" + new Date().getTime(), { cache: "no-store" })
+                .then(r => r.json())
+                .then(lista => {
+                    const tbody = document.getElementById('tabla-servicios-body');
+                    if (!Array.isArray(lista) || lista.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#64748b;">Aún no hay reportes registrados en la pestaña Servicios_Generales.</td></tr>`;
+                        return;
+                    }
+                    listaReportesServicios = lista;
+                    tbody.innerHTML = lista.slice().reverse().map(item => {
+                        const esSolucionado = item.estado.includes("SOLUCIONADO") || item.estado.includes("ATENDIDO") || item.estado.includes("APROBADO");
+                        const claseBadge = esSolucionado ? "estado-solucionado" : "estado-pendiente";
+                        const icono = esSolucionado ? "✅" : "⏳";
+                        return `
+                            <tr>
+                                <td>${item.fecha}</td>
+                                <td><b>${item.lugar}</b></td>
+                                <td>${item.incidencia}</td>
+                                <td>${item.detalle}</td>
+                                <td><span class="badge-estado-sg ${claseBadge}">${icono} ${item.estado}</span></td>
+                            </tr>
+                        `;
+                    }).join('');
+                })
+                .catch(() => {});
+        }
+
+        // GENERADOR AUTOMÁTICO DE INFORME OFICIAL EN PDF PARA SERVICIOS GENERALES
+        function generarPDFServiciosGenerales() {
+            const fechaHoy = new Date().toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' });
+            const filasHTML = (listaReportesServicios.length > 0)
+                ? listaReportesServicios.map((r, i) => `
+                    <tr>
+                        <td style="padding:8px; border:1px solid #cbd5e1; text-align:center;">${i + 1}</td>
+                        <td style="padding:8px; border:1px solid #cbd5e1;">${r.fecha}</td>
+                        <td style="padding:8px; border:1px solid #cbd5e1;"><b>${r.lugar}</b></td>
+                        <td style="padding:8px; border:1px solid #cbd5e1;">${r.incidencia}</td>
+                        <td style="padding:8px; border:1px solid #cbd5e1;">${r.detalle}</td>
+                        <td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold;">${r.estado}</td>
+                    </tr>`).join('')
+                : `<tr><td colspan="6" style="padding:12px; text-align:center;">Sin incidencias pendientes registradas a la fecha.</td></tr>`;
+
+            const ventanaPDF = window.open('', '_blank');
+            ventanaPDF.document.write(`
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="utf-8">
+                    <title>Informe_Servicios_Generales_UbicateUNE_${Date.now()}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; color: #0f172a; padding: 30px; }
+                        .header-pdf { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #1e3a8a; padding-bottom: 15px; margin-bottom: 20px; }
+                        .titulo-pdf h2 { margin: 0; color: #1e3a8a; font-size: 20px; }
+                        .titulo-pdf p { margin: 4px 0 0; font-size: 12px; color: #475569; }
+                        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 15px; }
+                        th { background: #0f172a; color: white; padding: 10px; border: 1px solid #0f172a; text-transform: uppercase; font-size: 11px; }
+                        .pie-pdf { margin-top: 35px; font-size: 12px; color: #475569; border-top: 1px solid #cbd5e1; padding-top: 12px; display: flex; justify-content: space-between; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-pdf">
+                        <div class="titulo-pdf">
+                            <h2>UNIVERSIDAD NACIONAL DE EDUCACIÓN ENRIQUE GUZMÁN Y VALLE</h2>
+                            <p><b>Plataforma UbícateUNE - FATEC (Telecomunicaciones e Informática)</b></p>
+                            <p>REPORTE OFICIAL DE INCIDENCIAS E INFRAESTRUCTURA PARA LA OFICINA DE SERVICIOS GENERALES</p>
+                        </div>
+                        <div style="text-align:right; font-size:12px;">
+                            <b>Fecha de emisión:</b><br>${fechaHoy}
+                        </div>
+                    </div>
+                    <p style="font-size:13px; line-height:1.5;">Por medio del presente documento automático generado por la plataforma estudiantil <b>UbícateUNE</b>, se remite a la Oficina de Servicios Generales el consolidado de requerimientos de mantenimiento, limpieza y servicios higiénicos reportados por la comunidad universitaria:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Fecha y Hora</th>
+                                <th>Ubicación / Pabellón</th>
+                                <th>Tipo de Incidencia</th>
+                                <th>Detalle Reportado</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>${filasHTML}</tbody>
+                    </table>
+                    <div class="pie-pdf">
+                        <div><b>Generado por:</b> Sistema Inteligente UbícateUNE (Creador: Jean Rodriguez Mendez)</div>
+                        <div><b>Destino:</b> Oficina de Servicios Generales - UNE La Cantuta</div>
+                    </div>
+                    <script>window.onload = function() { window.print(); };<\/script>
+                </body>
+                </html>
+            `);
+            ventanaPDF.document.close();
         }
 
         window.onload = function() {
@@ -1278,6 +1472,7 @@
             quitarFondoBlancoCanvas(document.getElementById('gps-img-chupetes'));
             quitarFondoBlancoCanvas(document.getElementById('gps-img-chirinos'));
             cargarCuriosidadesAprobadasDeSheets();
+            cargarEstadoServiciosGenerales();
         };
 
         function actualizarUIInterruptorGPS(activo) {
@@ -1346,14 +1541,14 @@
                 trazarRutaVisual();
             };
 
-            document.getElementById('btn-ficha-plana').onclick = function() {
-                cerrarFichaMall();
-                abrirVisorUbicacion(id, 'plana');
-            };
-
             document.getElementById('btn-ficha-360').onclick = function() {
                 cerrarFichaMall();
                 abrirVisorUbicacion(id, '360');
+            };
+
+            document.getElementById('btn-ficha-plana').onclick = function() {
+                cerrarFichaMall();
+                abrirVisorUbicacion(id, 'plana');
             };
 
             document.getElementById('ficha-mall').style.display = 'block';
@@ -1560,10 +1755,11 @@
             viewport.scrollTop = scrollTop - ((e.pageY - viewport.offsetTop) - startY);
         });
 
-        function hacerZoom(cambio) {
-            let z = parseInt(document.getElementById('mapa-wrapper').style.width || '100');
-            z = Math.max(100, Math.min(300, z + cambio));
+        // FUNCIÓN DEL DESLIZADOR DE ZOOM ESTILO VOLUMEN
+        function cambiarZoomSlider(valor) {
+            const z = Math.max(100, Math.min(300, parseInt(valor)));
             document.getElementById('mapa-wrapper').style.width = z + '%';
+            document.getElementById('zoom-val-label').innerText = z + '%';
         }
 
         function filtrarMarcadores(categoria) {
@@ -1628,7 +1824,7 @@
         }
 
         // =========================================================================
-        // VISOR HÍBRIDO: ALTERNAR ENTRE FOTO PLANA HD Y ESFERA 360°
+        // VISOR HÍBRIDO: TUS 5 FOTOS SE ABREN EN 360° Y PUEDES CAMBIAR A PLANA HD
         // =========================================================================
         let indiceCuriosidad = 0;
         let indiceFotoGaleria = 0;
@@ -1641,7 +1837,8 @@
                 escenasDinamicas[key] = {
                     "type": "equirectangular",
                     "panorama": foto360Elegida,
-                    "title": directorioInfo[key] ? directorioInfo[key].titulo : key
+                    "title": directorioInfo[key] ? directorioInfo[key].titulo : key,
+                    "hfov": 110
                 };
             });
 
@@ -1666,7 +1863,7 @@
             const cont360 = document.getElementById('panorama');
 
             const info = directorioInfo[escenaActualId];
-            const urlPlana = fotosPlanasPorLugar[escenaActualId] || (info && info.listaFotos.length > 0 ? info.listaFotos[0].url : FOTO_360_DEFAULT);
+            const urlPlana = fotosPlanasPorLugar[escenaActualId] || fotos360PorLugar[escenaActualId] || FOTO_360_DEFAULT;
 
             if (modo === 'plana') {
                 tabPlana.classList.add('activo');
@@ -1684,7 +1881,7 @@
             }
         }
 
-        function abrirVisorUbicacion(sceneId, modoPreferido = 'auto') {
+        function abrirVisorUbicacion(sceneId, modoPreferido = '360') {
             escenaActualId = sceneId;
             document.getElementById('vista-mapa').style.display = 'none';
             document.getElementById('map-controls').style.display = 'none';
@@ -1704,8 +1901,7 @@
                 panelCuriosidad.style.display = 'none';
             }
 
-            // Si tiene foto plana de ImgBB o pidió modo 'plana', abre en Foto Plana HD sin pixelear
-            if (modoPreferido === 'plana' || (modoPreferido === 'auto' && fotosPlanasPorLugar[sceneId])) {
+            if (modoPreferido === 'plana') {
                 cambiarModoVisor('plana');
             } else {
                 cambiarModoVisor('360');
@@ -1770,7 +1966,7 @@
         }
 
         // =========================================================================
-        // ENVÍOS SEPARADOS A GOOGLE SHEETS (SIN MOSTRAR PENDIENTES EN LA WEB)
+        // ENVÍOS SEPARADOS A GOOGLE SHEETS
         // =========================================================================
         function abrirModalDocente() {
             document.getElementById('msg-docente').style.display = 'none';
@@ -1923,6 +2119,7 @@
                 document.getElementById('msg-reporte').style.display = 'block';
                 btn.innerHTML = "Enviar a Servicios Generales"; 
                 btn.disabled = false;
+                cargarEstadoServiciosGenerales();
                 setTimeout(() => { cerrarModalServiciosGenerales(); }, 2200);
             })
             .catch(() => {
@@ -1949,7 +2146,6 @@
             document.getElementById('foto-curiosidad-input').value = "";
         }
         
-        // ENVÍA FOTO Y DATO CURIOSO EN ESTADO "PENDIENTE" SIN PUBLICARLO EN LA WEB HASTA SER APROBADO
         function enviarFoto() {
             const lugar = document.getElementById('foto-lugar-select').value;
             const autor = document.getElementById('foto-autor').value.trim() || "Anónimo";
@@ -1963,7 +2159,7 @@
                 return;
             }
             
-            btn.innerHTML = "Enviando a revisión..."; btn.disabled = true;
+            btn.innerHTML = "Enviando a DATO CURIOSO..."; btn.disabled = true;
 
             const textoFinal = `${curiosidad || "Foto de referencia"} (Por: ${autor})`;
 
