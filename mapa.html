@@ -84,8 +84,25 @@
         .map-section { flex: 3; background: var(--surface); border-radius: 24px; padding: 15px; display: flex; flex-direction: column; position: relative; }
         
         .map-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
-        .map-title-tag { display: flex; align-items: center; gap: 8px; background: var(--primary); color: white; padding: 8px 14px; border-radius: 11px; font-size: 12.5px; font-weight: 900; }
         
+        /* ACTIVADOR RÁPIDO DE GPS ARRIBA DEL MAPA */
+        .gps-switch-top {
+            display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 12px;
+            background: #f1f5f9; border: 2px solid #cbd5e1; cursor: pointer; font-weight: 900;
+            font-size: 12.5px; color: #334155; transition: 0.25s; user-select: none;
+        }
+        .gps-switch-top.activo {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            border-color: #10b981; color: #065f46;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+        }
+        .gps-switch-dot {
+            width: 12px; height: 12px; border-radius: 50%; background: #94a3b8; transition: 0.25s;
+        }
+        .gps-switch-top.activo .gps-switch-dot {
+            background: #10b981; box-shadow: 0 0 8px #10b981;
+        }
+
         .avatar-top-selector { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 6px 12px; border-radius: 11px; border: 2px solid #3b82f6; box-shadow: 0 4px 10px rgba(59,130,246,0.15); }
         .avatar-top-selector label { font-size: 11.5px; font-weight: 900; color: #1e3a8a; white-space: nowrap; }
         .avatar-top-selector select { border: none; font-weight: 900; font-size: 12.5px; outline: none; background: transparent; cursor: pointer; color: #1d4ed8; }
@@ -128,7 +145,7 @@
         .map-pin.active .pin-label { background: var(--blue); color: white; }
 
         /* AVATAR GPS Y PERSONAJES UNE SIN FONDO BLANCO */
-        .gps-avatar { position: absolute; transform: translate(-50%, -50%); z-index: 40; display: none; flex-direction: column; align-items: center; pointer-events: none; transition: top 0.12s linear, left 0.12s linear; }
+        .gps-avatar { position: absolute; transform: translate(-50%, -50%); z-index: 40; display: none; flex-direction: column; align-items: center; pointer-events: none; transition: top 0.2s ease-out, left 0.2s ease-out; }
         .gps-dot { width: 22px; height: 22px; background: var(--blue); border: 3px solid white; border-radius: 50%; box-shadow: 0 0 15px rgba(59, 130, 246, 0.9); position: relative; }
         .gps-dot::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: rgba(59, 130, 246, 0.4); border-radius: 50%; animation: radar-ping 2s infinite; }
         .gps-label { background: var(--blue); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10.5px; font-weight: 900; margin-bottom: 4px; white-space: nowrap; border: 1px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
@@ -147,7 +164,6 @@
         .btn-minimizar-panel { background: rgba(255,255,255,0.16); color: white; border: 1px solid rgba(255,255,255,0.25); width: 26px; height: 26px; border-radius: 7px; font-size: 12px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-minimizar-panel:hover { background: var(--blue); }
 
-        /* Carrusel de Datos Curiosos (Derecha inferior) */
         .curiosidad-panel { position: absolute; bottom: 22px; right: 22px; z-index: 999; background: rgba(15, 23, 42, 0.93); backdrop-filter: blur(12px); border-radius: 16px; padding: 14px 16px; width: 340px; max-width: calc(100% - 44px); color: white; border: 1px solid rgba(255,255,255,0.22); box-shadow: 0 15px 30px rgba(0,0,0,0.6); animation: slideIn 0.4s ease-out; display: none; transition: 0.25s; }
         .curiosidad-panel.minimizado { width: auto; padding: 10px 14px; }
         .curiosidad-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px; }
@@ -159,7 +175,6 @@
         .btn-carrusel { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.2s; }
         .btn-carrusel:hover { background: var(--blue); border-color: var(--blue); }
 
-        /* Apartado de Fotos de Estudiantes (Izquierda inferior en 360, sin cortar texto ni imagen) */
         .galeria-estudiantes-panel { position: absolute; bottom: 22px; left: 22px; z-index: 999; background: rgba(15, 23, 42, 0.93); backdrop-filter: blur(12px); border-radius: 16px; padding: 12px 14px; width: 310px; max-width: calc(100% - 44px); color: white; border: 1px solid rgba(255,255,255,0.22); box-shadow: 0 15px 30px rgba(0,0,0,0.6); display: none; transition: 0.25s; }
         .galeria-estudiantes-panel.minimizado { width: auto; padding: 10px 14px; }
         .galeria-estudiantes-panel.minimizado .curiosidad-header { margin-bottom: 0; }
@@ -292,6 +307,8 @@
                         <option value="fac_telematica">F. Telemática y Telecom.</option>
                         <option value="auditorio_telecom">Auditorio de Telecomunicaciones</option>
                         <option value="electricidad">Programa de Electricidad</option>
+                        <option value="metalurgia">Programa de Metalurgia</option>
+                        <option value="fac_agropecuaria">Facultad de Agropecuaria y Nutrición</option>
                         <option value="fac_ciencias">Facultad de Ciencias</option>
                         <option value="fac_inicial">Facultad de Educación Inicial</option>
                         <option value="auditorio_pedagogia">Auditorio de Pedagogía</option>
@@ -342,6 +359,8 @@
                         <option value="fac_telematica">F. Telemática y Telecom.</option>
                         <option value="auditorio_telecom">Auditorio de Telecomunicaciones</option>
                         <option value="electricidad">Programa de Electricidad</option>
+                        <option value="metalurgia">Programa de Metalurgia</option>
+                        <option value="fac_agropecuaria">Facultad de Agropecuaria y Nutrición</option>
                         <option value="fac_ciencias">Facultad de Ciencias</option>
                         <option value="fac_inicial">Facultad de Educación Inicial</option>
                         <option value="auditorio_pedagogia">Auditorio de Pedagogía</option>
@@ -388,10 +407,14 @@
     <div class="main-wrapper">
         <div class="map-section">
             <div class="map-controls" id="map-controls">
-                <div class="map-title-tag">🛰️ Mapa Satelital UNE</div>
+                <!-- ACTIVADOR RÁPIDO GPS ON/OFF EN LA BARRA SUPERIOR DEL MAPA -->
+                <div id="btn-gps-top-switch" class="gps-switch-top" onclick="toggleGPSDesdeArriba()">
+                    <span class="gps-switch-dot"></span>
+                    <span id="gps-switch-label">🛰️ GPS en Vivo: OFF</span>
+                </div>
 
                 <div class="avatar-top-selector">
-                    <label>🎭 Escoge tu Personaje GPS:</label>
+                    <label>🎭 Personaje GPS:</label>
                     <select id="select-avatar" onchange="cambiarAvatar(this.value)">
                         <option value="burrito" selected>🚌 Bus "El Burrito" UNE</option>
                         <option value="gato">🐱 Gatito UNE (Giro 360°)</option>
@@ -473,6 +496,12 @@
                     </div>
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-electricidad" style="top: 71.9%; left: 52.8%;" onclick="seleccionarLugar('electricidad')">
                         <div class="pin-marker"><span class="pin-icon">⚡</span></div><div class="pin-label">Electricidad</div>
+                    </div>
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-metalurgia" style="top: 71.7%; left: 48.6%;" onclick="seleccionarLugar('metalurgia')">
+                        <div class="pin-marker"><span class="pin-icon">🔩</span></div><div class="pin-label">Metalurgia</div>
+                    </div>
+                    <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_agropecuaria" style="top: 57.4%; left: 84.4%;" onclick="seleccionarLugar('fac_agropecuaria')">
+                        <div class="pin-marker"><span class="pin-icon">🌱</span></div><div class="pin-label">F. Agropecuaria</div>
                     </div>
                     <div class="map-pin" data-categoria="facultad" id="pin-mapa-fac_ciencias" style="top: 51.6%; left: 65.2%;" onclick="seleccionarLugar('fac_ciencias')">
                         <div class="pin-marker"><span class="pin-icon">🔬</span></div><div class="pin-label">F. Ciencias</div>
@@ -609,10 +638,10 @@
                 <button class="btn-subir-foto" onclick="abrirModalFoto()">📷 Subir Foto / Dato Curioso</button>
                 <div id="panorama"></div>
 
-                <!-- APARTADO INTERACTIVO DE FOTOS DE ESTUDIANTES (CON MINIMIZAR Y TEXTO COMPLETO) -->
+                <!-- APARTADO INTERACTIVO DE FOTOS DE ESTUDIANTES -->
                 <div id="galeria-estudiantes-overlay" class="galeria-estudiantes-panel">
                     <div class="curiosidad-header">
-                        <h5>📸 Fotos de Estudiantes</h5>
+                        <h5>📸 Fotos de Referencia</h5>
                         <div style="display:flex; align-items:center; gap:6px;">
                             <span id="galeria-counter" class="curiosidad-counter">1 / 1</span>
                             <button class="btn-minimizar-panel" id="btn-min-galeria" onclick="toggleMinimizarPanel('galeria')" title="Minimizar / Maximizar">➖</button>
@@ -630,7 +659,7 @@
                     </div>
                 </div>
 
-                <!-- CARRUSEL AUTOMÁTICO Y MANUAL DE DATOS CURIOSOS (CON MINIMIZAR Y TEXTO COMPLETO) -->
+                <!-- CARRUSEL AUTOMÁTICO Y MANUAL DE DATOS CURIOSOS -->
                 <div id="curiosidades-overlay" class="curiosidad-panel">
                     <div class="curiosidad-header">
                         <h5>💡 Sabías que...</h5>
@@ -667,6 +696,8 @@
             <button class="btn-destino" data-id="fac_telematica" onclick="seleccionarLugar('fac_telematica')"><div class="btn-left"><div class="img-thumb">💻</div><div class="btn-info"><span class="btn-title">F. Telemática y Telecom.</span><span class="btn-sub">Pabellón de Sistemas</span></div></div></button>
             <button class="btn-destino" data-id="auditorio_telecom" onclick="seleccionarLugar('auditorio_telecom')"><div class="btn-left"><div class="img-thumb">🎤</div><div class="btn-info"><span class="btn-title">Auditorio de Telecom.</span><span class="btn-sub">Charlas Tecnológicas</span></div></div></button>
             <button class="btn-destino" data-id="electricidad" onclick="seleccionarLugar('electricidad')"><div class="btn-left"><div class="img-thumb">⚡</div><div class="btn-info"><span class="btn-title">Programa de Electricidad</span><span class="btn-sub">Talleres Eléctricos</span></div></div></button>
+            <button class="btn-destino" data-id="metalurgia" onclick="seleccionarLugar('metalurgia')"><div class="btn-left"><div class="img-thumb">🔩</div><div class="btn-info"><span class="btn-title">Programa de Metalurgia</span><span class="btn-sub">Talleres FATEC</span></div></div></button>
+            <button class="btn-destino" data-id="fac_agropecuaria" onclick="seleccionarLugar('fac_agropecuaria')"><div class="btn-left"><div class="img-thumb">🌱</div><div class="btn-info"><span class="btn-title">F. Agropecuaria y Nutrición</span><span class="btn-sub">FAN (X:84.4, Y:57.4)</span></div></div></button>
             <button class="btn-destino" data-id="fac_ciencias" onclick="seleccionarLugar('fac_ciencias')"><div class="btn-left"><div class="img-thumb">🔬</div><div class="btn-info"><span class="btn-title">Facultad de Ciencias</span><span class="btn-sub">Labs Química y Física</span></div></div></button>
             <button class="btn-destino" data-id="fac_inicial" onclick="seleccionarLugar('fac_inicial')"><div class="btn-left"><div class="img-thumb">🧸</div><div class="btn-info"><span class="btn-title">F. Educación Inicial</span><span class="btn-sub">Aulas y Ludoteca</span></div></div></button>
             <button class="btn-destino" data-id="auditorio_pedagogia" onclick="seleccionarLugar('auditorio_pedagogia')"><div class="btn-left"><div class="img-thumb">🎓</div><div class="btn-info"><span class="btn-title">Auditorio de Pedagogía</span><span class="btn-sub">Educación Primaria</span></div></div></button>
@@ -710,12 +741,12 @@
     <div class="tools-container">
         <div class="tools-card">
             <div class="tools-header-fila">
-                <h4>🛰️ Navegación Satelital y Controles de Movimiento</h4>
+                <h4>🛰️ Navegación Satelital Calibrada y Controles de Movimiento</h4>
             </div>
             
             <div class="gps-grid">
                 <div>
-                    <p style="margin-bottom: 14px; font-size: 13px; font-weight: 700; color: #475569;">Activa tu GPS real, inicia el Modo Prueba desde la Entrada Principal o muévete con el Joystick.</p>
+                    <p style="margin-bottom: 14px; font-size: 13px; font-weight: 700; color: #475569;">Puedes activar el GPS desde el interruptor superior del mapa o desde estos controles, usar el Modo Prueba o moverte con el Joystick.</p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button class="btn-action bg-green" onclick="iniciarNavegacion()">🚶 Activar GPS</button>
                         <button class="btn-action bg-purple" onclick="iniciarModoPrueba()">▶️ Modo Prueba (Entrada)</button>
@@ -835,6 +866,7 @@
                 <option value="Comedor">Comedor Universitario</option>
                 <option value="Facultad de Tecnología">Facultad de Tecnología</option>
                 <option value="F. Telemática y Telecom.">F. Telemática y Telecom.</option>
+                <option value="Facultad de Agropecuaria y Nutrición">Facultad de Agropecuaria y Nutrición</option>
                 <option value="Otro">Otro (Especificar lugar)</option>
             </select>
             <input type="text" id="reporte-lugar-otro" placeholder="Escribe la ubicación exacta..." style="display:none;">
@@ -895,16 +927,27 @@
         const FOTO_360_DEFAULT = 'https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png';
 
         // =========================================================================
-        // DICCIONARIO PARA CAMBIAR LAS IMÁGENES 360° DE CADA LUGAR INDIVIDUALMENTE
+        // DICCIONARIO DE IMÁGENES 360° Y DE REFERENCIA CON TUS LINKS DE IMGBB
         // =========================================================================
         const fotos360PorLugar = {
             "entrada": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
             "biblioteca": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
-            "fac_telematica": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
-            "fac_tecnologia": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
+            "fac_telematica": "https://i.ibb.co/KxmC5HNb/telematica.jpg",
+            "fac_agropecuaria": "https://i.ibb.co/h1dbZzGC/facultad-agropecuaria.jpg",
+            "decanato_tecno": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
+            "rotonda": "https://i.ibb.co/1YXqPG2z/rotonda.jpg",
+            "oti": "https://i.ibb.co/wh3cr41p/oti.jpg",
+            "fac_tecnologia": "https://i.ibb.co/WWtc6v0T/decanato.jpg",
             "auditorio_prin": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png",
             "comedor_a": "https://i.ibb.co/sJcFT9pg/BIBLIOTECA.png"
-            // Puedes agregar cualquier otro ID aquí con su link de IBB o carpeta local
+        };
+
+        const fotosReferenciaIniciales = {
+            "fac_telematica": [{ url: "https://i.ibb.co/KxmC5HNb/telematica.jpg", texto: "Fachada de Telecomunicaciones e Informática (FATEC)" }],
+            "fac_agropecuaria": [{ url: "https://i.ibb.co/h1dbZzGC/facultad-agropecuaria.jpg", texto: "Facultad de Agropecuaria y Nutrición - UNE" }],
+            "decanato_tecno": [{ url: "https://i.ibb.co/WWtc6v0T/decanato.jpg", texto: "Decanato de la Facultad de Tecnología (FATEC)" }],
+            "rotonda": [{ url: "https://i.ibb.co/1YXqPG2z/rotonda.jpg", texto: "Vista de La Rotonda UNE" }],
+            "oti": [{ url: "https://i.ibb.co/wh3cr41p/oti.jpg", texto: "Oficinas de OTI - Tecnologías de la Información" }]
         };
 
         let modoEdicionActivo = false;
@@ -916,9 +959,7 @@
         let isDragging = false;
         let startX, startY, scrollLeft, scrollTop;
 
-        const baseReal = { lat: -11.945380, lon: -76.702065 }; 
         const baseMapa = { x: 34.4, y: 25.7 }; 
-
         let miXActual = baseMapa.x;
         let miYActual = baseMapa.y;
 
@@ -927,20 +968,84 @@
             "biblioteca": { x: 41.9, y: 34.7 }, "huaranguito": { x: 48.3, y: 31.1 }, "auditorio_prin": { x: 72.8, y: 20.7 },
             "sociales_norte": { x: 68.3, y: 9.2 }, "idiomas": { x: 80.7, y: 17.9 }, "fac_inicial": { x: 41.6, y: 44.7 },
             "auditorio_pedagogia": { x: 57.5, y: 44.4 }, "fac_ciencias": { x: 65.2, y: 51.6 }, "sociales": { x: 82.7, y: 49.7 },
-            "colegio_aplicacion": { x: 49.4, y: 58.1 }, "electricidad": { x: 52.8, y: 71.9 }, "fac_tecnologia": { x: 66.3, y: 65.6 },
-            "decanato_tecno": { x: 63.6, y: 68.5 }, "fac_telematica": { x: 88.4, y: 36.1 }, "auditorio_telecom": { x: 87.1, y: 29.9 },
-            "fac_educacion": { x: 73.7, y: 65.8 }, "fac_fisica": { x: 32.5, y: 78.6 }, "fac_civil": { x: 73.5, y: 65.9 },
-            "fac_artistica": { x: 62.5, y: 79.2 }, "fac_vestido": { x: 43.2, y: 89.6 }, "estadio": { x: 19.4, y: 54.8 },
-            "gimnasio": { x: 40.6, y: 62.1 }, "losa": { x: 50.7, y: 64.1 }, "piscina": { x: 35.7, y: 71.6 },
-            "topico": { x: 22.6, y: 86.2 }, "capilla": { x: 34.0, y: 84.4 }, "estacionamiento": { x: 31.6, y: 48.8 },
-            "rotonda": { x: 62.4, y: 72.8 }, "talcomachay": { x: 96.3, y: 94.7 }, "oficina_recreacion": { x: 81.7, y: 38.2 },
-            "tuna": { x: 81.0, y: 35.0 }, "paradero_burrito": { x: 37.7, y: 75.7 }, "motos": { x: 32.3, y: 24.9 },
-            "recta_ventas": { x: 42.4, y: 17.9 }, "comedor_a": { x: 75.0, y: 42.7 }, "comedor_b": { x: 68.7, y: 31.0 },
-            "oti": { x: 83.8, y: 24.8 }, "of_servicios": { x: 77.8, y: 41.1 }, "papeleria_1": { x: 87.3, y: 41.0 },
-            "aseped": { x: 44.5, y: 71.6 }, "bano_1": { x: 73.7, y: 51.3 }, "bano_2": { x: 34.5, y: 37.3 }, "bano_4": { x: 38.3, y: 63.0 }
+            "colegio_aplicacion": { x: 49.4, y: 58.1 }, "electricidad": { x: 52.8, y: 71.9 }, "metalurgia": { x: 48.6, y: 71.7 },
+            "fac_agropecuaria": { x: 84.4, y: 57.4 }, "fac_tecnologia": { x: 66.3, y: 65.6 }, "decanato_tecno": { x: 63.6, y: 68.5 },
+            "fac_telematica": { x: 88.4, y: 36.1 }, "auditorio_telecom": { x: 87.1, y: 29.9 }, "fac_educacion": { x: 73.7, y: 65.8 },
+            "fac_fisica": { x: 32.5, y: 78.6 }, "fac_civil": { x: 73.5, y: 65.9 }, "fac_artistica": { x: 62.5, y: 79.2 },
+            "fac_vestido": { x: 43.2, y: 89.6 }, "estadio": { x: 19.4, y: 54.8 }, "gimnasio": { x: 40.6, y: 62.1 },
+            "losa": { x: 50.7, y: 64.1 }, "piscina": { x: 35.7, y: 71.6 }, "topico": { x: 22.6, y: 86.2 },
+            "capilla": { x: 34.0, y: 84.4 }, "estacionamiento": { x: 31.6, y: 48.8 }, "rotonda": { x: 62.4, y: 72.8 },
+            "talcomachay": { x: 96.3, y: 94.7 }, "oficina_recreacion": { x: 81.7, y: 38.2 }, "tuna": { x: 81.0, y: 35.0 },
+            "paradero_burrito": { x: 37.7, y: 75.7 }, "motos": { x: 32.3, y: 24.9 }, "recta_ventas": { x: 42.4, y: 17.9 },
+            "comedor_a": { x: 75.0, y: 42.7 }, "comedor_b": { x: 68.7, y: 31.0 }, "oti": { x: 83.8, y: 24.8 },
+            "of_servicios": { x: 77.8, y: 41.1 }, "papeleria_1": { x: 87.3, y: 41.0 }, "aseped": { x: 44.5, y: 71.6 },
+            "bano_1": { x: 73.7, y: 51.3 }, "bano_2": { x: 34.5, y: 37.3 }, "bano_4": { x: 38.3, y: 63.0 }
         };
 
+        // =========================================================================
+        // PUNTOS DE CALIBRACIÓN GPS REALES TOMADOS POR TI EN EL CAMPUS UNE
+        // =========================================================================
+        const anclasGPSReales = [
+            { id: "sociales",         lat: -11.946157, lon: -76.699158, x: 82.7, y: 49.7 },
+            { id: "fac_artistica",    lat: -11.947034, lon: -76.699627, x: 62.5, y: 79.2 },
+            { id: "fac_civil",        lat: -11.947289, lon: -76.699516, x: 73.5, y: 65.9 },
+            { id: "fac_agropecuaria", lat: -11.947402, lon: -76.699556, x: 84.4, y: 57.4 },
+            { id: "rotonda",          lat: -11.947556, lon: -76.700383, x: 62.4, y: 72.8 },
+            { id: "decanato_tecno",   lat: -11.947442, lon: -76.700256, x: 63.6, y: 68.5 },
+            { id: "electricidad",     lat: -11.947647, lon: -76.700472, x: 52.8, y: 71.9 },
+            { id: "metalurgia",       lat: -11.947608, lon: -76.700758, x: 48.6, y: 71.7 },
+            { id: "aseped",           lat: -11.947651, lon: -76.700886, x: 44.5, y: 71.6 },
+            { id: "piscina",          lat: -11.947808, lon: -76.702163, x: 35.7, y: 71.6 },
+            { id: "entrada",          lat: -11.945380, lon: -76.702065, x: 34.4, y: 25.7 }
+        ];
+
+        // Convierte cualquier Lat/Lon real de celular a % (X, Y) exacto del mapa usando tus puntos de campo
+        function convertirGpsAMapaCalibrado(lat, lon) {
+            // 1. Modelo global calibrado con los extremos reales de la UNE
+            const xGlobal = 35.7 + ((lon - (-76.702163)) / 0.0000622);
+            const yGlobal = 25.7 + (((-11.945380) - lat) / 0.0000485);
+
+            // 2. Interpolación magnética ponderada por distancia inversa (IDW) hacia tus puntos medidos en campo
+            let sumaPesos = 0;
+            let sumaX = 0;
+            let sumaY = 0;
+            let distMinGrados = Infinity;
+
+            for (let i = 0; i < anclasGPSReales.length; i++) {
+                const a = anclasGPSReales[i];
+                const d = Math.hypot(lat - a.lat, lon - a.lon);
+                if (d < distMinGrados) distMinGrados = d;
+
+                if (d < 0.00004) {
+                    return { x: a.x, y: a.y };
+                }
+                const peso = 1 / Math.pow(d, 2.4);
+                sumaPesos += peso;
+                sumaX += a.x * peso;
+                sumaY += a.y * peso;
+            }
+
+            const xAnclas = sumaX / sumaPesos;
+            const yAnclas = sumaY / sumaPesos;
+
+            // Combina suavemente las anclas cercanas con la tendencia global del mapa
+            const factorLocal = Math.max(0, Math.min(0.85, 1 - (distMinGrados / 0.0018)));
+            const xFinal = (xAnclas * factorLocal) + (xGlobal * (1 - factorLocal));
+            const yFinal = (yAnclas * factorLocal) + (yGlobal * (1 - factorLocal));
+
+            return { x: xFinal, y: yFinal };
+        }
+
+        // Convierte un clic en el mapa (X%, Y%) a Lat/Lon aproximado coherente con tu calibración
+        function convertirMapaAGpsAprox(x, y) {
+            const lon = -76.702163 + ((x - 35.7) * 0.0000622);
+            const lat = -11.945380 - ((y - 25.7) * 0.0000485);
+            return { lat, lon };
+        }
+
         const directorioInfo = {
+            "fac_agropecuaria": { titulo: "Facultad de Agropecuaria y Nutrición", cat: "Facultad", pisos: "Pabellones, Laboratorios y Centros Experimentales", oficinas: "Decanato y Escuelas de Agropecuaria y Nutrición.", curiosidad: "Ubicada en el sector este del campus (X: 84.4%, Y: 57.4%), rodeada de áreas verdes productivas." },
+            "metalurgia": { titulo: "Programa de Metalurgia", cat: "Especialidad FATEC", pisos: "Talleres de Fundición y Soldadura", oficinas: "Coordinación de Metalurgia - Joyería.", curiosidad: "Ubicado entre el pabellón de Electricidad y ASEPED." },
             "paradero_burrito": { titulo: "Paradero del Burrito UNE", cat: "Transporte Universitario", pisos: "Paradero Oficial (X: 37.7%, Y: 75.7%)", oficinas: "Salida y llegada del bus universitario.", curiosidad: "Aquí los estudiantes toman el clásico 'Burrito' de la UNE para sus rutas." },
             "talcomachay": { titulo: "Mirador Talcomachay", cat: "Naturaleza y Mitos", pisos: "Cerro del Campus", oficinas: "Zona de Trekking estudiantil.", curiosidad: "La leyenda dice que si llegas a lo más alto del cerro, tendrás tu título algún día." },
             "oficina_recreacion": { titulo: "Oficina de Recreación", cat: "Bienestar", pisos: "Módulo Recreacional", oficinas: "Juegos libres para alumnos.", curiosidad: "Aquí hay ajedrez, damas y mesas de ping-pong gratis para que jueguen los estudiantes." },
@@ -989,7 +1094,7 @@
 
         for (let k in directorioInfo) {
             directorioInfo[k].listaCuriosidades = [directorioInfo[k].curiosidad];
-            directorioInfo[k].listaFotos = [];
+            directorioInfo[k].listaFotos = fotosReferenciaIniciales[k] ? [...fotosReferenciaIniciales[k]] : [];
         }
 
         function quitarFondoBlancoCanvas(imgElement) {
@@ -1017,7 +1122,6 @@
             img.src = imgElement.src;
         }
 
-        // LECTURA FLEXIBLE Y SIN CACHÉ DE LOS APROBADOS EN TU GOOGLE SHEETS
         function normalizarTexto(txt) {
             return String(txt || "")
                 .toLowerCase()
@@ -1056,7 +1160,6 @@
                         }
                     });
 
-                    // Si el visor 360 ya está abierto, refresca los paneles en vivo
                     if (document.getElementById('vista-360').style.display === 'block') {
                         renderizarCuriosidadActual();
                         renderizarGaleriaFotos();
@@ -1073,7 +1176,27 @@
             cargarCuriosidadesAprobadasDeSheets();
         };
 
-        // FUNCIÓN PARA MINIMIZAR / MAXIMIZAR LOS PANELES EN EL 360
+        // INTERRUPTOR SUPERIOR PARA ACTIVAR/DESACTIVAR EL GPS SIN BAJAR
+        function actualizarUIInterruptorGPS(activo) {
+            const sw = document.getElementById('btn-gps-top-switch');
+            const lbl = document.getElementById('gps-switch-label');
+            if (activo) {
+                sw.classList.add('activo');
+                lbl.innerText = "🛰️ GPS en Vivo: ON";
+            } else {
+                sw.classList.remove('activo');
+                lbl.innerText = "🛰️ GPS en Vivo: OFF";
+            }
+        }
+
+        function toggleGPSDesdeArriba() {
+            if (gpsActivado) {
+                detenerNavegacion();
+            } else {
+                iniciarNavegacion();
+            }
+        }
+
         function toggleMinimizarPanel(tipo) {
             if (tipo === 'galeria') {
                 const panel = document.getElementById('galeria-estudiantes-overlay');
@@ -1167,7 +1290,7 @@
             if (origenId === 'gps') {
                 if (!gpsActivado) {
                     mensajeBox.style.color = "#dc2626";
-                    mensajeBox.innerHTML = "❌ Activa primero el botón 'Activar GPS' o 'Modo Prueba'.";
+                    mensajeBox.innerHTML = "❌ Activa primero el interruptor '🛰️ GPS en Vivo' arriba del mapa.";
                     return;
                 }
                 origenId = 'usuario_actual'; 
@@ -1254,6 +1377,7 @@
         function iniciarModoPrueba() {
             clearInterval(intervaloPrueba);
             gpsActivado = true;
+            actualizarUIInterruptorGPS(true);
 
             miXActual = coordenadasMapa["entrada"].x;
             miYActual = coordenadasMapa["entrada"].y;
@@ -1362,8 +1486,7 @@
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
             
-            let calcLat = baseReal.lat - ((y - 25.7) * 0.000030);
-            let calcLon = baseReal.lon + ((x - 34.4) * 0.000030);
+            const gpsAprox = convertirMapaAGpsAprox(x, y);
 
             let puntero = document.getElementById('puntero-prueba');
             if(!puntero) {
@@ -1379,12 +1502,12 @@
             puntero.style.left = x.toFixed(1) + '%';
             puntero.style.top = y.toFixed(1) + '%';
 
-            puntoCapturadoHTML = `HTML Pin: top: ${y.toFixed(1)}%; left: ${x.toFixed(1)}%;\nNodo Camino JS: { x: ${x.toFixed(1)}, y: ${y.toFixed(1)} }\nGPS Aprox: lat: ${calcLat.toFixed(6)}, lon: ${calcLon.toFixed(6)}`;
+            puntoCapturadoHTML = `HTML Pin: top: ${y.toFixed(1)}%; left: ${x.toFixed(1)}%;\nNodo Camino JS: { x: ${x.toFixed(1)}, y: ${y.toFixed(1)} }\nGPS Aprox: lat: ${gpsAprox.lat.toFixed(6)}, lon: ${gpsAprox.lon.toFixed(6)}`;
             document.getElementById('resultado-gps').innerHTML = `
                 <span style="color:#ec4899; font-weight:900;">● Punto Capturado</span><br>
                 <b>HTML Pin:</b> top: ${y.toFixed(1)}%; left: ${x.toFixed(1)}%;<br>
                 <b>Nodo Camino JS:</b> { x: ${x.toFixed(1)}, y: ${y.toFixed(1)} }<br>
-                <b>GPS Aprox:</b> lat: ${calcLat.toFixed(6)}, lon: ${calcLon.toFixed(6)}
+                <b>GPS Aprox:</b> lat: ${gpsAprox.lat.toFixed(6)}, lon: ${gpsAprox.lon.toFixed(6)}
                 <button class="btn-copiar" onclick="copiarPunto()">📋 COPIAR</button>
             `;
         });
@@ -1398,7 +1521,6 @@
             });
         }
 
-        // VISOR 360 USANDO EL DICCIONARIO fotos360PorLugar
         let indiceCuriosidad = 0;
         let indiceFotoGaleria = 0;
         let timerCarruselCuriosidad = null;
@@ -1567,7 +1689,7 @@
                     inputGps.value = `lat: ${pos.coords.latitude.toFixed(6)}, lon: ${pos.coords.longitude.toFixed(6)}`;
                 }, () => {
                     inputGps.value = `Mapa X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%`;
-                });
+                }, { enableHighAccuracy: true });
             } else {
                 inputGps.value = `Mapa X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%`;
             }
@@ -1757,13 +1879,15 @@
             }
         }
 
+        // =========================================================================
+        //  NAVEGACIÓN GPS CALIBRADA Y JOYSTICK MANUAL DIRECTO EN % DEL MAPA
+        // =========================================================================
         let watchId = null;
-        let simLat = baseReal.lat; 
-        let simLon = baseReal.lon; 
 
         function iniciarNavegacion() {
             clearInterval(intervaloPrueba);
             gpsActivado = true;
+            actualizarUIInterruptorGPS(true);
             const panel = document.getElementById('panel-instrucciones');
             document.getElementById('avatar-estudiante').style.display = 'flex';
             cambiarAvatar(document.getElementById('select-avatar').value);
@@ -1772,27 +1896,34 @@
                 panel.innerHTML = "❌ Tu navegador no soporta geolocalización.";
                 return;
             }
-            panel.innerHTML = "Conectando con satélites GPS... 🛰️";
+            panel.innerHTML = "Conectando con satélites GPS calibrados... 🛰️";
             panel.style.background = "#fef3c7";
             
+            if (watchId !== null) navigator.geolocation.clearWatch(watchId);
             watchId = navigator.geolocation.watchPosition(
-                evaluarUbicacion, 
+                evaluarUbicacionRealGPS, 
                 function() { panel.innerHTML = "❌ Activa el permiso de ubicación en tu celular o usa el Modo Prueba."; },
-                { enableHighAccuracy: true, maximumAge: 0 }
+                { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
             );
         }
 
-        function moverJoystick(dLat, dLon) {
-            if(watchId !== null) detenerNavegacion();
+        function moverJoystick(dY, dX) {
+            if (watchId !== null) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
             clearInterval(intervaloPrueba);
             gpsActivado = true;
+            actualizarUIInterruptorGPS(true);
             document.getElementById('avatar-estudiante').style.display = 'flex';
             cambiarAvatar(document.getElementById('select-avatar').value);
             
-            simLat += dLat * 0.000050; 
-            simLon += dLon * 0.000050;
+            // Movimiento directo y preciso en porcentaje del mapa
+            miXActual = Math.max(2, Math.min(98, miXActual + (dX * 1.6)));
+            miYActual = Math.max(2, Math.min(98, miYActual - (dY * 1.6)));
+
             activarGiroGatoTemporal();
-            evaluarUbicacion({ coords: { latitude: simLat, longitude: simLon } }, dLon);
+            actualizarPosicionAvatarEnMapa(dX, "🕹️ Joystick");
         }
 
         function detenerNavegacion() {
@@ -1800,6 +1931,7 @@
             clearInterval(intervaloPrueba);
             watchId = null;
             gpsActivado = false;
+            actualizarUIInterruptorGPS(false);
             document.getElementById('avatar-estudiante').style.display = 'none';
             document.getElementById('gps-img-gato').classList.remove('girando-rapido');
             
@@ -1808,14 +1940,32 @@
             panel.style.background = "rgba(255,255,255,0.85)";
         }
 
-        function evaluarUbicacion(pos, dirLon = 0) {
+        function evaluarUbicacionRealGPS(pos) {
             const miLat = pos.coords.latitude;
             const miLon = pos.coords.longitude;
+            const prevX = miXActual;
+
+            // Verificar si realmente está muy lejos de La Cantuta (> 1.5 km del centro del campus)
+            const fueraDeChosicaUNE = (miLat > -11.938 || miLat < -11.956 || miLon < -76.712 || miLon > -76.691);
             const panel = document.getElementById('panel-instrucciones');
 
-            miXActual = baseMapa.x + ((miLon - baseReal.lon) / 0.000030);
-            miYActual = baseMapa.y - ((miLat - baseReal.lat) / 0.000030);
+            if (fueraDeChosicaUNE) {
+                panel.innerHTML = `🛰️ ⚠️ Tu señal GPS indica que estás fuera del sector de La Cantuta (${miLat.toFixed(5)}, ${miLon.toFixed(5)}). Puedes usar el Modo Prueba o Joystick.`;
+                panel.style.background = "#fef3c7";
+                return;
+            }
 
+            // Convertir con el sistema multiancla calibrado y mantener siempre dentro del mapa si está en la UNE
+            const puntoCalibrado = convertirGpsAMapaCalibrado(miLat, miLon);
+            miXActual = Math.max(3, Math.min(97, puntoCalibrado.x));
+            miYActual = Math.max(3, Math.min(97, puntoCalibrado.y));
+
+            activarGiroGatoTemporal();
+            actualizarPosicionAvatarEnMapa(miXActual - prevX, "🛰️ GPS UNE Calibrado");
+        }
+
+        function actualizarPosicionAvatarEnMapa(dirX = 0, origenTexto = "🛰️ GPS") {
+            const panel = document.getElementById('panel-instrucciones');
             const avatar = document.getElementById('avatar-estudiante');
             avatar.style.left = miXActual + '%';
             avatar.style.top = miYActual + '%';
@@ -1823,26 +1973,20 @@
             const idsVolteables = ['gps-img-burrito', 'gps-img-chupetes', 'gps-img-chirinos'];
             idsVolteables.forEach(idImg => {
                 const el = document.getElementById(idImg);
-                if (dirLon < 0) el.classList.add('mirar-izquierda');
-                else if (dirLon > 0) el.classList.remove('mirar-izquierda');
+                if (dirX < -0.05) el.classList.add('mirar-izquierda');
+                else if (dirX > 0.05) el.classList.remove('mirar-izquierda');
             });
-
-            if (miXActual < 0 || miXActual > 100 || miYActual < 0 || miYActual > 100) {
-                panel.innerHTML = `🛰️ ❌ Te encuentras fuera del perímetro del campus UNE.`;
-                panel.style.background = "#fee2e2";
-                return;
-            }
 
             const destId = document.getElementById('select-destino').value;
             if (destId && coordenadasMapa[destId]) {
                 const distAlDestino = distanciaPuntos({ x: miXActual, y: miYActual }, coordenadasMapa[destId]);
-                if (distAlDestino <= 2.2) {
+                if (distAlDestino <= 2.4) {
                     finalizarRecorridoEnDestino(directorioInfo[destId]?.titulo || destId);
                     return;
                 }
             }
 
-            panel.innerHTML = `🛰️ 🚶 Moviéndote por el campus (X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%)`;
+            panel.innerHTML = `${origenTexto}: 🚶 Moviéndote por el campus (X: ${miXActual.toFixed(1)}%, Y: ${miYActual.toFixed(1)}%)`;
             panel.style.background = "#dcfce7";
             
             if (document.getElementById('select-origen').value === 'gps' && destId) {
